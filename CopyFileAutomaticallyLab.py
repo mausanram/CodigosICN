@@ -37,3 +37,5 @@ sftp.get(remotepath='/home/detectores/Software/LakeshoreControl/history_2023Jul2
 
 sftp.close()
 client.close()
+
+print("Process Finished")
