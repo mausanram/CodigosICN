@@ -1,1 +1,0 @@
-Set_Point Channel 1: 170
