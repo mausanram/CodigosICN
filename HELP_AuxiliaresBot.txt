@@ -1,0 +1,23 @@
+#######################################################################################
+###                                                                                 ###
+###                                                                                 ###
+###          ARCHIVO DE AYUDA DE FUNCIONES AUXILIARES UTILIZADAS POR EL BOT         ###
+###               PARA MONITOREO DEL  LABORATORIO DE DETECTORES DEL ICN             ###
+###                                                                                 ###
+###          * ULTIMA ACTUALIZACIÓN: 18 DE AGOSTO DEL 2023                          ###  
+###                                                                                 ###                            
+####################################################################################### 
+
+# Definiciones 
+    -> def ReadTemp(historial_Temp):
+        # La variable "historial_Temp" debe de ser una cadena con la dirección del archivo de historial de temperatura.
+        Lee el archivo y guarda la útlima linea. Despues omite todas las lineas que que esten vacías o que sean saltos 
+        de linea para "limpiar" toda la lista y solo tener datos útiles.
+        - Regresa una lista con fecha, hora, temperatura y valor del heater power.
+
+    -> def dictConfigFile_335(configFileName):
+        # La variable "configFileName" debe ser una cadena con la dirección del archivo de configuracion del 335.
+        Lee el archivo y obtiene todas las lineas guardandolas en una lista. Despues filtra la lista para solo tener
+        información útil y generar un diccionario. 
+        - Regresa un diccionario con información de configuración del 335. 
+
