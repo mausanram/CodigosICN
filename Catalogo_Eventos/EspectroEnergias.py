@@ -26,11 +26,17 @@ def main(argObj):
             oScan = hdu_list[extension].data[638:,530:]
             nsamp = float(header['NSAMP'])
 
+            del header
+
             hist , bins_edges = np.histogram(oScan.flatten(), bins = 1000) #'auto'
+
+            del oScan
+
             offset = bins_edges[np.argmax(hist)]
             dataP = data-offset
             dataCal = dataP/expgain[extension] ## En electrones  
-
+            
+            del hist
             del data
             del dataP
             
@@ -44,7 +50,18 @@ def main(argObj):
             bin_heights = bin_heights[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
             bin_centers = bin_centers[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
 
-            popt,_ = curve_fit(gaussian, bin_centers, bin_heights)#, p0=[np.max(bin_heights), 0, 1], maxfev=100000)		# Fit histogram with gaussian
+            del nsamp
+
+            try:
+                popt,_ = curve_fit(gaussian, bin_centers, bin_heights)#, p0=[np.max(bin_heights), 0, 1], maxfev=100000)		# Fit histogram with gaussian
+
+            except:
+                continue
+            del bin_heights
+            del bin_centers
+            del offset
+            del xmin_fit
+            del xmax_fit
 
             # label, n_events = ndimage.label(dataCal>6*abs(popt[2]),structure=[[1,1,1],[1,1,1],[1,1,1]])
             label_img, n_events = sk.measure.label(dataCal>6*popt[2], connectivity=2, return_num=True)
@@ -65,6 +82,8 @@ def main(argObj):
                 data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
                                          mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
                 
+                # del dataCal
+
                 coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
                 coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
 
@@ -72,6 +91,7 @@ def main(argObj):
                 MinValue_Event = data_maskEvent.min()
 
                 Barycentercharge = data_maskEvent[coordY_centerCharge, coordX_centerCharge]
+
                 try:
                     differval = abs(Barycentercharge - MinValue_Event) 
                 except:
@@ -96,12 +116,7 @@ def main(argObj):
 
                 elif differval < MeanValue_Event + 100:
                     continue
-
-                # list_n_events.append(event)
-                # StraightEvents_list.append(event)
                 
-                data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop], mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
-
                 charge = 0
                 for element in data_maskEvent.data.flatten():
                     if element >= valor_promedio_fondo:

@@ -28,8 +28,9 @@ if __version_info__ < (20, 0, 0, "alpha", 1):
 
 logging.basicConfig(format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s", level = logging.INFO)
 logger = logging.getLogger(__name__)
-Token = " " #Token del Bot. Nombre de Bot en Telegram: PruebainBot
+Token = "5802062802:AAHgtixNr5OnpZF2LOfhLbwqiNh7nikdx8s" #Token del Bot. Nombre de Bot en Telegram: PruebainBot
 intervalo_de_rutinaTemp = 40
+toloreancia_Temp = 1.5 # K 
 
 # Computadora de Casa # 
 historyTemp_path = '/home/bruce/Documents/Programas/Bot/history_2023Aug11.txt' # Dirección del historial de temperatuas
@@ -115,6 +116,10 @@ def Refresh_File(ReferenceValue, NewValue): ## Función que se encarga de checar
 
 async def Temp_alarm(context: ContextTypes.DEFAULT_TYPE): ## Alarma para cambio de temperatura. 
     # logger.info('Estoy en alarma')
+    job = context.job
+    user_id = job.chat_id
+    # print('User_ID:', user_id)
+
     try:
         # logger.info('Estoy en el try del historial')
         medsRef = ReadTemp(historyTemp_path)
@@ -122,7 +127,6 @@ async def Temp_alarm(context: ContextTypes.DEFAULT_TYPE): ## Alarma para cambio 
     except: 
         logger.info('Estoy en el except del historial')
         Text = 'Archivo de historial de temperatura NO detectado. Por favor verifica la dirección del archivo.\nDirección actual: '+ historyTemp_path
-        job = context.job
         await context.bot.send_message(chat_id = job.chat_id,text = Text)
 
         Text = 'El bot se apagará automáticamente ya que no se puede obtener información del laboratorio.'
@@ -135,13 +139,12 @@ async def Temp_alarm(context: ContextTypes.DEFAULT_TYPE): ## Alarma para cambio 
 
     except: 
         # logger.info('Estoy en el except del ConfigFile335') 
-        Text = 'Archivo de configuración del 335 NO detectado. Por favor verifica la dirección del archivo.\nDirección actual: '+ historyTemp_path
-        job = context.job
+        Text = 'Archivo de configuración del 335 NO detectado. Por favor verifica la dirección del archivo.\nDirección actual: ' + ConfigFile335_path
         await context.bot.send_message(chat_id = job.chat_id,text = Text)
 
         Text = 'Las alarmas se desactivarán automáticante ya que no se puede obtener los cambios de temperatura.'
         await context.bot.send_message(chat_id = job.chat_id,text = Text)
-        context.job_queue.get_jobs_by_name('ReadTemp_job')[0].schedule_removal()
+        context.job_queue.get_jobs_by_name(str(user_id) + '_ReadTemp_job')[0].schedule_removal()
     
     # logger.info('Estoy esperando')
 
@@ -180,30 +183,28 @@ async def Temp_alarm(context: ContextTypes.DEFAULT_TYPE): ## Alarma para cambio 
         # logger.info('No se levantó la bandera Refresh')
 
         Text = 'PRECUACIÓN: El archivo NO se está actualizando. Hora y fecha de la ultima actualización: '
-        job = context.job
         await context.bot.send_message(chat_id = job.chat_id,text = Text + str(medNew[0])+', '+str(medNew[2][0:9]))
         await context.bot.send_message(chat_id = job.chat_id,text='No se pueden realizar lecturas. \nLas alarmas se apagarán automcaticamente.')
-        context.job_queue.get_jobs_by_name('ReadTemp_job')[0].schedule_removal()
+        context.job_queue.get_jobs_by_name(str(user_id) + '_ReadTemp_job')[0].schedule_removal()
 
 async def startAlarm(update: Update, context: ContextTypes.DEFAULT_TYPE): ## Enciende la alarma para detectar cambios en la temperatura.
-    # logger.info('He recibido un comando startalerts')
-    Chat_id = update.message.chat_id   
+    # logger.info('He recibido un comando startalerts')  
     user_id = update.effective_user.id
 
     if dict_Users[user_id]['TempAlarm']:
         Text = 'Las alarmas ya están activas. 🚨'
-        await context.bot.send_message(chat_id = Chat_id ,text = Text)
+        await context.bot.send_message(chat_id = user_id ,text = Text)
 
     else: 
-        context.job_queue.run_repeating(Temp_alarm, interval = intervalo_de_rutinaTemp, first = 1, chat_id= Chat_id, name = str(user_id) + '_ReadTemp_job')
+        context.job_queue.run_repeating(Temp_alarm, interval = intervalo_de_rutinaTemp, first = 1, chat_id= user_id, name = str(user_id) + '_ReadTemp_job')
         dict_Users[user_id]['TempAlarm'] = True
 
         print(dict_Users)
 
-        text = "La alarma de temperatura está activada. 🚨" 
+        text = "La alarma de temperatura está activada. 🚨 \n Si la temperatura cambia {0} K se le notificará.".format(toloreancia_Temp) 
         # logger.info(ReadTemp_job.from_aps_job())
         # logger.info(psutil.pids())
-        await context.bot.send_message(chat_id = Chat_id ,text = text)
+        await context.bot.send_message(chat_id = user_id ,text = text)
 
 async def stopAlarm(update: Update, context: ContextTypes.DEFAULT_TYPE): ## Apaga la alarma de la temperatura.
     # logger.info('He recibido un comando stopalerts')
