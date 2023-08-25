@@ -6,4 +6,3 @@ User: 01234567
 Temp_Alarm: False
 Pres_Alarm: False
 
-#hola Mau San

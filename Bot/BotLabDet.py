@@ -28,7 +28,7 @@ if __version_info__ < (20, 0, 0, "alpha", 1):
 
 logging.basicConfig(format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s", level = logging.INFO)
 logger = logging.getLogger(__name__)
-Token = "5802062802:AAHgtixNr5OnpZF2LOfhLbwqiNh7nikdx8s" #Token del Bot. Nombre de Bot en Telegram: Prueba_Bot, PruebainBot
+Token = " " #Token del Bot. Nombre de Bot en Telegram: PruebainBot
 intervalo_de_rutinaTemp = 40
 
 # Computadora de Casa # 
