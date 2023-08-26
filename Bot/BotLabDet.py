@@ -3,7 +3,7 @@
 ###                                                                                 ###
 ###      BOT PARA MONITOREO DE PARÁMETROS DEL LABORATORIO DE DETECTORES DEL ICN     ###
 ###                                                                                 ###
-###      * ULTIMA ACTUALIZACIÓN: 18 DE AGOSTO DEL 2023                              ###
+###      * ULTIMA ACTUALIZACIÓN: 25 DE AGOSTO DEL 2023                              ###
 ###                                                                                 ###
 ###                                                                                 ###
 #######################################################################################     
@@ -32,14 +32,20 @@ Token = "" #Token del Bot. Nombre de Bot en Telegram: PruebainBot
 intervalo_de_rutinaTemp = 40
 toloreancia_Temp = 1.5 # K 
 
+# Computadora de Laboratorio # 
+historyTemp_path = '/home/detectores/Software/LakeshoreControl/history_2023Aug11.txt' # Dirección del historial de temperatuas
+ConfigFile335_path = '/home/detectores/Software/LakeshoreControl/ConfigFile_M335' # Dirección del archivo de configuración del 335
+
 # Computadora de Casa # 
-historyTemp_path = '/home/bruce/Documents/Programas/Bot/history_2023Aug11.txt' # Dirección del historial de temperatuas
-ConfigFile335_path = '/home/bruce/Documents/Programas/Bot/ConfigFile335.txt' # Dirección del archivo de configuración del 335
+# historyTemp_path = '/home/bruce/Documents/Programas/Bot/history_2023Aug11.txt' # Dirección del historial de temperatuas
+# ConfigFile335_path = '/home/bruce/Documents/Programas/Bot/ConfigFile335.txt' # Dirección del archivo de configuración del 335
 
 ## Computadora de Oficina
 # historyTemp_path = '/home/labdet/Documents/MauSan/Programas/Bot/AntiguoBot/history_2023Aug11.txt' # Dirección del historial de temperatuas
 # ConfigFile335_path = '/home/labdet/Documents/MauSan/Programas/Bot/AntiguoBot/ConfigFile_M335' # Dirección del archivo de configuración del 335
-dict_Users = {}
+
+
+dict_Users = {} ## Diccionario de usuarios
     
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None: ## Manda un mensaje de inicio y despliega en pantalla los comandos que se pueden utilizar
     """Send a message when the command /start is issued."""
@@ -57,7 +63,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None: ## 
     await update.message.reply_text(text, reply_markup=ReplyKeyboardMarkup(
             reply_keyboard, one_time_keyboard = True, input_field_placeholder = "What do you want?"))
     
-    logger.info('This is the dictionary:')
+    # logger.info('This is the dictionary:')
     print(dict_Users)
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None: ## Despliega todos los comandos que se pueden utilizar y su descripción.
@@ -98,13 +104,16 @@ async def ReadTemperature(update: Update, context: ContextTypes.DEFAULT_TYPE): #
         power = tempList[-1]
         
         text =  "Temperatura: "+ Temp +" K"+ \
-                "\nHeater Power: "+heater+" "+power + \
-                "\n\nFecha y hora de última actualización: \n" +Date +", "+ measureTime 
+                "\nHeater Power: "+ heater +" "+ power + \
+                "\n\nFecha y hora de última actualización: \n" + Date +", "+ measureTime 
 
         await update.message.reply_text(text)
 
     except:
         Text = 'Archivo de historial de temperatura NO detectado. Por favor verifica la dirección del archivo y reinicia el bot. \nDirección actual: '+ historyTemp_path
+        await update.message.reply_text(Text)
+
+        Text = 'El bot se apagará automáticamente ya que no se puede obtener información del laboratorio.'
         await update.message.reply_text(Text)
         os.kill(os.getpid(), signal.SIGINT)
 
@@ -201,7 +210,7 @@ async def startAlarm(update: Update, context: ContextTypes.DEFAULT_TYPE): ## Enc
 
         print(dict_Users)
 
-        text = "La alarma de temperatura está activada. 🚨 \n Si la temperatura cambia {0} K se le notificará.".format(toloreancia_Temp) 
+        text = "🚨 🚨 La alarma de temperatura está activada. 🚨 🚨 \n Si la temperatura cambia {0} K se le notificará. 🚨 🚨".format(toloreancia_Temp) 
         # logger.info(ReadTemp_job.from_aps_job())
         # logger.info(psutil.pids())
         await context.bot.send_message(chat_id = user_id ,text = text)
@@ -209,7 +218,8 @@ async def startAlarm(update: Update, context: ContextTypes.DEFAULT_TYPE): ## Enc
 async def stopAlarm(update: Update, context: ContextTypes.DEFAULT_TYPE): ## Apaga la alarma de la temperatura.
     # logger.info('He recibido un comando stopalerts')
     user_id = update.effective_user.id
-    try: 
+
+    if dict_Users[user_id]['TempAlarm']: 
         JobReadAutomatic = context.job_queue.get_jobs_by_name( str(user_id) + '_ReadTemp_job')
         # logger.info('Ya detecté el trabajo.')
         
@@ -217,12 +227,12 @@ async def stopAlarm(update: Update, context: ContextTypes.DEFAULT_TYPE): ## Apag
         # logger.info('Ya eliminé el trabajo.')
 
         dict_Users[user_id]['TempAlarm'] = False
-        print(dict_Users)
+        # print(dict_Users)
 
         text = "Las alarmas se han desactivado. 🔕" 
         await update.effective_message.reply_text(text)
 
-    except:
+    else:
         text = "NO hay alarmas activadas. 🔕"
         await update.effective_message.reply_text(text)
 
