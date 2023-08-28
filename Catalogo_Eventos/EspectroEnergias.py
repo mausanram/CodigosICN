@@ -1,4 +1,5 @@
-from functions_py import math
+# from functions_py import math
+import math
 from astropy.io import fits
 import scipy.ndimage as ndimage
 from scipy.optimize import curve_fit
