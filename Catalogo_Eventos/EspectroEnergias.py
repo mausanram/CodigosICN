@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy.ma as ma
 import sys
 import skimage as sk
+import datetime
 
 def gaussian(x, a, mean, sigma):
     return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))
@@ -14,7 +15,8 @@ def gaussian(x, a, mean, sigma):
 def main(argObj):
     expgain = [227, 220.4, 94.72, 197.7]
     list_EventCharge_AllExtensions=[]
-
+    Inicio = datetime.datetime.now()
+    print('Hora de inicio del cálculo: ', Inicio)
     for img in argObj:
         hdu_list = fits.open(img)
         
@@ -133,8 +135,11 @@ def main(argObj):
 
         del hdu_list            
 
+    Final = datetime.datetime.now()
+    print('Hora del final de cálculo: ', Final)
+    print('Tiempo de cálculo: ', Final-Inicio)
 
-    plt.hist(list_EventCharge_AllExtensions, bins = 500)    
+    plt.hist(list_EventCharge_AllExtensions, bins = 1000)    
     plt.title('Espectro de Energía de Muones')
     plt.xlabel(r'e⁻')
     plt.ylabel('Cuentas') 
