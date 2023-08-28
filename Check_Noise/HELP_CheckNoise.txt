@@ -1,0 +1,167 @@
+#######################################################################################
+###                                                                                 ###
+###            ARCHIVO DE AYUDA PARA EL PROGRAMA CHECKNOISE                         ###
+###      	   * ULTIMA ACTUALIZACIÓN: 28 DE AGOSTO DEL 2023						###
+###                                                                                 ###
+#######################################################################################
+
+
+**** NOTA: El archivo debe DEPURARSE ya que solo se unieron dos versiones de CheckNoise
+
+# Deiniciones
+	def gaussian(x, a, mean, sigma):
+		Definicion de una dustribución gaussiana
+
+	def sqrt(x, sigma0):
+		** CHear que hace esto 
+
+	def varsort(item):
+		** CHear que hace esto 
+
+	def doublegaus(x, norm, offset, noise, gain, mu):
+		** CHear que hace esto 
+
+	def sumgaus(x, norm, offset, noise, gain, mu, npeaks):
+			** CHear que hace esto 
+
+ 	def hist_and_DataFr(files, graphicFlag = 0, optionFlag = 0):
+		Procesa los datos de cada imagen que se proporcione para poder llenar listas que se utilizan en la función 'Build_DFrame()',
+		y generar un histograma por cada imagen y/o la gráfica de ruido de cada imagen. Regresa un dataFrame y las gráficas guardadas solo en memoria.
+
+		-Variables
+			files: lista que contiene los nombres de las imágenes del directorio.
+	
+			graphicFlag: variable de tipo 'int' que determina que gráficas se van a mostrar. 
+				- Valores: 
+					'0'(Valor default): muestra el histograma.
+				
+					'1':  Muestra el histograma y la gráfica de ruido de cada imagen por cada extensión. 
+					
+					'2':  Muestra el histograma y la gráfica de numero de muestras de cada imagen por cada extensión.
+
+					** Si se quiere añadir otra gráfica es necesario agregar otro valor dentro de un 'elif'. **
+
+			optionFLag: variable de tipo 'int' que determina como se realiza el llenado del dataFrame. Puede tomar los siguientes valores: 
+
+					'0'(Valor default): el dataFrame se llena con el número de imagen(ID), las desviaciones estandar(StD. ext1-4) y
+										el ruido(Noise ext1-4) de cada imagen por cada extensón. Lo ordena respecto a la columna 'ID'.
+
+					'1': el dataFrame se llena con número de imagen(ID), el número de muestra de cada imagen(NSamp), las desviaciones estandar(StD. ext1-4) y
+						 el ruido(Noise ext1-4) de cada imagen por cada extensón. Lo ordena respecto a la columna 'NSamp'.
+
+					'2': el dataFrame se llena con número de imagen(ID), las desviaciones estandar(StD. ext1-4) y
+						 el ruido(Noise ext1-4) de cada imagen por cada extensón. Lo ordena respecto a la columna 'StD ext1'.
+
+					'3': el dataFrame se llena con número de imagen(ID), las desviaciones estandar(StD. ext1-4) y
+						 el ruido(Noise ext1-4) de cada imagen por cada extensón. Lo ordena respecto a la columna 'Noise ext1'.
+
+					'4': el dataFrame se llena con número de imagen(ID), la temperatura de cada imagen(Temp), las desviaciones estandar(StD. ext1-4) y 
+						 el ruido(Noise ext1-4) de cada imagen por cada extensón. Lo ordena respecto a la columna 'Temp'.
+					
+					'5': el dataFrame se llena con número de imagen(ID), la exposición de cada imagen(Exposure), las desviaciones estandar(StD. ext1-4) y 
+						 el ruido(Noise ext1-4) de cada imagen por cada extensón. Lo ordena respecto a la columna 'Exposure'.
+					
+					'6': el dataFrame se llena con número de imagen(ID), el archivo de voltaje de cadaimagen(Voltage File), las desviaciones estandar(StD. ext1-4) y 
+						 el ruido(Noise ext1-4) de cada imagen por cada extensón. Lo ordena respecto a la columna 'Voltage File'.
+
+					** Si se desea agregar otro valor es necesario agregar otra opción en la función 'parser()' y 
+					 despues asociarle dicho valor dentro de la función 'Build_DFrame()' añadiendo un 'elif'. **
+		
+	def Build_DFrame(list_Temp,list_Names,list_nSamp,list_StandarDev,list_Noises,list_Exposure,list_VoltageFile, optionFlag, graphicFlag):
+		Genera un dataFrame de las listas que se agreguen y lo ordena segun el valor de la variable 'optionFLag'. 
+		** La variable 'graphicFlag' se utiliza solo si 'optionFLag = 1'. **
+
+		-Variables:
+			list_Temp: lista que contiene las temperaturas cada imágen. Cada temperatura se obtiene del nombre de la imagen.
+
+			list_Names: lista que contiene el número de cada imágen. Cada número de imagen se obtiene del nombre de la imagen.
+
+			list_nSamp: lista que contiene el número de muestras de cada imágen. Cada número de muestra se obtiene del archivo de información de cada imagen(header).
+
+			list_StandarDev: lista que contiene la desviación estandar de cada imágen por extensión. Cada dato se obtiene dentro de la función 'hist_and_DataFr()'.
+
+			list_Noises: lista que contiene el ruido de cada imágen por extensión. Cada dato se obtiene dentro de la función 'hist_and_DataFr()'.
+
+			list_Exposure: lista que contiene la exposición de cada imágen. Cada dato se obtiene del archivo de información de cada imagen(header) .
+
+			list_VoltageFile: lista que contiene el archivo de voltaje cada imágen.Cada dato se obtiene del nombre de la imagen.
+
+			** 'optionFLag' y 'graphicFlag' se describen mas a detalle en 'def hist_and_DataFr()'. **
+
+	def Noise(files, parplotFlag):
+		Procesa los datos de cada imagen que se proporcione para poder llenar listas que se utilizarán para desplegar las gráficas. Segun el valor de la variable 'parplotFlag' se
+		despliega una gráfica "especial" y  una grafica de ajuste de los datos de cada extensión.
+
+		- Variables:
+			files: guarda todas direcciones de todas las imágenes que se ingresen
+
+			parplotFlag: de acuerdo a su valor despliega una gráfica u otra. Sus posibles valores son:
+				'1'(default): muetra dos gráficas, una con el valor en ADUs de ..., 
+					 y otra con el valor de las constantes Delta V, Delta T, Delta H y Delta SW en volts de cada imagen.
+
+				'2': muetra dos gráficas, una con el valor en ADUs de ......, 
+					 y otra con el valor de las constantes Delta V, Delta T, Delta H y Delta SW en volts de cada imagen.
+
+				'3': muetra dos gráficas, una con el valor del ruido en e- de cada extensión,
+					 y otra con el valor de las constantes Delta V, Delta T, Delta H y Delta SW en volts de cada imagen.
+
+				'4': muetra dos gráficas, una con el valor de la ganancia en ADU/e- de cada extensión,
+					 y otra con el valor de las constantes Delta V, Delta T, Delta H y Delta SW en volts de cada imagen.
+
+				'5': muetra dos gráficas, una con el valor en ADUs de ..........,
+					 y otra con el valor de las constantes Delta V, Delta T, Delta H y Delta SW en volts de cada imagen.
+
+	def parser():
+		Agrega posibles opciones al programa, que se ingresan mediante el teclado, para poder realizar alguna acción en especial. Regresa un objeto.
+
+		-Opciones posibles:
+			'--ID': genera el dataFrame con el número de la imagen (ID), las desviaciones estandar de cada imagen por cada extensión(Std ext1-4)
+					y el ruido de cada imagen por extensión(Noise ext1-4). Lo ordena respecto a la columna 'ID'. 
+					Muestra el histograma y la gráfica de ruido.
+
+			'--StD': genera el dataFrame con el número de la imagen (ID), las desviaciones estandar de cada imagen por cada extensión(Std ext1-4)
+						y el ruido de cada imagen por extensión(Noise ext1-4). Lo ordena respecto a la columna 'Std ext1'. 
+						Muestra el histograma y la gráfica de ruido.
+
+			'--Noise', '-N','-n': genera el dataFrame con el número de la imagen (ID), las desviaciones estandar de cada imagen por cada extensión(Std ext1-4)
+									y el ruido de cada imagen por extensión(Noise ext1-4). Lo ordena respecto a la columna 'Noise ext1'. 
+									Muestra el histograma y la gráfica de ruido.
+
+			'--NSamp','--NS': genera el dataFrame con el número de la imagen (ID),el número de muestra de cada imagen (nSamp) las desviaciones estandar de cada imagen por cada 
+						extensión(Std ext1-4) y el ruido de cada imagen por extensión(Noise ext1-4). Lo ordena respecto a la columna 'nSamp'. 
+						Muestra el histograma y la gráfica de número de muestras.
+
+			'--Temp','-T': genera el dataFrame con el número de la imagen (ID),la temperatura de cada imagen (Temp) las desviaciones estandar de cada imagen por cada extensión(Std ext1-4)
+							y el ruido de cada imagen por extensión(Noise ext1-4). Lo ordena respecto a la columna 'Temp'. Muestra el histograma.
+
+			'--Exposure','--Exp','-E': genera el dataFrame con el número de la imagen (ID),la exposición de cada imagen (Exposure) las desviaciones estandar de cada 
+									imagen por cada extensión(Std ext1-4) y el ruido de cada imagen por extensión(Noise ext1-4). Lo ordena respecto a la columna 'Exposure'. 
+									Muestra el histograma.
+
+			'--Voltage','--Volt','-V': genera el dataFrame con el número de la imagen (ID),el archivo de voltaje (Voltage File) las desviaciones estandar 
+						de cada imagen por cada extensión(Std ext1-4) y el ruido de cada imagen por extensión(Noise ext1-4). Lo ordena respecto a la columna 'Voltage File'. 
+						Muestra el histograma.
+
+			** Si se desea agregar una propiedad que se pueda obtener del header debe añadirla a las funciones 'Build_DFrame()' y 'hist_and_DataFr()' **
+
+			### Todas las siguientes opciones despliegan una gráfica donde se muestra el valor de las constantes Delta V, T, H y SW de cada imagen en ADUs mas 
+				una gráfica "especial" en cada caso ##
+
+			'--Const','-C','-c': Despliega una gráfica en donde se muestra el valor en ADUs de .......
+
+			'--Off','--off': Despliega una gráfica en donde se muestra el valor en ADUs de .......
+
+			'--Gain','-gain','-g': Despliega una gráfica en donde se muestra el valor en ADU/e- de la ganancia de cada extensión por cada imagen.
+
+			'--DeltaNoise': Despliega una gráfica en donde se muestra el valor en e- del ruido de cada extensión por cada imagen.
+
+			'--SER': Despliega una gráfica en donde se muestra el valor en e-/px del ....... 
+
+			** Para agregar otra opcion debe hacerlo mediante 'parser.add_argument()' **
+
+	def main(argObj):
+		Mediante la opcion del objeto 'argObj' que tenga habilitada realizará las acciones descritas en la función 'parser()'.  
+			
+		-Variables: 
+			'argObj': objeto que se obtiene de la función 'parser()'.
+	

@@ -28,7 +28,7 @@ def doublegaus(x, norm, offset, noise, gain, mu):
 def sumgaus(x, norm, offset, noise, gain, mu, npeaks):
 	return sum(norm*((mu**i)/np.math.factorial(i))*np.exp(-((x-offset-(i*gain))**2/(2*(gain*noise)**2))) for i in range(npeaks))
 
-def Noise(files, parplotFlag):
+def Noise(files, parplotFlag = 1):
 	#files.sort(key=varsort)			# Sort files by key
 #	files.sort(key=os.path.getmtime)
 
@@ -250,7 +250,7 @@ def Noise(files, parplotFlag):
 def parser(args):
 	parser = argparse.ArgumentParser(prog='Check Noise',description='Displays an histogram, information about Delta V, T, H and SW, and more information (Gain, Noise, SER, ...) for each image')
 	
-	parser.add_argument('path',type=str,nargs='+', help="Save the file in a list")
+	parser.add_argument('path',type=str,nargs='+', help="Save the files in a list")
 	parser.add_argument('--Const','-C','-c', action='store_true', help = " Plot the ... for each image" )
 	parser.add_argument('--Off','--off', action='store_true', help = " Plot the ... for each image")
 	parser.add_argument('--Noise','-N','-n', action='store_true', help = "Plot the noise for each image")
@@ -262,10 +262,9 @@ def parser(args):
 	return argObj
 
 def main(argObj):
-	if argObj.Const:
+	if argObj.Const :
 		files = argObj.path
-		parplotFlag = 1
-		Noise(files, parplotFlag)
+		Noise(files)
 		plt.show()
 		print('Todo OK')
 	
@@ -297,6 +296,11 @@ def main(argObj):
 		plt.show()
 		print('Todo OK')
 
+	else:
+		files = argObj.path
+		Noise(files)
+		plt.show()
+		print('Todo OK')
 	
 
 if __name__ == "__main__":
