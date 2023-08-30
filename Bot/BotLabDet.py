@@ -12,7 +12,7 @@ import logging, os, signal
 from telegram import __version__ as TG_VER
 from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
-from AuxiliaresBot import ReadTemp, dictConfigFile_335
+from AuxiliaresBot import ReadTemp, dictConfigFile_335, Users_DataFrame, AddJob_to_csv, AddUser_to_csv, UpdateValue_to_csv
 import asyncio
     
 try:
@@ -35,6 +35,7 @@ toloreancia_Temp = 1.5 # K
 # Computadora de Laboratorio # 
 historyTemp_path = '/home/detectores/Software/LakeshoreControl/history_2023Aug11.txt' # Dirección del historial de temperatuas
 ConfigFile335_path = '/home/detectores/Software/LakeshoreControl/ConfigFile_M335' # Dirección del archivo de configuración del 335
+UserInfo_path = '/home/detectores/Software/SSocial/MauSan/CodigosICN/Bot/UsersBot.csv' # Dirección del archivo de información de tareas de todos los usuarios.
 
 # Computadora de Casa # 
 # historyTemp_path = '/home/bruce/Documents/Programas/Bot/history_2023Aug11.txt' # Dirección del historial de temperatuas
@@ -44,9 +45,12 @@ ConfigFile335_path = '/home/detectores/Software/LakeshoreControl/ConfigFile_M335
 # historyTemp_path = '/home/labdet/Documents/MauSan/Programas/Bot/AntiguoBot/history_2023Aug11.txt' # Dirección del historial de temperatuas
 # ConfigFile335_path = '/home/labdet/Documents/MauSan/Programas/Bot/AntiguoBot/ConfigFile_M335' # Dirección del archivo de configuración del 335
 
+try:
+    df_Users = Users_DataFrame(UserInfo_path)
 
-dict_Users = {} ## Diccionario de usuarios
-    
+except:
+    logger.info('El archivo de las tareas de usuarios no se puede leer.')
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None: ## Manda un mensaje de inicio y despliega en pantalla los comandos que se pueden utilizar
     """Send a message when the command /start is issued."""
     # logger.info('Estoy en la función start')
@@ -58,13 +62,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None: ## 
     
     reply_keyboard = [["/Start"],["/WatchTemp", "/StartAlarm"], ["/Help", "/OffAlarm"] ]
 
-    dict_Users[user.id]={'TempAlarm' : False}
+    AddUser_to_csv(df_Users, chat_id, 1)
 
     await update.message.reply_text(text, reply_markup=ReplyKeyboardMarkup(
             reply_keyboard, one_time_keyboard = True, input_field_placeholder = "What do you want?"))
     
     # logger.info('This is the dictionary:')
-    print(dict_Users)
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None: ## Despliega todos los comandos que se pueden utilizar y su descripción.
     """Send a message when the command /help is issued."""
@@ -76,7 +79,6 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     \n\n/Detener, /Kill - Detiene el bot completamente, si se utiliza deberá volver a correr el bot en la terminal del laboatorio. \
     \n\n/Activar_Alarma, /StartAlarm - Activa una rutina que te avisa cuando la temperatura de la CCD cambia demasiado. \
     \n\n/Desactivar_Alarma, /OffAlarm - Desactiva la alarma de temperatura."
-    
     await update.message.reply_text(text)
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None: ## Identifica las palabras que NO son un comando. 
@@ -200,7 +202,7 @@ async def startAlarm(update: Update, context: ContextTypes.DEFAULT_TYPE): ## Enc
     # logger.info('He recibido un comando startalerts')  
     user_id = update.effective_user.id
 
-    if dict_Users[user_id]['TempAlarm']:
+    if df_Users[user_id]['TempAlarm']:
         Text = 'Las alarmas ya están activas. 🚨'
         await context.bot.send_message(chat_id = user_id ,text = Text)
 
