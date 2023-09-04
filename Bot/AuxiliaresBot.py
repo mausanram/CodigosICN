@@ -4,7 +4,7 @@
 ###          ARCHIVO DE FUNCIONES AUXILIARES UTILIZADAS POR EL BOT PARA             ###
 ###             MONITOREO DEL  LABORATORIO DE DETECTORES DEL ICN                    ###
 ###                                                                                 ###
-###          * ULTIMA ACTUALIZACIÓN: 18 DE AGOSTO DEL 2023                          ###  
+###          * ULTIMA ACTUALIZACIÓN: 04 DE SEPTIEMBRE DEL 2023                      ###  
 ###                                                                                 ###                            
 ####################################################################################### 
 
@@ -53,7 +53,7 @@ def AddUser_to_csv(DataFrame, user_id, number_of_jobs):
     user_ID_Flag = True
     for user in list(DataFrame['User_ID']):
         if int(user) == user_id:
-            print('El usuario ya está registrado')
+            #print('El usuario ya está registrado')
             user_ID_Flag = False
         
     if user_ID_Flag:
@@ -90,3 +90,7 @@ def AddJob_to_csv(DataFrame, job_name, job_value_default):
     DataFrame.to_csv(path_or_buf = path_userinfo_csv, index_label=False)
     DataFrame = pd.read_csv(path_userinfo_csv)
     return DataFrame
+
+def Search_User(DataFrame, user_id):
+    for index_user in range(0,len(DataFrame['User_ID'])):
+        if DataFrame['User_ID'][index_user] == user_id: return index_user
