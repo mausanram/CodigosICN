@@ -3,7 +3,7 @@
 ###                                                                                 ###
 ###      BOT PARA MONITOREO DE PARÁMETROS DEL LABORATORIO DE DETECTORES DEL ICN     ###
 ###                                                                                 ###
-###      * ULTIMA ACTUALIZACIÓN: 04 DE SEPTIEMBRE DEL 2023                          ###
+###      * ULTIMA ACTUALIZACIÓN: 07 DE SEPTIEMBRE DEL 2023                          ###
 ###                                                                                 ###
 ###                                                                                 ###
 #######################################################################################     
@@ -31,26 +31,40 @@ logger = logging.getLogger(__name__)
 Token = "" #Token del Bot. Nombre de Bot en Telegram: PruebainBot
 intervalo_de_rutinaTemp = 40
 toloreancia_Temp = 1.5 # K 
+restored_conection = 0 
 
-# Computadora de Laboratorio # 
-historyTemp_path = '/home/detectores/Software/LakeshoreControl/history_2023Aug11.txt' # Dirección del historial de temperatuas
-ConfigFile335_path = '/home/detectores/Software/LakeshoreControl/ConfigFile_M335' # Dirección del archivo de configuración del 335
-UserInfo_path = '/home/detectores/Software/SSocial/MauSan/CodigosICN/Bot/UsersBot.csv' # Dirección del archivo de información de tareas de todos los usuarios.
+# # Computadora de Laboratorio # 
+# historyTemp_path = '/home/detectores/Software/LakeshoreControl/history_2023Aug11.txt' # Dirección del historial de temperatuas
+# ConfigFile335_path = '/home/detectores/Software/LakeshoreControl/ConfigFile_M335' # Dirección del archivo de configuración del 335
+# UserInfo_path = '/home/detectores/Software/SSocial/MauSan/CodigosICN/Bot/UsersBot.csv' # Dirección del archivo de información de tareas de todos los usuarios.
 
-# Computadora de Casa # 
-# historyTemp_path = '/home/bruce/Documents/Programas/Bot/history_2023Aug11.txt' # Dirección del historial de temperatuas
-# ConfigFile335_path = '/home/bruce/Documents/Programas/Bot/ConfigFile335.txt' # Dirección del archivo de configuración del 335
+# # Computadora de Casa # 
+historyTemp_path = '/home/bruce/Documents/Programas_Pruebas/Bot/history_2023Sep04.txt' # Dirección del historial de temperatuas
+ConfigFile335_path = '/home/bruce/Documents/Programas/Bot/ConfigFile335.txt' # Dirección del archivo de configuración del 335
+UserInfo_path = '/home/bruce/Documents/Programas/Bot/UsersBot.csv'
 
-## Computadora de Oficina
+# # Computadora de Oficina
 # historyTemp_path = '/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Bot/' # Dirección del historial de temperatuas
 # ConfigFile335_path = '/home/labdet/Documents/MauSan/Programas/Bot/AntiguoBot/ConfigFile_M335' # Dirección del archivo de configuración del 335
 # UserInfo_path = '/home/'
-global df_Users_Flag
-global df_Users
+
+
+try:
+    df_Users = Users_DataFrame(UserInfo_path)
+    df_Users_Flag = True
+
+    print(df_Users)
+
+except: 
+    df_Users_Flag = False
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None: ## Manda un mensaje de inicio y despliega en pantalla los comandos que se pueden utilizar
     """Send a message when the command /start is issued."""
     # logger.info('Estoy en la función start')
+    global df_Users
+    global df_Users_Flag
+
     user = update.effective_user
     chat_id = update.message.chat_id
 
@@ -58,24 +72,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None: ## 
         \n\nTe puedo dar las últimas mediciones de los sensores de temperatura"
     
     reply_keyboard = [["/Start"],["/WatchTemp", "/StartAlarm"], ["/Help", "/OffAlarm"] ]
-
-    try:
-        df_Users = Users_DataFrame(UserInfo_path)
-        df_Users_Flag = True
-
-        Restored_AlarmsStates
-
-    except: 
-        df_Users_Flag = False
-
-
+    
     if df_Users_Flag:
-
-        df_Users = AddUser_to_csv(df_Users, chat_id, 1) ## Añade al nuevo usuario al archivo de usuario
+        
+        await Restored_AlarmsStates(context)
+        df_Users = AddUser_to_csv(UserInfo_path, df_Users, chat_id, 1) ## Añade al nuevo usuario al archivo de usuario
         await update.message.reply_text(text, reply_markup=ReplyKeyboardMarkup(
             reply_keyboard, one_time_keyboard = True, input_field_placeholder = "What do you want?"))
 
-        return df_Users
+        return df_Users, df_Users_Flag 
 
     else:
         text= 'El archivo de las tareas de usuarios NO se puede leer. \n\
@@ -109,14 +114,23 @@ async def stop(update: Update, context: ContextTypes.DEFAULT_TYPE): ## Detiene e
     os.kill(os.getpid(), signal.SIGINT)
 
 async def Restored_AlarmsStates(context: ContextTypes.DEFAULT_TYPE):
+    global df_Users
+    global df_Users_Flag
+    global restored_conection
+
+    begin_time = 1
+
     for index_user in range(0,len(df_Users['User_ID'])):
         user_id = df_Users['User_ID'][index_user]
 
-        if df_Users['Temp_Alarm'][index_user]:
-            context.job_queue.run_repeating(Temp_alarm, interval = intervalo_de_rutinaTemp, first = 1, chat_id= user_id, name = str(user_id) + '_ReadTemp_job')
-
+        if df_Users['Temp_Alarm'][index_user]  and restored_conection == 0:
+            context.job_queue.run_repeating(Temp_alarm, interval = intervalo_de_rutinaTemp, first = begin_time, chat_id = user_id, name = str(user_id) + '_ReadTemp_job')
+            logger.info('Restableciendo las alarmas')
+            print(df_Users)
         else:
             continue
+        begin_time = begin_time + 1
+    restored_conection = 1
 
     
 async def ReadTemperature(update: Update, context: ContextTypes.DEFAULT_TYPE): ## Obtiene la última temperatura del historial y la manda al chat.  
@@ -153,9 +167,22 @@ def Refresh_File(ReferenceValue, NewValue): ## Función que se encarga de checar
 
 async def Temp_alarm(context: ContextTypes.DEFAULT_TYPE): ## Alarma para cambio de temperatura. 
     # logger.info('Estoy en alarma')
+    global df_Users
+    global df_Users_Flag
+
     job = context.job
-    user_id = job.chat_id
+
+    # print(job)
+    user_id = job.chat_id 
+
+    #print('Class:', type(context.job.name.capitalize()))
+    # print('Este es el ID del usuario: ', user_id)
     # print('User_ID:', user_id)
+    list_job_name = context.job.name.title().split('_')
+
+    User_id = list_job_name[0]
+    print('Este es el User_ID: ', User_id)
+    print(list_job_name)
 
     try:
         # logger.info('Estoy en el try del historial')
@@ -180,6 +207,8 @@ async def Temp_alarm(context: ContextTypes.DEFAULT_TYPE): ## Alarma para cambio 
         await context.bot.send_message(chat_id = job.chat_id,text = Text)
 
         Text = 'Las alarmas se desactivarán automáticante ya que no se puede obtener los cambios de temperatura.'
+        df_Users = UpdateValue_to_csv(UserInfo_path, user_id, df_Users, 0)
+        print(df_Users)
         await context.bot.send_message(chat_id = job.chat_id,text = Text)
         context.job_queue.get_jobs_by_name(str(user_id) + '_ReadTemp_job')[0].schedule_removal()
     
@@ -220,29 +249,37 @@ async def Temp_alarm(context: ContextTypes.DEFAULT_TYPE): ## Alarma para cambio 
         # logger.info('No se levantó la bandera Refresh')
 
         Text = 'PRECUACIÓN: El archivo NO se está actualizando. Hora y fecha de la ultima actualización: '
-        await context.bot.send_message(chat_id = job.chat_id,text = Text + str(medNew[0])+', '+str(medNew[2][0:9]))
-        await context.bot.send_message(chat_id = job.chat_id,text='No se pueden realizar lecturas. \nLas alarmas se apagarán automcaticamente.')
-        context.job_queue.get_jobs_by_name(str(user_id) + '_ReadTemp_job')[0].schedule_removal()
+        await context.bot.send_message(chat_id = User_id,text = Text + str(medNew[0])+', '+str(medNew[2][0:9]))
+        await context.bot.send_message(chat_id = User_id,text='No se pueden realizar lecturas. \nLas alarmas se apagarán automáticamente.')
+        print('Le voy a desactivar las alertas al usuario: ', User_id)
+        context.job_queue.get_jobs_by_name(str(User_id)+ '_ReadTemp_job')[0].schedule_removal()
+        df_Users = UpdateValue_to_csv(UserInfo_path, User_id, df_Users, 0)
+        print('Este es el DataFrame: \n', df_Users)
 
 async def startAlarm(update: Update, context: ContextTypes.DEFAULT_TYPE): ## Enciende la alarma para detectar cambios en la temperatura.
+    global df_Users
+    global df_Users_Flag
     # logger.info('He recibido un comando startalerts')  
     user_id = update.effective_user.id
 
     if df_Users_Flag: 
         index_user_in_DF = Search_User(df_Users, user_id)
+        print('El índice del usuario es: ', index_user_in_DF)
+        print(df_Users)
 
-        if df_Users['User_ID'][index_user_in_DF]:
+        if df_Users['Temp_Alarm'][index_user_in_DF]:
             Text = 'Las alarmas ya están activas. 🚨'
             await context.bot.send_message(chat_id = user_id ,text = Text)
 
         else: 
             context.job_queue.run_repeating(Temp_alarm, interval = intervalo_de_rutinaTemp, first = 1, chat_id= user_id, name = str(user_id) + '_ReadTemp_job')
-            df_Users = UpdateValue_to_csv(user_id, df_Users, 0)
+            df_Users = UpdateValue_to_csv(UserInfo_path, user_id, df_Users, 0)
 
             text = "🚨 🚨 La alarma de temperatura está activada. 🚨 🚨 \n Si la temperatura cambia {0} K se le notificará. 🚨 🚨".format(toloreancia_Temp) 
             # logger.info(ReadTemp_job.from_aps_job())
             # logger.info(psutil.pids())
             await context.bot.send_message(chat_id = user_id ,text = text)
+            print(df_Users)
     
     else:
         Text='No se puede leer el archivo de tareas de usuario. \n\
@@ -252,6 +289,9 @@ async def startAlarm(update: Update, context: ContextTypes.DEFAULT_TYPE): ## Enc
 async def stopAlarm(update: Update, context: ContextTypes.DEFAULT_TYPE): ## Apaga la alarma de la temperatura.
     # logger.info('He recibido un comando stopalerts')
     user_id = update.effective_user.id
+    global df_Users
+    global df_Users_Flag
+    print(df_Users)
 
     index_user_in_DF = Search_User(df_Users, user_id)
 
@@ -261,12 +301,13 @@ async def stopAlarm(update: Update, context: ContextTypes.DEFAULT_TYPE): ## Apag
         
         JobReadAutomatic[0].schedule_removal()
         # logger.info('Ya eliminé el trabajo.')
-        df_Users = UpdateValue_to_csv(user_id, df_Users, 0)
+        df_Users = UpdateValue_to_csv(UserInfo_path, user_id, df_Users, 0)
         
         # print(dict_Users)
 
         text = "Las alarmas se han desactivado. 🔕" 
         await update.effective_message.reply_text(text)
+        print(df_Users)
 
     else:
         text = "NO hay alarmas activadas. 🔕"
@@ -315,7 +356,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-
+    
 
 
 

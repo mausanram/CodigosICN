@@ -49,7 +49,7 @@ def Users_DataFrame(path_userinfo_csv):
     User_dataframe = pd.read_csv(path_userinfo_csv)
     return User_dataframe
 
-def AddUser_to_csv(DataFrame, user_id, number_of_jobs):
+def AddUser_to_csv(path_userinfo_csv, DataFrame, user_id, number_of_jobs):
     user_ID_Flag = True
     for user in list(DataFrame['User_ID']):
         if int(user) == user_id:
@@ -72,20 +72,27 @@ def AddUser_to_csv(DataFrame, user_id, number_of_jobs):
 
     return DataFrame
 
-def UpdateValue_to_csv(user_id, DataFrame, option = 0):
+def UpdateValue_to_csv(path_userinfo_csv, user_id, DataFrame, option = 0):
     for index_user in range(0,len(DataFrame['User_ID'])):
-        if DataFrame['User_ID'][index_user] == user_id:
-            index_user = index_user
+        print('Indice de usuario: ', index_user)
+        print(DataFrame['User_ID'][index_user])
+        print(user_id)
+        if str(DataFrame['User_ID'][index_user]) == str(user_id):
+            Index_user = index_user
 
-    if option == 0:
-        DataFrame.loc[index_user,'Temp_Alarm'] = not DataFrame['Temp_Alarm'][index_user]
-        DataFrame.to_csv(path_or_buf = path_userinfo_csv, index_label=False)
-        DataFrame = pd.read_csv(path_userinfo_csv)
-        return DataFrame
+            if option == 0:
+                DataFrame.loc[Index_user,'Temp_Alarm'] = not DataFrame['Temp_Alarm'][Index_user]
+                DataFrame.to_csv(path_or_buf = path_userinfo_csv, index_label=False)
+                DataFrame = pd.read_csv(path_userinfo_csv)
+
+        else:
+            continue
+
+    return DataFrame
     
     ## Agregar mas valores para mas alertas o tareas.
 
-def AddJob_to_csv(DataFrame, job_name, job_value_default):
+def AddJob_to_csv(path_userinfo_csv, DataFrame, job_name, job_value_default):
     DataFrame[str(job_name)] = job_value_default
     DataFrame.to_csv(path_or_buf = path_userinfo_csv, index_label=False)
     DataFrame = pd.read_csv(path_userinfo_csv)
