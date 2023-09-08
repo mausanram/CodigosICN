@@ -10,6 +10,7 @@ import sys
 import skimage as sk
 import datetime
 
+numero_bins = 10000
 def gaussian(x, a, mean, sigma):
     return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))
 
@@ -31,7 +32,7 @@ def main(argObj):
 
             del header
 
-            hist , bins_edges = np.histogram(oScan.flatten(), bins = 1000) #'auto'
+            hist , bins_edges = np.histogram(oScan.flatten(), bins = numero_bins) #'auto'
 
             del oScan
 
@@ -43,7 +44,7 @@ def main(argObj):
             del data
             del dataP
             
-            bin_heights, bin_borders = np.histogram(dataCal.flatten(), bins= 1000) #'auto'
+            bin_heights, bin_borders = np.histogram(dataCal.flatten(), bins= numero_bins) #'auto'
             bin_centers=np.zeros(len(bin_heights), dtype=float)
             offset_fit = bin_borders[np.argmax(bin_heights)]
             for p in range(len(bin_heights)):
@@ -140,7 +141,7 @@ def main(argObj):
     print('Hora del final de cálculo: ', Final)
     print('Tiempo de cálculo: ', Final-Inicio)
 
-    plt.hist(list_EventCharge_AllExtensions, bins = 1000)    
+    plt.hist(list_EventCharge_AllExtensions, bins = numero_bins)    
     plt.title('Espectro de Energía de Muones')
     plt.xlabel(r'e⁻')
     plt.ylabel('Cuentas') 
