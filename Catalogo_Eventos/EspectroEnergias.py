@@ -114,8 +114,9 @@ def main(argObj):
 
                 elif not Barycentercharge:
                     continue
-
-                elif  rM < 4.5 * rm:
+                
+                # rM < 4.5 * rm ## Eventos Rectos
+                elif  rM < 1.5 * rm: ## Eventos Circulares ???
                     continue
 
                 elif differval < MeanValue_Event + 100:
