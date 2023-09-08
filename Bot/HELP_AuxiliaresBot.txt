@@ -21,3 +21,44 @@
         información útil y generar un diccionario. 
         - Regresa un diccionario con información de configuración del 335. 
 
+    -> def Users_DataFrame(path_userinfo_csv) -> pd.DataFrame:
+        Lee el archivo de usuarios y lo comvierte DataFrame. Regresa un DataFrame.
+
+        - Variables:
+            #   path_userinfo_csv: dirección del archivo de usuarios. Debe ser el mismo a la variable 'UserInfo_path'.
+
+    -> def AddUser_to_csv(path_userinfo_csv, DataFrame, user_id, number_of_jobs)-> pd.DataFrame:
+        Añade al usuario que teclee el comando '\Start'. Si el usuario ya está en el dataframe de usuarios entonces no hace nada. 
+        Regresa el DataFrame actualizado.
+        - Variables:
+            #   path_userinfo_csv: dirección del archivo de usuarios. Debe ser el mismo a la variable 'UserInfo_path'.
+            #   DataFrame: debe ser el dataFrame de usuarios
+            #   user_id: es el id del usuario
+            #   number_of_jobs: es el número de tareas o alertas que haya hasta el momento.
+                                ** Hasta la última fecha de actualización solo hay una asi que su valor debe ser igual a 1 **
+
+    -> def UpdateValue_to_csv(path_userinfo_csv, user_id, DataFrame, option = 0)-> pd.DataFrame:
+        Actualiza el valor de la casilla que de indique en el DataFrame. Regresa el DataFrame actualizado.
+
+        - Variables:
+            # path_userinfo_csv: dirección del archivo de usuarios. Debe ser el mismo a la variable 'UserInfo_path'.
+            # user_id: es el id del usuario
+            # DataFrame: debe ser el dataFrame de usuarios
+            # option: es el valor de alguna tarea. A cada tarea o alarma se le debe asignar un valor
+                      La alarma de temperatura tiene un valor 'option = 0'.
+                      *** Cuando se agrege otra alarma debe agregarse otro valor con un if dentro de esta función ***
+
+    -> def AddJob_to_csv(path_userinfo_csv, DataFrame, job_name, job_value_default)-> pd.DataFrame:
+        Añade una nueva tarea o alarma al archivo de usuarios, con un valor de default para todos. Regresa el DataFrame actualizado.
+
+        - Variables:
+        # path_userinfo_csv: dirección del archivo de usuarios. Debe ser el mismo a la variable 'UserInfo_path'.
+        # job_name: nombre de la nueva tarea que se desea agregar.
+        # job_value_default: valor de default que tendrán todos los usuarios para la nueva tarea.
+
+    -> def Search_User(DataFrame, user_id)-> (int | None):
+        Busca en el dataFrame de usuarios el índice del usuario que coincida con la varriable 'user_id'. Regresa dicho índice.
+
+        - Variables:
+            # DataFrame: debe ser el dataFrame de usuarios
+            # user_id: es el id del usuario 
