@@ -10,13 +10,15 @@ import sys
 import skimage as sk
 import datetime
 
-numero_bins = 10000
+numero_bins = 6000
 def gaussian(x, a, mean, sigma):
     return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))
 
 def main(argObj):
     expgain = [227, 220.4, 94.72, 197.7]
     list_EventCharge_AllExtensions=[]
+    list_EventosRectos = []
+    list_EventosCirc = []
     Inicio = datetime.datetime.now()
     print('Hora de inicio del cálculo: ', Inicio)
     for img in argObj:
@@ -115,26 +117,39 @@ def main(argObj):
                 elif not Barycentercharge:
                     continue
                 
-                elif  rM < 4.5 * rm: ## Eventos Rectos
-                    continue
-
-                elif  rM > 1.2 * rm: ## Eventos Circulares ???
-                    continue
-
                 elif differval < MeanValue_Event + 100:
                     continue
+
+                elif  (rM/rm) > 4.5 : ## Eventos Rectos
+                    list_EventosRectos.append(1)
+                    charge = 0
+                    for element in data_maskEvent.data.flatten():
+                        if element >= valor_promedio_fondo:
+                            charge = charge + element
+
+                    # list_charge.append(charge)
+                    list_EventCharge_AllExtensions.append(charge)
+
+                    del data_maskEvent
+                    del Barycentercharge
+                    del charge
+
+                elif   0.9 < rM/rm < 1.1  : ## Eventos Circulares ???
+                    charge = 0
+                    for element in data_maskEvent.data.flatten():
+                        if element >= valor_promedio_fondo:
+                            charge = charge + element
+
+                    # list_charge.append(charge)
+                    if charge:
+                        list_EventCharge_AllExtensions.append(charge)
+                        list_EventosCirc.append(0)
+
+                    del data_maskEvent
+                    del Barycentercharge
+                    del charge
+
                 
-                charge = 0
-                for element in data_maskEvent.data.flatten():
-                    if element >= valor_promedio_fondo:
-                        charge = charge + element
-
-                # list_charge.append(charge)
-                list_EventCharge_AllExtensions.append(charge)
-
-                del data_maskEvent
-                del Barycentercharge
-                del charge
 
             # print(list_eventos_rectos)
 
@@ -143,6 +158,14 @@ def main(argObj):
     Final = datetime.datetime.now()
     print('Hora del final de cálculo: ', Final)
     print('Tiempo de cálculo: ', Final-Inicio)
+    print('Número de Eventos: ', n_events)
+    print('Número de elementos de la lista "list_EventCharge_AllExtensions": ', len(list_EventCharge_AllExtensions))
+    # print('elementos de la lista "list_EventCharge_AllExtensions":', list_EventCharge_AllExtensions)
+    print('Eventos Rectos: ', len(list_EventosRectos))
+    print('Eventos Circulares: ', len(list_EventosCirc))
+
+    with open("Datos_EspectroMuones.txt", "w") as output:
+        output.write(str(list_EventCharge_AllExtensions))
 
     plt.hist(list_EventCharge_AllExtensions, bins = numero_bins)    
     plt.title('Espectro de Energía de Muones')
