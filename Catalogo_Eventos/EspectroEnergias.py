@@ -9,8 +9,10 @@ import numpy.ma as ma
 import sys
 import skimage as sk
 import datetime
+import pickle
 
-numero_bins = 6000
+
+numero_bins = 5000
 def gaussian(x, a, mean, sigma):
     return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))
 
@@ -164,14 +166,18 @@ def main(argObj):
     print('Eventos Rectos: ', len(list_EventosRectos))
     print('Eventos Circulares: ', len(list_EventosCirc))
 
-    with open("Datos_EspectroMuones.txt", "w") as output:
-        output.write(str(list_EventCharge_AllExtensions))
+    fig, axs = plt.subplots(1,1)
 
-    plt.hist(list_EventCharge_AllExtensions, bins = numero_bins)    
-    plt.title('Espectro de Energía de Muones')
-    plt.xlabel(r'e⁻')
-    plt.ylabel('Cuentas') 
-    plt.xlim(0, 200000)  
+    fig.suptitle('Espectro de Energía de Muones')
+    axs.hist(list_EventCharge_AllExtensions, bins = numero_bins)   
+    axs.set_xlabel(r'e⁻')
+    axs.set_ylabel('Cuentas') 
+    axs.set_xlim([0, 200000])  
+
+    file_object_histogram = open('histogram.pkl', 'wb')
+    pickle.dump(fig, file_object_histogram)
+    file_object_histogram.close()
+
     plt.show() 
 
 
