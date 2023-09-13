@@ -27,7 +27,6 @@ def main(argObj):
         hdu_list = fits.open(img)
         
         for extension in (0,1,3):
-            StraightEvents_list = []
 
             data = hdu_list[extension].data
             header = hdu_list[extension].header
@@ -107,7 +106,7 @@ def main(argObj):
 
                 rM = prop[event-1].axis_major_length
                 rm = prop[event-1].axis_minor_length
-
+                Solidity = prop[event-1].solidity
                 minr, minc, maxr, maxc = prop[event-1].bbox
 
                 if rM == 0 or rm == 0:
@@ -121,14 +120,17 @@ def main(argObj):
                 
                 elif differval < MeanValue_Event + 100:
                     continue
+                
+                elif  Solidity < 0.7:
+                    continue 
 
-                elif  (rM/rm) > 4.5 : ## Eventos Rectos
+                elif  rM/rm > 2.5 : ## Eventos Rectos
                     list_EventosRectos.append(1)
-                    charge = 0
-                    for element in data_maskEvent.data.flatten():
-                        if element >= valor_promedio_fondo:
-                            charge = charge + element
-
+                    # charge = 0
+                    # for element in data_maskEvent.data.flatten():
+                    #     if element >= valor_promedio_fondo:
+                    #         charge = charge + element
+                    charge = data_maskEvent.sum()
                     # list_charge.append(charge)
                     list_EventCharge_AllExtensions.append(charge)
 
@@ -136,20 +138,20 @@ def main(argObj):
                     del Barycentercharge
                     del charge
 
-                elif   0.9 < rM/rm < 1.1  : ## Eventos Circulares ???
-                    charge = 0
-                    for element in data_maskEvent.data.flatten():
-                        if element >= valor_promedio_fondo:
-                            charge = charge + element
+                # elif   0.9 < rM/rm < 1.1  : ## Eventos Circulares ???
+                #     charge = 0
+                #     for element in data_maskEvent.data.flatten():
+                #         if element >= valor_promedio_fondo:
+                #             charge = charge + element
 
-                    # list_charge.append(charge)
-                    if charge:
-                        list_EventCharge_AllExtensions.append(charge)
-                        list_EventosCirc.append(0)
+                #     # list_charge.append(charge)
+                #     if charge:
+                #         list_EventCharge_AllExtensions.append(charge)
+                #         list_EventosCirc.append(0)
 
-                    del data_maskEvent
-                    del Barycentercharge
-                    del charge
+                #     del data_maskEvent
+                #     del Barycentercharge
+                #     del charge
 
                 
 
@@ -164,7 +166,7 @@ def main(argObj):
     print('Número de elementos de la lista "list_EventCharge_AllExtensions": ', len(list_EventCharge_AllExtensions))
     # print('elementos de la lista "list_EventCharge_AllExtensions":', list_EventCharge_AllExtensions)
     print('Eventos Rectos: ', len(list_EventosRectos))
-    print('Eventos Circulares: ', len(list_EventosCirc))
+    # print('Eventos Circulares: ', len(list_EventosCirc))
 
     fig, axs = plt.subplots(1,1)
 
