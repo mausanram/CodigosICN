@@ -186,6 +186,7 @@ def main(argObj):
     print(Eventos_Totales)
     print(eventos_rectos)
     # print('Eventos Circulares: ', len(list_EventosCirc))
+    all_lists = [list_EventCharge_AllExtensions, total_events, len(list_EventosRectos)]
 
     fig, axs = plt.subplots(1,1)
     fig.canvas.manager.set_window_title('histogram_Imgs_'+str(len(argObj))+'_Sol_'+str(Solidit)+'_Elip_'+str(Elip)+'.pkl')
@@ -213,10 +214,16 @@ def main(argObj):
     axs.set_xlabel(r'eV')
     axs.set_ylabel('Cuentas') 
     axs.set_xlim([0, 400000])  
-    
-    file_object_histogram = open('histogram_Imgs_'+str(len(argObj))+'_Sol_'+str(Solidit)+'_Elip_'+str(Elip)+'.pkl', 'wb')
-    pickle.dump(fig, file_object_histogram)
-    file_object_histogram.close()
+
+    ## Guarda la Figura ya hecha
+    # file_object_histogram = open('histogram_Imgs_'+str(len(argObj))+'_Sol_'+str(Solidit)+'_Elip_'+str(Elip)+'.pkl', 'wb')
+    # pickle.dump(fig, file_object_histogram)
+    # file_object_histogram.close()
+
+    ## Guarda los datos para hacer la figura.
+    file_raw_data = open('datahistogram_Imgs_'+str(len(argObj))+'_Sol_'+str(Solidit)+'_Elip_'+str(Elip)+'.pkl', 'wb')
+    pickle.dump(all_lists, file_raw_data)
+    file_raw_data.close()
 
     plt.show() 
 
