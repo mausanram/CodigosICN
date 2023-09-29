@@ -54,7 +54,7 @@ def main(argObj):
 
             offset = bins_edges[np.argmax(hist)]
             dataP = data-offset
-            dataCal = (ratio_eV * dataP)/expgain[extension] ## En electrones  
+            dataCal = (ratio_eV * dataP)/expgain[extension] ## En eV  
             
             del hist
             del data
