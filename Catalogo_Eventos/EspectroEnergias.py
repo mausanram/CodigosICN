@@ -144,7 +144,7 @@ def main(argObj):
                 elif not Barycentercharge:
                     continue
                 
-                elif differval < MeanValue_Event: #keV
+                elif differval < MeanValue_Event + 0.1: #keV
                     continue
                 
                 elif  Solidity < Solidit: ## Ver el artículo: Recognition and classification of the cosmic-ray events in images captured by CMOS/CCD cameras
