@@ -28,6 +28,7 @@ def Landau(x,a, MP,xi):
     C2 = np.exp(-(x-MP)/xi)
     C3 = np.exp((-0.5 * ((x-MP)/xi + C2 )))
     return  C1 * C3
+
 def main(argObj):
     expgain = [227, 220.4, 94.72, 197.7]
     Fluorescence_Events = []
@@ -39,12 +40,11 @@ def main(argObj):
     print('Hora de inicio del cálculo: ', Inicio)
     for img in argObj:
         hdu_list = fits.open(img)
-        
-        for extension in (0,1,3):
-
+        for extension in [0,1]:
+            # print('Estoy en las extensiones')
             data = hdu_list[extension].data
             header = hdu_list[extension].header
-            oScan = hdu_list[extension].data[638:,530:]
+            oScan = hdu_list[extension].data[:,530:]
             nsamp = float(header['NSAMP'])
 
             del header
@@ -56,6 +56,7 @@ def main(argObj):
             offset = bins_edges[np.argmax(hist)]
             dataP = data - offset
             dataCal = (ratio_keV * dataP)/expgain[extension] ## En keV  
+            # print('Ya aplané los datos')
             
             del hist
             del data
@@ -74,17 +75,20 @@ def main(argObj):
             del nsamp
 
             try:
-                popt,_ = curve_fit(gaussian, bin_centers, bin_heights)#, p0=[np.max(bin_heights), 0, 1], maxfev=100000)		# Fit histogram with gaussian
+                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=100000)		# Fit histogram with gaussian
 
             except:
+                print('Error in image ' + str(img))
                 continue
+
             del bin_heights
             del bin_centers
             del offset
             del xmin_fit
             del xmax_fit
 
-            fondo_value = 5 * abs(popt[2])
+            fondo_value = 6 * abs(popt[2])
+            # print('Ya saqué el valor del fondo')
             # label, n_events = ndimage.label(dataCal>6*abs(popt[2]),structure=[[1,1,1],[1,1,1],[1,1,1]])
             label_img, n_events = sk.measure.label(dataCal > fondo_value, connectivity=2, return_num=True)
             prop = sk.measure.regionprops(label_img, dataCal)
@@ -97,8 +101,9 @@ def main(argObj):
             fondo_mask = np.invert(label_img == 0)
             fondo = ma.masked_array(dataCal,fondo_mask)
             valor_promedio_fondo = fondo.data.mean()
-
+            # print('Ya estoy en los labels')
             for event in range(1,n_events):
+                # print('Estoy en los eventos')
                 mask = np.invert(label_img == event)
                 loc = ndimage.find_objects(label_img == event)[0]
                 data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
