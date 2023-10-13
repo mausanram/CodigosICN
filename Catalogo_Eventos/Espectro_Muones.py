@@ -82,7 +82,7 @@ def main(argObj):
             del nsamp
 
             try:
-                popt,_ = curve_fit(gaussian, bin_centers, bin_heights)#, p0=[np.max(bin_heights), 0, 1], maxfev=100000)		# Fit histogram with gaussian
+                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=10000)		# Fit histogram with gaussian
                 fondo_value = 6 * abs(popt[2])
             except:
                 print('Error in image ' + str(img))
