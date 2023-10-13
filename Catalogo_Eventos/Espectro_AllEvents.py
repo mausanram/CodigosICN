@@ -36,6 +36,7 @@ def main(argObj):
     num_images =  'Imágenes Analizadas: ' +  str(len(argObj))
     num_event = 0
     
+    
     print('Hora de inicio del cálculo: ', Inicio)
     for img in argObj:
         hdu_list = fits.open(img)
