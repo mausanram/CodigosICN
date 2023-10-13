@@ -128,10 +128,10 @@ def main(argObj):
                 # Diagonal_lenght= np.sqrt(Longitud_x**2 + Longitud_y**2) - np.sqrt(2) # px
                 # Delta_L = np.sqrt( (Diagonal_lenght * px_to_micras)**2 + (CCD_depth)**2) # micras
 
-                if Longitud_y > 5 or Longitud_x > 5:
-                    continue
+                # if Longitud_y > 5 or Longitud_x > 5:
+                #     continue
                 
-                elif differval < MeanValue_Event:
+                if differval < MeanValue_Event:
                     continue
                 
                 if  rM <= 1.2 * rm:
