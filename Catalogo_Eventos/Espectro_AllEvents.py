@@ -15,7 +15,6 @@ ratio_keV = 0.0037
 Solidit = 0.7
 Elip = 2
 numero_bins = 5000
-num_event = 0
 
 def gaussian(x, a, mean, sigma):
     return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))
@@ -35,6 +34,7 @@ def main(argObj):
     list_totalEvents = []
     Inicio = datetime.datetime.now()
     num_images =  'Imágenes Analizadas: ' +  str(len(argObj))
+    num_event = 0
     
     print('Hora de inicio del cálculo: ', Inicio)
     for img in argObj:
