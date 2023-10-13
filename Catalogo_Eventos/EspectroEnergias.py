@@ -150,7 +150,7 @@ def main(argObj):
                 elif  Solidity < Solidit: ## Ver el artículo: Recognition and classification of the cosmic-ray events in images captured by CMOS/CCD cameras
                     continue 
 
-                elif  rM/rm > Elip: ## Eventos Rectos
+                if  rM/rm > Elip: ## Eventos Rectos
                     charge = data_maskEvent.sum()
                     DeltaEL = charge / (Delta_L * micra_to_cm) # keV/cm
                     list_DeltaEL.append(DeltaEL)
