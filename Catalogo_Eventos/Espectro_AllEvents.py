@@ -1,3 +1,5 @@
+#!usr/bin/python3
+
 # from functions_py import math
 import math
 from astropy.io import fits
@@ -35,7 +37,7 @@ def main(argObj):
     Inicio = datetime.datetime.now()
     num_images =  'Imágenes Analizadas: ' +  str(len(argObj))
     num_event = 0
-    
+
     
     print('Hora de inicio del cálculo: ', Inicio)
     for img in argObj:
@@ -110,6 +112,7 @@ def main(argObj):
 
                 num_event = num_event + 1
                 charge = data_maskEvent.sum()
+
                 list_EventCharge_AllExtensions.append(charge)
 
                 del data_maskEvent

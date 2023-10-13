@@ -42,7 +42,7 @@ def main(argObj):
     list_DeltaEL = []
     Inicio = datetime.datetime.now()
     num_images =  'Imágenes Analizadas: ' +  str(len(argObj))
-    num_EventosRectos = 0
+    num_muons = 0
     
     print('Hora de inicio del cálculo: ', Inicio)
     for img in argObj:
@@ -157,7 +157,7 @@ def main(argObj):
                     # list_DeltaEL.append(DeltaEL)
 
                     # if DeltaEL_range_min < DeltaEL < DeltaEL_range_max:
-                    num_EventosRectos = num_EventosRectos + 1
+                    num_muons = num_muons + 1
                     list_EventCharge_AllExtensions.append(charge)
 
                 del data_maskEvent
@@ -166,7 +166,7 @@ def main(argObj):
         del hdu_list            
     
 
-    dict_to_save_pkl = {'Muons_Detected' : num_EventosRectos, 'charge' : list_EventCharge_AllExtensions, 'DeltaEL' : list_DeltaEL}
+    dict_to_save_pkl = {'Muons_Detected' : num_muons, 'charge' : list_EventCharge_AllExtensions, 'DeltaEL' : list_DeltaEL}
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()
@@ -175,7 +175,7 @@ def main(argObj):
     print('Tiempo de cálculo: ', Final-Inicio)
     print(num_images)
     Eventos_Totales = 'Eventos Detectados en Total: ' +  str(total_events)
-    eventos_rectos = 'Muones Rectos Detectados: ' + str(num_EventosRectos)
+    eventos_rectos = 'Muones Rectos Detectados: ' + str(num_muons)
     # eventos_circulares = 'Muones Circulares Detectados: ' + str(len(list_EventosCirc))
     # print('Número de elementos de la lista "list_EventCharge_AllExtensions": ', len(list_EventCharge_AllExtensions))
     # print('elementos de la lista "list_EventCharge_AllExtensions":', list_EventCharge_AllExtensions)

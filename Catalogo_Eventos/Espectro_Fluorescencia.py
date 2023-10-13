@@ -136,10 +136,10 @@ def main(argObj):
                 # if Longitud_y > 5 or Longitud_x > 5:
                 #     continue
                 
-                if differval < MeanValue_Event:
+                if differval < MeanValue_Event + 0.4:
                     continue
                 
-                if  rM <= 1.2 * rm:
+                if  rM < 8 and rm < 8:
                     charge =  data_maskEvent.sum()
                     # if charge < 1:
                     Fluorescence_Events.append(charge)
