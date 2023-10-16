@@ -144,7 +144,7 @@ def main(argObj):
     axs.set_ylabel('Cuentas') 
     axs.set_xlim([0, 400])  
 
-    file_object_histogram = open('data_AlEvents_Imgs_'+str(len(argObj))+'_.pkl', 'wb')
+    file_object_histogram = open('data_AllEvents_Imgs_'+str(len(argObj))+'_.pkl', 'wb')
     pickle.dump(list_EventCharge_AllExtensions, file_object_histogram)
     file_object_histogram.close()
 
