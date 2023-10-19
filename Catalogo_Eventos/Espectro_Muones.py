@@ -136,22 +136,23 @@ def main(argObj):
                 # Diagonal_lenght= np.sqrt(Longitud_x**2 + Longitud_y**2) - np.sqrt(2) # px
                 # Delta_L = np.sqrt( (Diagonal_lenght * px_to_micras)**2 + (CCD_depth)**2) # micras
 
-                if rM == 0 or rm == 0:
-                    continue 
+                # if rM == 0 or rm == 0:
+                #     continue 
 
-                elif maxx - minx <= 3:
-                    continue
+                # elif maxx - minx <= 3:
+                #     continue
 
-                elif not Barycentercharge:
+                # elif not Barycentercharge:
+                #     continue
+                
+                if differval < MeanValue_Event: #keV
                     continue
                 
-                elif differval < MeanValue_Event + 0.1: #keV
-                    continue
-                
-                elif  Solidity < Solidit: ## Ver el artículo: Recognition and classification of the cosmic-ray events in images captured by CMOS/CCD cameras
-                    continue 
+                # elif  Solidity < Solidit: ## Ver el artículo: Recognition and classification of the cosmic-ray events in images captured by CMOS/CCD cameras
+                #     continue 
 
-                if  rM >= Elip * rm: ## Eventos Rectos
+                # if  rM >= Elip * rm: ## Eventos Rectos
+                if  rM <= 2 * rm:
                     charge = data_maskEvent.sum()
                     # DeltaEL = charge / (Delta_L * micra_to_cm) # keV/cm
                     # list_DeltaEL.append(DeltaEL)

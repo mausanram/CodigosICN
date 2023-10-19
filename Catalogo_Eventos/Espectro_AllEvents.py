@@ -58,7 +58,7 @@ def main(argObj):
 
             offset = bins_edges[np.argmax(hist)]
             dataP = data-offset
-            dataCal = (ratio_keV * dataP)/expgain[extension] ## En keV  
+            dataCal = 2.8 * (ratio_keV * dataP)/expgain[extension] ## En keV  
             
             del hist
             del data
@@ -88,7 +88,7 @@ def main(argObj):
             del xmax_fit
 
             # label, n_events = ndimage.label(dataCal>6*abs(popt[2]),structure=[[1,1,1],[1,1,1],[1,1,1]])
-            label_img, n_events = sk.measure.label(dataCal>6*popt[2], connectivity=2, return_num=True)
+            label_img, n_events = sk.measure.label(dataCal > 8 * abs(popt[2]), connectivity=2, return_num=True)
             prop = sk.measure.regionprops(label_img, dataCal)
             list_totalEvents.append(n_events)
             # print(nlabels_img)
@@ -142,7 +142,7 @@ def main(argObj):
     axs.legend(loc="upper right") 
     axs.set_xlabel(r'keV')
     axs.set_ylabel('Cuentas') 
-    axs.set_xlim([0, 400])  
+    # axs.set_xlim([0, 400])  
 
     file_object_histogram = open('data_AllEvents_Imgs_'+str(len(argObj))+'_.pkl', 'wb')
     pickle.dump(list_EventCharge_AllExtensions, file_object_histogram)
