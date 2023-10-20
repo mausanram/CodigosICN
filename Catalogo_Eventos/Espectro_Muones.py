@@ -48,7 +48,7 @@ def main(argObj):
     for img in argObj:
         hdu_list = fits.open(img)
         
-        for extension in (0,3):
+        for extension in (0,1,3):
 
             data = hdu_list[extension].data
             header = hdu_list[extension].header
