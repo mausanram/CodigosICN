@@ -48,7 +48,7 @@ def main(argObj):
     for img in argObj:
         hdu_list = fits.open(img)
         
-        for extension in (0,1,3):
+        for extension in (0,3):
 
             data = hdu_list[extension].data
             header = hdu_list[extension].header
@@ -63,7 +63,8 @@ def main(argObj):
 
             offset = bins_edges[np.argmax(hist)]
             dataP = data-offset
-            dataCal = (ratio_keV * dataP)/expgain[extension] ## En keV  
+            # dataCal = (ratio_keV * dataP)/expgain[extension] ## En keV  
+            dataCal = dataP ## En ADUs
             
             del hist
             del data
@@ -211,7 +212,7 @@ def main(argObj):
     axs.set_ylabel('Events') 
     axs.set_xlim([0, 400])  
 
-    file_object_histogram = open('data_muons_Extensions_1_4_Imgs_'+str(len(argObj))+'_Sol_'+str(Solidit)+'_Elip_'+str(Elip)+ \
+    file_object_histogram = open('data_muons_Extensions_1_4_Imgs_'+str(len(argObj))+'_Sol_'+str(Solidit)+'_Elip_ADUs_'+str(Elip)+ \
                                     '_.pkl', 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
