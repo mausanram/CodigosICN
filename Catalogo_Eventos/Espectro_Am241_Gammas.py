@@ -26,12 +26,11 @@ def Landau(x,a, MP,xi):
 
 def main(argObj):
     expgain = [227, 220.4, 94.72, 197.7]
-    list_All = []
+    list_EventCharge_extension_2 =[]
+    list_EventCharge_extension_1_4 = []
     list_EventCharge_AllExtensions=[]
-    list_EventosRectos = []
-    list_EventosCirc = []
     list_totalEvents = []
-    list_DeltaEL = []
+
     Inicio = datetime.datetime.now()
     num_images =  'Imágenes Analizadas: ' +  str(len(argObj))
     num_gammas = 0
@@ -131,17 +130,22 @@ def main(argObj):
         
                 if  rM <= 2 * rm:
                     charge = data_maskEvent.sum()
-
                     num_gammas = num_gammas + 1
-                    list_EventCharge_AllExtensions.append(charge)
 
-                del data_maskEvent
-                del Barycentercharge
+                    if extension == 1:
+                        list_EventCharge_extension_2.append(charge)
+
+                    else:
+                        list_EventCharge_extension_1_4.append(charge)
+
+                    del data_maskEvent
+                    del Barycentercharge
 
         del hdu_list            
 
-
-    dict_to_save_pkl = {'Gammas_Detected' : num_gammas, 'charge' : list_EventCharge_AllExtensions}
+    list_EventCharge_AllExtensions = list_EventCharge_extension_2 + list_EventCharge_extension_1_4 
+    dict_to_save_pkl = {'Gammas_Detected' : num_gammas, 'charge_All_extension' : list_EventCharge_AllExtensions, 
+                        'charge_ext2' : list_EventCharge_extension_2, 'charge_ext1_4' : list_EventCharge_extension_1_4}
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()
@@ -163,9 +167,12 @@ def main(argObj):
     
     fig.suptitle('Energy Spectrum of Am-241')
 
-    bin_heights, bin_borders, _ = axs.hist(list_EventCharge_AllExtensions, bins = numero_bins, label= num_images + '\n' + gammas) 
+    bin_heights, bin_borders, _ = axs.hist(list_EventCharge_AllExtensions, bins = 1000, label= num_images + '\n' + gammas) 
+    axs.hist(list_EventCharge_extension_2, bins = 1000, label= 'Extension 2') 
+    axs.hist(list_EventCharge_extension_1_4, bins = 1000, label= 'Extension 1 and 4') 
+
     # axs.hist(list_EventCharge_AllExtensions, bins = numero_bins, label= num_images + '\n' + eventos_rectos) 
-    bin_centers = bin_borders[:-1] + np.diff(bin_borders) / 2 
+    # bin_centers = bin_borders[:-1] + np.diff(bin_borders) / 2 
 
 
     # # xmin_fit, xmax_fit = offset_fit-(10*expgain[extension-1])/math.sqrt(nsamp), offset_fit+(10*expgain[extension-1])/math.sqrt(nsamp)			# Define fit range
