@@ -35,7 +35,8 @@ def Landau(x,a, MP,xi):
 def main(argObj):
     expgain = [227, 220.4, 94.72, 197.7]
     list_EventCharge_extension_2 =[]
-    list_EventCharge_extension_1_4 = []
+    list_EventCharge_extension_1 = []
+    list_EventCharge_extension_4 = []
 
     list_totalEvents = []
     list_DeltaEL_extension_2 = []
@@ -48,6 +49,7 @@ def main(argObj):
     print('Hora de inicio del cálculo: ', Inicio)
     for img in argObj:
         hdu_list = fits.open(img)
+        print('Estoy en la imagen ' + str(img))
         
         for extension in (0,1,3):
             # extension = 1
@@ -85,7 +87,7 @@ def main(argObj):
             del nsamp
 
             try:
-                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=10000)		# Fit histogram with gaussian
+                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=1000)		# Fit histogram with gaussian
                 fondo_value = 6 * abs(popt[2])
             except:
                 print('Error in image ' + str(img))
@@ -148,8 +150,8 @@ def main(argObj):
                 elif not Barycentercharge:
                     continue
                 
-                if differval < MeanValue_Event: #ADUs
-                    continue
+                # if differval < MeanValue_Event: #ADUs
+                #     continue
                 
                 elif  Solidity < Solidit: ## Ver el artículo: Recognition and classification of the cosmic-ray events in images captured by CMOS/CCD cameras
                     continue 
@@ -163,19 +165,24 @@ def main(argObj):
                         # list_DeltaEL_extension_2.append(DeltaEL)
                         list_EventCharge_extension_2.append(charge)
 
-                    else:
+                    elif extension == 0:
                         # list_DeltaEL_extension_1_4.append(DeltaEL)
-                        list_EventCharge_extension_1_4.append(charge)
+                        list_EventCharge_extension_1.append(charge)
+
+                    elif extension == 3:
+                        # list_DeltaEL_extension_1_4.append(DeltaEL)
+                        list_EventCharge_extension_4.append(charge)
 
                 del data_maskEvent
                 del Barycentercharge
 
         del hdu_list            
 
-    list_EventCharge_AllExtensions = list_EventCharge_extension_2 + list_EventCharge_extension_1_4
+    list_EventCharge_AllExtensions = list_EventCharge_extension_2 + list_EventCharge_extension_1 + list_EventCharge_extension_4
     # dict_to_save_pkl = {'Muons_Detected' : num_muons, 'charge' : list_EventCharge_AllExtensions, 'DeltaEL' : list_DeltaEL}
     dict_to_save_pkl = {'Muons_Detected' : num_muons, 'charge_All_extension' : list_EventCharge_AllExtensions, 
-                        'charge_ext2' : list_EventCharge_extension_2, 'charge_ext1_4' : list_EventCharge_extension_1_4}
+                        'charge_ext2' : list_EventCharge_extension_2, 'charge_ext1' : list_EventCharge_extension_1,
+                        'charge_ext4' : list_EventCharge_extension_4}
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()
@@ -198,7 +205,8 @@ def main(argObj):
 
     bin_heights, bin_borders, _ = axs.hist(list_EventCharge_AllExtensions, bins = numero_bins, label= num_images + '\n' + eventos_rectos) 
     axs.hist(list_EventCharge_extension_2, bins = numero_bins, label= 'Extension 2') 
-    axs.hist(list_EventCharge_extension_1_4, bins = numero_bins, label= 'Extension 1 and 4') 
+    axs.hist(list_EventCharge_extension_1, bins = numero_bins, label= 'Extension 1') 
+    axs.hist(list_EventCharge_extension_4, bins = numero_bins, label= 'Extension 4') 
     # axs.hist(list_EventCharge_AllExtensions, bins = numero_bins, label= num_images + '\n' + eventos_rectos) 
     # bin_centers = bin_borders[:-1] + np.diff(bin_borders) / 2 
 
@@ -216,11 +224,11 @@ def main(argObj):
     # axs.plot(x_interval_for_fit, Landau(x_interval_for_fit,*popt), label=strAjuste)
 
     axs.legend(loc="upper right") 
-    axs.set_xlabel(r'Energy (keV)')
+    axs.set_xlabel(r'Energy (ADUs)')
     axs.set_ylabel('Events') 
     # axs.set_xlim([0, 400])  
 
-    file_object_histogram = open('dict_muons_Extensions_2_and_1_4_Imgs_'+str(len(argObj))+'_Sol_'+str(Solidit)+'_Elip_'+str(Elip)+ \
+    file_object_histogram = open('dict_muons_Extensions_1_to_4_Imgs_'+str(len(argObj))+'_Sol_'+str(Solidit)+'_Elip_'+str(Elip)+ \
                                     '_ADUs__.pkl', 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
