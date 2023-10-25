@@ -40,23 +40,30 @@ def main(argObj):
 
     list_totalEvents = []
     list_DeltaEL_extension_2 = []
-    list_DeltaEL_extension_1_4 = []
+    list_DeltaEL_extension_1 = []
+    list_DeltaEL_extension_4 = []
     list_DeltaEL = []
+
+    total_images = len(argObj)
+    image_in_bucle = 0
+
     Inicio = datetime.datetime.now()
-    num_images =  'Imágenes Analizadas: ' +  str(len(argObj))
+    num_images =  'Imágenes Analizadas: ' +  str(total_images)
     num_muons = 0
     
     print('Hora de inicio del cálculo: ', Inicio)
     for img in argObj:
         hdu_list = fits.open(img)
-        print('Estoy en la imagen ' + str(img))
+        image_in_bucle += 1
+        # print('Estoy en la imagen ' + str(img))
+        print('Image ' + str(image_in_bucle) + '/' + str(total_images), end = '\r')
         
         for extension in (0,1,3):
             # extension = 1
 
             data = hdu_list[extension].data
             header = hdu_list[extension].header
-            oScan = hdu_list[extension].data[638:,530:]
+            oScan = hdu_list[extension].data[:,530:]
             nsamp = float(header['NSAMP'])
 
             del header
@@ -80,18 +87,19 @@ def main(argObj):
             for p in range(len(bin_heights)):
                 bin_centers[p]=(bin_borders[p+1]+bin_borders[p])/2
 
-            xmin_fit, xmax_fit = offset_fit-(10*expgain[extension])/math.sqrt(nsamp), offset_fit+(10*expgain[extension])/math.sqrt(nsamp)			# Define fit range
+            xmin_fit, xmax_fit = -abs(offset), abs(offset)			# Define fit range
             bin_heights = bin_heights[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
             bin_centers = bin_centers[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
 
             del nsamp
 
             try:
-                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=1000)		# Fit histogram with gaussian
+                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=1000, p0 = [1,1,100])		# Fit histogram with gaussian
                 fondo_value = 6 * abs(popt[2])
             except:
                 print('Error in image ' + str(img))
                 continue
+
             del bin_heights
             del bin_centers
             del offset
@@ -159,18 +167,19 @@ def main(argObj):
                 if  rM >= Elip * rm: ## Muones
                     charge = data_maskEvent.sum()
                     # DeltaEL = (charge / 1000) / (Delta_L * micra_to_cm) # MeV/cm
-                    # DeltaEL = charge / (Delta_L * micra_to_cm) # ADUs/cm
+                    DeltaEL = charge / (Delta_L * micra_to_cm) # ADUs/cm
                     num_muons = num_muons + 1
-                    if extension == 1:
-                        # list_DeltaEL_extension_2.append(DeltaEL)
-                        list_EventCharge_extension_2.append(charge)
 
-                    elif extension == 0:
-                        # list_DeltaEL_extension_1_4.append(DeltaEL)
+                    if extension == 0:
+                        list_DeltaEL_extension_1.append(DeltaEL)
                         list_EventCharge_extension_1.append(charge)
 
+                    elif extension == 1:
+                        list_DeltaEL_extension_2.append(DeltaEL)
+                        list_EventCharge_extension_2.append(charge)
+
                     elif extension == 3:
-                        # list_DeltaEL_extension_1_4.append(DeltaEL)
+                        list_DeltaEL_extension_4.append(DeltaEL)
                         list_EventCharge_extension_4.append(charge)
 
                 del data_maskEvent
@@ -178,11 +187,14 @@ def main(argObj):
 
         del hdu_list            
 
-    list_EventCharge_AllExtensions = list_EventCharge_extension_2 + list_EventCharge_extension_1 + list_EventCharge_extension_4
+    # list_EventCharge_AllExtensions = list_EventCharge_extension_2 + list_EventCharge_extension_1 + list_EventCharge_extension_4
+
     # dict_to_save_pkl = {'Muons_Detected' : num_muons, 'charge' : list_EventCharge_AllExtensions, 'DeltaEL' : list_DeltaEL}
-    dict_to_save_pkl = {'Muons_Detected' : num_muons, 'charge_All_extension' : list_EventCharge_AllExtensions, 
-                        'charge_ext2' : list_EventCharge_extension_2, 'charge_ext1' : list_EventCharge_extension_1,
-                        'charge_ext4' : list_EventCharge_extension_4}
+
+    dict_to_save_pkl = {'All_Muons_Detected' : num_muons, 
+                        'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_EventCharge_extension_1}, 
+                        'extension_2' : {'charge' : list_EventCharge_extension_2, 'deltaEL' : list_EventCharge_extension_2},
+                        'extension_4' : {'charge' : list_EventCharge_extension_4, 'deltaEL' : list_EventCharge_extension_4}}
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()
@@ -203,7 +215,7 @@ def main(argObj):
     fig.canvas.manager.set_window_title('histogram_Imgs_'+str(len(argObj))+'_Sol_'+str(Solidit)+'_Elip_'+str(Elip))
     fig.suptitle('Espectro de Energía de Muones')
 
-    bin_heights, bin_borders, _ = axs.hist(list_EventCharge_AllExtensions, bins = numero_bins, label= num_images + '\n' + eventos_rectos) 
+    # bin_heights, bin_borders, _ = axs.hist(list_EventCharge_AllExtensions, bins = numero_bins, label= num_images + '\n' + eventos_rectos) 
     axs.hist(list_EventCharge_extension_2, bins = numero_bins, label= 'Extension 2') 
     axs.hist(list_EventCharge_extension_1, bins = numero_bins, label= 'Extension 1') 
     axs.hist(list_EventCharge_extension_4, bins = numero_bins, label= 'Extension 4') 
