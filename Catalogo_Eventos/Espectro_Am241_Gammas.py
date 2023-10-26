@@ -42,9 +42,9 @@ def main(argObj):
         for extension in (0,1,3):
         # extension = 1
 
-            data = hdu_list[extension].data
+            data = hdu_list[extension].data[:, :550]
             header = hdu_list[extension].header
-            oScan = hdu_list[extension].data[638:,530:]
+            oScan = hdu_list[extension].data[:,530:]
             nsamp = float(header['NSAMP'])
 
             del header
@@ -75,7 +75,7 @@ def main(argObj):
             del nsamp
 
             try:
-                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=20000)		# Fit histogram with gaussian
+                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=20000, p0 = [1,1,100])		# Fit histogram with gaussian
                 fondo_value = 4 * abs(popt[2])
             except:
                 print('Error in image ' + str(img))
