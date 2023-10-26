@@ -61,9 +61,9 @@ def main(argObj):
         for extension in (0,1,3):
             # extension = 1
 
-            data = hdu_list[extension].data
+            data = hdu_list[extension].data[:,:550]
             header = hdu_list[extension].header
-            oScan = hdu_list[extension].data[:,530:]
+            oScan = hdu_list[extension].data[:,550:]
             nsamp = float(header['NSAMP'])
 
             del header
@@ -192,9 +192,9 @@ def main(argObj):
     # dict_to_save_pkl = {'Muons_Detected' : num_muons, 'charge' : list_EventCharge_AllExtensions, 'DeltaEL' : list_DeltaEL}
 
     dict_to_save_pkl = {'All_Muons_Detected' : num_muons, 
-                        'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_EventCharge_extension_1}, 
-                        'extension_2' : {'charge' : list_EventCharge_extension_2, 'deltaEL' : list_EventCharge_extension_2},
-                        'extension_4' : {'charge' : list_EventCharge_extension_4, 'deltaEL' : list_EventCharge_extension_4}}
+                        'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_DeltaEL_extension_1}, 
+                        'extension_2' : {'charge' : list_EventCharge_extension_2, 'deltaEL' : list_DeltaEL_extension_2},
+                        'extension_4' : {'charge' : list_EventCharge_extension_4, 'deltaEL' : list_DeltaEL_extension_4}}
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()
