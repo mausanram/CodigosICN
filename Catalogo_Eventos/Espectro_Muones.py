@@ -216,9 +216,9 @@ def main(argObj):
     fig.suptitle('Espectro de Energía de Muones')
 
     # bin_heights, bin_borders, _ = axs.hist(list_EventCharge_AllExtensions, bins = numero_bins, label= num_images + '\n' + eventos_rectos) 
-    axs.hist(list_EventCharge_extension_2, bins = numero_bins, label= 'Extension 2') 
-    axs.hist(list_EventCharge_extension_1, bins = numero_bins, label= 'Extension 1') 
-    axs.hist(list_EventCharge_extension_4, bins = numero_bins, label= 'Extension 4') 
+    # axs.hist(list_EventCharge_extension_2, bins = numero_bins, label= 'Extension 2') 
+    # axs.hist(list_EventCharge_extension_1, bins = numero_bins, label= 'Extension 1') 
+    # axs.hist(list_EventCharge_extension_4, bins = numero_bins, label= 'Extension 4') 
     # axs.hist(list_EventCharge_AllExtensions, bins = numero_bins, label= num_images + '\n' + eventos_rectos) 
     # bin_centers = bin_borders[:-1] + np.diff(bin_borders) / 2 
 
