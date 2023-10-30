@@ -1,5 +1,6 @@
 # from functions_py import math
 import math
+import os
 from astropy.io import fits
 import scipy.ndimage as ndimage
 from scipy.optimize import curve_fit
@@ -14,6 +15,8 @@ import pickle
 ratio_keV = 0.0037
 numero_bins = 5000
 
+current_path = os.getcwd()
+
 def gaussian(x, a, mean, sigma):
     return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))
 
@@ -25,7 +28,8 @@ def Landau(x,a, MP,xi):
 
 
 def main(argObj):
-    expgain = [227, 220.4, 94.72, 197.7]
+    # expgain = [227, 220.4, 94.72, 197.7]
+    expgain = [0.004251274073061228, 0.003830082649184408, 0.003, 0.0034160708295529487] ## KeV/ADUs
     list_EventCharge_extension_1 =[]
     list_EventCharge_extension_2 =[]
     list_EventCharge_extension_4 = []
@@ -68,8 +72,8 @@ def main(argObj):
 
             offset = bins_edges[np.argmax(hist)]
             dataP = data-offset
-            # dataCal = (ratio_keV * dataP)/expgain[extension] ## En keV  
-            dataCal = dataP ## En ADUs
+            dataCal = dataP * expgain[extension] ## En keV  
+            # dataCal = dataP ## En ADUs
             
             del hist
             del data
@@ -90,7 +94,7 @@ def main(argObj):
             del nsamp
 
             try:
-                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=20000, p0 = [1,1,100])		# Fit histogram with gaussian
+                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=20000, p0 = [1,1,1])		# Fit histogram with gaussian
                 fondo_value = 4 * abs(popt[2])
             except:
                 print('Error in image ' + str(img))
@@ -122,18 +126,18 @@ def main(argObj):
                 
                 # del dataCal
 
-                coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
-                coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
+                # coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
+                # coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
 
-                MeanValue_Event = data_maskEvent.mean()
-                MinValue_Event = data_maskEvent.min()
+                # MeanValue_Event = data_maskEvent.mean()
+                # MinValue_Event = data_maskEvent.min()
 
-                Barycentercharge = data_maskEvent[coordY_centerCharge, coordX_centerCharge]
+                # Barycentercharge = data_maskEvent[coordY_centerCharge, coordX_centerCharge]
 
-                try:
-                    differval = abs(Barycentercharge - MinValue_Event) 
-                except:
-                    differval = 0 
+                # try:
+                #     differval = abs(Barycentercharge - MinValue_Event) 
+                # except:
+                #     differval = 0 
 
                 rM = prop[event-1].axis_major_length
                 rm = prop[event-1].axis_minor_length
@@ -157,7 +161,7 @@ def main(argObj):
                         list_EventCharge_extension_4.append(charge)
 
                     del data_maskEvent
-                    del Barycentercharge
+                    # del Barycentercharge
 
         del hdu_list            
 
@@ -212,9 +216,13 @@ def main(argObj):
     axs.set_ylabel('Events') 
     axs.set_xlim([0, 400])  
 
-    file_object_histogram = open('dict_Am241_Imgs_'+ str(len(argObj)) +'.pkl', 'wb')
+    file_name = 'dict_Am241_Imgs_'+ str(len(argObj)) +'.pkl'
+    file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
+
+    print('Dictionary saved in ', current_path + '/' + file_name, ' as a binary file.')
+    print('To open use library "pickle". ')
 
     plt.show() 
 
