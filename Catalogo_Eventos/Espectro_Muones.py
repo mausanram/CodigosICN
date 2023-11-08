@@ -85,7 +85,7 @@ def main(argObj):
             del oScan
 
             offset = bins_edges[np.argmax(hist)]
-            dataP = data-offset
+            dataP = data - offset
             # dataCal = (dataP)/expgain[extension] ## En keV  
             dataCal = dataP ## En ADUs
             

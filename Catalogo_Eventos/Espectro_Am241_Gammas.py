@@ -29,7 +29,7 @@ def Landau(x,a, MP,xi):
 
 def main(argObj):
     # expgain = [227, 220.4, 94.72, 197.7]
-    expgain = [0.004251274073061228, 0.003830082649184408, 0.003, 0.0034160708295529487] ## KeV/ADUs
+    # expgain = [0.004251274073061228, 0.003830082649184408, 0.003, 0.0034160708295529487] ## KeV/ADUs
     list_EventCharge_extension_1 =[]
     list_EventCharge_extension_2 =[]
     list_EventCharge_extension_4 = []
@@ -72,8 +72,8 @@ def main(argObj):
 
             offset = bins_edges[np.argmax(hist)]
             dataP = data-offset
-            dataCal = dataP * expgain[extension] ## En keV  
-            # dataCal = dataP ## En ADUs
+            # dataCal = dataP * expgain[extension] ## En keV  
+            dataCal = dataP ## En ADUs
             
             del hist
             del data
