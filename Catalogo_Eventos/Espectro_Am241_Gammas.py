@@ -38,7 +38,7 @@ def main(argObj):
     Inicio = datetime.datetime.now()
 
     total_images = len(argObj)
-    image_in_bucle = 0
+    image_in_bucle = 1
 
     num_images =  'Imágenes Analizadas: ' +  str(total_images)
     num_gammas = 0
@@ -47,18 +47,19 @@ def main(argObj):
     for img in argObj:
         hdu_list = fits.open(img)
         print('Image ' + str(image_in_bucle) + '/' + str(total_images), end = '\r')
-        
+        image_in_bucle += 1
+
         for extension in (0,1,3):
-        # extension = 1
+            Overscan = hdu_list[extension].data[:, 550:]
+            oScan_mask=sk.measure.label(Overscan>= np.max(Overscan) - np.mean(Overscan), connectivity=2)
+            oScan=ma.masked_array(Overscan,mask=(oScan_mask>0))
+
+            # active_area = hdu_list[extension].data[:, :550]
+            # Overscan = hdu_list[extension - 1].data[:, 550:]
 
             active_area = hdu_list[extension].data[:, :550]
-            Overscan = hdu_list[extension - 1].data[:, 550:]
-
-            oScan_mask = sk.measure.label(Overscan>=20000, connectivity=2)
-            oScan = ma.masked_array(Overscan,mask=(oScan_mask>0))
-
-            active_area_mask = sk.measure.label(active_area>=500000, connectivity=2)
-            data = ma.masked_array(active_area, mask=(active_area_mask>0)) 
+            active_area_mask = sk.measure.label(active_area>= np.max(active_area), connectivity=2)
+            data = ma.masked_array(active_area,mask=(active_area_mask>0))
 
 
             header = hdu_list[extension].header
@@ -94,7 +95,7 @@ def main(argObj):
             del nsamp
 
             try:
-                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=20000, p0 = [1,1,200])		# Fit histogram with gaussian
+                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=200, p0 = [10, 10, 500])		# Fit histogram with gaussian
                 fondo_value = 4 * abs(popt[2])
             except:
                 print('Fit error in image ' + str(img))
