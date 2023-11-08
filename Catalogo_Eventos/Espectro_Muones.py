@@ -10,6 +10,10 @@ import sys
 import skimage as sk
 import datetime
 import pickle
+import os
+
+
+current_path = os.getcwd()
 
 ratio_keV = 0.0037
 CCD_depth = 725 #micras
@@ -33,9 +37,11 @@ def Landau(x,a, MP,xi):
 
 
 def main(argObj):
-    # expgain = [227, 220.4, 94.72, 197.7]
+    # expgain = [227, 220.4, 94.72, 197.7] ## Ganancia para 324nsamp 
 
-    expgain = [110.78158608889959, 144.4661840232508, 100,  63.730700893071976]
+    # expgain = [110.78158608889959, 144.4661840232508, 100,  63.730700893071976] ## 
+
+
     list_EventCharge_extension_2 =[]
     list_EventCharge_extension_1 = []
     list_EventCharge_extension_4 = []
@@ -44,7 +50,11 @@ def main(argObj):
     list_DeltaEL_extension_2 = []
     list_DeltaEL_extension_1 = []
     list_DeltaEL_extension_4 = []
-    list_DeltaEL = []
+
+    list_DeltaL_extension_2 = []
+    list_DeltaL_extension_1 = []
+    list_DeltaL_extension_4 = []
+
 
     total_images = len(argObj)
     image_in_bucle = 0
@@ -76,8 +86,8 @@ def main(argObj):
 
             offset = bins_edges[np.argmax(hist)]
             dataP = data-offset
-            dataCal = (dataP)/expgain[extension] ## En keV  
-            # dataCal = dataP ## En ADUs
+            # dataCal = (dataP)/expgain[extension] ## En keV  
+            dataCal = dataP ## En ADUs
             
             del hist
             del data
@@ -99,7 +109,7 @@ def main(argObj):
                 popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=1000, p0 = [1,1,100])		# Fit histogram with gaussian
                 fondo_value = 6 * abs(popt[2])
             except:
-                print('Error in image ' + str(img))
+                print('Fit error in image ' + str(img))
                 continue
 
             del bin_heights
@@ -149,7 +159,7 @@ def main(argObj):
                 miny, minx, maxy, maxx = prop[event-1].bbox
                 Longitud_y, Longitud_x = maxy - miny , maxx - minx # px
                 Diagonal_lenght= np.sqrt(Longitud_x**2 + Longitud_y**2) - np.sqrt(2) # px
-                Delta_L = np.sqrt( (Diagonal_lenght * px_to_micras)**2 + (CCD_depth)**2) # micras
+                Delta_L = np.sqrt( (Diagonal_lenght * px_to_micras)**2 + (CCD_depth)**2) * micra_to_cm # cm
 
                 if rM == 0 or rm == 0:
                     continue 
@@ -169,20 +179,23 @@ def main(argObj):
                 if  rM >= Elip * rm: ## Muones
                     charge = data_maskEvent.sum()
                     # DeltaEL = (charge / 1000) / (Delta_L * micra_to_cm) # MeV/cm
-                    DeltaEL = charge / (Delta_L * micra_to_cm) # ADUs/cm
+                    DeltaEL = charge / (Delta_L) # ADUs/cm
                     num_muons = num_muons + 1
 
                     if extension == 0:
                         list_DeltaEL_extension_1.append(DeltaEL)
                         list_EventCharge_extension_1.append(charge)
+                        list_DeltaL_extension_1.append(Delta_L)
 
                     elif extension == 1:
                         list_DeltaEL_extension_2.append(DeltaEL)
                         list_EventCharge_extension_2.append(charge)
+                        list_DeltaL_extension_2.append(Delta_L)
 
                     elif extension == 3:
                         list_DeltaEL_extension_4.append(DeltaEL)
                         list_EventCharge_extension_4.append(charge)
+                        list_DeltaL_extension_4.append(Delta_L)
 
                 del data_maskEvent
                 del Barycentercharge
@@ -194,9 +207,9 @@ def main(argObj):
     # dict_to_save_pkl = {'Muons_Detected' : num_muons, 'charge' : list_EventCharge_AllExtensions, 'DeltaEL' : list_DeltaEL}
 
     dict_to_save_pkl = {'All_Muons_Detected' : num_muons, 
-                        'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_DeltaEL_extension_1}, 
-                        'extension_2' : {'charge' : list_EventCharge_extension_2, 'deltaEL' : list_DeltaEL_extension_2},
-                        'extension_4' : {'charge' : list_EventCharge_extension_4, 'deltaEL' : list_DeltaEL_extension_4}}
+                        'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_DeltaEL_extension_1, 'deltaL' : list_DeltaL_extension_1}, 
+                        'extension_2' : {'charge' : list_EventCharge_extension_2, 'deltaEL' : list_DeltaEL_extension_2, 'deltaL' : list_DeltaL_extension_2},
+                        'extension_4' : {'charge' : list_EventCharge_extension_4, 'deltaEL' : list_DeltaEL_extension_4, 'deltaL' : list_DeltaL_extension_4}}
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()
@@ -213,9 +226,9 @@ def main(argObj):
     print(eventos_rectos)
     # print(eventos_circulares)
 
-    fig, axs = plt.subplots(1,1)
-    fig.canvas.manager.set_window_title('histogram_Imgs_'+str(len(argObj))+'_Sol_'+str(Solidit)+'_Elip_'+str(Elip))
-    fig.suptitle('Espectro de Energía de Muones')
+    # fig, axs = plt.subplots(1,1)
+    # fig.canvas.manager.set_window_title('histogram_Imgs_'+str(len(argObj))+'_Sol_'+str(Solidit)+'_Elip_'+str(Elip))
+    # fig.suptitle('Espectro de Energía de Muones')
 
     # bin_heights, bin_borders, _ = axs.hist(list_EventCharge_AllExtensions, bins = numero_bins, label= num_images + '\n' + eventos_rectos) 
     # axs.hist(list_EventCharge_extension_2, bins = numero_bins, label= 'Extension 2') 
@@ -237,17 +250,20 @@ def main(argObj):
     # x_interval_for_fit = np.linspace(bin_borders[0], bin_borders[-1], 10000)
     # axs.plot(x_interval_for_fit, Landau(x_interval_for_fit,*popt), label=strAjuste)
 
-    axs.legend(loc="upper right") 
-    axs.set_xlabel(r'Energy (ADUs)')
-    axs.set_ylabel('Events') 
+    # axs.legend(loc="upper right") 
+    # axs.set_xlabel(r'Energy (ADUs)')
+    # axs.set_ylabel('Events') 
     # axs.set_xlim([0, 400])  
 
-    file_object_histogram = open('dict_muons_Extensions_1_to_4_Imgs_'+str(len(argObj))+'_Sol_'+str(Solidit)+'_Elip_'+str(Elip)+ \
-                                    '_ADUs__.pkl', 'wb')
+    file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs__.pkl'
+    file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
 
-    plt.show() 
+    print('Dictionary saved in ', current_path + '/' + file_name, ' as a binary file.')
+    print('To open use library "pickle". ')
+
+    # plt.show() 
 
 
 if __name__ == "__main__":
