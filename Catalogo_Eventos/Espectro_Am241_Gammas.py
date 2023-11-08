@@ -186,14 +186,14 @@ def main(argObj):
     print(gammas)
     # print(eventos_circulares)
 
-    fig, axs = plt.subplots(1,1)
-    fig.canvas.manager.set_window_title('Histogram of Am-241')
+    # fig, axs = plt.subplots(1,1)
+    # fig.canvas.manager.set_window_title('Histogram of Am-241')
     
-    fig.suptitle('Energy Spectrum of Am-241')
+    # fig.suptitle('Energy Spectrum of Am-241')
 
-    axs.hist(list_EventCharge_extension_2, bins = 1000, label= 'Extension 2') 
-    axs.hist(list_EventCharge_extension_1, bins = 1000, label= 'Extension 1') 
-    axs.hist(list_EventCharge_extension_4, bins = 1000, label= 'Extension 4') 
+    # axs.hist(list_EventCharge_extension_2, bins = 1000, label= 'Extension 2') 
+    # axs.hist(list_EventCharge_extension_1, bins = 1000, label= 'Extension 1') 
+    # axs.hist(list_EventCharge_extension_4, bins = 1000, label= 'Extension 4') 
 
     # axs.hist(list_EventCharge_AllExtensions, bins = numero_bins, label= num_images + '\n' + eventos_rectos) 
     # bin_centers = bin_borders[:-1] + np.diff(bin_borders) / 2 
@@ -211,10 +211,10 @@ def main(argObj):
     # x_interval_for_fit = np.linspace(bin_borders[0], bin_borders[-1], 10000)
     # axs.plot(x_interval_for_fit, Landau(x_interval_for_fit,*popt), label=strAjuste)
 
-    axs.legend(loc="upper right") 
-    axs.set_xlabel(r'Energy (keV)')
-    axs.set_ylabel('Events') 
-    axs.set_xlim([0, 400])  
+    # axs.legend(loc="upper right") 
+    # axs.set_xlabel(r'Energy (keV)')
+    # axs.set_ylabel('Events') 
+    # axs.set_xlim([0, 400])  
 
     file_name = 'dict_Am241_Imgs_'+ str(len(argObj)) +'.pkl'
     file_object_histogram = open(file_name, 'wb')
