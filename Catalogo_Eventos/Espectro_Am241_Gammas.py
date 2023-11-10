@@ -126,17 +126,18 @@ def main(argObj):
                                             mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
                 
                 # del dataCal
-
-                coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
-                coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
-
                 MeanValue_Event = data_maskEvent.mean()
                 MinValue_Event = data_maskEvent.min()
 
-                Barycentercharge = data_maskEvent[coordY_centerCharge, coordX_centerCharge]
+                try: 
+                    coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
+                    coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
 
-                try:
+                    Barycentercharge = data_maskEvent[coordY_centerCharge, coordX_centerCharge]
+
+                
                     differval = abs(Barycentercharge - MinValue_Event) 
+                    
                 except:
                     differval = 0 
 
@@ -150,7 +151,7 @@ def main(argObj):
                 
                 if Long_x < 4 or Long_y < 4 :
                     continue
-                
+
                 if differval < MeanValue_Event:
                     continue
 
