@@ -52,14 +52,14 @@ def main(argObj):
         for extension in (0,1,3):
             Overscan = hdu_list[extension].data[:, 550:]
             oScan_mask=sk.measure.label(Overscan>= np.max(Overscan) - np.mean(Overscan), connectivity=2)
-            oScan=ma.masked_array(Overscan,mask=(oScan_mask>0))
+            oScan = ma.masked_array(Overscan, mask=(oScan_mask>0))
 
             # active_area = hdu_list[extension].data[:, :550]
             # Overscan = hdu_list[extension - 1].data[:, 550:]
 
             active_area = hdu_list[extension].data[:, :550]
             active_area_mask = sk.measure.label(active_area>= np.max(active_area), connectivity=2)
-            data = ma.masked_array(active_area,mask=(active_area_mask>0))
+            data = ma.masked_array(active_area, mask=(active_area_mask>0))
 
 
             header = hdu_list[extension].header
@@ -95,8 +95,8 @@ def main(argObj):
             del nsamp
 
             try:
-                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=200, p0 = [10, 10, 500])		# Fit histogram with gaussian
-                fondo_value = 4 * abs(popt[2])
+                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=100000, p0 = [10, 10, 500])		# Fit histogram with gaussian
+                fondo_value = 3 * abs(popt[2])
             except:
                 print('Fit error in image ' + str(img))
                 continue
@@ -117,7 +117,7 @@ def main(argObj):
             ## Obteniendo el valor promedio del fondo
             fondo_mask = np.invert(label_img == 0)
             fondo = ma.masked_array(dataCal,fondo_mask)
-            valor_promedio_fondo = fondo.data.mean()
+            valor_promedio_fondo = fondo.mean()
 
             for event in range(1,n_events):
                 mask = np.invert(label_img == event)
@@ -127,26 +127,35 @@ def main(argObj):
                 
                 # del dataCal
 
-                # coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
-                # coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
+                coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
+                coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
 
-                # MeanValue_Event = data_maskEvent.mean()
-                # MinValue_Event = data_maskEvent.min()
+                MeanValue_Event = data_maskEvent.mean()
+                MinValue_Event = data_maskEvent.min()
 
-                # Barycentercharge = data_maskEvent[coordY_centerCharge, coordX_centerCharge]
+                Barycentercharge = data_maskEvent[coordY_centerCharge, coordX_centerCharge]
 
-                # try:
-                #     differval = abs(Barycentercharge - MinValue_Event) 
-                # except:
-                #     differval = 0 
+                try:
+                    differval = abs(Barycentercharge - MinValue_Event) 
+                except:
+                    differval = 0 
 
                 rM = prop[event-1].axis_major_length
                 rm = prop[event-1].axis_minor_length
+                miny, minx, maxy, maxx = prop[event-1].bbox
 
-                # miny, minx, maxy, maxx = prop[event-1].bbox
+                Long_y = maxy - miny
+                Long_x = maxx - minx
+                Solidity = prop[event-1].solidity
                 
-                # if differval < MeanValue_Event: #keV
-                #     continue
+                if Long_x < 4 or Long_y < 4 :
+                    continue
+                
+                if differval < MeanValue_Event:
+                    continue
+
+                if Solidity < 0.8:
+                    continue 
         
                 if  rM <= 2 * rm:
                     charge = data_maskEvent.sum()
