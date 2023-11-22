@@ -8,7 +8,7 @@
 
 **** NOTA: El archivo debe DEPURARSE ya que solo se unieron dos versiones de CheckNoise
 
-# Deiniciones
+# Definiciones
 	def gaussian(x, a, mean, sigma):
 		Definicion de una dustribución gaussiana
 
