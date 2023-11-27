@@ -28,7 +28,7 @@ if __version_info__ < (20, 0, 0, "alpha", 1):
 
 logging.basicConfig(format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s", level = logging.INFO)
 logger = logging.getLogger(__name__)
-Token = " 7" #Token del Bot. Nombre de Bot en Telegram: PruebainBot
+Token = " " #Token del Bot. Nombre de Bot en Telegram: PruebainBot
 intervalo_de_rutinaTemp = 45 # Tiempo para repetir la alarma de temperatura
 toloreancia_Temp = 1.5 # K 
 restored_conection = True # Variable auxiliar para reestablecer las tareas que se hayan quedado activas.
