@@ -131,9 +131,20 @@ def main(argObj):
                 
                 data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
                                                     mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
-
+                
                 MinValue_Event = data_maskEvent.min()
                 MeanValue_Event = data_maskEvent.mean()
+
+                try: 
+                    coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
+                    coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
+                    Barycentercharge = data_maskEvent[coordY_centerCharge, coordX_centerCharge]
+
+                    differval = abs(Barycentercharge - MinValue_Event) 
+
+                except:
+                    Barycentercharge = np.nan()
+                    differval = 0
 
                 rM = prop[event-1].axis_major_length
                 rm = prop[event-1].axis_minor_length
@@ -147,19 +158,23 @@ def main(argObj):
                 elif maxx - minx <= 3:
                     continue
 
-                # elif not Barycentercharge:
-                #     continue
+                elif not Barycentercharge:
+                    continue
 
-                # elif differval < MeanValue_Event: #keV
-                #     continue
+                elif differval < MeanValue_Event: #keV
+                    continue
 
-                elif  Solidity < 0.7:
+                elif  Solidity < 0.75:
                     continue 
 
                 elif  rM >= Elip * rm:
+                    charge = data_maskEvent.sum()
+
+                    if charge < 10000:
+                        continue
+                    
                     if (Longitud_x < 9 and Longitud_y > 10): 
                         num_muons = num_muons + 1
-                        charge = data_maskEvent.sum()
 
                         if extension == 0:
                             list_vertical_event_extension_1.append(data_maskEvent)
