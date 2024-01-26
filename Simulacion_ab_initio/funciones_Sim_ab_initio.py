@@ -16,8 +16,14 @@ def dis_energy(E_mu, theta): ### Poner la distribución de energías en función
     r = 0.76
     a = 2.5         ## MeV cm^2/g
     b_mu = 0.8      
+
     m_mu = 105.7    ## MeV/c^2 
     m_pi = 139.6    ## MeV/c^2
+
+    # a = 0.0025         ## GeV cm^2/g
+    # m_mu = 0.1057    ## GeV/c^2 
+    # m_pi = 0.1396    ## GeV/c^2
+
     tau_mu_0 = 2.2 * 10**(-6)   ## s
     tau_0 = 2.6 * 10 **(-8)     ## s
     rho_0 = 0.00129 ## g/cm^3
