@@ -1,5 +1,8 @@
 import numpy as np
 import mpmath as mp
+import random as rand
+import datetime
+import os
 
 def dis_probability(theta, I_0):
     return I_0 * np.cos(theta)
@@ -7,7 +10,7 @@ def dis_probability(theta, I_0):
 def dis_angular(theta): ## Distribucion angular
     return 1 * np.cos(theta)**2 * np.sin(theta)
 
-def dis_energy(E_mu, theta): ### Poner la distribución de energías en función del angulo theta
+def dis_energy(E_mu, theta): ### Pone la distribución de energías (en MeV) en función del angulo theta
     ## Constantes físicas
     k = 8 / 3
     b = 0.771
@@ -51,3 +54,78 @@ def coord_cartesian(Thet, Phi):
 
     Vec_sph = (float(coord_X), float(coord_Y), float(coord_Z))
     return Vec_sph 
+
+def muon_generator(E, Theta, Theta_true, Phi, Radio, long_a, long_b, n_thet, n_points):
+    list_random_th = []
+    list_random_phi = []
+    list_random_a = []
+    list_random_b = []
+    list_random_point = []
+    list_random_energy = []
+
+
+    Vectors = []
+    Points = []
+    Inicio = datetime.datetime.now()
+    print('Hora de inicio del cálculo: ', Inicio)
+
+    for i in np.arange(0,n_thet):
+        list_points_per_plane = []
+        list_random_energy_per_plane = []
+
+        Random_th = rand.choices(Theta, Theta_true) ## Escoje un ángulo segun la distribución de Theta_true
+
+        Random_phi = rand.choice(Phi)   ## Lo mismo pero con phi
+
+        Energy_dist = dis_energy(E, Random_th[0])
+
+        Vec = coord_cartesian(Random_th, Random_phi)
+        # print(type(Vec[0]))
+        Point = (Radio * Vec[0], Radio * Vec[1], Radio * Vec[2])  ## Genera un punto sobre la esfera.
+        Points.append(Point)
+
+        normal_Vec = (-1 * Vec[0], -1 * Vec[1], -1 * Vec[2])     ## Es un vector apuntando hacia el centro de coordenadas
+        # print(len(normal_Vec))
+        Vectors.append(normal_Vec)
+
+        vec_thet = [np.cos(Random_th) * np.cos(Random_phi), np.cos(Random_th) * np.sin(Random_phi), np.sin(Random_th)]
+        vec_phi = [-np.sin(Random_phi), np.cos(Random_phi), 0]
+
+        for i in np.arange(0,n_points):
+            list_random_th.append(Random_th[0])    ## Lo anexa en una lista
+            list_random_phi.append(Random_phi)
+
+
+            random_a = rand.choice(long_a)  ## Selecciona un valor uniforme para el parámetro a
+            random_b = rand.choice(long_b)  ##      ''      ''      ''      ''          ''    b
+
+            list_random_a.append(random_a)
+            list_random_b.append(random_b)
+
+            P_vector = [random_a * vec_thet[0] + random_b * vec_phi[0], 
+                        random_a * vec_thet[1] + random_b * vec_phi[1], 
+                        random_a * vec_thet[2] + random_b * vec_phi[2]]
+
+            random_plane_point = [Point[0] + P_vector[0], Point[1] + P_vector[1], Point[2] + P_vector[2]]
+            list_random_point.append(random_plane_point)
+
+            Random_energy = rand.choices(E, Energy_dist)
+            list_random_energy.append(Random_energy[0])
+
+        # list_random_energy_per_plane.append(list_random_energy)
+        # list_points_per_plane.append(list_random_plane_point)
+
+    # dict_simulation = {'Theta_Radianes': list_random_th, 'Phi_radianes': list_random_phi, 'Points_per_plane' : list_planes,
+    #                    'Energy_per_muon' : list_random_energy }
+
+    dict_simulation = {'Theta_Radianes': list_random_th, 'Phi_Radianes': list_random_phi, 'list_random_a' : list_random_a,
+                       'list_random_b' : list_random_b, 'Points' : list_random_point, 'Energy_per_muon' : list_random_energy }
+    
+    # del list_random_th, list_random_phi, list_points_per_plane, list_random_energy, list_random_energy_per_plane, Vectors, Points
+
+    Final = datetime.datetime.now()
+
+    print('Hora final de cálculo: ', Final)
+    print('Tiempo de cálculo: ', Final-Inicio)
+
+    return dict_simulation
