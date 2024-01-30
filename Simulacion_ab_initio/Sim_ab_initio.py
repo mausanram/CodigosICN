@@ -25,8 +25,8 @@ Energy = np.arange(10, 100000, 1)
 
 Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
-number_thet = 100
-number_points_per_angle = 10
+number_thet = 200
+number_points_per_angle = 1
 
 n_muons = number_thet * number_points_per_angle
 
@@ -61,6 +61,11 @@ plt.show()
 
 print('Muones Simulados: ', n_muons)
 
+
+fig, axs = plt.subplots(figsize=[7,5])
+axs.hist(np.array(dict_simulation['list_Delta_L']), bins = 110)
+fig.suptitle(r'Distribución del Delta L', y = 0.95, size = 20)
+plt.show()
 
 #### Se crea la figura en 3D
 # fig = plt.figure()

@@ -62,7 +62,7 @@ def muon_generator(E, Theta, Theta_true, Phi, Radio, long_a, long_b, n_thet, n_p
     list_random_b = []
     list_random_point = []
     list_random_energy = []
-
+    list_delta_L = []
 
     Vectors = []
     Points = []
@@ -102,6 +102,9 @@ def muon_generator(E, Theta, Theta_true, Phi, Radio, long_a, long_b, n_thet, n_p
             list_random_a.append(random_a)
             list_random_b.append(random_b)
 
+            delta_L = np.cos(Random_th) * 0.0725 ## micras
+            list_delta_L.append(delta_L)
+
             P_vector = [random_a * vec_thet[0] + random_b * vec_phi[0], 
                         random_a * vec_thet[1] + random_b * vec_phi[1], 
                         random_a * vec_thet[2] + random_b * vec_phi[2]]
@@ -118,8 +121,9 @@ def muon_generator(E, Theta, Theta_true, Phi, Radio, long_a, long_b, n_thet, n_p
     # dict_simulation = {'Theta_Radianes': list_random_th, 'Phi_radianes': list_random_phi, 'Points_per_plane' : list_planes,
     #                    'Energy_per_muon' : list_random_energy }
 
-    dict_simulation = {'Theta_Radianes': list_random_th, 'Phi_Radianes': list_random_phi, 'list_random_a' : list_random_a,
-                       'list_random_b' : list_random_b, 'Points' : list_random_point, 'Energy_per_muon' : list_random_energy }
+    dict_simulation = {'Number_of_angles' : n_thet, 'Points_per_angle' : n_points,  'Theta_Radianes': list_random_th, 
+                       'Phi_Radianes': list_random_phi, 'list_random_a' : list_random_a, 'list_random_b' : list_random_b, 
+                       'Points' : list_random_point, 'Energy_per_muon' : list_random_energy, 'list_Delta_L' : list_delta_L }
     
     # del list_random_th, list_random_phi, list_points_per_plane, list_random_energy, list_random_energy_per_plane, Vectors, Points
 
