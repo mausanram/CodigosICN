@@ -37,7 +37,7 @@ def Landau(x,a, MP,xi):
 
 
 def main(argObj):
-    # expgain = [227, 220.4, 94.72, 197.7] ## Ganancia para 324nsamp 
+    expgain = [227, 220.4, 94.72, 197.7] ## Ganancia para 324nsamp 
 
     # expgain = [110.78158608889959, 144.4661840232508, 100,  63.730700893071976] ## 
 
@@ -86,8 +86,8 @@ def main(argObj):
 
             offset = bins_edges[np.argmax(hist)]
             dataP = data - offset
-            # dataCal = (dataP)/expgain[extension] ## En keV  
-            dataCal = dataP ## En ADUs
+            dataCal = (dataP)/expgain[extension] ## En keV  
+            # dataCal = dataP ## En ADUs
             
             del hist
             del data
@@ -178,8 +178,8 @@ def main(argObj):
 
                 if  rM >= Elip * rm: ## Muones
                     charge = data_maskEvent.sum()
-                    # DeltaEL = (charge / 1000) / (Delta_L * micra_to_cm) # MeV/cm
-                    DeltaEL = charge / (Delta_L) # ADUs/cm
+                    DeltaEL = (charge / 1000) / (Delta_L * micra_to_cm) # MeV/cm
+                    # DeltaEL = charge / (Delta_L) # ADUs/cm
                     num_muons = num_muons + 1
 
                     if extension == 0:
@@ -255,7 +255,8 @@ def main(argObj):
     # axs.set_ylabel('Events') 
     # axs.set_xlim([0, 400])  
 
-    file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs__.pkl'
+    # file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs__.pkl'
+    file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_MeVs__.pkl'
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
