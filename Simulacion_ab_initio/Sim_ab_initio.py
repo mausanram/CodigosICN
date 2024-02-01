@@ -18,15 +18,15 @@ Phi = np.arange(0, 2 * np.pi, 0.001)
 Radio = 100
 Theta = np.arange(0, np.pi/2, 0.001)    ### Semi-esfera de radio 100 unidades
 
-long_a = np.arange(0, 10, 0.001)
-long_b = np.arange(0, 10, 0.001)
+long_a = np.arange(-5, 5, 0.01)
+long_b = np.arange(-5, 5, 0.01)
 
 Energy = np.arange(10, 100000, 1)
 
 Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
-number_thet = 200
-number_points_per_angle = 1
+number_thet = 100
+number_points_per_angle = 10
 
 n_muons = number_thet * number_points_per_angle
 

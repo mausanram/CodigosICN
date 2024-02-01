@@ -102,7 +102,7 @@ def muon_generator(E, Theta, Theta_true, Phi, Radio, long_a, long_b, n_thet, n_p
             list_random_a.append(random_a)
             list_random_b.append(random_b)
 
-            delta_L = np.cos(Random_th) * 0.0725 ## micras
+            delta_L = 0.0725 / np.cos(Random_th)  ## cm
             list_delta_L.append(delta_L)
 
             P_vector = [random_a * vec_thet[0] + random_b * vec_phi[0], 
