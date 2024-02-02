@@ -25,8 +25,8 @@ Energy = np.arange(10, 100000, 1)
 
 Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
-number_thet = 100
-number_points_per_angle = 10
+number_thet = 150
+number_points_per_angle = 1
 
 n_muons = number_thet * number_points_per_angle
 
