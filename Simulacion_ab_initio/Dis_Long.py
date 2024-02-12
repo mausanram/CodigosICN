@@ -8,6 +8,7 @@ from funciones_Sim_ab_initio import *
 import datetime
 import os
 import pickle as pkl
+import ROOT 
 
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -48,7 +49,7 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
 ####    Número de Puntos a Simular  ####
 number_thet = 10000
-number_points_per_angle = 100
+number_points_per_angle = 5
 
 n_muons = number_thet * number_points_per_angle
 
@@ -180,8 +181,12 @@ for i in np.arange(0,number_thet):
         Delta_L, muon = intersection_CCD(list_flags, list_z, medida_z, Random_th)
 
         if Delta_L != 0:
+            if Delta_L > 0:
                 list_delta_L.append(Delta_L)
                 n_muons_in_CCD = n_muons_in_CCD + muon
+
+            else:
+                continue
 
         else:
                 continue
@@ -231,11 +236,13 @@ print('Muones que Impactaron la CCD: ', n_muons_in_CCD)
 
 array_Delta_L = np.array(list_delta_L)
 # max_DeltaL = np.max()
+# print()
 
 fig, axs = plt.subplots(figsize=[7,5])
-axs.hist(array_Delta_L, bins = 1000, label = 'Eventos Simulados: ' + str(number_thet * number_points_per_angle))
+axs.hist(array_Delta_L, bins = 500, label = 'Eventos Simulados: ' + str(number_thet * number_points_per_angle))
 # axs.set_xlim(0, 0.5)
 axs.vlines([0.0725], 0, 500, colors='k', linestyles='dashed')
+# axs.set_xlim(0, 2)
 axs.legend()
 fig.suptitle(r'Distribución de Longitudes', y = 0.95, size = 20)
 plt.show()
@@ -244,6 +251,17 @@ file_name = 'array_Delta_L_' + str(n_muons) + '.pkl'
 file_object_histogram = open(file_name, 'wb')
 pkl.dump(array_Delta_L, file_object_histogram) ## Save the dictionary with all info 
 file_object_histogram.close()
+
+h = ROOT.TH1F("h", "Titutlo", 500, 0, 2)
+for element in list_delta_L:
+    h.Fill(element)
+
+
+canv = ROOT.TCanvas("canv", "Titulo 2", 700, 400)
+
+canv.cd()
+h.Draw()
+canv.Print("/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/plot.pdf")
 
 # print('Arrray saved in ', current_path + '/' + file_name, ' as a binary file.')
 # print('To open use library "pickle". ')

@@ -73,11 +73,29 @@ def main(argObj):
         for extension in (0,1,3):
             # extension = 1
 
-            data = hdu_list[extension].data[:,:550]
+            active_area = hdu_list[extension-1].data[:, :550]
             header = hdu_list[extension].header
-            oScan = hdu_list[extension].data[:,550:]
+            Overscan = hdu_list[extension-1].data[:,550:]
             nsamp = float(header['NSAMP'])
+            max_Over = np.max(Overscan)
+            mean_Over = np.mean(Overscan)
 
+            ### MAscara del Overscan 
+            if max_Over > 8 * mean_Over:
+                oScan_mask=sk.measure.label(Overscan >= np.max(Overscan) - np.mean(Overscan) , connectivity=2)
+                oScan=ma.masked_array(Overscan,mask=(oScan_mask>0))
+
+            else: 
+                oScan_mask=sk.measure.label(Overscan >= np.max(Overscan) , connectivity=2)
+                oScan=ma.masked_array(Overscan,mask=(oScan_mask>0))
+
+            ### MAscara de la zona activa
+            active_area_mask = sk.measure.label(active_area >= np.max(active_area), connectivity=2)
+            data = ma.masked_array(active_area, mask = (active_area_mask>0))
+
+            del active_area
+            del Overscan
+            del oScan_mask
             del header
 
             hist , bins_edges = np.histogram(oScan.flatten(), bins = numero_bins) #'auto'
@@ -106,10 +124,10 @@ def main(argObj):
             del nsamp
 
             try:
-                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=100000, p0 = [1,1,100])		# Fit histogram with gaussian
+                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=1000000, p0 = [1,1,1])		# Fit histogram with gaussian
                 fondo_value = 6 * abs(popt[2])
             except:
-                print('Fit error in image ' + str(img))
+                print('Fit error in extension ' + str(extension) +  ' of image ' + str(img))
                 continue
 
             del bin_heights

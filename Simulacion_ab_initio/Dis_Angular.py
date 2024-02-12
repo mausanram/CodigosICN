@@ -11,6 +11,10 @@ import pickle as pkl
 
 from mpl_toolkits.mplot3d import Axes3D
 
+
+########## Checar que la constante de ajuste sea la correcta y se ajuste bien a la dstribución ########
+
+
 ###### Definiciones y dominios #######
 Phi = np.arange(0, 2 * np.pi, 0.001)
 Radio = 100
@@ -23,10 +27,17 @@ long_b = np.arange(-5, 5, 0.01)
 
 Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
-number_thet = 60000
+# print('Clase de tipo: ', type(Theta_true))
+# print('Longitud Total: ', len(Theta_true))
+# print('Longitud: ', Theta[-1])
+
+number_thet = 100000
 number_points_per_angle = 1
 
 n_muons = number_thet * number_points_per_angle
+
+Inicio = datetime.datetime.now()
+print('Hora de inicio del cálculo: ', Inicio)
 
 list_random_thet = []
 list_random_phi = []
@@ -44,15 +55,21 @@ for i in np.arange(0,number_thet):
     # Vec = coord_cartesian(Random_th, Random_phi)
     # Point = (Radio * Vec[0], Radio * Vec[1], Radio * Vec[2])  ## Genera un punto sobre la esfera.
 
-Bins = 110
-delta_B = 1.6 / Bins
+Bins = 150
+delta_B = Theta[-1]/ Bins
 Const_Normal =  3 * number_thet * delta_B
 print('La constante de ajuste de la curva es: ', np.round(Const_Normal, 3))
 
 
+Final = datetime.datetime.now()
+print('Hora final de cálculo: ', Final)
+print('Tiempo de cálculo: ', Final-Inicio)
+
+
 fig, axs = plt.subplots(figsize=[7,5])
-axs.plot(Theta, Const_Normal * Theta_true)
-axs.hist(np.array(list_random_thet), bins = Bins)
+axs.plot(Theta, Const_Normal * Theta_true, label = r'$sin \theta cos^2 \theta$')
+axs.hist(np.array(list_random_thet), bins = Bins, range=[0, Theta[-1]],  label='Eventos Simulados: ' + str(n_muons))
+axs.legend()
 fig.suptitle(r'Distribución angular $\theta$', y = 0.95, size = 20)
 plt.show()
 
