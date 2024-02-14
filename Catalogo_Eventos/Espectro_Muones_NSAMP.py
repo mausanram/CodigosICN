@@ -22,7 +22,7 @@ px_to_micras = 15
 micra_to_cm = 1 / 10000
 DeltaEL_range = 85
 Solidit = 0.7
-Elip = 5.5
+Elip = 5
 numero_bins = 5000
 DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
 
@@ -77,11 +77,12 @@ def main(argObj):
             header = hdu_list[extension].header
             Overscan = hdu_list[extension-1].data[:,550:]
             nsamp = float(header['NSAMP'])
+            
             max_Over = np.max(Overscan)
             mean_Over = np.mean(Overscan)
 
             ### MAscara del Overscan 
-            if max_Over > 8 * mean_Over:
+            if max_Over > 5 * mean_Over:
                 oScan_mask=sk.measure.label(Overscan >= np.max(Overscan) - np.mean(Overscan) , connectivity=2)
                 oScan=ma.masked_array(Overscan,mask=(oScan_mask>0))
 
@@ -113,7 +114,8 @@ def main(argObj):
             
             bin_heights, bin_borders = np.histogram(dataCal.flatten(), bins= numero_bins) #'auto'
             bin_centers=np.zeros(len(bin_heights), dtype=float)
-            offset_fit = bin_borders[np.argmax(bin_heights)]
+            # offset_fit = bin_borders[np.argmax(bin_heights)]
+
             for p in range(len(bin_heights)):
                 bin_centers[p]=(bin_borders[p+1]+bin_borders[p])/2
 
@@ -124,8 +126,9 @@ def main(argObj):
             del nsamp
 
             try:
-                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=1000000, p0 = [1,1,1])		# Fit histogram with gaussian
+                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=1000000, p0 = [1,1,0.1])		# Fit histogram with gaussian
                 fondo_value = 6 * abs(popt[2])
+                print('Valor del fondo: ', fondo_value)
             except:
                 print('Fit error in extension ' + str(extension) +  ' of image ' + str(img))
                 continue
@@ -137,7 +140,7 @@ def main(argObj):
             del xmax_fit
 
             # label, n_events = ndimage.label(dataCal>6*abs(popt[2]),structure=[[1,1,1],[1,1,1],[1,1,1]])
-            label_img, n_events = sk.measure.label(dataCal > fondo_value, connectivity=2, return_num=True)
+            label_img, n_events = sk.measure.label(dataCal > fondo_value, connectivity = 2, return_num=True)
             prop = sk.measure.regionprops(label_img, dataCal)
             list_totalEvents.append(n_events)
             # print(nlabels_img)
@@ -194,7 +197,7 @@ def main(argObj):
                 elif  Solidity < Solidit: ## Ver el artículo: Recognition and classification of the cosmic-ray events in images captured by CMOS/CCD cameras
                     continue 
 
-                if  rM >= Elip * rm: ## Muones
+                elif  rM >= Elip * rm: ## Muones
                     charge = data_maskEvent.sum() / 1000 ## EN MeV
                     DeltaEL = charge / (Delta_L * micra_to_cm) # MeV/cm
                     # DeltaEL = charge / (Delta_L) # ADUs/cm
