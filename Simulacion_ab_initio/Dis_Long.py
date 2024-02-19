@@ -49,7 +49,7 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
 ####    Número de Puntos a Simular  ####
 number_thet = 10000
-number_points_per_angle = 5
+number_points_per_angle = 50
 
 n_muons = number_thet * number_points_per_angle
 
@@ -58,138 +58,33 @@ print('Hora de inicio del cálculo: ', Inicio)
 
 # print(mapeo_x)
 #### Inicio del Bucle ####
-n_muons_in_CCD = 0
+n_muons_CCD = 0
 
-for i in np.arange(0,number_thet):
-    list_random_energy_per_plane = []
-    list_points_per_plane = []
+list_delta_L_neg = []
+list_delta_L_Total = []
 
-    Random_th = rand.choices(Theta, Theta_true) ## Escoje un ángulo segun la distribución de Theta_true
+list_delta_L, n_muons_in_CCD, n_negative_long = func_longitud(number_thet, Theta, Theta_true, Phi, Radio, number_points_per_angle, long_a, long_b, 
+                                                              medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z)
 
-    Random_phi = rand.choice(Phi)   ## Lo mismo pero con phi
+print('Eventos con long negativa detectados: ', n_negative_long, '. Se estan volviendo a simular. ')
 
-    Vec = coord_cartesian(Random_th, Random_phi)
-    Norma = norma_vec(Vec)
-    # print(type(Vec[0]))
-    Point = [Radio * Vec[0], Radio * Vec[1], Radio * Vec[2]]  ## Genera un punto sobre la esfera.
-    # norma = np.sqrt(Point[0] ** 2 + Point[1] ** 2 + Point[2] ** 2)
-    # Point = (Vec[0], Vec[1], Vec[2])  ## Genera un punto sobre la esfera.
-    # print('Vector sobre la esfera: ', Point)
-    # print('Norma del Vector:', norma)
-    # Points.append(Point)
+if n_negative_long != 0:
+    flag_long_negative = True
 
-    normal_Vec = (-1 * Vec[0] / Norma, -1 * Vec[1] / Norma, -1 * Vec[2] / Norma)     ## Es un vector normal unitario apuntando 
-                                                                                        ##  hacia el centro de coordenadas
-    # normal_Norma_Vec = norma_vec(normal_Vec)
-    # print('Norma del vector anti-normal a la esfera:', normal_Norma_Vec)
-    # print(len(normal_Vec))
-    # Vectors.append(normal_Vec)
-
-    vec_thet = [np.cos(Random_th) * np.cos(Random_phi), np.cos(Random_th) * np.sin(Random_phi), np.sin(Random_th)]
-    vec_phi = [-np.sin(Random_phi), np.cos(Random_phi), 0]
-    # print('Vector Unitario Theta: ', vec_thet)
-    # print('Vector Unitario Theta: ', vec_phi)
-
-    for i in np.arange(0,number_points_per_angle):
-        flag_cara_1, flag_cara_2, flag_cara_3, flag_cara_4, flag_cara_5, flag_cara_6 = False, False, False, False, False, False 
-        # list_random_th.append(Random_th[0])    ## Lo anexa en una lista
-        # list_random_phi.append(Random_phi)
+while flag_long_negative:
+    list_delta_L_1, n_muons_in_CCD_1, n_negative_long = func_longitud(n_negative_long, Theta, Theta_true, Phi, Radio, 1, 
+                                                                      long_a, long_b, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z)
+    
+    # if n_negative_long != 0 :
+    #     print('Aun se detectaron eventos con long negativa')
 
 
-        random_a = rand.choice(long_a)  ## Selecciona un valor uniforme para el parámetro a
-        random_b = rand.choice(long_b)  ##      ''      ''      ''      ''          ''    b
+    list_delta_L_neg = list_delta_L_neg + list_delta_L_1
+    
+    if n_negative_long == 0:
+        flag_long_negative = False
 
-        # list_random_a.append(random_a)
-        # list_random_b.append(random_b)
-
-        P_vector = [random_a * vec_thet[0] + random_b * vec_phi[0], 
-                    random_a * vec_thet[1] + random_b * vec_phi[1], 
-                    random_a * vec_thet[2] + random_b * vec_phi[2]]
-        
-        list_P_vector.append(P_vector)
-
-        random_plane_point = [Point[0] + P_vector[0], Point[1] + P_vector[1], Point[2] + P_vector[2]]
-        # random_plane_point = [-1 * (Point[0] + P_vector[0]), -1 * (Point[1] + P_vector[1]), -1 * (Point[2] + P_vector[2])]
-
-        # print(random_plane_point)
-        list_random_point.append(random_plane_point)
-
-        #### Intersecciones con cada cara   ####
-        
-        #### Cara Superior ###
-        t_1 = (medida_z - random_plane_point[2]) / normal_Vec[2] 
-        x_1 = random_plane_point[0] + normal_Vec[0] * t_1 
-        y_1 = random_plane_point[1] + normal_Vec[1] * t_1 
-
-        #### Cara Inferior ###
-        t_2 = (0 - random_plane_point[2]) / normal_Vec[2] 
-        x_2 = random_plane_point[0] + normal_Vec[0] * t_2 
-        y_2 = random_plane_point[1] + normal_Vec[1] * t_2
-
-        ### Caras en X ###
-        ### Cara 3 ###
-        t_3 = (-medida_x - random_plane_point[0]) / normal_Vec[0]
-        z_3 = random_plane_point[2] + normal_Vec[2] * t_3 
-        y_3 = random_plane_point[1] + normal_Vec[1] * t_3
-
-        ### Cara 4 ###
-        t_4 = (medida_x - random_plane_point[0]) / normal_Vec[0]
-        z_4 = random_plane_point[2] + normal_Vec[2] * t_4 
-        y_4 = random_plane_point[1] + normal_Vec[1] * t_4
-
-        #### Caras en Y ###
-        ### Cara 3 ###
-        t_5 = (-medida_x - random_plane_point[1]) / normal_Vec[1]
-        z_5 = random_plane_point[2] + normal_Vec[2] * t_5 
-        x_5 = random_plane_point[0] + normal_Vec[0] * t_5
-
-        ### Cara 4 ###
-        t_6 = (medida_x - random_plane_point[1]) / normal_Vec[1]
-        z_6 = random_plane_point[2] + normal_Vec[2] * t_4 
-        x_6 = random_plane_point[0] + normal_Vec[0] * t_4
-
-        list_z = [z_3, z_4, z_5, z_6]
-        
-        if np.around(x_1[0], 4) in mapeo_x and np.around(y_1[0], 4) in mapeo_y:
-            flag_cara_1 = True
-            # print('Bandera 1: ', flag_cara_1) 
-
-        if np.round(x_2[0], 4) in mapeo_x and np.round(y_2[0], 4) in mapeo_y:
-            flag_cara_2 = True
-            # print('Bandera 2: ', flag_cara_2)
-
-        if np.around(y_3[0], 4) in mapeo_y and np.around(z_3[0], 4) in mapeo_z:
-            flag_cara_3 = True
-            # print('Bandera 1: ', flag_cara_1) 
-
-        if np.round(y_4[0], 4) in mapeo_y and np.round(z_4[0], 4) in mapeo_z:
-            flag_cara_4 = True
-            # print('Bandera 2: ', flag_cara_2)
-
-        if np.around(x_5[0], 4) in mapeo_x and np.around(z_5[0], 4) in mapeo_z:
-            flag_cara_5 = True
-            # print('Bandera 1: ', flag_cara_1) 
-
-        if np.round(x_6[0], 4) in mapeo_x and np.round(z_6[0], 4) in mapeo_z:
-            flag_cara_6 = True
-            # print('Bandera 2: ', flag_cara_2)
-
-        list_flags = [flag_cara_1, flag_cara_2, flag_cara_3, flag_cara_4, flag_cara_5, flag_cara_6]
-        
-
-
-        Delta_L, muon = intersection_CCD(list_flags, list_z, medida_z, Random_th)
-
-        if Delta_L != 0:
-            if Delta_L > 0:
-                list_delta_L.append(Delta_L)
-                n_muons_in_CCD = n_muons_in_CCD + muon
-
-            else:
-                continue
-
-        else:
-                continue
+list_delta_L_Total = list_delta_L + list_delta_L_neg
         
 Final = datetime.datetime.now()
 
@@ -199,7 +94,7 @@ print('Tiempo de cálculo: ', Final-Inicio)
 print('Muones Simulados: ', n_muons)
 print('Tamaño de los planos: (' + str(plane_side * 2) + ' x ' + str(plane_side * 2) + ') cm^2')
 print('Muones que Impactaron la CCD: ', n_muons_in_CCD)
-
+print('Muones que tuvieron una longitud negativa: ', n_negative_long)
 # fig = plt.figure()
 # ax1 = fig.add_subplot(111, projection='3d')
 # Ax = Axes3D(fig)
@@ -234,7 +129,7 @@ print('Muones que Impactaron la CCD: ', n_muons_in_CCD)
 # Mostramos el gráfico
 # plt.show()
 
-array_Delta_L = np.array(list_delta_L)
+array_Delta_L = np.array(list_delta_L_Total)
 # max_DeltaL = np.max()
 # print()
 
@@ -247,21 +142,21 @@ axs.legend()
 fig.suptitle(r'Distribución de Longitudes', y = 0.95, size = 20)
 plt.show()
 
-file_name = 'array_Delta_L_' + str(n_muons) + '.pkl'
-file_object_histogram = open(file_name, 'wb')
-pkl.dump(array_Delta_L, file_object_histogram) ## Save the dictionary with all info 
-file_object_histogram.close()
+# file_name = 'array_Delta_L_' + str(n_muons) + '.pkl'
+# file_object_histogram = open(file_name, 'wb')
+# pkl.dump(array_Delta_L, file_object_histogram) ## Save the dictionary with all info 
+# file_object_histogram.close()
 
-h = ROOT.TH1F("h", "Titutlo", 500, 0, 2)
-for element in list_delta_L:
-    h.Fill(element)
+# h = ROOT.TH1F("h", "Titutlo", 500, 0, 2)
+# for element in list_delta_L:
+#     h.Fill(element)
 
 
-canv = ROOT.TCanvas("canv", "Titulo 2", 700, 400)
+# canv = ROOT.TCanvas("canv", "Titulo 2", 700, 400)
 
-canv.cd()
-h.Draw()
-canv.Print("/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/plot.pdf")
+# canv.cd()
+# h.Draw()
+# canv.Print("/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/plot.pdf")
 
 # print('Arrray saved in ', current_path + '/' + file_name, ' as a binary file.')
 # print('To open use library "pickle". ')

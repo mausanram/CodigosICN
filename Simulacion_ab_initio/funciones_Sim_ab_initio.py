@@ -44,7 +44,8 @@ def dis_energy(E_mu, theta): ### Pone la distribución de energías (en MeV) en 
     C_2 = E_pi * np.cos(theta)
     C_3 = b * j_pi
 
-    return (C_1 * np.sin(theta)) / (C_2 + C_3)
+    # return (C_1 * np.sin(theta)) / (C_2 + C_3)
+    return (C_1 ) / (C_2 + C_3)
 
 ##### Coordenadas Cartesianas Unitarias######
 def coord_cartesian(Thet, Phi):
@@ -58,6 +59,17 @@ def coord_cartesian(Thet, Phi):
 def norma_vec(Vector):
     norma = np.sqrt(Vector[0] ** 2 + Vector[1] ** 2  + Vector[2] ** 2 )
     return norma
+
+def Energy_list(lim_inf, lim_sup, N):
+    list_Energy = []
+    Delta_log = (np.log10(lim_sup) - np.log10(lim_inf))/ (N - 1)
+
+    for i in np.arange(0, N):
+        En = 10 ** (np.log10(lim_inf) + i * Delta_log)
+        list_Energy.append(En)
+
+    return list_Energy
+
 
 def dimension_x():
     long_x = 1.197 / 2
@@ -380,3 +392,144 @@ def muon_generator(E, Theta, Theta_true, Phi, Radio, long_a, long_b, n_thet, n_p
     print('Tiempo de cálculo: ', Final-Inicio)
 
     return dict_simulation
+
+def func_longitud(number_thet,Theta, Theta_true, Phi, Radio, number_points_per_angle, long_a, long_b, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z):
+    list_P_vector = []
+    list_random_point = []
+    list_delta_L = []
+    n_muons_in_CCD = 0
+    n_negative_long = 0
+
+    for i in np.arange(0,number_thet):
+        list_random_energy_per_plane = []
+        list_points_per_plane = []
+
+        Random_th = rand.choices(Theta, Theta_true) ## Escoje un ángulo segun la distribución de Theta_true
+
+        Random_phi = rand.choice(Phi)   ## Lo mismo pero con phi
+
+        Vec = coord_cartesian(Random_th, Random_phi)
+        Norma = norma_vec(Vec)
+        # print(type(Vec[0]))
+        Point = [Radio * Vec[0], Radio * Vec[1], Radio * Vec[2]]  ## Genera un punto sobre la esfera.
+        # norma = np.sqrt(Point[0] ** 2 + Point[1] ** 2 + Point[2] ** 2)
+        # Point = (Vec[0], Vec[1], Vec[2])  ## Genera un punto sobre la esfera.
+        # print('Vector sobre la esfera: ', Point)
+        # print('Norma del Vector:', norma)
+        # Points.append(Point)
+
+        normal_Vec = (-1 * Vec[0] / Norma, -1 * Vec[1] / Norma, -1 * Vec[2] / Norma)     ## Es un vector normal unitario apuntando 
+                                                                                            ##  hacia el centro de coordenadas
+        # normal_Norma_Vec = norma_vec(normal_Vec)
+        # print('Norma del vector anti-normal a la esfera:', normal_Norma_Vec)
+        # print(len(normal_Vec))
+        # Vectors.append(normal_Vec)
+
+        vec_thet = [np.cos(Random_th) * np.cos(Random_phi), np.cos(Random_th) * np.sin(Random_phi), np.sin(Random_th)]
+        vec_phi = [-np.sin(Random_phi), np.cos(Random_phi), 0]
+        # print('Vector Unitario Theta: ', vec_thet)
+        # print('Vector Unitario Theta: ', vec_phi)
+
+        for i in np.arange(0,number_points_per_angle):
+            flag_cara_1, flag_cara_2, flag_cara_3, flag_cara_4, flag_cara_5, flag_cara_6 = False, False, False, False, False, False 
+            # list_random_th.append(Random_th[0])    ## Lo anexa en una lista
+            # list_random_phi.append(Random_phi)
+
+
+            random_a = rand.choice(long_a)  ## Selecciona un valor uniforme para el parámetro a
+            random_b = rand.choice(long_b)  ##      ''      ''      ''      ''          ''    b
+
+            # list_random_a.append(random_a)
+            # list_random_b.append(random_b)
+
+            P_vector = [random_a * vec_thet[0] + random_b * vec_phi[0], 
+                        random_a * vec_thet[1] + random_b * vec_phi[1], 
+                        random_a * vec_thet[2] + random_b * vec_phi[2]]
+            
+            list_P_vector.append(P_vector)
+
+            random_plane_point = [Point[0] + P_vector[0], Point[1] + P_vector[1], Point[2] + P_vector[2]]
+            # random_plane_point = [-1 * (Point[0] + P_vector[0]), -1 * (Point[1] + P_vector[1]), -1 * (Point[2] + P_vector[2])]
+
+            # print(random_plane_point)
+            list_random_point.append(random_plane_point)
+
+            #### Intersecciones con cada cara   ####
+            
+            #### Cara Superior ###
+            t_1 = (medida_z - random_plane_point[2]) / normal_Vec[2] 
+            x_1 = random_plane_point[0] + normal_Vec[0] * t_1 
+            y_1 = random_plane_point[1] + normal_Vec[1] * t_1 
+
+            #### Cara Inferior ###
+            t_2 = (0 - random_plane_point[2]) / normal_Vec[2] 
+            x_2 = random_plane_point[0] + normal_Vec[0] * t_2 
+            y_2 = random_plane_point[1] + normal_Vec[1] * t_2
+
+            ### Caras en X ###
+            ### Cara 3 ###
+            t_3 = (-medida_x - random_plane_point[0]) / normal_Vec[0]
+            z_3 = random_plane_point[2] + normal_Vec[2] * t_3 
+            y_3 = random_plane_point[1] + normal_Vec[1] * t_3
+
+            ### Cara 4 ###
+            t_4 = (medida_x - random_plane_point[0]) / normal_Vec[0]
+            z_4 = random_plane_point[2] + normal_Vec[2] * t_4 
+            y_4 = random_plane_point[1] + normal_Vec[1] * t_4
+
+            #### Caras en Y ###
+            ### Cara 3 ###
+            t_5 = (-medida_x - random_plane_point[1]) / normal_Vec[1]
+            z_5 = random_plane_point[2] + normal_Vec[2] * t_5 
+            x_5 = random_plane_point[0] + normal_Vec[0] * t_5
+
+            ### Cara 4 ###
+            t_6 = (medida_x - random_plane_point[1]) / normal_Vec[1]
+            z_6 = random_plane_point[2] + normal_Vec[2] * t_4 
+            x_6 = random_plane_point[0] + normal_Vec[0] * t_4
+
+            list_z = [z_3, z_4, z_5, z_6]
+            
+            if np.around(x_1[0], 4) in mapeo_x and np.around(y_1[0], 4) in mapeo_y:
+                flag_cara_1 = True
+                # print('Bandera 1: ', flag_cara_1) 
+
+            if np.round(x_2[0], 4) in mapeo_x and np.round(y_2[0], 4) in mapeo_y:
+                flag_cara_2 = True
+                # print('Bandera 2: ', flag_cara_2)
+
+            if np.around(y_3[0], 4) in mapeo_y and np.around(z_3[0], 4) in mapeo_z:
+                flag_cara_3 = True
+                # print('Bandera 1: ', flag_cara_1) 
+
+            if np.round(y_4[0], 4) in mapeo_y and np.round(z_4[0], 4) in mapeo_z:
+                flag_cara_4 = True
+                # print('Bandera 2: ', flag_cara_2)
+
+            if np.around(x_5[0], 4) in mapeo_x and np.around(z_5[0], 4) in mapeo_z:
+                flag_cara_5 = True
+                # print('Bandera 1: ', flag_cara_1) 
+
+            if np.round(x_6[0], 4) in mapeo_x and np.round(z_6[0], 4) in mapeo_z:
+                flag_cara_6 = True
+                # print('Bandera 2: ', flag_cara_2)
+
+            list_flags = [flag_cara_1, flag_cara_2, flag_cara_3, flag_cara_4, flag_cara_5, flag_cara_6]
+            
+
+
+            Delta_L, muon = intersection_CCD(list_flags, list_z, medida_z, Random_th)
+
+            if Delta_L != 0:
+                if Delta_L > 0 and Delta_L < 2.1:
+                    list_delta_L.append(Delta_L)
+                    n_muons_in_CCD = n_muons_in_CCD + muon
+
+                else:
+                    n_negative_long = n_negative_long + 1
+                    continue
+
+            else:
+                    continue
+            
+    return list_delta_L, n_muons_in_CCD, n_negative_long
