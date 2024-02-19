@@ -49,7 +49,7 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
 ####    Número de Puntos a Simular  ####
 number_thet = 10000
-number_points_per_angle = 50
+number_points_per_angle = 10
 
 n_muons = number_thet * number_points_per_angle
 

@@ -10,7 +10,7 @@ def dis_probability(theta, I_0):
 def dis_angular(theta): ## Distribucion angular
     return 1 * np.cos(theta)**2 * np.sin(theta)
 
-def dis_energy(E_mu, theta): ### Pone la distribución de energías (en MeV) en función del angulo theta
+def dis_energy(E_mu, theta): ### Modelo de Smith-Duller 
     ## Constantes físicas
     k = 8 / 3
     b = 0.771
