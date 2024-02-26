@@ -49,8 +49,8 @@ Theta_true = dis_angular(Theta)
 
 
 ### Número de muones que se van a simular ### 
-number_thet = 10
-number_points_per_angle = 5000
+number_thet = 30
+number_points_per_angle = 1000
 n_muons = number_thet * number_points_per_angle
 
 

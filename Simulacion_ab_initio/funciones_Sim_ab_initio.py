@@ -47,8 +47,7 @@ def dis_energy(E_mu, theta): ### Modelo de Smith-Duller
     # return (C_1 * np.sin(theta)) / (C_2 + C_3)
     return (C_1 ) / (C_2 + C_3)
 
-##### Coordenadas Cartesianas Unitarias######
-def coord_cartesian(Thet, Phi):
+def coord_cartesian(Thet, Phi): ##### Coordenadas Cartesianas
     coord_X = np.sin(Thet) * np.cos(Phi)
     coord_Y = np.sin(Thet) * np.sin(Phi)
     coord_Z = np.cos(Thet)
@@ -69,7 +68,6 @@ def Energy_list(lim_inf, lim_sup, N):
         list_Energy.append(En)
 
     return list_Energy
-
 
 def dimension_x(long_x):
     step = 0.0001
@@ -309,6 +307,86 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
         delta_L, n_muons_in_CCD = 0, 0
 
     return delta_L, n_muons_in_CCD
+
+def muon_generator_1(Radio, long_a, long_b, number_thet, number_points_per_angle, Theta, 
+                                  Theta_true, Phi, Energy):
+    list_rand_thet = []
+    list_rand_phi = []
+
+    list_rand_thet_deg = []
+    list_rand_phi_deg = []
+
+    # list_delta_L = []
+    list_random_energy = []
+
+    for i in np.arange(0,number_thet):
+        Random_th = rand.choices(Theta, Theta_true) ## Escoje un ángulo segun la distribución de Theta_true
+        Random_phi = rand.choice(Phi)   ## Lo mismo pero con phi
+
+        Random_th_deg = np.degrees(Random_th[0])
+        Random_phi_deg = np.degrees(Random_phi)
+        # print(Random_th[0])
+
+        list_dis_Energy = []
+        for energy in Energy:
+            dis_Energy = dis_energy(energy, Random_th[0])
+            list_dis_Energy.append(dis_Energy)
+
+        # Vec = coord_cartesian(Random_th, Random_phi)
+        # Norma = norma_vec(Vec)
+        # print(type(Vec[0]))
+        # Point = [Radio * Vec[0], Radio * Vec[1], Radio * Vec[2]]  ## Genera un punto sobre la esfera.
+        # # norma = np.sqrt(Point[0] ** 2 + Point[1] ** 2 + Point[2] ** 2)
+        # # print('Vector sobre la esfera: ', Point)
+        # # print('Norma del Vector:', norma)
+        # # Points.append(Point)
+
+        # # normal_Vec = (-1 * Vec[0] / Norma, -1 * Vec[1] / Norma, -1 * Vec[2] / Norma)     ## Es un vector normal unitario apuntando 
+        #                                                                                     ##  hacia el centro de coordenadas
+        # # normal_Norma_Vec = norma_vec(normal_Vec)
+        # # print('Norma del vector anti-normal a la esfera:', normal_Norma_Vec)
+        # # print(len(normal_Vec))
+        # # Vectors.append(normal_Vec)
+
+        # vec_thet = [np.cos(Random_th) * np.cos(Random_phi), np.cos(Random_th) * np.sin(Random_phi), np.sin(Random_th)]
+        # vec_phi = [-np.sin(Random_phi), np.cos(Random_phi), 0]
+        # print('Vector Unitario Theta: ', vec_thet)
+        # print('Vector Unitario Theta: ', vec_phi)
+
+        for i in np.arange(0,number_points_per_angle):
+            # random_a = rand.choice(long_a)  ## Selecciona un valor uniforme para el parámetro a
+            # random_b = rand.choice(long_b)  ##      ''      ''      ''      ''          ''    b
+
+            # # list_random_a.append(random_a)
+            # # list_random_b.append(random_b)
+
+            # P_vector = [random_a * vec_thet[0] + random_b * vec_phi[0], 
+            #             random_a * vec_thet[1] + random_b * vec_phi[1], 
+            #             random_a * vec_thet[2] + random_b * vec_phi[2]]
+            
+            # list_P_vector.append(P_vector)
+
+            # random_plane_point = [Point[0] + P_vector[0], Point[1] + P_vector[1], Point[2] + P_vector[2]]
+            # random_plane_point = [-1 * (Point[0] + P_vector[0]), -1 * (Point[1] + P_vector[1]), -1 * (Point[2] + P_vector[2])]
+
+            # print(random_plane_point)
+            # list_random_point.append(random_plane_point)
+
+            list_rand_thet.append(Random_th[0]) 
+            list_rand_phi.append(Random_phi) ## En radianes
+
+            list_rand_thet_deg.append(Random_th_deg)
+            list_rand_phi_deg.append(Random_phi_deg) ## En grados
+
+            Random_energy = rand.choices(Energy, list_dis_Energy)
+            list_random_energy.append(Random_energy[0])
+
+
+    dict_muons =  {'Theta(Rad)': list_rand_thet, 'Theta(Deg)': list_rand_thet_deg, 
+                   'Phi(Rad)' : list_rand_phi, 'Phi(Deg)' : list_rand_phi_deg, 
+                   'Energy(MeV)' : list_random_energy} 
+
+    return dict_muons
 
 
 def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_points_per_angle, 
