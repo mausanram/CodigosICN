@@ -8,7 +8,7 @@ from funciones_Sim_ab_initio import *
 import datetime
 import os
 import pickle as pkl
-import ROOT 
+# import ROOT 
 
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -35,12 +35,12 @@ medida_z = 0.0725   # cm
 
 # mapeo_x = np.arange(-medida_x, medida_x, 0.01)
 # mapeo_y = np.arange(-medida_y, medida_y, 0.01)
-mapeo_z = np.arange(0, medida_z, 0.0001)
+# mapeo_z = np.arange(0, medida_z, 0.0001)
 
 
-mapeo_x = dimension_x()
-mapeo_y = dimension_y()
-mapeo_z = dimension_z()
+mapeo_x = dimension_x(medida_x)
+mapeo_y = dimension_y(medida_y)
+mapeo_z = dimension_z(medida_z)
 
 # print(mapeo_x)
 
@@ -49,7 +49,7 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
 ####    Número de Puntos a Simular  ####
 number_thet = 10000
-number_points_per_angle = 10
+number_points_per_angle = 3
 
 n_muons = number_thet * number_points_per_angle
 

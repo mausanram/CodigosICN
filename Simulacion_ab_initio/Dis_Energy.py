@@ -16,9 +16,10 @@ list_Energy = []
 # E = np.arange(10, 100000, 100)
 E_in = 10 ** (-1)
 E_fin = 10 ** 6
-N = 1000
+N = 10000
 
 list_Energy = Energy_list(E_in, E_fin, N)
+print('Longitud de la lista de energía: ', len(list_Energy))
 
 
 # Thet = [0.00174533, 0.523599, 0.785398, 1.309]     ## En radianes
