@@ -9,103 +9,113 @@ import os
 import pickle as pkl
 import ROOT 
 
-current_path = os.getcwd()
-Inicio = datetime.datetime.now()
-print('Hora de inicio del cálculo: ', Inicio)
 
-###### Rango de los ángulos theta y phi  #######
-Phi = np.arange(0, 2 * np.pi, 0.001) ## rad
-Theta = np.arange(0, np.pi/2, 0.001) ## rad
+def main():
+    current_path = os.getcwd()
+    Inicio = datetime.datetime.now()
+    print('Hora de inicio del cálculo: ', Inicio)
 
-##### Valor del radio de la semi-esfera #####
-Radio = 100     ## cm
+    ###### Rango de los ángulos theta y phi  #######
+    Phi = np.arange(0, 2 * np.pi, 0.001) ## rad
+    Theta = np.arange(0, np.pi/2, 0.001) ## rad
 
-
-#### Tamaño de los planos tangentes a la esfera ####
-# Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
-plane_size = 1  ## cm
-long_a = np.arange(-plane_size, plane_size, 0.001)
-long_b = np.arange(-plane_size, plane_size, 0.001)
+    ##### Valor del radio de la semi-esfera #####
+    Radio = 100     ## cm
 
 
-# ######### Medidas de la CCD (para centrarla en el origen) ##########
-# medida_x = 1.197 / 2    # cm
-# medida_y = 1.587 / 2   # cm
-# medida_z = 0.0725   # cm
+    #### Tamaño de los planos tangentes a la esfera ####
+    # Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
+    plane_size = 1  ## cm
+    long_a = np.arange(-plane_size, plane_size, 0.001)
+    long_b = np.arange(-plane_size, plane_size, 0.001)
 
 
-# #### Arreglos de los valores para mapear la CCD ####
-# mapeo_x = dimension_x(medida_x)
-# mapeo_y = dimension_y(medida_y)
-# mapeo_z = dimension_z(medida_z)
+    # ######### Medidas de la CCD (para centrarla en el origen) ##########
+    # medida_x = 1.197 / 2    # cm
+    # medida_y = 1.587 / 2   # cm
+    # medida_z = 0.0725   # cm
 
 
-#### Mapeo de la energía (se hace en escala logarítmica para tener valores igualmente distribuidos) ####
-E_in = 10 ** (-2)   ### Límite inferior
-E_fin = 10 ** 8     ### Límite superior
-N = 1000    ### Número de puntos
-Energy = Energy_list(E_in, E_fin, N)
+    # #### Arreglos de los valores para mapear la CCD ####
+    # mapeo_x = dimension_x(medida_x)
+    # mapeo_y = dimension_y(medida_y)
+    # mapeo_z = dimension_z(medida_z)
 
-#### Distribución angular de theta (Distribución angular de Smith-Duller) ####
-Theta_true = dis_angular(Theta) 
 
-### Número de muones a simular ### 
-number_thet = 10    ## Valores de un ángulo Theta.
-number_points_per_angle = 10  ## Valores aleatorios sobre cada plano.
-n_muons = number_thet * number_points_per_angle ## Número total de muones que se simularán.
+    #### Mapeo de la energía (se hace en escala logarítmica para tener valores igualmente distribuidos) ####
+    E_in = 10 ** (-2)   ### Límite inferior
+    E_fin = 10 ** 8     ### Límite superior
+    N = 1000    ### Número de puntos
+    Energy = Energy_list(E_in, E_fin, N)
 
-print('Se simularán ' + str(n_muons) + ' muones.')
+    #### Distribución angular de theta (Distribución angular de Smith-Duller) ####
+    Theta_true = dis_angular(Theta) 
 
-## Se simulan los muones, se genera un diccionario con la información de cada evento (Theta, Phi, Energía) ##
-dict_muons = muon_generator_1(Radio, long_a, long_b, number_thet, number_points_per_angle, Theta, Theta_true, Phi, Energy)
+    ### Número de muones a simular ### 
+    number_thet = 10    ## Valores de un ángulo Theta.
+    number_points_per_angle = 10  ## Valores aleatorios sobre cada plano.
+    n_muons = number_thet * number_points_per_angle ## Número total de muones que se simularán.
 
-# muons_dataFrame = pd.DataFrame(dict_muons)
+    print('Se simularán ' + str(n_muons) + ' muones.')
 
-# muons_dataFrame.to_csv('muons_data.txt', sep='\t')
+    ## Se simulan los muones, se genera un diccionario con la información de cada evento (Theta, Phi, Energía) ##
+    dict_muons = muon_generator_1(Radio, long_a, long_b, number_thet, number_points_per_angle, Theta, Theta_true, Phi, Energy)
 
-tree = ROOT.TTree('T', 'Mi primer arbol')
-# print(type(tree))
-tree.Branch('Thet_Rad', dict_muons['Theta(Rad)'][0], 'Theta(Rad)/F')
-tree.Branch('Thet_Deg', dict_muons['Theta(Deg)'][0], 'Theta(Deg)/F')
-# print(tree)
+    # muons_dataFrame = pd.DataFrame(dict_muons)
 
-for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
-    th_rad = dict_muons['Theta(Rad)'][i]
-    th_deg = dict_muons['Theta(Deg)'][i]
+    # muons_dataFrame.to_csv('muons_data.txt', sep='\t')
 
-    tree.Fill()
+    tree = ROOT.TTree('tree', 'Mi primer arbol')
+    # print(type(tree))
+    TH = tree.Branch('Thet_Rad', dict_muons['Theta(Rad)'], 'Theta(Rad)/D')
+    TD = tree.Branch('Thet_Deg', dict_muons['Theta(Deg)'], 'Theta(Deg)/D')
+    # print(tree)
 
-# for element in dict_muons['Theta(Rad)']:
-#     ThetRad.Fill(element)
+    print('Thet_rad: ', dict_muons['Theta(Rad)'][0])
+    n=0
+    # for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
+    #     n = n + 1
+    #     # print(n)
+    #     th_rad = dict_muons['Theta(Rad)']
+    #     # th_deg = dict_muons['Theta(Deg)'][0]
+    #     TH.Fill()
 
-#     # tree.Fill()
+    # for element in dict_muons['Theta(Rad)']:
+    #     ThetRad.Fill(element)
 
-# tree.Branch('Theta(Deg)', dict_muons['Theta(Deg)'][0], 'Theta(Deg)/F')
-# for element in dict_muons['Theta(Deg)']:
-#     tree.Fill()
+    #     # tree.Fill()
 
-# tree.Branch('Phi(Rad)', dict_muons['Phi(Rad)'][0], 'Phi(Rad)/F')
-# for element in dict_muons['Phi(Rad)']:
-#     tree.Fill()
+    # tree.Branch('Theta(Deg)', dict_muons['Theta(Deg)'][0], 'Theta(Deg)/F')
+    # for element in dict_muons['Theta(Deg)']:
+    #     tree.Fill()
 
-tree.Print()
-# tree.Draw()
-# print(tree.GetBranch('Theta(Rad)').GetEntries())
-# tree.Write()
+    # tree.Branch('Phi(Rad)', dict_muons['Phi(Rad)'][0], 'Phi(Rad)/F')
+    # for element in dict_muons['Phi(Rad)']:
+    #     tree.Fill()
 
-Final = datetime.datetime.now()
-print('Hora final de cálculo: ', Final)
-print('Tiempo de cálculo: ', Final-Inicio)
+    tree.Show(-1)
+    tree.Print()
+    # tree.Draw()
+    # print(tree.GetBranch('Theta(Rad)').GetEntries())
+    # tree.Write()
 
-# fig, axs = plt.subplots(figsize=[7,5])
-# # axs.plot(Theta, 70 * Theta_true)
-# axs.hist(np.array(dict_muons['Theta(Rad)']), bins = 110)
-# fig.suptitle(r'Distribución angular $\theta$', y = 0.95, size = 20)
-# plt.show()
+    Final = datetime.datetime.now()
+    print('Hora final de cálculo: ', Final)
+    print('Tiempo de cálculo: ', Final-Inicio)
 
-# fig, axs = plt.subplots(figsize=[7,5])
-# axs.hist(np.array(dict_muons['Energy(MeV)']), bins = 110)
-# fig.suptitle(r'Distribución de la Energía', y = 0.95, size = 20)
-# plt.show()
+    # fig, axs = plt.subplots(figsize=[7,5])
+    # # axs.plot(Theta, 70 * Theta_true)
+    # axs.hist(np.array(dict_muons['Theta(Rad)']), bins = 110)
+    # fig.suptitle(r'Distribución angular $\theta$', y = 0.95, size = 20)
+    # plt.show()
+
+    # fig, axs = plt.subplots(figsize=[7,5])
+    # axs.hist(np.array(dict_muons['Energy(MeV)']), bins = 110)
+    # fig.suptitle(r'Distribución de la Energía', y = 0.95, size = 20)
+    # plt.show()
+
+if __name__ == "__main__":
+    exitcode = main()
+    exit(code = exitcode)
 
 
