@@ -8,6 +8,7 @@ import datetime
 import os
 import pickle as pkl
 import ROOT 
+from array import array
 
 
 def main():
@@ -62,46 +63,45 @@ def main():
     dict_muons = muon_generator_1(Radio, long_a, long_b, number_thet, number_points_per_angle, Theta, Theta_true, Phi, Energy)
 
     # muons_dataFrame = pd.DataFrame(dict_muons)
-
     # muons_dataFrame.to_csv('muons_data.txt', sep='\t')
 
-    tree = ROOT.TTree('tree', 'Mi primer arbol')
+    file_root_name = 'GenMuon.root'
+    file = ROOT.TFile.Open(file_root_name, "RECREATE")
+    tree = ROOT.TTree('tree', 'tree')
     # print(type(tree))
-    TH = tree.Branch('Thet_Rad', dict_muons['Theta(Rad)'], 'Theta(Rad)/D')
-    TD = tree.Branch('Thet_Deg', dict_muons['Theta(Deg)'], 'Theta(Deg)/D')
-    # print(tree)
 
-    print('Thet_rad: ', dict_muons['Theta(Rad)'][0])
-    n=0
-    # for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
-    #     n = n + 1
-    #     # print(n)
-    #     th_rad = dict_muons['Theta(Rad)']
-    #     # th_deg = dict_muons['Theta(Deg)'][0]
-    #     TH.Fill()
+    Thet_Rad = array('f', [-9999])
+    Thet_Deg = array('f', [-9999])
+    Phi_Rad = array('f', [-9999])
+    Phi_Deg = array('f', [-9999])
+    Energy_array = array('f', [-9999])
 
-    # for element in dict_muons['Theta(Rad)']:
-    #     ThetRad.Fill(element)
+    tree.Branch('Thet_Rad', Thet_Rad, 'Thet_Rad/F')
+    tree.Branch('Thet_Deg', Thet_Deg, 'Thet_Deg/F')
+    tree.Branch('Phi_Rad', Phi_Rad, 'Phi_Rad/F')
+    tree.Branch('Phi_Deg', Phi_Deg, 'Phi_Deg/F')
+    tree.Branch('Energy', Energy_array, 'Energy/F')
 
-    #     # tree.Fill()
 
-    # tree.Branch('Theta(Deg)', dict_muons['Theta(Deg)'][0], 'Theta(Deg)/F')
-    # for element in dict_muons['Theta(Deg)']:
-    #     tree.Fill()
+    for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
+        Thet_Rad[0] = dict_muons['Theta(Rad)'][i]
+        Thet_Deg[0] = dict_muons['Theta(Deg)'][i]
+        Phi_Rad[0] = dict_muons['Phi(Rad)'][i]
+        Phi_Deg[0] = dict_muons['Phi(Deg)'][i]
+        Energy_array[0] =  dict_muons['Energy(MeV)'][i] 
+        # th_deg = dict_muons['Theta(Deg)'][0]
+        tree.Fill()
 
-    # tree.Branch('Phi(Rad)', dict_muons['Phi(Rad)'][0], 'Phi(Rad)/F')
-    # for element in dict_muons['Phi(Rad)']:
-    #     tree.Fill()
-
-    tree.Show(-1)
-    tree.Print()
+    # tree.Show(-1)
+    # tree.Print()
     # tree.Draw()
     # print(tree.GetBranch('Theta(Rad)').GetEntries())
-    # tree.Write()
+    tree.Write()
 
     Final = datetime.datetime.now()
     print('Hora final de cálculo: ', Final)
     print('Tiempo de cálculo: ', Final-Inicio)
+    print('Se guardó la información de los muones simulados en el archivo ' + file_root_name)
 
     # fig, axs = plt.subplots(figsize=[7,5])
     # # axs.plot(Theta, 70 * Theta_true)
