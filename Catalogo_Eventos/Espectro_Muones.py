@@ -26,6 +26,8 @@ Elip = 5.5
 numero_bins = 5000
 DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
 
+n_sigmas = 6
+
 def gaussian(x, a, mean, sigma):
     return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))
 
@@ -85,6 +87,10 @@ def main(argObj):
             del oScan
 
             offset = bins_edges[np.argmax(hist)]
+
+            ## Aplanamos el Overscan
+            Overscan_plane = oScan - offset
+
             dataP = data - offset
             dataCal = ((dataP)/expgain[extension]) * ratio_keV ## En KeV
             # dataCal = dataP ## En ADUs
@@ -93,7 +99,7 @@ def main(argObj):
             del data
             del dataP
             
-            bin_heights, bin_borders = np.histogram(dataCal.flatten(), bins= numero_bins) #'auto'
+            bin_heights, bin_borders = np.histogram(Overscan_plane.flatten(), bins= numero_bins, range=(-2000, 2000)) #'auto'
             bin_centers=np.zeros(len(bin_heights), dtype=float)
             offset_fit = bin_borders[np.argmax(bin_heights)]
             for p in range(len(bin_heights)):
@@ -107,7 +113,13 @@ def main(argObj):
 
             try:
                 popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=100000, p0 = [1,1,100])		# Fit histogram with gaussian
-                fondo_value = 6 * abs(popt[2])
+
+                sig_ADUs = popt[2]
+                # Gain = popt[2]
+
+                sig_KeV = abs((ratio_keV * sig_ADUs) / expgain[extension-1])
+                fondo_value = n_sigmas * sig_KeV
+                
             except:
                 print('Fit error in image ' + str(img))
                 continue
