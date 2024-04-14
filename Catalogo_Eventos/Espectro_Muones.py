@@ -84,12 +84,12 @@ def main(argObj):
 
             hist , bins_edges = np.histogram(oScan.flatten(), bins = numero_bins) #'auto'
 
-            del oScan
-
             offset = bins_edges[np.argmax(hist)]
 
             ## Aplanamos el Overscan
             Overscan_plane = oScan - offset
+
+            del oScan
 
             dataP = data - offset
             dataCal = ((dataP)/expgain[extension]) * ratio_keV ## En KeV
@@ -119,7 +119,7 @@ def main(argObj):
 
                 sig_KeV = abs((ratio_keV * sig_ADUs) / expgain[extension-1])
                 fondo_value = n_sigmas * sig_KeV
-                
+
             except:
                 print('Fit error in image ' + str(img))
                 continue
