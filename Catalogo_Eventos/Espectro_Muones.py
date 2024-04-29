@@ -72,8 +72,12 @@ def main(argObj):
     
     print('Hora de inicio del cálculo: ', Inicio)
     for img in argObj:
-        hdu_list = fits.open(img)
-        image_in_bucle += 1
+        try:
+            hdu_list = fits.open(img)
+            image_in_bucle += 1
+        except:
+                print('Loading error in image ' + str(img))
+                continue
         
         for extension in (0,1,3):
             # extension = 1
