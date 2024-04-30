@@ -72,16 +72,21 @@ def main(argObj):
     
     print('Hora de inicio del cálculo: ', Inicio)
     for img in argObj:
-        hdu_list = fits.open(img)
-        image_in_bucle += 1
-        
-        print('Image ' + str(image_in_bucle) + '/' + str(total_images), end = '\r')
+        try:
+            hdu_list = fits.open(img)
+            image_in_bucle += 1
+        except:
+                print('Loading error in image ' + str(img))
+                continue
         
         for extension in (0,1,3):
             # extension = 1
-
-            data = hdu_list[extension].data[:,:550]
-            oScan = hdu_list[extension].data[:,550:]
+            try: 
+                data = hdu_list[extension].data[:,:550]
+                oScan = hdu_list[extension].data[:,550:]
+            except:
+                print('Loading error in image ' + str(img))
+                continue
             # nsamp = float(header['NSAMP'])
 
             # oScan_fit(extensión, active_area, oScan, Bins, make_figure_flag = False):
@@ -90,7 +95,7 @@ def main(argObj):
                 dict_popt = oScan_fit(extensión=extension, active_area=data, oScan=oScan, Bins=numero_bins, make_figure_flag=False)
 
             except:
-                print('Fit error in extension ' + str(extensión) + 'of image ' + str(img))
+                print('Fit error in extension ' + str(extension) + 'of image ' + str(img))
                 continue
 
             sig_ADUs = dict_popt['sigma']
