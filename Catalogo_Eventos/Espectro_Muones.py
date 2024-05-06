@@ -16,19 +16,24 @@ import os
 
 current_path = os.getcwd()
 
-ratio_keV = 0.0037
+## Datos de la CCd
 CCD_depth = 725 #micras
 px_to_cm = 0.0015
 px_to_micras = 15
 micra_to_cm = 1 / 10000
-DeltaEL_range = 85
+
+## Datos del filtro de muones
 Solidit = 0.7
 Elip = 3.5
-numero_bins = 5000
 DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
 
+ratio_keV = 0.0037
+DeltaEL_range = 85
+
+## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 units = 1
-n_sigmas = 6
+n_sigmas = 5
+numero_bins = 500
 
 def gaussian(x, a, mean, sigma):
     return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))

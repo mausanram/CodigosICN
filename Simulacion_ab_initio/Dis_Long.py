@@ -48,8 +48,8 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
 
 ####    Número de Puntos a Simular  ####
-number_thet = 10000
-number_points_per_angle = 3
+number_thet = 100000
+number_points_per_angle = 1
 
 n_muons = number_thet * number_points_per_angle
 
@@ -136,7 +136,7 @@ array_Delta_L = np.array(list_delta_L_Total)
 fig, axs = plt.subplots(figsize=[7,5])
 axs.hist(array_Delta_L, bins = 500, label = 'Eventos Simulados: ' + str(number_thet * number_points_per_angle))
 # axs.set_xlim(0, 0.5)
-axs.vlines([0.0725], 0, 500, colors='k', linestyles='dashed')
+axs.vlines([0.0725], 0, 500, colors='k', linestyles='dashed', label = 'Grosor de la CCD: 0.0725 cm')
 # axs.set_xlim(0, 2)
 axs.legend()
 fig.suptitle(r'Distribución de Longitudes', y = 0.95, size = 20)

@@ -27,7 +27,7 @@ def Landau(x,a, MP,xi):
     # C3 = np.exp((-0.5 * (x + np.exp(-x))))
     return  C1 * C3
 
-def oScan_fit(extensión, active_area, oScan, Bins, make_figure_flag = False) -> dict:
+def oScan_fit_NSAMP1(extensión, active_area, oScan, Bins, make_figure_flag = False) -> dict:
     Maxfev = 100000
     P0=[10, 2000, 900]
 
@@ -45,7 +45,98 @@ def oScan_fit(extensión, active_area, oScan, Bins, make_figure_flag = False) ->
         diff = (max_oScan - abs(median_oScan)) / 2
         # print(median_oScan, diff, min_oScan)
 
+        Range = (min_oScan, max_oScan)
+        # if 30 * abs(median_oScan) <  diff:
+        #     Range = (min_oScan, diff)
+        #     # print(Range)
 
+        # else:
+        #     Range = (min_oScan, diff * 2)
+        #     # print(Range)
+
+        bin_heights, bin_borders, _ = axs_all.hist(Overscan_plane.flatten(), bins = Bins,range = Range , label="Pixeles del Overscan")
+        bin_centers = np.zeros(len(bin_heights), dtype=float)
+        offset_fit = bin_borders[np.argmax(bin_heights)]
+
+        for p in range(len(bin_heights)):
+            bin_centers[p]=(bin_borders[p+1]+bin_borders[p])/2
+
+        # xmin_fit, xmax_fit = offset_fit-(10*expgain[extension-1])/math.sqrt(nsamp), offset_fit+(10*expgain[extension-1])/math.sqrt(nsamp)			# Define fit range
+        xmin_fit, xmax_fit = bin_centers[0], bin_centers[-1]
+        # print(xmin_fit, xmax_fit)
+
+        bin_heights = bin_heights[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
+        bin_centers = bin_centers[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
+ 
+        popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, maxfev=Maxfev, p0 = [1,100,100])		# Fit histogram with gaussian
+        axs_all.plot(bin_centers, gaussian(bin_centers, *popt), 'k', label = 'Ajuste Gaussiano')	
+
+        dict_popt = {'Mean' : popt[1], 'Hight' : popt[0], 'sigma' : abs(popt[2]), 'Offset' : offset}
+        print('Centroide: ',popt[1], ' Amplitud: ', popt[0], 'sigma: ', abs(popt[2])) #gaussian(x, a, mean, sigma)
+
+        axs_all.set_title("Distribución de pixeles del Overscan")
+        axs_all.legend()
+        plt.show()
+        
+    else:
+        hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins)
+        offset = bins_edges[np.argmax(hist)]
+
+        Overscan_plane = oScan - offset
+        median_oScan = np.median(Overscan_plane.flatten())
+        max_oScan = np.max(Overscan_plane.flatten())
+        min_oScan = np.min(Overscan_plane.flatten())
+
+        diff = (max_oScan - abs(median_oScan)) / 2
+        # print(median_oScan, diff, min_oScan)
+
+
+        # if 40 * abs(median_oScan) <  diff:
+        #     Range = (min_oScan, diff)
+        #     # print(Range)
+
+        # else:
+        #     Range = (min_oScan, diff * 2)
+        #     # print(Range)
+
+        Range = (min_oScan, max_oScan)
+
+        bin_heights, bin_borders = np.histogram(Overscan_plane.flatten(), bins= Bins, range = Range) #'auto'
+        bin_centers = np.zeros(len(bin_heights), dtype=float)
+        offset_fit = bin_borders[np.argmax(bin_heights)]
+
+        for p in range(len(bin_heights)):
+            bin_centers[p]=(bin_borders[p+1]+bin_borders[p])/2
+
+        # xmin_fit, xmax_fit = offset_fit-(10*expgain[extension-1])/math.sqrt(nsamp), offset_fit+(10*expgain[extension-1])/math.sqrt(nsamp)			# Define fit range
+        xmin_fit, xmax_fit = bin_centers[0], bin_centers[-1]
+        bin_heights = bin_heights[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
+        bin_centers = bin_centers[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
+
+        popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, maxfev = Maxfev, p0 = [1,100,100])		# Fit histogram with gaussiano')
+        dict_popt = {'Mean' : popt[1], 'Hight' : popt[0], 'sigma' : abs(popt[2]),'Offset' : offset}
+    
+    return dict_popt
+
+def oScan_fit_NSAMP324(extensión, active_area, oScan, Bins, make_figure_flag = False) -> dict:
+    Maxfev = 100000
+    P0=[10, 2000, 900]
+
+    if make_figure_flag:
+        fig_all, axs_all = plt.subplots(1, 1, figsize=(10, 10))
+        hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins)
+        offset = bins_edges[np.argmax(hist)]
+        print('Offset Value: ', offset, ' ADUs')
+
+        Overscan_plane = oScan - offset
+        median_oScan = np.median(Overscan_plane.flatten())
+        max_oScan = np.max(Overscan_plane.flatten())
+        min_oScan = np.min(Overscan_plane.flatten())
+
+        diff = (max_oScan - abs(median_oScan)) / 2
+        # print(median_oScan, diff, min_oScan)
+
+        # Range = (min_oScan, max_oScan)
         if 30 * abs(median_oScan) <  diff:
             Range = (min_oScan, diff)
             # print(Range)
