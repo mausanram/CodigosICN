@@ -17,6 +17,35 @@ list_delta_L = []
 list_random_point = []
 list_P_vector = []
 
+### Configuración de estilo de las gráficas ###
+plt.rcParams.update({
+    "image.origin": "lower",
+    "image.aspect": 1,
+    #"text.usetex": True,
+    "grid.alpha": .5,
+    "axes.linewidth":2,
+    "lines.linewidth" : 1,
+    "font.size":    15.0,
+    "xaxis.labellocation": 'right',  # alignment of the xaxis label: {left, right, center}
+    "yaxis.labellocation": 'top',  # alignment of the yaxis label: {bottom, top, center}
+    "xtick.top":           True ,  # draw ticks on the top side
+    "xtick.major.size":    8    ,# major tick size in points
+    "xtick.minor.size":    4      ,# minor tick size in points
+    "xtick.direction":     'in',
+    "xtick.minor.visible": True,
+    "ytick.right":           True ,  # draw ticks on the top side
+    "ytick.major.size":    8    ,# major tick size in points
+    "ytick.minor.size":    4      ,# minor tick size in points
+    "ytick.direction":     'in',
+    "ytick.minor.visible": True,
+    "ytick.major.width":   2   , # major tick width in points
+    "ytick.minor.width":   1 ,
+    "xtick.major.width":   2   , # major tick width in points
+    "xtick.minor.width":   1 ,
+    "legend.framealpha": 0 ,
+    "legend.loc": 'best',
+})
+
 
 ###### Dominios de variables #######
 Phi = np.arange(0, 2 * np.pi, 0.001)
@@ -134,7 +163,7 @@ array_Delta_L = np.array(list_delta_L_Total)
 # print()
 
 fig, axs = plt.subplots(figsize=[7,5])
-axs.hist(array_Delta_L, bins = 500, label = 'Eventos Simulados: ' + str(number_thet * number_points_per_angle))
+axs.hist(array_Delta_L, bins = 1000, label = 'Eventos Simulados: ' + str(number_thet * number_points_per_angle))
 # axs.set_xlim(0, 0.5)
 axs.vlines([0.0725], 0, 500, colors='k', linestyles='dashed', label = 'Grosor de la CCD: 0.0725 cm')
 axs.set_xlim(0, 0.4)

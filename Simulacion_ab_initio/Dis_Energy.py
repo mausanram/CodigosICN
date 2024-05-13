@@ -8,6 +8,37 @@ from funciones_Sim_ab_initio import *
 import datetime
 import os
 import pickle as pkl
+import scipy.integrate as integrate
+
+### Configuración de estilo de las gráficas ###
+plt.rcParams.update({
+    "image.origin": "lower",
+    "image.aspect": 1,
+    #"text.usetex": True,
+    "grid.alpha": .5,
+    "axes.linewidth":2,
+    "lines.linewidth" : 1,
+    "font.size":    15.0,
+    "xaxis.labellocation": 'right',  # alignment of the xaxis label: {left, right, center}
+    "yaxis.labellocation": 'top',  # alignment of the yaxis label: {bottom, top, center}
+    "xtick.top":           True ,  # draw ticks on the top side
+    "xtick.major.size":    8    ,# major tick size in points
+    "xtick.minor.size":    4      ,# minor tick size in points
+    "xtick.direction":     'in',
+    "xtick.minor.visible": True,
+    "ytick.right":           True ,  # draw ticks on the top side
+    "ytick.major.size":    8    ,# major tick size in points
+    "ytick.minor.size":    4      ,# minor tick size in points
+    "ytick.direction":     'in',
+    "ytick.minor.visible": True,
+    "ytick.major.width":   2   , # major tick width in points
+    "ytick.minor.width":   1 ,
+    "xtick.major.width":   2   , # major tick width in points
+    "xtick.minor.width":   1 ,
+    "legend.framealpha": 0 ,
+    "legend.loc": 'best',
+})
+
 
 Inicio = datetime.datetime.now()
 print('Hora de inicio del cálculo: ', Inicio)
@@ -39,22 +70,54 @@ Ang = [0, 45, 75, 80]
 #     Energy = dis_energy(E, Thet[element])
 #     # print(Energy)
 #     plt.plot(E, Energy, label = str(Ang[element]) + '°')
+fig, axs = plt.subplots(1,2,figsize=[15,5])
 
 for element in np.arange(0, len(Thet)):
     list_dis_Energy = []
     for energy in list_Energy:
         Energy = dis_energy(energy, Thet[element])
         list_dis_Energy.append(Energy)
-
         # print(Energy)
-    plt.plot(list_Energy, list_dis_Energy, label = str(Ang[element]) + '°')
+    axs[0].plot(list_Energy, list_dis_Energy, label = r'$\theta = $' + str(Ang[element]) + '°')
 
-plt.xlabel('Energy (MeV)')   
-plt.grid() 
-plt.xscale('log')
-plt.yscale('log')
-plt.legend()
-plt.title('Distribución de Energía (Smith-Duller)')
+Ang = [0.01, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 85, 90]
+Ang_array = np.arange(0, 90, 1)
+Thet = []
+Thet_array = []
+list_results = []
+
+for ang in Ang:
+    rad = np.radians(ang)
+    Thet.append(rad)
+
+for ang in Ang_array:
+    rad = np.radians(ang)
+    Thet_array.append(rad)
+
+for angle in Thet: 
+    result = integrate.quad(dis_energy, a = 0, b = np.inf, args = angle)
+    list_results.append(result[0]/ (3.52877403746463 *  10**(-5) ))
+    del result
+
+res = integrate.quad(dis_energy, a = 0, b = np.inf, args = np.radians(80))
+Res = res[0] / (3.52877403746463 *  10**(-5) )
+Real = np.cos(np.radians(80))**2
+
+axs[1].plot(Ang, list_results, 'ob' )
+axs[1].plot(80, Real - Res, 'ob')
+axs[1].plot(Ang_array, np.cos(Thet_array)**2, 'k')
+axs[1].set_xlabel('Ángulo (°)')
+axs[1].set_ylabel('I / I_0')
+axs[1].grid()
+
+
+axs[0].set_xlabel('Energy (MeV)')   
+axs[0].grid() 
+axs[0].set_xscale('log')
+axs[0].set_yscale('log')
+axs[0].legend()
+axs[0].set_title('Distribuciónes de Smith-Duller')
+
 plt.show()
 
 Final = datetime.datetime.now()

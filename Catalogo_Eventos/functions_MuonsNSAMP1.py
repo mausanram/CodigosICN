@@ -45,7 +45,8 @@ def oScan_fit_NSAMP1(extensión, active_area, oScan, Bins, make_figure_flag = Fa
         diff = (max_oScan - abs(median_oScan)) / 2
         # print(median_oScan, diff, min_oScan)
 
-        Range = (min_oScan, max_oScan)
+        # Range = (min_oScan, max_oScan)
+        Range = (-3000, 3000)
         # if 30 * abs(median_oScan) <  diff:
         #     Range = (min_oScan, diff)
         #     # print(Range)
@@ -71,7 +72,7 @@ def oScan_fit_NSAMP1(extensión, active_area, oScan, Bins, make_figure_flag = Fa
         popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, maxfev=Maxfev, p0 = [1,100,100])		# Fit histogram with gaussian
         axs_all.plot(bin_centers, gaussian(bin_centers, *popt), 'k', label = 'Ajuste Gaussiano')	
 
-        dict_popt = {'Mean' : popt[1], 'Hight' : popt[0], 'sigma' : abs(popt[2]), 'Offset' : offset}
+        dict_popt = {'Mean' : popt[1], 'Hight' : popt[0], 'sigma' : abs(popt[2]), 'Offset' : offset, 'Pcov' : pcov, 'Bins' : [bin_centers, bin_heights]}
         print('Centroide: ',popt[1], ' Amplitud: ', popt[0], 'sigma: ', abs(popt[2])) #gaussian(x, a, mean, sigma)
 
         axs_all.set_title("Distribución de pixeles del Overscan")
@@ -114,7 +115,7 @@ def oScan_fit_NSAMP1(extensión, active_area, oScan, Bins, make_figure_flag = Fa
         bin_centers = bin_centers[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
 
         popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, maxfev = Maxfev, p0 = [1,100,100])		# Fit histogram with gaussiano')
-        dict_popt = {'Mean' : popt[1], 'Hight' : popt[0], 'sigma' : abs(popt[2]),'Offset' : offset}
+        dict_popt = {'Mean' : popt[1], 'Hight' : popt[0], 'sigma' : abs(popt[2]),'Offset' : offset, 'Pcov' : pcov}
     
     return dict_popt
 

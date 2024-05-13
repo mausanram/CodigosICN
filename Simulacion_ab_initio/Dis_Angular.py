@@ -12,6 +12,35 @@ import pickle as pkl
 from mpl_toolkits.mplot3d import Axes3D
 
 
+### Configuración de estilo de las gráficas ###
+plt.rcParams.update({
+    "image.origin": "lower",
+    "image.aspect": 1,
+    #"text.usetex": True,
+    "grid.alpha": .5,
+    "axes.linewidth":2,
+    "lines.linewidth" : 1,
+    "font.size":    15.0,
+    "xaxis.labellocation": 'right',  # alignment of the xaxis label: {left, right, center}
+    "yaxis.labellocation": 'top',  # alignment of the yaxis label: {bottom, top, center}
+    "xtick.top":           True ,  # draw ticks on the top side
+    "xtick.major.size":    8    ,# major tick size in points
+    "xtick.minor.size":    4      ,# minor tick size in points
+    "xtick.direction":     'in',
+    "xtick.minor.visible": True,
+    "ytick.right":           True ,  # draw ticks on the top side
+    "ytick.major.size":    8    ,# major tick size in points
+    "ytick.minor.size":    4      ,# minor tick size in points
+    "ytick.direction":     'in',
+    "ytick.minor.visible": True,
+    "ytick.major.width":   2   , # major tick width in points
+    "ytick.minor.width":   1 ,
+    "xtick.major.width":   2   , # major tick width in points
+    "xtick.minor.width":   1 ,
+    "legend.framealpha": 0 ,
+    "legend.loc": 'best',
+})
+
 ########## Checar que la constante de ajuste sea la correcta y se ajuste bien a la dstribución ########
 
 
@@ -55,7 +84,7 @@ for i in np.arange(0,number_thet):
     # Vec = coord_cartesian(Random_th, Random_phi)
     # Point = (Radio * Vec[0], Radio * Vec[1], Radio * Vec[2])  ## Genera un punto sobre la esfera.
 
-Bins = 150
+Bins = 90
 delta_B = Theta[-1]/ Bins
 Const_Normal =  3 * number_thet * delta_B
 print('La constante de ajuste de la curva es: ', np.round(Const_Normal, 3))
@@ -66,9 +95,9 @@ print('Hora final de cálculo: ', Final)
 print('Tiempo de cálculo: ', Final-Inicio)
 
 
-fig, axs = plt.subplots(figsize=[7,5])
-axs.plot(Theta, Const_Normal * Theta_true, label = r'$sin \theta cos^2 \theta$')
-axs.hist(np.array(list_random_thet), bins = Bins, range=[0, Theta[-1]],  label='Eventos Simulados: ' + str(n_muons))
+fig, axs = plt.subplots(figsize=[10,5])
+axs.plot(Theta, Const_Normal * Theta_true, label = str(np.round(Const_Normal, 2)) + r'*$sin \theta cos^2 \theta$')
+axs.hist(np.array(list_random_thet), bins = Bins, range=[0, Theta[-1]],  label='Eventos Simulados: \n ' + str(n_muons))
 axs.legend()
 fig.suptitle(r'Distribución angular $\theta$', y = 0.95, size = 20)
 plt.show()
