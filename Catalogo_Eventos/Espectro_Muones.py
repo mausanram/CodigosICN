@@ -104,7 +104,7 @@ def main(argObj):
                 dict_popt = oScan_fit(extensión=extension, active_area=data, oScan=oScan, Bins=numero_bins, make_figure_flag=False)
 
             except:
-                print('Fit error in extension ' + str(extension) + 'of image ' + str(img))
+                print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
                 continue
 
             sig_ADUs = dict_popt['sigma']
