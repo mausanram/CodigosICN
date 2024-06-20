@@ -28,7 +28,7 @@ def Landau(x,a, MP,xi):
     return  C1 * C3
 
 def oScan_fit_NSAMP1(extensión, active_area, oScan, Bins, make_figure_flag = False) -> dict:
-    Maxfev = 1000000
+    Maxfev = 10000000
     P0=[10, 2000, 900]
 
     if make_figure_flag:
