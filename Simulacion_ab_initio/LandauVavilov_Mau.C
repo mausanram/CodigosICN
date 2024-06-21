@@ -15,7 +15,7 @@ double LV (double *lx, double *lpar) {
 	double c = TMath::C();	// Speed of light
 	double me = 0.510998928;	// Electron mass in MeV/c^2
 	double M = 105.65839;	// Muon mass in MeV/c^2
-	double I = 0.000000174;		// Mean excitation energy (for Si)
+	double I = 0.000173;		// Mean excitation energy (for Si)
 	double bg = p/M;
 	double beta = bg/sqrt(1+(pow(bg,2)));	// Beta factor
 	double gamma = 1/sqrt(1-(pow(beta,2)));	// Gamma factor
@@ -64,8 +64,8 @@ double LV (double *lx, double *lpar) {
 
 //  cout << lambda << " " << Delta <<"  "<< phi/csi << endl;
 	//printf(Deltamp);
-	std::cout << "Most Probably Energy in KeV" << std::endl;
-	std::cout << Deltamp * 1000 << std::endl;
+	//std::cout << "Most Probably Energy in KeV" << std::endl;
+	//td::cout << Deltamp * 1000 << std::endl;
 
 	if (kappa<=0.01) {
 		double phi = TMath::Landau(lambda, lambdamp, 1.0);
@@ -93,16 +93,44 @@ void LandauVavilov_Mau() {
 	f->SetNpx(1000);
 
 	double s = 0.0725;	// Distance parameter (in cm)
-	double p = 1000;	// Momentum parameter (in MeV)
+	double p = 600;	// Momentum parameter (in MeV)
 
 	f->SetParameter(0, s);
 	f->SetParameter(1, p);
-	f->SetRange(0.2, 0.7);
+	f->SetRange(0, 0.7);
 	//f->SetTitle("Landau-Vavilov distribution (for 0.0725cm of Si);#font[12]{Energy} (MeV);Probability");
 	f->SetTitle("Landau-Vavilov distribution (for 0.0725cm of Si);Energy (MeV);Probability");
-	f->Draw();
+	// f->Draw();
 	// std::cout <<"Hello, World! \n"<< std::endl;
 
+	double  If = f->Integral(0,2.0);
+
+	double loE= 0.0;
+	double hiE= 0.7;
+	int NB = 100;
+	double bWidth = (hiE-loE)/NB;
+
+	TH1F *h = new TH1F("h", "", NB, loE, hiE);
+	double Edep = 0;
+	Edep = f->GetRandom(); 
+	std::cout << "Edep = "<<Edep * 1000 << " KeV" <<std::endl;
+	char buff[100];
+	sprintf(buff,"%f",Edep);
+	setenv("EDEP",buff,1);
+	cout << getenv("EDEP")<<" MeV"<<endl;
+
+	// diagnostico	
+	/*
+	int Nevt = 1000;
+	for (int i = 0 ; i < Nevt; i++){
+		Edep = f->GetRandom();
+		h->Fill(Edep);
+	}
+	double sf = (If/(bWidth*h->Integral()));
+	h->Scale(sf);
+	h->Draw();
+	f->Draw("same");
+	*/
 	// std::cout << "Most Probably Energy" << std::endl;
 	// std::cout << Deltamp * 1000 << std::endl;
 

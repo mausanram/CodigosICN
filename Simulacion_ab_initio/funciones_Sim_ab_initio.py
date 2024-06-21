@@ -3,6 +3,7 @@ import mpmath as mp
 import random as rand
 import datetime
 import os
+import subprocess
 
 def dis_probability(theta, I_0):
     return I_0 * np.cos(theta)
@@ -411,7 +412,10 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
         for energy in Energy:
             dis_Energy = dis_energy(energy, Random_th[0])
             list_dis_Energy.append(dis_Energy)
-
+            
+        Random_energy = rand.choices(Energy, list_dis_Energy)
+        list_random_energy.append(Random_energy[0])
+        
         Vec = coord_cartesian(Random_th, Random_phi)
         Norma = norma_vec(Vec)
         # print(type(Vec[0]))
@@ -528,9 +532,6 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
                     list_rand_thet.append(Random_th)
                     list_rand_phi.append(Random_phi)
 
-                    Random_energy = rand.choices(Energy, list_dis_Energy)
-                    list_random_energy.append(Random_energy[0])
-
                     list_delta_L.append(Delta_L)
 
                     n_muons_in_CCD = n_muons_in_CCD + muon
@@ -541,6 +542,11 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
 
             else:
                     continue
+            
+            subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"])
+            # subprocess.run()
+            print("El valor de EDEP", os.getenv(['EDEP'][0]))
+
     dict_muons =  {'Random_Thet': list_rand_thet, 'Random_Phi' : list_rand_phi, 'Random_Energy' : list_random_energy, 'DeltaL' : list_delta_L} 
 
     return dict_muons, n_muons_in_CCD, n_negative_long
