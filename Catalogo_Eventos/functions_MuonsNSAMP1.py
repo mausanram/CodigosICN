@@ -368,6 +368,8 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
     list_charge = []
     list_theta = []
 
+    list_charge_all_events = []
+
     for event in range(1, nlabels_img):
         mask = np.invert(label_img == event)
         loc = ndimage.find_objects(label_img == event)[0]
@@ -400,23 +402,33 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
         Diagonal_lenght= np.sqrt(Longitud_x**2 + Longitud_y**2) - np.sqrt(2) # px
         Delta_L = np.sqrt( (Diagonal_lenght * px_to_micras)**2 + (CCD_depth)**2) * micra_to_cm # cm
 
+        charge = data_maskEvent.sum()
+
         if rM == 0 or rm == 0:
+            list_charge_all_events.append(charge)
             continue 
 
         elif maxx - minx <= 3:
+            list_charge_all_events.append(charge)
             continue
 
         elif not Barycentercharge:
+            list_charge_all_events.append(charge)
             continue
 
         # elif differval < MeanValue_Event: #keV
         #     continue
 
         elif  Solidity < Solidit:
+            list_charge_all_events.append(charge)
             continue 
 
+        elif rM <= Elipticity * rm:
+            list_charge_all_events.append(charge)
+            continue
+
         elif  rM >= Elipticity * rm:
-            charge = data_maskEvent.sum()
+            # charge = data_maskEvent.sum()
 
             if charge > 100:
                 Delta_EL = (charge)/ (Delta_L) 
@@ -431,7 +443,7 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
                 # if DeltaEL_range_min <= DeltaEL <= DeltaEL_range_max:
                 list_Muon_labels.append(event)
 
-    return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta 
+    return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta, list_charge_all_events
 
     
 

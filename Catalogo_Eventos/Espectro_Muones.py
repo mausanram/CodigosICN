@@ -137,8 +137,8 @@ def main(argObj):
             # list_labels.append(label_img)
             # list_EventsNumber.append(n_events)
 
-            #### AQuí se toman en cuenta todos los eventos detectados ###
-            list_charge_of_all = []
+
+            # list_charge_of_all = []
             for event in range(1, n_events):
                 mask = np.invert(label_img == event)
                 loc = ndimage.find_objects(label_img == event)[0]
@@ -147,17 +147,15 @@ def main(argObj):
                                                     mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
 
                 charge = data_maskEvent.sum()
-                list_charge_of_all.append(charge)
+                # list_charge_of_all.append(charge)
                 
-
-            ### Aquí se buscan solo los muones ###
             
-            DeltaL, DeltaEL, list_charge, _, list_theta = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
+            DeltaL, DeltaEL, list_charge, _, list_theta, list_charge_all_events = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
                                                                     prop=prop, Solidit=Solidit, Elipticity=Elip)
 
             if extension == 0: 
                 for index in np.arange(0, len(DeltaEL)):
-                    list_charge_of_all_extension_1.append(list_charge_of_all[index])
+                    list_charge_of_all_extension_1.append(list_charge_all_events[index])
                     list_DeltaEL_extension_1.append(DeltaEL[index])
                     list_EventCharge_extension_1.append(list_charge[index])
                     list_DeltaL_extension_1.append(DeltaL[index])
@@ -165,7 +163,7 @@ def main(argObj):
                     
             if extension == 1: 
                 for index in np.arange(0, len(DeltaEL)):
-                    list_charge_of_all_extension_2.append(list_charge_of_all[index])
+                    list_charge_of_all_extension_2.append(list_charge_all_events[index])
                     list_DeltaEL_extension_2.append(DeltaEL[index])
                     list_EventCharge_extension_2.append(list_charge[index])
                     list_DeltaL_extension_2.append(DeltaL[index])
@@ -173,7 +171,7 @@ def main(argObj):
             
             if extension == 3: 
                 for index in np.arange(0, len(DeltaEL)):
-                    list_charge_of_all_extension_4.append(list_charge_of_all[index])
+                    list_charge_of_all_extension_4.append(list_charge_all_events[index])
                     list_DeltaEL_extension_4.append(DeltaEL[index])
                     list_EventCharge_extension_4.append(list_charge[index])
                     list_DeltaL_extension_4.append(DeltaL[index])
