@@ -31,7 +31,7 @@ ratio_keV = 0.0037
 DeltaEL_range = 85
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
-units = 1
+units = 0
 n_sigmas = 5
 numero_bins = 500
 
