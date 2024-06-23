@@ -309,6 +309,9 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
 
     return delta_L, n_muons_in_CCD
 
+def Landau_energy():
+    return None
+
 def muon_generator_1(Radio, long_a, long_b, number_thet, number_points_per_angle, Theta, 
                                   Theta_true, Phi, Energy):
     list_rand_thet = []
@@ -395,25 +398,37 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
     
     list_rand_thet = []
     list_rand_phi = []
+    
+    list_rand_thet_deg = []
+    list_rand_phi_deg = []
 
     list_P_vector = []
     list_random_point = []
     list_delta_L = []
     list_random_energy = []
+
+
     n_muons_in_CCD = 0
     n_negative_long = 0
 
     for i in np.arange(0,number_thet):
-        Random_th = rand.choices(Theta, Theta_true) ## Escoje un ángulo segun la distribución de Theta_true
-        Random_phi = rand.choice(Phi)   ## Lo mismo pero con phi
+        Random_th = rand.choices(Theta, Theta_true) ## Escoje un ángulo segun la distribución de Theta_true en radianes
+        Random_phi = rand.choice(Phi)   ## Lo mismo pero con phi en radianes
         # print(Random_th[0])
+        Random_th_deg = np.degrees(Random_th[0]) ## El ángulo theta en grados
+        Random_phi_deg = np.degrees(Random_phi) ## El ángulo phi en grados
+
+        list_rand_thet.append(Random_th)
+        list_rand_phi.append(Random_phi)
+        list_rand_thet_deg.append(Random_th_deg)
+        list_rand_phi_deg.append(Random_phi_deg)
 
         list_dis_Energy = []
-        for energy in Energy:
+        for energy in Energy:   ## Aquí se crea la distribución de Smith-Duller en MeV
             dis_Energy = dis_energy(energy, Random_th[0])
             list_dis_Energy.append(dis_Energy)
             
-        Random_energy = rand.choices(Energy, list_dis_Energy)
+        Random_energy = rand.choices(Energy, list_dis_Energy) ## Escoje una energía segun la distribución de Smith-Duller en 
         list_random_energy.append(Random_energy[0])
         
         Vec = coord_cartesian(Random_th, Random_phi)
@@ -529,9 +544,6 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
             if Delta_L != 0:
 
                 if Delta_L > 0 and Delta_L < 2.1:
-                    list_rand_thet.append(Random_th)
-                    list_rand_phi.append(Random_phi)
-
                     list_delta_L.append(Delta_L)
 
                     n_muons_in_CCD = n_muons_in_CCD + muon
@@ -542,12 +554,25 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
 
             else:
                     continue
-            
-            subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"])
-            # subprocess.run()
-            print("El valor de EDEP", os.getenv(['EDEP'][0]))
 
-    dict_muons =  {'Random_Thet': list_rand_thet, 'Random_Phi' : list_rand_phi, 'Random_Energy' : list_random_energy, 'DeltaL' : list_delta_L} 
+            ## Para la laptop en el ICN  ##
+            # new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
+                                #  capture_output=True)
+
+            ## Para la computadora de casa ##
+            new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
+                                        capture_output=True)
+            # subprocess.run()
+            Random_energy_Landau = float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1])
+            # print(float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1]))
+
+            # print("El valor de EDEP", str(os.getenv('USERNAME')))
+
+    # dict_muons =  {'Random_Thet': list_rand_thet, 'Random_Phi' : list_rand_phi, 'Random_Energy' : list_random_energy, 'DeltaL' : list_delta_L} 
+
+    dict_muons =  {'Theta(Rad)': list_rand_thet, 'Theta(Deg)': list_rand_thet_deg, 
+                   'Phi(Rad)' : list_rand_phi, 'Phi(Deg)' : list_rand_phi_deg, 
+                   'Energy-SD(MeV)' : list_random_energy} 
 
     return dict_muons, n_muons_in_CCD, n_negative_long
 

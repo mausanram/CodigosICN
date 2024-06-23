@@ -85,7 +85,7 @@ def main(argObj):
             hdu_list = fits.open(img)
             image_in_bucle += 1
         except:
-                print('Loading error in image ' + str(img))
+                print('Loading error in image ' + str(img) + 'in open the image.')
                 continue
         
         for extension in (0,1,3):
@@ -94,7 +94,7 @@ def main(argObj):
                 data = hdu_list[extension].data[:,:550]
                 oScan = hdu_list[extension].data[:,550:]
             except:
-                print('Loading error in image ' + str(img))
+                print('Loading error in image ' + str(img) + 'in load the data.')
                 continue
             # nsamp = float(header['NSAMP'])
 
