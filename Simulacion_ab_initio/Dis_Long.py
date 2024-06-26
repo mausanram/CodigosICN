@@ -123,7 +123,8 @@ print('Tiempo de cálculo: ', Final-Inicio)
 print('Muones Simulados: ', n_muons)
 print('Tamaño de los planos: (' + str(plane_side * 2) + ' x ' + str(plane_side * 2) + ') cm^2')
 print('Muones que Impactaron la CCD: ', n_muons_in_CCD)
-print('Muones que tuvieron una longitud negativa: ', n_negative_long)
+# print('Muones que tuvieron una longitud negativa: ', n_negative_long)
+
 # fig = plt.figure()
 # ax1 = fig.add_subplot(111, projection='3d')
 # Ax = Axes3D(fig)
@@ -158,15 +159,22 @@ print('Muones que tuvieron una longitud negativa: ', n_negative_long)
 # Mostramos el gráfico
 # plt.show()
 
+BINS = 1000
 array_Delta_L = np.array(list_delta_L_Total)
 # max_DeltaL = np.max()
 # print()
 
 fig, axs = plt.subplots(figsize=[7,5])
-axs.hist(array_Delta_L, bins = 1000, label = 'Eventos Simulados: ' + str(number_thet * number_points_per_angle))
+hist_long, bins_edges_long, _ = axs.hist(array_Delta_L, bins = BINS, label = 'Eventos Simulados: ' + str(number_thet * number_points_per_angle))
+index_max_long =  np.argmax(hist_long)
+pico =  hist_long[index_max_long]
+# print(pico)
 # axs.set_xlim(0, 0.5)
-axs.vlines([0.0725], 0, 500, colors='k', linestyles='dashed', label = 'Grosor de la CCD: 0.0725 cm')
+
+axs.vlines([0.0725], ymin = 0, ymax = pico, colors='k', linestyles='dashed', label = 'Grosor de la CCD: 0.0725 cm')
 axs.set_xlim(0, 0.4)
+
+axs.set_xlabel('Distancia (cm)')
 axs.legend()
 fig.suptitle(r'Distribución de Longitudes', y = 0.95, size = 20)
 plt.show()

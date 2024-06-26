@@ -43,11 +43,19 @@ plt.rcParams.update({
 
 ########## Checar que la constante de ajuste sea la correcta y se ajuste bien a la dstribución ########
 
+Lim_inf_theta = 0 ## grados
+Lim_inf_theta_rad = np.radians(Lim_inf_theta)  ## rad
 
 ###### Definiciones y dominios #######
 Phi = np.arange(0, 2 * np.pi, 0.001)
 Radio = 100
-Theta = np.arange(0, np.pi/2, 0.001)    ### Semi-esfera de radio 100 unidades
+Theta = np.arange(Lim_inf_theta_rad, np.pi/2, 0.001)    ### Semi-esfera de radio 100 unidades
+
+Theta_deg = []
+for angle in Theta:
+    Thet_deg = np.degrees(angle)
+    Theta_deg.append(Thet_deg)
+
 
 long_a = np.arange(-5, 5, 0.01)
 long_b = np.arange(-5, 5, 0.01)
@@ -60,7 +68,7 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 # print('Longitud Total: ', len(Theta_true))
 # print('Longitud: ', Theta[-1])
 
-number_thet = 100000
+number_thet = 61120
 number_points_per_angle = 1
 
 n_muons = number_thet * number_points_per_angle
@@ -84,27 +92,64 @@ for i in np.arange(0,number_thet):
     # Vec = coord_cartesian(Random_th, Random_phi)
     # Point = (Radio * Vec[0], Radio * Vec[1], Radio * Vec[2])  ## Genera un punto sobre la esfera.
 
-Bins = 90
+Bins = 100
 delta_B = Theta[-1]/ Bins
 Const_Normal =  3 * number_thet * delta_B
 print('La constante de ajuste de la curva es: ', np.round(Const_Normal, 3))
+
+list_random_thet_deg = []
+for angle in list_random_thet:
+    angle_deg = np.degrees(angle)
+    # print(angle, angle_deg)
+    list_random_thet_deg.append(angle_deg)
+
+list_random_phi_deg = []
+for angle in list_random_phi:
+     angle_deg = np.degrees(angle)
+     list_random_phi_deg.append(angle_deg)
 
 
 Final = datetime.datetime.now()
 print('Hora final de cálculo: ', Final)
 print('Tiempo de cálculo: ', Final-Inicio)
 
+# ----------------------------------------------------------------------------------------- #
 
+### En radianes ###
+########### Gráfica de Theta ###############
+# fig, axs = plt.subplots(figsize=[10,5])
+# axs.plot(Theta, Const_Normal * Theta_true, label = str(np.round(Const_Normal, 2)) + r'*$sin \theta cos^2 \theta$')
+# axs.hist(np.array(list_random_thet), bins = Bins, range=[0, Theta[-1]],  label='Eventos Simulados: \n ' + str(n_muons))
+# axs.legend()
+# fig.suptitle(r'Distribución angular $\theta$', y = 0.95, size = 20)
+# axs.set_xlabel('Ángulo (Rad)')
+# plt.show()
+
+########### Gráfica de Phi #################
+# fig, axs = plt.subplots(figsize=[7,5])
+# axs.hist(list_random_phi, bins = Bins)
+# fig.suptitle(r'Distribución angular $\phi$', y = 0.95, size = 20)
+# plt.show()
+
+# ----------------------------------------------------------------------------------------- #
+
+### En grados ### 
+########### Gráfica de Theta ###############
 fig, axs = plt.subplots(figsize=[10,5])
-axs.plot(Theta, Const_Normal * Theta_true, label = str(np.round(Const_Normal, 2)) + r'*$sin \theta cos^2 \theta$')
-axs.hist(np.array(list_random_thet), bins = Bins, range=[0, Theta[-1]],  label='Eventos Simulados: \n ' + str(n_muons))
+axs.plot(Theta_deg, Const_Normal * Theta_true, label = str(np.round(Const_Normal, 2)) + r'*$sin \theta cos^2 \theta$')
+axs.hist(np.array(list_random_thet_deg), bins = Bins, color = 'orange', label='Eventos Simulados: \n ' + str(n_muons))
 axs.legend()
+axs.set_xlabel('Ángulo (°)')
+axs.set_xlim(0,)
 fig.suptitle(r'Distribución angular $\theta$', y = 0.95, size = 20)
 plt.show()
 
-
-fig, axs = plt.subplots(figsize=[7,5])
-# axs.plot(Theta, Const_Normal * Theta_true)
-axs.hist(list_random_phi, bins = Bins)
+########### Gráfica de Phi #################
+fig, axs = plt.subplots(figsize=[8,5])
+axs.hist(list_random_phi_deg, bins = Bins)
 fig.suptitle(r'Distribución angular $\phi$', y = 0.95, size = 20)
+axs.set_xlabel('Ángulo (°)')
 plt.show()
+
+# ----------------------------------------------------------------------------------------- #
+
