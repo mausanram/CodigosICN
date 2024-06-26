@@ -3,6 +3,10 @@
 // All the steps were taken from the Leo's book.
 // Hare are needed 2 parameters: the distance traveled by the particle inside the bar and its momentum.
 #include <iostream> 
+#include <random>
+#include <time.h>
+
+// double srand(time(NULL));
 
 double LV (double *lx, double *lpar) {
 	double Delta = lx[0];	// Energy loss in absorber
@@ -115,9 +119,13 @@ void LandauVavilov_Mau() {
 	Edep = f->GetRandom(); 
 	std::cout << "Edep = "<<Edep * 1000 << " KeV" <<std::endl;
 	char buff[100];
-	sprintf(buff,"%f",Edep);
-	setenv("EDEP",buff,1);
-	cout << getenv("EDEP")<<" MeV"<<endl;
+	// sprintf(buff,"%f",Edep);
+
+	// printf("%s", buff);
+	// setenv("EDEP",buff, 1);
+
+	
+	// cout << "The value of EDEP is " << getenv("EDEP")<<" MeV"<<endl;
 
 	// diagnostico	
 	/*

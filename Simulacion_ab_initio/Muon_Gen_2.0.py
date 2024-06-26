@@ -53,14 +53,14 @@ def main():
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 1    ## Valores de un ángulo Theta.
+    number_thet = 2    ## Valores de un ángulo Theta.
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
     n_muons = number_thet * number_points_per_angle ## Número total de muones que se simularán.
 
     print('Se simularán ' + str(n_muons) + ' muones.')
 
     ## Se simulan los muones, se genera un diccionario con la información de cada evento (Theta, Phi, Energía) ##
-    dict_muons = muon_generator(Energy, number_thet=number_thet, Theta=Theta, Theta_true=Theta_true, Phi=Phi, Radio=Radio, 
+    dict_muons, _, _  = muon_generator(Energy, number_thet=number_thet, Theta=Theta, Theta_true=Theta_true, Phi=Phi, Radio=Radio, 
                                 number_points_per_angle=number_points_per_angle,long_a=long_a, long_b=long_b, medida_x=medida_x, 
                                 medida_y=medida_y, medida_z=medida_z, mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z)
 
@@ -86,11 +86,11 @@ def main():
 
 
     for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
-        Thet_Rad[0] = dict_muons['Theta(Rad)'][i]
+        Thet_Rad = dict_muons['Theta(Rad)'][i]
         Thet_Deg[0] = dict_muons['Theta(Deg)'][i]
         Phi_Rad[0] = dict_muons['Phi(Rad)'][i]
         Phi_Deg[0] = dict_muons['Phi(Deg)'][i]
-        Energy_array[0] =  dict_muons['Energy(MeV)'][i] 
+        Energy_array[0] =  dict_muons['Energy-SD(MeV)'][i] 
         # th_deg = dict_muons['Theta(Deg)'][0]
         tree.Fill()
 
