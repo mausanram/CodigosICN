@@ -59,10 +59,14 @@ def main():
 
     print('Se simularán ' + str(n_muons) + ' muones.')
 
+    # print(os.environ)
+    
     ## Se simulan los muones, se genera un diccionario con la información de cada evento (Theta, Phi, Energía) ##
     dict_muons, _, _  = muon_generator(Energy, number_thet=number_thet, Theta=Theta, Theta_true=Theta_true, Phi=Phi, Radio=Radio, 
                                 number_points_per_angle=number_points_per_angle,long_a=long_a, long_b=long_b, medida_x=medida_x, 
                                 medida_y=medida_y, medida_z=medida_z, mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z)
+
+    # print(os.environ)
 
     # muons_dataFrame = pd.DataFrame(dict_muons)
     # muons_dataFrame.to_csv('muons_data.txt', sep='\t')

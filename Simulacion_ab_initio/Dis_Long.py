@@ -159,20 +159,21 @@ print('Muones que Impactaron la CCD: ', n_muons_in_CCD)
 # Mostramos el gráfico
 # plt.show()
 
-BINS = 1000
+BINS = 800
 array_Delta_L = np.array(list_delta_L_Total)
 # max_DeltaL = np.max()
 # print()
 
 fig, axs = plt.subplots(figsize=[7,5])
-hist_long, bins_edges_long, _ = axs.hist(array_Delta_L, bins = BINS, label = 'Eventos Simulados: ' + str(number_thet * number_points_per_angle))
+# hist_long, bins_edges_long, _ = axs.hist(array_Delta_L, bins = BINS, label = 'Eventos Simulados: ' + str(number_thet * number_points_per_angle))
+hist_long, bins_edges_long, _ = axs.hist(array_Delta_L, color = 'k', bins = BINS, label = 'Eventos Simulados: ' + str(n_muons_in_CCD),  histtype = 'step')
 index_max_long =  np.argmax(hist_long)
 pico =  hist_long[index_max_long]
 # print(pico)
 # axs.set_xlim(0, 0.5)
 
 axs.vlines([0.0725], ymin = 0, ymax = pico, colors='k', linestyles='dashed', label = 'Grosor de la CCD: 0.0725 cm')
-axs.set_xlim(0, 0.4)
+axs.set_xlim(0, 0.2)
 
 axs.set_xlabel('Distancia (cm)')
 axs.legend()

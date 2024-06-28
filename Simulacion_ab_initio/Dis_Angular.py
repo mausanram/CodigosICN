@@ -43,7 +43,7 @@ plt.rcParams.update({
 
 ########## Checar que la constante de ajuste sea la correcta y se ajuste bien a la dstribución ########
 
-Lim_inf_theta = 0 ## grados
+Lim_inf_theta = 22 ## grados
 Lim_inf_theta_rad = np.radians(Lim_inf_theta)  ## rad
 
 ###### Definiciones y dominios #######
@@ -137,7 +137,7 @@ print('Tiempo de cálculo: ', Final-Inicio)
 ########### Gráfica de Theta ###############
 fig, axs = plt.subplots(figsize=[10,5])
 axs.plot(Theta_deg, Const_Normal * Theta_true, label = str(np.round(Const_Normal, 2)) + r'*$sin \theta cos^2 \theta$')
-axs.hist(np.array(list_random_thet_deg), bins = Bins, color = 'orange', label='Eventos Simulados: \n ' + str(n_muons))
+axs.hist(np.array(list_random_thet_deg), bins = Bins, color = 'k', label='Eventos Simulados: \n ' + str(n_muons), histtype = 'step')
 axs.legend()
 axs.set_xlabel('Ángulo (°)')
 axs.set_xlim(0,)

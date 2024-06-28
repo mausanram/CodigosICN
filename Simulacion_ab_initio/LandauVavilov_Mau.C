@@ -4,7 +4,14 @@
 // Hare are needed 2 parameters: the distance traveled by the particle inside the bar and its momentum.
 #include <iostream> 
 #include <random>
-#include <time.h>
+#include <ctime>
+#include <chrono>
+
+int seed_rand(){
+	srand(1003);
+	// cout <<  << endl;
+	return 0;
+} 
 
 // double srand(time(NULL));
 
@@ -66,9 +73,10 @@ double LV (double *lx, double *lpar) {
 
 	double sigma2 = (pow(xi,2))*(1-beta2/2)/kappa;		// Standard deviation for relativistic particles
 
-//  cout << lambda << " " << Delta <<"  "<< phi/csi << endl;
+	//  cout << lambda << " " << Delta <<"  "<< phi/csi << endl;
+
 	//printf(Deltamp);
-	//std::cout << "Most Probably Energy in KeV" << std::endl;
+	// cout << "Most Probably Energy in KeV " << Deltamp * 1000 << endl;
 	//td::cout << Deltamp * 1000 << std::endl;
 
 	if (kappa<=0.01) {
@@ -88,6 +96,21 @@ double LV (double *lx, double *lpar) {
 }
 
 void LandauVavilov_Mau() {
+	// gRandom->SetSeed(0);	// Cambia la semilla aleatoria para el GetRandom 
+
+	double s = 0.0725;	// Distance of CCD (in cm)
+	double p = 600; // Momentum parameter (in MeV)
+	
+	// double En_Smith;
+	// char En_Smith_char[100] =  getenv("EN_SMITH");
+	float p = atof(getenv("EN_SMITH"));	// Momentum parameter (in MeV)
+
+	// cout << p endl;
+
+	// cout << "Introduce un entero: ";	// ---------------------------------------- //
+	// double p;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
+   	// std::cin >> p;					// ---------------------------------------- //
+
 	TCanvas *cnv = new TCanvas("cnv", "", 900, 700);
 	cnv->SetGrid();
 
@@ -96,16 +119,13 @@ void LandauVavilov_Mau() {
 	TF1 *f = new TF1("f", LV, 0, 100, 2);
 	f->SetNpx(1000);
 
-	double s = 0.0725;	// Distance parameter (in cm)
-	double p = 600;	// Momentum parameter (in MeV)
 
 	f->SetParameter(0, s);
 	f->SetParameter(1, p);
 	f->SetRange(0, 0.7);
 	//f->SetTitle("Landau-Vavilov distribution (for 0.0725cm of Si);#font[12]{Energy} (MeV);Probability");
-	f->SetTitle("Landau-Vavilov distribution (for 0.0725cm of Si);Energy (MeV);Probability");
-	// f->Draw();
-	// std::cout <<"Hello, World! \n"<< std::endl;
+	f->SetTitle("Landau-Vavilov distribution (0.0725cm of Si);Energy (MeV);Probability");
+	f->Draw();
 
 	double  If = f->Integral(0,2.0);
 
@@ -116,29 +136,39 @@ void LandauVavilov_Mau() {
 
 	TH1F *h = new TH1F("h", "", NB, loE, hiE);
 	double Edep = 0;
-	Edep = f->GetRandom(); 
+
+	int SetSeed(0);
+	Edep = f->GetRandom(0, 0.7); 
 	std::cout << "Edep = "<<Edep * 1000 << " KeV" <<std::endl;
 	char buff[100];
-	// sprintf(buff,"%f",Edep);
+
+	sprintf(buff,"%f",Edep);
 
 	// printf("%s", buff);
-	// setenv("EDEP",buff, 1);
+	char env[] = "LD_LIBRARY_PATH";
+	putenv(env);
+
+	setenv("EDEP", buff, 1);
+	// setenv("EDEP", Edep, 1);
 
 	
-	// cout << "The value of EDEP is " << getenv("EDEP")<<" MeV"<<endl;
+	// cout << "The value of EDEP is " << getenv("PATH")<<" MeV"<<endl;
+	// cout << getenv("MYENV") << endl;
 
 	// diagnostico	
-	/*
-	int Nevt = 1000;
-	for (int i = 0 ; i < Nevt; i++){
-		Edep = f->GetRandom();
-		h->Fill(Edep);
-	}
-	double sf = (If/(bWidth*h->Integral()));
-	h->Scale(sf);
-	h->Draw();
-	f->Draw("same");
-	*/
+	
+	// int Nevt = 1000;
+	// for (int i = 0 ; i < Nevt; i++){
+	// 	Edep = f->GetRandom();
+	// 	h->Fill(Edep);
+	// }
+	// double sf = (If/(bWidth*h->Integral()));
+	// h->Scale(sf);
+	// h->SetTitle("Landau-Vavilov distribution (0.0725cm of Si);Energy (MeV);Probability");
+	// h->Draw();
+	// f->Draw("same");
+	
+
 	// std::cout << "Most Probably Energy" << std::endl;
 	// std::cout << Deltamp * 1000 << std::endl;
 

@@ -430,6 +430,8 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
             
         Random_energy = rand.choices(Energy, list_dis_Energy) ## Escoje una energía segun la distribución de Smith-Duller en 
         list_random_energy.append(Random_energy[0])
+
+        os.environ["EN_SMITH"] = str(Random_energy[0])
         
         Vec = coord_cartesian(Random_th, Random_phi)
         Norma = norma_vec(Vec)
@@ -554,6 +556,8 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
 
             else:
                     continue
+            
+            # print(os.environ)
 
             ## Para la laptop en el ICN  ##
             # new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
@@ -562,8 +566,13 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
             ## Para la computadora de casa ##
             new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
                                         capture_output=True)
+
+            print('Energía de SMith-Duller: ', os.getenv("EN_SMITH"))
+            print(new_env.stdout)
+            print(new_env.stderr)
+            # print(os.getenv('PATH'))
             # subprocess.run()
-            Random_energy_Landau = float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1])
+            # Random_energy_Landau = float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1])
             # print(float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1]))
 
             # print("El valor de EDEP", str(os.getenv('USERNAME')))
