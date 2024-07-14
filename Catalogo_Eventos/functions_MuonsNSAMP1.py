@@ -393,8 +393,15 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
         except:
             differval = 0 
 
-        rM = prop[event-1].axis_major_length
-        rm = prop[event-1].axis_minor_length
+        rM = prop[event-1].axis_major_length / 2
+        rm = prop[event-1].axis_minor_length / 2
+
+        ## Aquí se calcula la elipcidad del cluster ##
+        try:
+            elipticity = (rM - rm) / rM
+        except:
+            elipticity = 0
+
         Solidity = prop[event-1].solidity
         miny, minx, maxy, maxx = prop[event-1].bbox
         Longitud_y, Longitud_x = maxy - miny , maxx - minx # px
@@ -423,11 +430,15 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             list_charge_all_events.append(charge)
             continue 
 
-        elif rM <= Elipticity * rm:
+        # elif rM <= Elipticity * rm:
+        #     list_charge_all_events.append(charge)
+        #     continue
+
+        elif elipticity < Elipticity:
             list_charge_all_events.append(charge)
             continue
 
-        elif  rM >= Elipticity * rm:
+        elif  elipticity >= Elipticity :
             # charge = data_maskEvent.sum()
 
             if charge > 100:
