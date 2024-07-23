@@ -438,8 +438,8 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             list_charge_all_events.append(charge)
             continue
 
-        # elif differval < MeanValue_Event: #keV
-        #     continue
+        elif differval < MeanValue_Event: 
+            continue
 
         elif  Solidity < Solidit:
             list_charge_all_events.append(charge)
