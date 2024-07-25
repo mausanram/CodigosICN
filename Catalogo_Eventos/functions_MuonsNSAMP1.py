@@ -33,7 +33,7 @@ def oScan_fit_NSAMP1(extensión, active_area, oScan, Bins, make_figure_flag = Fa
 
     if make_figure_flag:
         fig_all, axs_all = plt.subplots(1, 1, figsize=(10, 10))
-        hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins)
+        hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins, )
         offset = bins_edges[np.argmax(hist)]
         print('Offset Value: ', offset, ' ADUs')
 
