@@ -195,7 +195,8 @@ def main(argObj):
 
     num_muons = len(list_EventCharge_extension_1) + len(list_EventCharge_extension_2) + len(list_EventCharge_extension_4)
 
-    dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_muons, 'Energy_Units' : units,
+    dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_muons, 'Energy_Units' : units, 'Elipcidad' : list_Elip, 
+                        'Solidity' : list_Solidit,
                         'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_DeltaEL_extension_1,
                                          'deltaL' : list_DeltaL_extension_1, 'all_events' : list_charge_of_all_extension_1,
                                          'theta': list_theta_extension_1}, 
