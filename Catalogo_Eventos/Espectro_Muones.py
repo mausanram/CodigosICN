@@ -24,7 +24,7 @@ micra_to_cm = 1 / 10000
 
 ## Datos del filtro de muones
 Solidit = 0.7
-Elip = 0.75
+Elip = 0.65
 DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
 
 ratio_keV = 0.0037
