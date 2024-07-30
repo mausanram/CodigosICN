@@ -22,9 +22,14 @@ px_to_cm = 0.0015
 px_to_micras = 15
 micra_to_cm = 1 / 10000
 
-## Datos del filtro de muones
+## Datos del filtro de muones GENERAL
 Solidit = 0.7
 Elip = 0.65
+
+## Datos del filtro POR EXTENSIÓN
+list_Elip = [0.65, 0.8, 0, 0.65]
+list_Solidit = [0.7, 0.75, 0, 0.7]
+
 DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
 
 ratio_keV = 0.0037
@@ -90,6 +95,9 @@ def main(argObj):
         
         for extension in (0,1,3):
             # extension = 1
+            Elip = list_Elip[extension]
+            Solidit = list_Solidit[extension]
+
             try: 
                 data = hdu_list[extension].data[:,:550]
                 oScan = hdu_list[extension].data[:,550:]
