@@ -27,8 +27,8 @@ Solidit = 0.7
 Elip = 0.65
 
 ## Datos del filtro POR EXTENSIÓN
-list_Elip = [0.65, 0.85, 0, 0.65]
-list_Solidit = [0.7, 0.7, 0, 0.7]
+list_Elip = [0.65, 0.65, 0, 0.65]
+list_Solidit = [0.7, 0.65, 0, 0.7]
 
 DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
 
