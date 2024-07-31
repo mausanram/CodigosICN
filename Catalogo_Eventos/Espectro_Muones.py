@@ -27,8 +27,8 @@ Solidit = 0.7
 Elip = 0.65
 
 ## Datos del filtro POR EXTENSIÓN
-list_Elip = [0.65, 0.8, 0, 0.65]
-list_Solidit = [0.7, 0.75, 0, 0.7]
+list_Elip = [0.65, 0.85, 0, 0.65]
+list_Solidit = [0.7, 0.7, 0, 0.7]
 
 DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
 
@@ -227,7 +227,7 @@ def main(argObj):
     # file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs__all.pkl'
 
     if units == 0:
-        file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs__.pkl'
+        file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs__per_extensions.pkl'
     elif units == 1:
         file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_electrons__.pkl'
     elif units == 2:
