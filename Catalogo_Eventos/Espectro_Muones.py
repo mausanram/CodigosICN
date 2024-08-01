@@ -28,7 +28,7 @@ Elip = 0.65
 
 ## Datos del filtro POR EXTENSIÓN
 list_Elip = [0.65, 0.65, 0, 0.65]
-list_Solidit = [0.7, 0.65, 0, 0.7]
+list_Solidit = [0.7, 0.60, 0, 0.7]
 
 DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
 
@@ -93,7 +93,8 @@ def main(argObj):
                 print('Loading error in image ' + str(img) + 'in open the image.')
                 continue
         
-        for extension in (0,1,3):
+        # for extension in (0,1,3):
+        for extension in (1):
             # extension = 1
             Elip = list_Elip[extension]
             Solidit = list_Solidit[extension]
@@ -227,7 +228,7 @@ def main(argObj):
     # file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs__all.pkl'
 
     if units == 0:
-        file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs__per_extensions.pkl'
+        file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs__per_ext2.pkl'
     elif units == 1:
         file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_electrons__.pkl'
     elif units == 2:
