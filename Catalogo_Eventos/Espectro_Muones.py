@@ -94,7 +94,7 @@ def main(argObj):
                 continue
         
         # for extension in (0,1,3):
-        for extension in (1):
+        for extension in (0, 1):
             # extension = 1
             Elip = list_Elip[extension]
             Solidit = list_Solidit[extension]
