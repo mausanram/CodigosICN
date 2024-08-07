@@ -99,7 +99,7 @@ void LandauVavilov_Mau() {
 	// gRandom->SetSeed(0);	// Cambia la semilla aleatoria para el GetRandom 
 
 	double s = 0.0725;	// Distance of CCD (in cm)
-	double p = 600; // Momentum parameter (in MeV)
+	// double p = 600; // Momentum parameter (in MeV)
 	
 	// double En_Smith;
 	// char En_Smith_char[100] =  getenv("EN_SMITH");
@@ -139,7 +139,7 @@ void LandauVavilov_Mau() {
 
 	int SetSeed(0);
 	Edep = f->GetRandom(0, 0.7); 
-	std::cout << "Edep = "<<Edep * 1000 << " KeV" <<std::endl;
+	std::cout << "Edep = "<< Edep * 1000 << " KeV" <<std::endl;
 	char buff[100];
 
 	sprintf(buff,"%f",Edep);

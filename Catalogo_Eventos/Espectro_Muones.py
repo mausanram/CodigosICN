@@ -188,6 +188,7 @@ def main(argObj):
             # del data_maskEvent
             # del Barycentercharge
 
+        print('Imagen ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
         del hdu_list            
 
     # list_EventCharge_AllExtensions = list_EventCharge_extension_2 + list_EventCharge_extension_1 + list_EventCharge_extension_4
@@ -207,6 +208,7 @@ def main(argObj):
                         'extension_4' : {'charge' : list_EventCharge_extension_4, 'deltaEL' : list_DeltaEL_extension_4, 
                                          'deltaL' : list_DeltaL_extension_4, 'all_events' : list_charge_of_all_extension_4,
                                          'theta': list_theta_extension_4}}
+
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()
@@ -238,8 +240,7 @@ def main(argObj):
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
 
-    print('Dictionary saved in ', current_path + '/' + file_name, ' as a binary file.')
-    print('To open use library "pickle". ')
+    print('Dictionary saved in', current_path + '/' + file_name, ' as a binary file. To open use library "pickle". ')
 
     # plt.show() 
 

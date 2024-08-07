@@ -53,7 +53,7 @@ def main():
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 2    ## Valores de un ángulo Theta.
+    number_thet = 100000    ## Valores de un ángulo Theta.
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
     n_muons = number_thet * number_points_per_angle ## Número total de muones que se simularán.
 
@@ -62,7 +62,7 @@ def main():
     # print(os.environ)
     
     ## Se simulan los muones, se genera un diccionario con la información de cada evento (Theta, Phi, Energía) ##
-    dict_muons, _, _  = muon_generator(Energy, number_thet=number_thet, Theta=Theta, Theta_true=Theta_true, Phi=Phi, Radio=Radio, 
+    dict_muons, _, _  = muon_generator(Energy, number_thet=n_muons, Theta=Theta, Theta_true=Theta_true, Phi=Phi, Radio=Radio, 
                                 number_points_per_angle=number_points_per_angle,long_a=long_a, long_b=long_b, medida_x=medida_x, 
                                 medida_y=medida_y, medida_z=medida_z, mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z)
 
@@ -71,22 +71,26 @@ def main():
     # muons_dataFrame = pd.DataFrame(dict_muons)
     # muons_dataFrame.to_csv('muons_data.txt', sep='\t')
 
-    file_root_name = 'GenMuon.root'
+    file_root_name = 'GenMuon_complete.root'
     file = ROOT.TFile.Open(file_root_name, "RECREATE")
     tree = ROOT.TTree('tree', 'tree')
     # print(type(tree))
+
+    print('Longitud de una lista del diccionario: ', len(dict_muons['Energy_Landau']))
 
     Thet_Rad = array('f', [-9999])
     Thet_Deg = array('f', [-9999])
     Phi_Rad = array('f', [-9999])
     Phi_Deg = array('f', [-9999])
     Energy_array = array('f', [-9999])
+    Energy_Landau_array = array('f', [-9999])
 
     tree.Branch('Thet_Rad', Thet_Rad, 'Thet_Rad/F')
     tree.Branch('Thet_Deg', Thet_Deg, 'Thet_Deg/F')
     tree.Branch('Phi_Rad', Phi_Rad, 'Phi_Rad/F')
     tree.Branch('Phi_Deg', Phi_Deg, 'Phi_Deg/F')
     tree.Branch('Energy', Energy_array, 'Energy/F')
+    tree.Branch('Energy_Landau', Energy_Landau_array, 'Energy_Landau/F')
 
 
     for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
