@@ -568,7 +568,11 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
                             #  capture_output=True)
 
         ## Para la computadora de casa ##
-        new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
+        # new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
+        #                             capture_output=True)
+
+        ## Para el CLUSTER ##
+        new_env = subprocess.run(["root", "-l", "-b", "/home/icn/mausanram/Software/CodigosICN/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
                                     capture_output=True)
 
         # print('Energía de SMith-Duller: ', os.getenv("EN_SMITH"))
