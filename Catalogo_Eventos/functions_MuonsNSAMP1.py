@@ -434,9 +434,13 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             list_charge_all_events.append(charge)
             continue
 
-        # elif not Barycentercharge:
-        #     list_charge_all_events.append(charge)
-        #     continue
+        elif maxy - miny <= 3:
+            list_charge_all_events.append(charge)
+            continue
+
+        elif not Barycentercharge:
+            list_charge_all_events.append(charge)
+            continue
 
         elif differval < MeanValue_Event: 
             continue

@@ -142,13 +142,13 @@ void LandauVavilov_Mau() {
 	std::cout << "Edep = "<< Edep * 1000 << " KeV" <<std::endl;
 	char buff[100];
 
-	sprintf(buff,"%f",Edep);
+	// sprintf(buff,"%f",Edep);
 
-	// printf("%s", buff);
-	char env[] = "LD_LIBRARY_PATH";
-	putenv(env);
+	// // printf("%s", buff);
+	// char env[] = "LD_LIBRARY_PATH";
+	// putenv(env);
 
-	setenv("EDEP", buff, 1);
+	// setenv("EDEP", buff, 1);
 	// setenv("EDEP", Edep, 1);
 
 	

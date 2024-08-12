@@ -26,7 +26,7 @@ def main():
 
     #### Tamaño de los planos tangentes a la esfera ####
     # Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
-    plane_size = 1  ## cm
+    plane_size = 0.5  ## cm
     long_a = np.arange(-plane_size, plane_size, 0.001)
     long_b = np.arange(-plane_size, plane_size, 0.001)
 
@@ -46,14 +46,14 @@ def main():
     #### Mapeo de la energía (se hace en escala logarítmica para tener valores igualmente distribuidos) ####
     E_in = 10 ** (-2)   ### Límite inferior
     E_fin = 10 ** 8     ### Límite superior
-    N = 1000    ### Número de puntos
+    N = 5000    ### Número de puntos
     Energy = Energy_list(E_in, E_fin, N)
 
     #### Distribución angular de theta (Distribución angular de Smith-Duller) ####
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 1000    ## Valores de un ángulo Theta.
+    number_thet = 200    ## Valores de un ángulo Theta.
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
     n_muons = number_thet * number_points_per_angle ## Número total de muones que se simularán.
 
@@ -90,7 +90,7 @@ def main():
     tree.Branch('Phi_Rad', Phi_Rad, 'Phi_Rad/F')
     tree.Branch('Phi_Deg', Phi_Deg, 'Phi_Deg/F')
     tree.Branch('Energy', Energy_array, 'Energy/F')
-    tree.Branch('Energy_Landau', Energy_Landau_array, 'Energy_Landau/F')
+    tree.Branch('Energy_DP', Energy_Landau_array, 'Energy_DP/F')
 
 
     for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
@@ -99,6 +99,7 @@ def main():
         Phi_Rad[0] = dict_muons['Phi(Rad)'][i]
         Phi_Deg[0] = dict_muons['Phi(Deg)'][i]
         Energy_array[0] =  dict_muons['Energy-SD(MeV)'][i] 
+        Energy_Landau_array[0] = dict_muons['Energy_Landau'][i]
         # th_deg = dict_muons['Theta(Deg)'][0]
         tree.Fill()
 
