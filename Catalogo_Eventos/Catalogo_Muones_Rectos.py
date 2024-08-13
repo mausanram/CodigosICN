@@ -1,4 +1,5 @@
 import math
+from functions_MuonsNSAMP1 import *
 from astropy.io import fits
 import scipy.ndimage as ndimage
 from scipy.optimize import curve_fit
@@ -13,16 +14,17 @@ import os
 
 ## CONSTANTES ## 
 current_path = os.getcwd()
+units = 0
 
-ratio_keV = 0.0038
+ratio_keV = 0.0037
 CCD_depth = 725 #micras
 px_to_cm = 0.0015
 px_to_micras = 15
 micra_to_cm = 1 / 10000
 DeltaEL_range = 85
 Solidit = 0.7
-Elip = 4
-numero_bins = 5000
+Elip = 0.65
+numero_bins = 1000
 
 ## DEFINICIONES ##
 def gaussian(x, a, mean, sigma):
@@ -59,62 +61,54 @@ def main(argObj):
     
     print('Hora de inicio del cálculo: ', Inicio)
     for img in argObj:
-        hdu_list = fits.open(img)
-        image_in_bucle += 1
+        try:
+            hdu_list = fits.open(img)
+            image_in_bucle += 1
+        except:
+                print('Loading error in image ' + str(img) + 'in open the image.')
+                continue
         
         print('Image ' + str(image_in_bucle) + '/' + str(total_images), end = '\r')
         
         for extension in (0,1,3):
             # extension = 1
-
-            data = hdu_list[extension].data[:,:550]
-            header = hdu_list[extension].header
-            oScan = hdu_list[extension].data[:,550:]
-            nsamp = float(header['NSAMP'])
+            try :
+                data = hdu_list[extension].data[:,:550]
+                header = hdu_list[extension].header
+                oScan = hdu_list[extension].data[:,550:]
+                nsamp = float(header['NSAMP'])
+            except:
+                print('Loading error in image ' + str(img) + 'in load the data.')
+                continue
 
             del header
 
-            hist , bins_edges = np.histogram(oScan.flatten(), bins = numero_bins) #'auto'
+            try:
+                dict_popt = oScan_fit_NSAMP1(extensión=extension, active_area=data, oScan=oScan, Bins=numero_bins, make_figure_flag=False)
 
+            except:
+                print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
+                continue
+                
+            sig_ADUs = dict_popt['sigma']
+            Offset = dict_popt['Offset']
+
+            dataCal = data_calibrated(active_area=data, extension=extension, list_gain=expgain, ratio_keV=ratio_keV, unidades= units, offset=Offset)
+
+            if units == 0:
+                fondo_value = n_sigmas * sig_ADUs
+            elif units == 1:
+                fondo_value = n_sigmas * sig_electrons
+            elif units == 2:
+                fondo_value = n_sigmas * sig_KeV
+            
             del oScan
 
-            offset = bins_edges[np.argmax(hist)]
-            dataP = data - offset
-            dataCal = (dataP)/expgain[extension] ## En keV  
-            # dataCal = dataP ## En ADUs
-            
-            del hist
-            del data
-            del dataP
-            
-            bin_heights, bin_borders = np.histogram(dataCal.flatten(), bins= numero_bins) #'auto'
-            bin_centers=np.zeros(len(bin_heights), dtype=float)
-            offset_fit = bin_borders[np.argmax(bin_heights)]
-            for p in range(len(bin_heights)):
-                bin_centers[p]=(bin_borders[p+1]+bin_borders[p])/2
-
-            xmin_fit, xmax_fit = -abs(offset), abs(offset)			# Define fit range
-            bin_heights = bin_heights[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
-            bin_centers = bin_centers[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
-
-            del nsamp
-
-            try:
-                popt,_ = curve_fit(gaussian, bin_centers, bin_heights, maxfev=1000, p0 = [1,1,100])		# Fit histogram with gaussian
-                fondo_value = 5 * abs(popt[2])
-            except:
-                print('Fit error in image ' + str(img))
-                continue
-
-            del bin_heights
-            del bin_centers
-            del offset
-            del xmin_fit
-            del xmax_fit
 
             # label, n_events = ndimage.label(dataCal>6*abs(popt[2]),structure=[[1,1,1],[1,1,1],[1,1,1]])
             label_img, n_events = sk.measure.label(dataCal > fondo_value, connectivity=2, return_num=True)
             prop = sk.measure.regionprops(label_img, dataCal)
+
             list_totalEvents.append(n_events)
             # print(nlabels_img)
             # list_labels.append(label_img)
@@ -148,6 +142,9 @@ def main(argObj):
 
                 rM = prop[event-1].axis_major_length
                 rm = prop[event-1].axis_minor_length
+                Elipticity = (rM - rm)/rM 
+
+
                 Solidity = prop[event-1].solidity
                 miny, minx, maxy, maxx = prop[event-1].bbox
                 Longitud_y, Longitud_x = maxy - miny , maxx - minx # px
@@ -164,10 +161,10 @@ def main(argObj):
                 elif differval < MeanValue_Event: #keV
                     continue
 
-                elif  Solidity < 0.75:
+                elif  Solidity < 0.7:
                     continue 
 
-                elif  rM >= Elip * rm:
+                elif  elip >= Elipticity :
                     charge = data_maskEvent.sum()
 
                     if charge < 10000:
@@ -235,7 +232,7 @@ def main(argObj):
     # print(eventos_circulares)
 
 
-    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elip) + '_KeV__.pkl'
+    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elip) + '_ADUs__.pkl'
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
