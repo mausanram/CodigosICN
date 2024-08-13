@@ -16,6 +16,8 @@ import os
 current_path = os.getcwd()
 units = 0
 
+
+n_sigmas = 5
 ratio_keV = 0.0037
 CCD_depth = 725 #micras
 px_to_cm = 0.0015
@@ -23,7 +25,7 @@ px_to_micras = 15
 micra_to_cm = 1 / 10000
 DeltaEL_range = 85
 Solidit = 0.7
-Elip = 0.65
+elip = 0.65
 numero_bins = 1000
 
 ## DEFINICIONES ##
@@ -142,7 +144,10 @@ def main(argObj):
 
                 rM = prop[event-1].axis_major_length
                 rm = prop[event-1].axis_minor_length
-                Elipticity = (rM - rm)/rM 
+                try:
+                    Elipticity = (rM - rm)/rM 
+                except: 
+                    Elipticity = 0
 
 
                 Solidity = prop[event-1].solidity
@@ -232,7 +237,7 @@ def main(argObj):
     # print(eventos_circulares)
 
 
-    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elip) + '_ADUs__.pkl'
+    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(elip) + '_ADUs__.pkl'
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
