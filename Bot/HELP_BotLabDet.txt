@@ -1,30 +1,43 @@
 #######################################################################################
-###                                                                                 ###
-###                           ARCHIVO DE AYUDA PARA EL                              ###
-###      BOT PARA MONITOREO DE PARÁMETROS DEL LABORATORIO DE DETECTORES DEL ICN     ###
-###                                                                                 ###
-###      ULTIMA ACTUALIZACIÓN: 18 DE AGOSTO DEL 2023                                ###
-###                                                                                 ###
+###                                                                                 
+###                           ARCHIVO DE AYUDA PARA EL                              
+###      BOT PARA MONITOREO DE PARÁMETROS DEL LABORATORIO DE DETECTORES DEL ICN     
+###                                                                                 
+###      ULTIMA ACTUALIZACIÓN: 08 DE SEPTIEMBRE DEL 2023                                
+###                                                                                 
 #######################################################################################
 
 # Funciones importadas
-    Del script "AuxiliaresBot.py" se importan las funciones ReadTemp() y dictConfigFile_335(). 
-    *** Vaya al archivo "HELP_AuxiliaresBot.txt" para mas detalles de las funciones ***
+    Del script "AuxiliaresBot.py" se importan todas las funciones. 
+    *** Vaya al archivo "HELP_AuxiliaresBot.txt" para mas detalles sobre cada función ***
 
 # Variables Globales
     -> Token: es el token del bot a utilizar. Si se desea cambiar debe crear antes un bot y sustituir su token aquí.
 
     -> intervalo_de_rutinaTemp: es el tiempo de repetición de la rutina en la alarma de temperatura.
 
+    -> toloreancia_Temp: establece el valor para el cuál la alarma de temperatura NO mandará las alertas.
+
+    -> restored_conection: variable auxiliar que sirve para controlar cuantas veces se utiliza la función Restored_AlarmsStates(). Su valor debe de ser 'True'.
+
     -> historyTemp_path: es la dirección del archivo de historial de temperatura. Corrobore que sea el correcto.
 
     -> ConfigFile335_path: es la dirección del archivo de configuración del 335. Corrobore que sea el correcto.
 
+    -> UserInfo_path: es la dirección del archivo de tareas de usuarios.
+
+    -> df_Users: es el DataFrame del archivo de tareas de usuarios.
+
+    -> df_Users_Flag: es una variable auxiliar que permite controlar si el archivo de tareas de usuarios se leyó o no.
+
 # Definiciones
     # Los comandos "logger.indo()" son auxiliares para ver como es el flujo de código. Activelos si lo requiere. #
+    # En casi todas las funciones se utilizan las variables globales 'df_Users' y 'df_Users_Flag'. #
 
     -> async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        Esta función manda un mensaje de inicio al usuario y despliega en pantalla un menu de comandos. 
+        Esta función manda un mensaje de inicio al usuario y despliega en pantalla un menu de comandos, segun el valor de la variable 'df_Users_Flag'.
+        Además si la variable 'df_Users_Flag' esta en True entonces restablece las tareas de todos los usuarios cuando hubo alguna interrupción inesperada.
+
         *** Para agregar mas comandos debe anexarlos en la lista "reply_keyboard" ***
 
     -> async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -38,6 +51,21 @@
         Detiene por completo el servidor del Bot. 
         *** Solo debe ocuparse si se desea detener por completo el Bot ya que deberá volver a inicial el servidor despues de utilizar esta función ***
 
+    -> async def Restored_AlarmsStates(context: ContextTypes.DEFAULT_TYPE):
+        Restablece todas las tareas que se quedaron con un valor 'True' antes de una interrupción inesperada del bot:
+        # La variable 'begin_time' solo sirve para dar un tiempo de inicio distinto a la tarea de cada usuario.  #
+
+        1.  Para cada usuario en el DataFrame busca encuentra su índice  y con él verifica si alguna tarea se encuentra en 'True'.
+
+        2.  Si alguna tarea y la variable 'restored_conection' están en 'True' entonces la añade al scheduler del bot con el nombre 'str(user_id) + '_ReadTemp_job'.
+
+        3.  Si algun usuario tiene la tarea en 'False' y la variable 'restored_conection' están en 'True' entonces sigue buscando. 
+
+        4.  Cuando termina con todos los usuarios, la variable 'restored_conection' cambia a 'False'. Esto hace que ya no se dupliquen las tareas cada vez que
+            alguien utilice el comando '\Start'.
+
+        *** Si se agregan mas tareas bot se debe anezar una estructura similar a la que se utiliza para para alarma de temperatura *** 
+
     -> async def ReadTemperature(update: Update, context: ContextTypes.DEFAULT_TYPE):
         Intenta utilizar la función ReadTemp() para leer la última actualización de la temperatura y el heater power.
         - Si logra realizar lo anterior entonces manda estas mediciones al usuario. 
@@ -50,39 +78,75 @@
         - Si el archivo NO se actualiza entonces devuelve un valor booleano False.
 
     -> async def Temp_alarm(context: ContextTypes.DEFAULT_TYPE):
-        Esta es la rutina que el bot realizará para monitorear los cambios de temperatura del laboatorio:
-        1.  Intenta leer el historial de temperatura con la funcion ReadTemp(). Si lo logra rutina continuia,
-            caos contrario manda un mensaje notificando al usuario y desactiva el servidor del bot.
+        # la variable  'User_id' la obtiene del nombre de la tarea que permite que pueda mandar mensajes a los 
+        usuarios que no hayan interactuado con el bot despues de una interrupción en el programa. #
 
-        2.  Intenta leer el archivo de configuracion del 335 con la función dictConfigFile_335(). Si lo logra la  rutina continua,
-            caso contrario se manda un mensaje notificando al usuario  y las alarmas se desactivan automáticante ya que no se 
-            puede comprar la temperatura con el valor del SetPoint actual.
+        Esta es la rutina que el bot realizará para monitorear los cambios de temperatura del laboatorio:
+        1.  Intenta leer el historial de temperatura con la funcion ReadTemp(). Si lo logra rutina la  variable 'historyTemp_path_Flag' toma el valor de 'True' 
+            y continua. Si no logra leerlo entonces ocurre lo siguiente:
+                - La variable 'historyTemp_path_Flag' toma el valor de 'False' y no permite que entre al siguiente if. 
+                - Actualiza el valor el DataFrame de usuarios
+                - Remueve la tarea del scheduler del bot.  
+                - Manda un mensaje notificando al usuario el problema.
+                - Se apaga el bot debido a que no puede obtener ningun tipo de información del laboatorio.
+
+        2.  Intenta leer el archivo de configuracion del 335 con la función dictConfigFile_335(). Si lo logra la variable 'Config335_dict_Flag' toma el valor de 'True' 
+            y rutina continua, Si no logra leerlo entonces ocurre lo siguiente:
+                - La variable 'Config335_dict_Flag' toma el valor de 'False' y no permite que entre al siguiente if.
+                - Actualiza el valor el DataFrame de usuarios
+                - Remueve la tarea del scheduler del bot. 
+                - Manda un mensaje notificando al usuario el problema. 
+                - La alarma se apaga debido a que no puede comparar el cambio de la temperatura con el Set Point actual.
+
             *** Se debe realizar un script que actualice automáticamente el valor del SetPoint en el historial
                 ya que se colocó de manera manual en 170 K***
             
         3.  El proceso se "pausa" para permitir que el historial se actualice. Posteriormente se realiza otra lectura del historial.
+            *** El tiempo de pausa se debe de calcular con la rampa de temperatuas y NO debe ser mayor al de la variable 'intervalo_de_rutinaTemp' 
+                o se generará un error ***
 
-        4.  Se llama a la función Refresh_File().
-            - Si el archivo se está actualizando entonces se compara el valor de la temperatura 
-                con el del SetPoint. Si la diferencia es de 1.5 K, o más, se comenzará a notificar al usuario. 
-                La rutina se repite.
-            - Si el archivo NO se está actualizando entonces se notifica al usuario y las alarmas se apagan automáticamente ya que no se puede
-                realizar la comparación de temperaturas.
+        4.  Se llama a la función Refresh_File():
+            - Si el archivo se está actualizando entonces la variable 'Refresh_File_Flag' toma el valor 'True'. Se compara el valor de la temperatura 
+                con el del SetPoint. Si la diferencia es igual o mayor a la variable 'toloreancia_Temp' se comenzará a notificar al usuario y la rutina se repite.
+
+            - Si el archivo NO se está actualizando entonces ocurre lo siguiente:
+                > Actualiza el valor el DataFrame de usuarios.
+                > Se notifica al usuario el problema
+                > La alarma se apagan automáticamente.
 
     -> async def startAlarm(update: Update, context: ContextTypes.DEFAULT_TYPE):
         Esta función es la que activa la rutina de monitoreo de cambios de la temperatura. 
-        - Si la alarma ya está activada, y se vuelve a mandar un comando de activación de alarma, entonces se notifica al usuario
-            que la alarma yá está activada.
-        - Si la alarma NO está activada entonces comienza con la rutina llamando a la función Temp_alarm y la repetirá indefinidamente
-            hasta que la alarma se desactive. El tiempo de repetición de la rutina debe establecerse
-            *** Para establecer mejor este tiempo debe tomar en cuenta cada cuanto se actualiza el historial de temperatura y 
+
+        - Si la variable  'df_Users_Flag' está en 'True' entonces:
+            1.  Busca el índice del usuario 
+
+            2.  Si el valor de la tarea del usuario está en 'True' entonces notifica al usuario de que la alarma ya está activada.
+
+            3.  Si el valor de la tarea del usuario está en 'False' entonces:
+                > Añade la rutina el scheduler del bot.
+                > Actualiza el DataFrame de usuarios.
+                > Notifica al usuario que su alarma está activada.
+
+        - Si la variable  'df_Users_Flag' está en 'False' entonces:
+            > Se notifica al usuario el problema. No será posible activar ninguna alarma porque no se podría monitorear si está en 'True' o 'False'.
+
+        *** Para establecer mejor este tiempo de la rutina debe tomar en cuenta cada cuanto se actualiza el historial de temperatura y 
                 la rampa de cambio de temperatura del 335 para poder detectar mejor si hay algun cambio ***
 
     -> async def stopAlarm(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        Sirve para detener la alarma de temperatura.
-        - Si la alarma ya está activada entonces la remueve del hoario de rutinas utilizando el nombre de la rutina ("ReadTempjob").
-        - Si la alarma NO está activada entonces se notifica al usuario. 
-            *** Se debe estudiar mejor como saber si la rutina existe o no ya que si se agregan mas alarmas esta función ya no será útil ***
+        Sirve para detener las alarmas de temperatura de algun usuario:
+        - Busca el índice del usuario. 
+        - Si la variable  'df_Users_Flag' está en 'True' entonces:
+            1.  Si el valor de alarma en el DataFrame está en 'True' entonces:
+                > Actualiza el DataFrame.
+                > Remueve la tarea del scheduler del bot. 
+
+            2.  Si el valor de alarma en el DataFrame está en 'False' entonces notifica al usuario que no hay alarmas activas.
+
+        - Si la variable  'df_Users_Flag' está en 'True' entonces notifica al usuario el problema. 
+
+        *** Se debe estudiar mejor como remover las tareas, para facilitar esto deben agregarse con el nombre del usuario y así es mas facil encontrarlas.
+            Sin embargo, se tiene que tener mucho cuidado que el DataFrame se actualice tambien ***
 
 # Main
     Aquí se inializa el servidor del Bot: Prueba_Bot o PruebainBot utilizando el token: 5802062802:AAHgtixNr5OnpZF2LOfhLbwqiNh7nikdx8s. Se

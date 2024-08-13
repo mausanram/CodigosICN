@@ -1,0 +1,22 @@
+#######################################################################################
+###                                                                                 ###
+###            ARCHIVO DE AYUDA PARA EL PROGRAMA CHECKNOISE                         ###
+###      	   ULTIMA ACTUALIZACIÓN: 23 DE SEPTIEMBRE DEL 2023				        ###
+###                                                                                 ###
+#######################################################################################
+
+# Definiciones 
+    def main(argobj):
+        Esta función realiza todo el algoritmo de visualización de imágenes en diferentes etapas, las cuales son:
+            1.  Muestra las extensiones, por separado, completamente ''crudas'', es decir, con el overscan, sin rotar y en ADUs 
+                con unaen una escala de grises*.
+
+            2.  Muestra las extensiones por separado pero ahora sin overscan en una escala de grises*.
+
+            3.  Muestra la imagen completa, es decir, con todas las extensiones ''pegadas'' de manera correcta (se rota en el proceso), 
+                además de estar calibrada en electron-volts, y se muestra en una escala de grises*. 
+
+            * La escala de colores se puede modificar con la variable 'color'.
+
+        - Variables:
+            'argobj':   es una variable de tipo 'str' que deberá contener la dirección de la imagen que se desea visualizar.  

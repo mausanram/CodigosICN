@@ -4,14 +4,13 @@
 ###          ARCHIVO DE FUNCIONES AUXILIARES UTILIZADAS POR EL BOT PARA             ###
 ###             MONITOREO DEL  LABORATORIO DE DETECTORES DEL ICN                    ###
 ###                                                                                 ###
-###          * ULTIMA ACTUALIZACIÓN: 04 DE SEPTIEMBRE DEL 2023                      ###  
+###          * ULTIMA ACTUALIZACIÓN: 08 DE SEPTIEMBRE DEL 2023                      ###  
 ###                                                                                 ###                            
 ####################################################################################### 
 
 import pandas as pd
-global path_userinfo_csv
 
-def ReadTemp(historial_Temp):
+def ReadTemp(historial_Temp)-> list:
     with open(historial_Temp, 'r') as fs:
         lines = fs.readlines()
         last_line = lines[-1]
@@ -29,7 +28,7 @@ def ReadTemp(historial_Temp):
 
     return clean_line_list
 
-def dictConfigFile_335(configFileName):
+def dictConfigFile_335(configFileName) -> dict:
     Config335_dict = {}
     with open(configFileName, 'r') as fl:
         lines = fl.readlines()
@@ -45,11 +44,11 @@ def dictConfigFile_335(configFileName):
         
     return Config335_dict
 
-def Users_DataFrame(path_userinfo_csv):
+def Users_DataFrame(path_userinfo_csv) -> pd.DataFrame:
     User_dataframe = pd.read_csv(path_userinfo_csv)
     return User_dataframe
 
-def AddUser_to_csv(DataFrame, user_id, number_of_jobs):
+def AddUser_to_csv(path_userinfo_csv, DataFrame, user_id, number_of_jobs)-> pd.DataFrame:
     user_ID_Flag = True
     for user in list(DataFrame['User_ID']):
         if int(user) == user_id:
@@ -72,25 +71,30 @@ def AddUser_to_csv(DataFrame, user_id, number_of_jobs):
 
     return DataFrame
 
-def UpdateValue_to_csv(user_id, DataFrame, option = 0):
+def UpdateValue_to_csv(path_userinfo_csv, user_id, DataFrame, option = 0)-> pd.DataFrame:
     for index_user in range(0,len(DataFrame['User_ID'])):
-        if DataFrame['User_ID'][index_user] == user_id:
-            index_user = index_user
+        if str(DataFrame['User_ID'][index_user]) == str(user_id):
+            Index_user = index_user
 
-    if option == 0:
-        DataFrame.loc[index_user,'Temp_Alarm'] = not DataFrame['Temp_Alarm'][index_user]
-        DataFrame.to_csv(path_or_buf = path_userinfo_csv, index_label=False)
-        DataFrame = pd.read_csv(path_userinfo_csv)
-        return DataFrame
+            if option == 0:
+                DataFrame.loc[Index_user,'Temp_Alarm'] = not DataFrame['Temp_Alarm'][Index_user]
+                DataFrame.to_csv(path_or_buf = path_userinfo_csv, index_label=False)
+                DataFrame = pd.read_csv(path_userinfo_csv)
+
+        else:
+            continue
+
+    return DataFrame
     
     ## Agregar mas valores para mas alertas o tareas.
 
-def AddJob_to_csv(DataFrame, job_name, job_value_default):
+def AddJob_to_csv(path_userinfo_csv, DataFrame, job_name, job_value_default)-> pd.DataFrame:
     DataFrame[str(job_name)] = job_value_default
     DataFrame.to_csv(path_or_buf = path_userinfo_csv, index_label=False)
     DataFrame = pd.read_csv(path_userinfo_csv)
     return DataFrame
 
-def Search_User(DataFrame, user_id):
+def Search_User(DataFrame, user_id)-> (int | None):
     for index_user in range(0,len(DataFrame['User_ID'])):
         if DataFrame['User_ID'][index_user] == user_id: return index_user
+
