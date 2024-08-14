@@ -25,8 +25,12 @@ px_to_cm = 0.0015
 px_to_micras = 15
 micra_to_cm = 1 / 10000
 DeltaEL_range = 85
+
+
 Solidit = 0.7
 Elipticity = 0.9
+
+
 numero_bins = 1000
 
 ## DEFINICIONES ##
@@ -239,7 +243,7 @@ def main(argObj):
     # print(eventos_circulares)
 
 
-    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(elip) + '_Sol_' + str(Solidit) + '_ADUs__.pkl'
+    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_ADUs__.pkl'
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
