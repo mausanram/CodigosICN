@@ -26,7 +26,7 @@ px_to_micras = 15
 micra_to_cm = 1 / 10000
 DeltaEL_range = 85
 Solidit = 0.7
-elip = 0.85
+elip = 0.9
 numero_bins = 1000
 
 ## DEFINICIONES ##
@@ -174,7 +174,7 @@ def main(argObj):
                 elif  elip >= Elipticity :
                     charge = data_maskEvent.sum()
 
-                    if charge < 100:
+                    if charge < 1000:
                         continue
                     
                     if (Longitud_x < 9 and Longitud_y > 10): 
