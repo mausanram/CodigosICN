@@ -17,6 +17,7 @@ current_path = os.getcwd()
 units = 0
 
 
+
 n_sigmas = 5
 ratio_keV = 0.0037
 CCD_depth = 725 #micras
@@ -24,8 +25,8 @@ px_to_cm = 0.0015
 px_to_micras = 15
 micra_to_cm = 1 / 10000
 DeltaEL_range = 85
-Solidit = 0.8
-elip = 0.8
+Solidit = 0.85
+elip = 0.7
 numero_bins = 1000
 
 ## DEFINICIONES ##
