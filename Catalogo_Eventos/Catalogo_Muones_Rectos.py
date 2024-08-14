@@ -178,7 +178,7 @@ def main(argObj):
                 elif  elip >= Elipticity :
                     charge = data_maskEvent.sum()
 
-                    if charge < 1000:
+                    if charge < 3 * 10**6:
                         continue
                     
                     if (Longitud_x < 7 and Longitud_y > 10): 
