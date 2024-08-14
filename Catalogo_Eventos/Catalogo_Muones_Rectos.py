@@ -25,7 +25,7 @@ px_to_micras = 15
 micra_to_cm = 1 / 10000
 DeltaEL_range = 85
 Solidit = 0.7
-elip = 0.65
+elip = 4
 numero_bins = 1000
 
 ## DEFINICIONES ##
@@ -142,8 +142,9 @@ def main(argObj):
                     Barycentercharge = np.nan()
                     differval = 0
 
-                rM = prop[event-1].axis_major_length
-                rm = prop[event-1].axis_minor_length
+                rM = prop[event-1].axis_major_length/2
+                rm = prop[event-1].axis_minor_length/2
+                
                 try:
                     Elipticity = (rM - rm)/rM 
                 except: 
