@@ -25,7 +25,7 @@ px_to_micras = 15
 micra_to_cm = 1 / 10000
 DeltaEL_range = 85
 Solidit = 0.7
-elip = 4
+elip = 0.8
 numero_bins = 1000
 
 ## DEFINICIONES ##
