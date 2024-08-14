@@ -139,7 +139,7 @@ void LandauVavilov_Mau() {
 
 	int SetSeed(0);
 	Edep = f->GetRandom(0, 0.7); 
-	std::cout << "Edep = "<< Edep * 1000 << " KeV" <<std::endl;
+	std::cout << "Edep = "<< Edep * 1000 << " KeV" << std::endl;
 	char buff[100];
 
 	// sprintf(buff,"%f",Edep);

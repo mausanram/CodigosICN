@@ -118,7 +118,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
 
     ## Caras 1 y 2
     if flags_CCD[0] and flags_CCD[1]:
-        delta_L = medida_z / np.cos(Random_th)  ## cm
+        delta_L = np.abs(medida_z / np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         n_muons_in_CCD = 1
         # list_delta_L.append(delta_L)
@@ -127,7 +127,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 1 y 3
     if flags_CCD[0] and flags_CCD[2]:
         h = medida_z - list_z[0]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -136,7 +136,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 1 y 4
     if flags_CCD[0] and flags_CCD[3]:
         h = medida_z - list_z[1]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -145,7 +145,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 1 y 5
     if flags_CCD[0] and flags_CCD[4]:
         h = medida_z - list_z[2]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -154,7 +154,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 1 y 6
     if flags_CCD[0] and flags_CCD[5]:
         h = medida_z - list_z[3]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -163,7 +163,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 3 y 2
     if flags_CCD[2] and flags_CCD[1]:
         h = list_z[0]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -172,7 +172,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 3 y 4
     if flags_CCD[2] and flags_CCD[3]:
         h = list_z[0]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -181,7 +181,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 3 y 5
     if flags_CCD[2] and flags_CCD[4]:
         h = list_z[0]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -190,7 +190,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 3 y 6
     if flags_CCD[2] and flags_CCD[5]:
         h = list_z[0]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -199,7 +199,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 4 y 2
     if flags_CCD[3] and flags_CCD[1]:
         h = list_z[1]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -208,7 +208,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 4 y 3
     if flags_CCD[3] and flags_CCD[2]:
         h = list_z[1]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -217,7 +217,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 4 y 5
     if flags_CCD[3] and flags_CCD[4]:
         h = list_z[1]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -226,7 +226,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 4 y 6
     if flags_CCD[3] and flags_CCD[5]:
         h = list_z[1]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -235,7 +235,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 5 y 2
     if flags_CCD[4] and flags_CCD[1]:
         h = list_z[2]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -244,7 +244,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 5 y 3
     if flags_CCD[4] and flags_CCD[2]:
         h = list_z[2]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -253,7 +253,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 5 y 4
     if flags_CCD[4] and flags_CCD[3]:
         h = list_z[2]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -262,7 +262,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 5 y 6
     if flags_CCD[4] and flags_CCD[5]:
         h = list_z[2]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -271,7 +271,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 6 y 2
     if flags_CCD[5] and flags_CCD[1]:
         h = list_z[3]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -280,7 +280,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 6 y 3
     if flags_CCD[5] and flags_CCD[2]:
         h = list_z[3]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -288,7 +288,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 6 y 4
     if flags_CCD[5] and flags_CCD[3]:
         h = medida_z - list_z[3]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -297,7 +297,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 6 y 5
     if flags_CCD[5] and flags_CCD[4]:
         h = list_z[3]
-        delta_L = h /  np.cos(Random_th)  ## cm
+        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -603,6 +603,234 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
     dict_muons =  {'Theta(Rad)': list_rand_thet, 'Theta(Deg)': list_rand_thet_deg, 
                    'Phi(Rad)' : list_rand_phi, 'Phi(Deg)' : list_rand_phi_deg, 
                    'Energy-SD(MeV)' : list_random_energy, 'Energy_Landau' : list_energy_Landau} 
+
+    return dict_muons, n_muons_in_CCD, n_negative_long
+
+def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_points_per_angle, 
+                  long_a, long_b, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z):
+    
+    list_rand_thet = []
+    list_rand_phi = []
+    
+    list_rand_thet_deg = []
+    list_rand_phi_deg = []
+
+    list_P_vector = []
+    list_random_point = []
+    list_delta_L = []
+    list_random_energy = []
+    list_energy_Landau = []
+
+    m_mu = 105.7
+
+    n_muons_in_CCD = 0
+    n_negative_long = 0
+    muon_in_bucle = 0
+
+    for i in np.arange(0,number_thet):
+        Random_th = rand.choices(Theta, Theta_true) ## Escoje un ángulo segun la distribución de Theta_true en radianes
+        Random_phi = rand.choice(Phi)   ## Lo mismo pero con phi en radianes
+        # print(Random_th[0])
+        Random_th_deg = np.degrees(Random_th[0]) ## El ángulo theta en grados
+        Random_phi_deg = np.degrees(Random_phi) ## El ángulo phi en grados
+
+        # list_rand_thet.append(Random_th[0])
+        # list_rand_phi.append(Random_phi)
+        # list_rand_thet_deg.append(Random_th_deg)
+        # list_rand_phi_deg.append(Random_phi_deg)
+
+        list_dis_Energy = []
+        for energy in Energy:   ## Aquí se crea la distribución de Smith-Duller en MeV
+            dis_Energy = dis_energy(energy, Random_th[0])
+            list_dis_Energy.append(dis_Energy)
+            
+        Random_energy = rand.choices(Energy, list_dis_Energy) ## Escoje una energía segun la distribución de Smith-Duller en 
+        # list_random_energy.append(Random_energy[0])
+
+        ### Momento del muon ###
+        # momentum = np.sqrt(Random_energy[0]**2 - m_mu**2)
+        momentum = Random_energy[0]
+
+        os.environ["EN_SMITH"] = str(momentum)
+        
+        Vec = coord_cartesian(Random_th, Random_phi)
+        Norma = norma_vec(Vec)
+        # print(type(Vec[0]))
+        Point = [Radio * Vec[0], Radio * Vec[1], Radio * Vec[2]]  ## Genera un punto sobre la esfera.
+        # norma = np.sqrt(Point[0] ** 2 + Point[1] ** 2 + Point[2] ** 2)
+        # Point = (Vec[0], Vec[1], Vec[2])  ## Genera un punto sobre la esfera.
+        # print('Vector sobre la esfera: ', Point)
+        # print('Norma del Vector:', norma)
+        # Points.append(Point)
+
+        normal_Vec = (-1 * Vec[0] / Norma, -1 * Vec[1] / Norma, -1 * Vec[2] / Norma)     ## Es un vector normal unitario apuntando 
+                                                                                            ##  hacia el centro de coordenadas
+        # normal_Norma_Vec = norma_vec(normal_Vec)
+        # print('Norma del vector anti-normal a la esfera:', normal_Norma_Vec)
+        # print(len(normal_Vec))
+        # Vectors.append(normal_Vec)
+
+        vec_thet = [np.cos(Random_th) * np.cos(Random_phi), np.cos(Random_th) * np.sin(Random_phi), np.sin(Random_th)]
+        vec_phi = [-np.sin(Random_phi), np.cos(Random_phi), 0]
+        # print('Vector Unitario Theta: ', vec_thet)
+        # print('Vector Unitario Theta: ', vec_phi)
+
+        flag_cara_1, flag_cara_2, flag_cara_3, flag_cara_4, flag_cara_5, flag_cara_6 = False, False, False, False, False, False 
+        # list_random_th.append(Random_th[0])    ## Lo anexa en una lista
+        # list_random_phi.append(Random_phi)
+
+
+        random_a = rand.choice(long_a)  ## Selecciona un valor uniforme para el parámetro a
+        random_b = rand.choice(long_b)  ##      ''      ''      ''      ''          ''    b
+
+        # list_random_a.append(random_a)
+        # list_random_b.append(random_b)
+
+        P_vector = [random_a * vec_thet[0] + random_b * vec_phi[0], 
+                    random_a * vec_thet[1] + random_b * vec_phi[1], 
+                    random_a * vec_thet[2] + random_b * vec_phi[2]]
+        
+        # list_P_vector.append(P_vector)
+
+        random_plane_point = [Point[0] + P_vector[0], Point[1] + P_vector[1], Point[2] + P_vector[2]]
+        # random_plane_point = [-1 * (Point[0] + P_vector[0]), -1 * (Point[1] + P_vector[1]), -1 * (Point[2] + P_vector[2])]
+
+        # print(random_plane_point)
+        # list_random_point.append(random_plane_point)
+
+        #### Intersecciones con cada cara   ####
+        
+        #### Cara Superior ###
+        t_1 = (medida_z - random_plane_point[2]) / normal_Vec[2] 
+        x_1 = random_plane_point[0] + normal_Vec[0] * t_1 
+        y_1 = random_plane_point[1] + normal_Vec[1] * t_1 
+
+        #### Cara Inferior ###
+        t_2 = (0 - random_plane_point[2]) / normal_Vec[2] 
+        x_2 = random_plane_point[0] + normal_Vec[0] * t_2 
+        y_2 = random_plane_point[1] + normal_Vec[1] * t_2
+
+        ### Caras en X ###
+        ### Cara 3 ###
+        t_3 = (-medida_x - random_plane_point[0]) / normal_Vec[0]
+        z_3 = random_plane_point[2] + normal_Vec[2] * t_3 
+        y_3 = random_plane_point[1] + normal_Vec[1] * t_3
+
+        ### Cara 4 ###
+        t_4 = (medida_x - random_plane_point[0]) / normal_Vec[0]
+        z_4 = random_plane_point[2] + normal_Vec[2] * t_4 
+        y_4 = random_plane_point[1] + normal_Vec[1] * t_4
+
+        #### Caras en Y ###
+        ### Cara 3 ###
+        t_5 = (-medida_y - random_plane_point[1]) / normal_Vec[1]
+        z_5 = random_plane_point[2] + normal_Vec[2] * t_5 
+        x_5 = random_plane_point[0] + normal_Vec[0] * t_5
+
+        ### Cara 4 ###
+        t_6 = (medida_y - random_plane_point[1]) / normal_Vec[1]
+        z_6 = random_plane_point[2] + normal_Vec[2] * t_4 
+        x_6 = random_plane_point[0] + normal_Vec[0] * t_4
+
+        list_z = [z_3, z_4, z_5, z_6]
+        
+        if np.around(x_1[0], 4) in mapeo_x and np.around(y_1[0], 4) in mapeo_y:
+            flag_cara_1 = True
+            # print('Bandera 1: ', flag_cara_1) 
+
+        if np.round(x_2[0], 4) in mapeo_x and np.round(y_2[0], 4) in mapeo_y:
+            flag_cara_2 = True
+            # print('Bandera 2: ', flag_cara_2)
+
+        if np.around(y_3[0], 4) in mapeo_y and np.around(z_3[0], 4) in mapeo_z:
+            flag_cara_3 = True
+            # print('Bandera 1: ', flag_cara_1) 
+
+        if np.round(y_4[0], 4) in mapeo_y and np.round(z_4[0], 4) in mapeo_z:
+            flag_cara_4 = True
+            # print('Bandera 2: ', flag_cara_2)
+
+        if np.around(x_5[0], 4) in mapeo_x and np.around(z_5[0], 4) in mapeo_z:
+            flag_cara_5 = True
+            # print('Bandera 1: ', flag_cara_1) 
+
+        if np.round(x_6[0], 4) in mapeo_x and np.round(z_6[0], 4) in mapeo_z:
+            flag_cara_6 = True
+            # print('Bandera 2: ', flag_cara_2)
+
+        list_flags = [flag_cara_1, flag_cara_2, flag_cara_3, flag_cara_4, flag_cara_5, flag_cara_6]
+        
+        Delta_L, muon = intersection_CCD(list_flags, list_z, medida_z, Random_th)
+
+        if Delta_L != 0:
+
+            if Delta_L > 0 and Delta_L < 2.1:
+                # list_delta_L.append(Delta_L)
+                # print('Estoy agregando el deltaL')
+
+                n_muons_in_CCD = n_muons_in_CCD + muon
+
+                ## Para la laptop en el ICN  ##
+                # new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
+                #                      capture_output=True)
+
+                ## Para la computadora de casa ##
+                new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
+                                            capture_output=True)
+
+                ## Para el CLUSTER ##
+                # new_env = subprocess.run(["root", "-l", "-b", "/home/icn/mausanram/Software/CodigosICN/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
+                #                             capture_output=True)
+
+                # print('Energía de SMith-Duller: ', os.getenv("EN_SMITH"))
+                # print(new_env.stdout)
+                # print(new_env.stderr)
+
+                # print(os.getenv('PATH'))
+                # subprocess.run()
+                # print(new_env.stdout)
+                Random_energy_Landau = float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1])
+                # print(Random_energy_Landau)
+
+                # print(float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1]))
+
+
+                list_rand_thet.append(Random_th[0])
+                list_rand_phi.append(Random_phi)
+                list_rand_thet_deg.append(Random_th_deg)
+                list_rand_phi_deg.append(Random_phi_deg)
+                list_random_energy.append(Random_energy[0])
+                list_delta_L.append(Delta_L)
+                list_energy_Landau.append(Random_energy_Landau)
+                
+                muon_in_bucle += 1
+                # print("El valor de EDEP", str(os.getenv('USERNAME')))
+
+                print(muon_in_bucle, Random_th, Random_phi, Random_energy[0], Random_energy_Landau)
+
+                print('Muon simulado ' + str(muon_in_bucle) + '/' + str(number_thet * number_points_per_angle), end = '\r')
+
+            else:
+                n_negative_long = n_negative_long + 1
+                continue
+
+        else:
+                continue
+        
+        # print(os.environ)
+
+        
+    Len_Landau = len(list_energy_Landau)
+    Len_Theta = len(list_rand_thet)
+
+    # if Len
+
+    # dict_muons =  {'Random_Thet': list_rand_thet, 'Random_Phi' : list_rand_phi, 'Random_Energy' : list_random_energy, 'DeltaL' : list_delta_L} 
+
+    dict_muons =  {'Theta(Rad)': list_rand_thet, 'Theta(Deg)': list_rand_thet_deg, 
+                   'Phi(Rad)' : list_rand_phi, 'Phi(Deg)' : list_rand_phi_deg, 
+                   'Energy-SD(MeV)' : list_random_energy, 'Delta_L' : list_delta_L,
+                   'Energy_Landau' : list_energy_Landau} 
 
     return dict_muons, n_muons_in_CCD, n_negative_long
 

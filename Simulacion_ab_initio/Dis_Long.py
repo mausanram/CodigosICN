@@ -17,6 +17,8 @@ list_delta_L = []
 list_random_point = []
 list_P_vector = []
 
+flag_long_negative = False
+
 ### Configuración de estilo de las gráficas ###
 plt.rcParams.update({
     "image.origin": "lower",
@@ -46,14 +48,16 @@ plt.rcParams.update({
     "legend.loc": 'best',
 })
 
+Lim_inf_theta = 22 ## grados
+Lim_inf_theta_rad = np.radians(Lim_inf_theta)  ## rad
 
 ###### Dominios de variables #######
-Phi = np.arange(0, 2 * np.pi, 0.001)
+Phi = np.arange(0.001, 2 * np.pi - np.pi * 0.001, 0.001)
 Radio = 10
-Theta = np.arange(0, np.pi/2, 0.001)    ### Semi-esfera de radio 100 unidades
+Theta = np.arange(Lim_inf_theta_rad, (np.pi/2) - np.pi * 0.001, 0.001)    ### Semi-esfera de radio 100 unidades
 
 ##### Tamaño del plano #####
-plane_side = 1
+plane_side = 0.25
 long_a = np.arange(-plane_side, plane_side, 0.001)
 long_b = np.arange(-plane_side, plane_side, 0.001)
 
@@ -77,7 +81,7 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
 
 ####    Número de Puntos a Simular  ####
-number_thet = 100000
+number_thet = 10000
 number_points_per_angle = 1
 
 n_muons = number_thet * number_points_per_angle
@@ -95,14 +99,16 @@ list_delta_L_Total = []
 list_delta_L, n_muons_in_CCD, n_negative_long = func_longitud(number_thet, Theta, Theta_true, Phi, Radio, number_points_per_angle, long_a, long_b, 
                                                               medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z)
 
-print('Eventos con long negativa detectados: ', n_negative_long, '. Se estan volviendo a simular. ')
+
 
 if n_negative_long != 0:
+    print('Eventos con long negativa detectados: ', n_negative_long, '. Se estan volviendo a simular. ')
     flag_long_negative = True
 
-while flag_long_negative:
-    list_delta_L_1, n_muons_in_CCD_1, n_negative_long = func_longitud(n_negative_long, Theta, Theta_true, Phi, Radio, 1, 
-                                                                      long_a, long_b, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z)
+if flag_long_negative:
+    while flag_long_negative:
+        list_delta_L_1, n_muons_in_CCD_1, n_negative_long = func_longitud(n_negative_long, Theta, Theta_true, Phi, Radio, 1, 
+                                                                            long_a, long_b, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z)
     
     # if n_negative_long != 0 :
     #     print('Aun se detectaron eventos con long negativa')
@@ -166,7 +172,7 @@ array_Delta_L = np.array(list_delta_L_Total)
 
 fig, axs = plt.subplots(figsize=[7,5])
 # hist_long, bins_edges_long, _ = axs.hist(array_Delta_L, bins = BINS, label = 'Eventos Simulados: ' + str(number_thet * number_points_per_angle))
-hist_long, bins_edges_long, _ = axs.hist(array_Delta_L, color = 'k', bins = BINS, label = 'Eventos Simulados: ' + str(n_muons_in_CCD),  histtype = 'step')
+hist_long, bins_edges_long, _ = axs.hist(array_Delta_L, color = 'b', bins = BINS, label = 'Eventos Simulados: ' + str(n_muons_in_CCD),  histtype = 'step')
 index_max_long =  np.argmax(hist_long)
 pico =  hist_long[index_max_long]
 # print(pico)
