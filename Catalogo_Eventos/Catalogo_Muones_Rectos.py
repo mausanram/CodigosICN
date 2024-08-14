@@ -26,7 +26,7 @@ px_to_micras = 15
 micra_to_cm = 1 / 10000
 DeltaEL_range = 85
 Solidit = 0.7
-elip = 0.9
+Elipticity = 0.85
 numero_bins = 1000
 
 ## DEFINICIONES ##
@@ -147,9 +147,9 @@ def main(argObj):
                 rm = prop[event-1].axis_minor_length/2
                 
                 try:
-                    Elipticity = (rM - rm)/rM 
+                    elip = (rM - rm)/rM 
                 except: 
-                    Elipticity = 0
+                    elip = 0
 
 
                 Solidity = prop[event-1].solidity
@@ -177,7 +177,7 @@ def main(argObj):
                     if charge < 1000:
                         continue
                     
-                    if (Longitud_x < 9 and Longitud_y > 10): 
+                    if (Longitud_x < 7 and Longitud_y > 10): 
                         num_muons = num_muons + 1
 
                         if extension == 0:
@@ -192,7 +192,7 @@ def main(argObj):
                             list_vertical_event_extension_4.append(data_maskEvent)
                             list_EventCharge_extension_4.append(charge)
 
-                    if ( Longitud_y < 9 and Longitud_x > 10):
+                    if ( Longitud_y < 7 and Longitud_x > 10):
                         num_muons = num_muons + 1
                         charge = data_maskEvent.sum()
 
