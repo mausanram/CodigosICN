@@ -29,6 +29,7 @@ DeltaEL_range = 85
 
 Solidit = 0.7
 Elipticity = 0.9
+min_Charge =  3 * 10**6 # ADUs
 
 
 numero_bins = 1000
@@ -178,7 +179,7 @@ def main(argObj):
                 elif  elip >= Elipticity :
                     charge = data_maskEvent.sum()
 
-                    if charge < 3 * 10**6:
+                    if charge < min_Charge:
                         continue
                     
                     if (Longitud_x < 7 and Longitud_y > 10): 
