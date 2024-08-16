@@ -806,7 +806,7 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
                 muon_in_bucle += 1
                 # print("El valor de EDEP", str(os.getenv('USERNAME')))
 
-                print(muon_in_bucle, Random_th, Random_phi, Random_energy[0], Random_energy_Landau)
+                # print(muon_in_bucle, Random_th, Random_phi, Random_energy[0], Random_energy_Landau)
 
                 print('Muon simulado ' + str(muon_in_bucle) + '/' + str(number_thet * number_points_per_angle), end = '\r')
 

@@ -81,7 +81,7 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
 
 ####    Número de Puntos a Simular  ####
-number_thet = 10000
+number_thet = 1010
 number_points_per_angle = 1
 
 n_muons = number_thet * number_points_per_angle
@@ -165,7 +165,7 @@ print('Muones que Impactaron la CCD: ', n_muons_in_CCD)
 # Mostramos el gráfico
 # plt.show()
 
-BINS = 800
+BINS = 450
 array_Delta_L = np.array(list_delta_L_Total)
 # max_DeltaL = np.max()
 # print()

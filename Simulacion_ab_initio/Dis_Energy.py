@@ -39,90 +39,124 @@ plt.rcParams.update({
     "legend.loc": 'best',
 })
 
+def main():
+    # list_rand_thet = []
+    # list_rand_phi = []
 
-Inicio = datetime.datetime.now()
-print('Hora de inicio del cálculo: ', Inicio)
+    list_rand_thet_deg = []
+    list_rand_phi_deg = []
 
-list_Energy = []
-# E = np.arange(10, 100000, 100)
-E_in = 10 ** (-1)
-E_fin = 10 ** 6
-N = 10000
+    list_random_energy = []
+    list_energy_Landau = []
 
-list_Energy = Energy_list(E_in, E_fin, N)
-print('Longitud de la lista de energía: ', len(list_Energy))
+    muon_in_bucle = 0
+
+    Inicio = datetime.datetime.now()
+    print('Hora de inicio del cálculo: ', Inicio)
+
+    ##### Cortes en el ángulo theta ####
+    Lim_inf_theta_deg = 22 # grados
+    Lim_inf_theta_rad = np.radians(Lim_inf_theta_deg)  ## rad
+
+    ###### Rango de los ángulos theta y phi  #######
+    Phi = np.arange(0, 2 * np.pi, 0.001) ## rad
+    Theta = np.arange(Lim_inf_theta_rad, np.pi/2, 0.001) ## rad
+
+    list_Energy = []
+
+    #### Mapeo de la energía (se hace en escala logarítmica para tener valores igualmente distribuidos) ####
+    E_in = 10 ** (-2)   ### Límite inferior
+    E_fin = 10 ** 8     ### Límite superior
+    N = 1000    ### Número de puntos
+    Energy = Energy_list(E_in, E_fin, N)
+
+    #### Distribución angular de theta (Distribución angular de Smith-Duller) ####
+    Theta_true = dis_angular(Theta) 
+
+    ### Número de muones a simular ### 
+    number_thet = 1500    ## Valores de un ángulo Theta.
+    number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
+    n_muons = number_thet * number_points_per_angle ## Número total de muones que se simularán.
+
+    print('Se simularán ' + str(n_muons) + ' muones.')
+
+    for i in np.arange(0,number_thet):
+        Random_th = rand.choices(Theta, Theta_true) ## Escoje un ángulo segun la distribución de Theta_true en radianes
+        Random_phi = rand.choice(Phi)   ## Lo mismo pero con phi en radianes
+        # print(Random_th[0])
+        Random_th_deg = np.degrees(Random_th[0]) ## El ángulo theta en grados
+        Random_phi_deg = np.degrees(Random_phi) ## El ángulo phi en grados
+
+        # list_rand_thet.append(Random_th[0])
+        # list_rand_phi.append(Random_phi)
+        # list_rand_thet_deg.append(Random_th_deg)
+        # list_rand_phi_deg.append(Random_phi_deg)
+
+        list_dis_Energy = []
+        for energy in Energy:   ## Aquí se crea la distribución de Smith-Duller en MeV
+            dis_Energy = dis_energy(energy, Random_th[0])
+            list_dis_Energy.append(dis_Energy)
+            
+        Random_energy = rand.choices(Energy, list_dis_Energy) ## Escoje una energía segun la distribución de Smith-Duller 
+        os.environ["EN_SMITH"] = str(Random_energy[0])
+
+        ## Para la laptop en el ICN  ##
+        # new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
+        #                      capture_output=True)
+
+        ## Para la computadora de casa ##
+        new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
+                                    capture_output=True)
+
+        ## Para el CLUSTER ##
+        # new_env = subprocess.run(["root", "-l", "-b", "/home/icn/mausanram/Software/CodigosICN/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
+        #                             capture_output=True)
 
 
-# Thet = [0.00174533, 0.523599, 0.785398, 1.309]     ## En radianes
-# Ang = [0, 30, 45, 75]   ## Grados
-
-Thet = [0.00174533, 0.785398, 1.309, np.radians(80)]
-Ang = [0, 45, 75, 80]
-
-# Thet = [0.0174533, 1.0472,  0.785398, 1.309 , 1.55334]   
-# Ang = [0, 45, 60, 75, 90]
-
-# Thet = [0.0000000000000001] 
-# Ang = [0]
-
-# for element in np.arange(0, len(Thet)):
-# # for element in np.arange(0, 1):
-#     Energy = dis_energy(E, Thet[element])
-#     # print(Energy)
-#     plt.plot(E, Energy, label = str(Ang[element]) + '°')
-fig, axs = plt.subplots(1,2,figsize=[15,5])
-
-for element in np.arange(0, len(Thet)):
-    list_dis_Energy = []
-    for energy in list_Energy:
-        Energy = dis_energy(energy, Thet[element])
-        list_dis_Energy.append(Energy)
-        # print(Energy)
-    axs[0].plot(list_Energy, list_dis_Energy, label = r'$\theta = $' + str(Ang[element]) + '°')
-
-Ang = [0.01, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 85, 90]
-Ang_array = np.arange(0, 90, 1)
-Thet = []
-Thet_array = []
-list_results = []
-
-for ang in Ang:
-    rad = np.radians(ang)
-    Thet.append(rad)
-
-for ang in Ang_array:
-    rad = np.radians(ang)
-    Thet_array.append(rad)
-
-for angle in Thet: 
-    result = integrate.quad(dis_energy, a = 0, b = np.inf, args = angle)
-    list_results.append(result[0]/ (3.52877403746463 *  10**(-5) ))
-    del result
-
-res = integrate.quad(dis_energy, a = 0, b = np.inf, args = np.radians(80))
-Res = res[0] / (3.52877403746463 *  10**(-5) )
-Real = np.cos(np.radians(80))**2
-
-axs[1].plot(Ang, list_results, 'ob' )
-axs[1].plot(80, Real - Res, 'ob')
-axs[1].plot(Ang_array, np.cos(Thet_array)**2, 'k')
-axs[1].set_xlabel('Ángulo (°)')
-axs[1].set_ylabel('I / I_0')
-axs[1].grid()
+        Random_energy_Landau = float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1])
 
 
-axs[0].set_xlabel('Energy (MeV)')   
-axs[0].grid() 
-axs[0].set_xscale('log')
-axs[0].set_yscale('log')
-axs[0].legend()
-axs[0].set_title('Distribuciónes de Smith-Duller')
+        # list_rand_thet.append(Random_th[0])
+        # list_rand_phi.append(Random_phi)
+        list_rand_thet_deg.append(Random_th_deg)
+        list_rand_phi_deg.append(Random_phi_deg)
+        list_random_energy.append(Random_energy[0])
+        list_energy_Landau.append(Random_energy_Landau)
 
-plt.show()
+        muon_in_bucle += 1
 
-Final = datetime.datetime.now()
+        print('Muon simulado ' + str(muon_in_bucle) + '/' + str(number_thet * number_points_per_angle), end = '\r')
+        
 
-print('Hora final de cálculo: ', Final)
-print('Tiempo de cálculo: ', Final-Inicio)
+    Final = datetime.datetime.now()
+    print('Hora final de cálculo: ', Final)
+    print('Tiempo de cálculo: ', Final-Inicio)
 
-del Energy 
+    fig, axs_all_angle = plt.subplots(1,2, figsize = [15, 10])
+    axs_all_angle[0].hist(list_rand_thet_deg, bins = 40,  histtype = 'step')
+    axs_all_angle[0].set_xlabel(r'Angle (°)')
+    axs_all_angle[0].set_title(r'Angular $\theta$ distribution')
+
+
+    axs_all_angle[1].hist(list_rand_phi_deg, bins = 40,  histtype = 'step')
+    axs_all_angle[1].set_xlabel(r'Angle (°)')
+    axs_all_angle[1].set_title(r'Angular $\phi$ distribution')
+
+    plt.show()
+
+    fig, axs_all_energy = plt.subplots(1,2, figsize = [15, 10])
+    axs_all_energy[0].hist(list_random_energy, bins = 100,  histtype = 'step')
+    axs_all_energy[0].set_xlabel(r'Energy (MeV)')
+    axs_all_energy[0].set_title(r'Energy distribution')
+
+    axs_all_energy[1].hist(list_energy_Landau, bins = 100,  histtype = 'step')
+    axs_all_energy[1].set_xlabel(r'Energy (MeV)')
+    axs_all_energy[1].set_title(r'Energy DP distribution')
+
+
+    plt.show()
+
+    
+if __name__ == "__main__":
+    exitcode = main()
+    exit(code = exitcode)
