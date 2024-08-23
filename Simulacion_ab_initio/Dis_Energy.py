@@ -9,35 +9,38 @@ import datetime
 import os
 import pickle as pkl
 import scipy.integrate as integrate
+import pickle
 
 ### Configuración de estilo de las gráficas ###
-plt.rcParams.update({
-    "image.origin": "lower",
-    "image.aspect": 1,
-    #"text.usetex": True,
-    "grid.alpha": .5,
-    "axes.linewidth":2,
-    "lines.linewidth" : 1,
-    "font.size":    15.0,
-    "xaxis.labellocation": 'right',  # alignment of the xaxis label: {left, right, center}
-    "yaxis.labellocation": 'top',  # alignment of the yaxis label: {bottom, top, center}
-    "xtick.top":           True ,  # draw ticks on the top side
-    "xtick.major.size":    8    ,# major tick size in points
-    "xtick.minor.size":    4      ,# minor tick size in points
-    "xtick.direction":     'in',
-    "xtick.minor.visible": True,
-    "ytick.right":           True ,  # draw ticks on the top side
-    "ytick.major.size":    8    ,# major tick size in points
-    "ytick.minor.size":    4      ,# minor tick size in points
-    "ytick.direction":     'in',
-    "ytick.minor.visible": True,
-    "ytick.major.width":   2   , # major tick width in points
-    "ytick.minor.width":   1 ,
-    "xtick.major.width":   2   , # major tick width in points
-    "xtick.minor.width":   1 ,
-    "legend.framealpha": 0 ,
-    "legend.loc": 'best',
-})
+# plt.rcParams.update({
+#     "image.origin": "lower",
+#     "image.aspect": 1,
+#     #"text.usetex": True,
+#     "grid.alpha": .5,
+#     "axes.linewidth":2,
+#     "lines.linewidth" : 1,
+#     "font.size":    15.0,
+#     "xaxis.labellocation": 'right',  # alignment of the xaxis label: {left, right, center}
+#     "yaxis.labellocation": 'top',  # alignment of the yaxis label: {bottom, top, center}
+#     "xtick.top":           True ,  # draw ticks on the top side
+#     "xtick.major.size":    8    ,# major tick size in points
+#     "xtick.minor.size":    4      ,# minor tick size in points
+#     "xtick.direction":     'in',
+#     "xtick.minor.visible": True,
+#     "ytick.right":           True ,  # draw ticks on the top side
+#     "ytick.major.size":    8    ,# major tick size in points
+#     "ytick.minor.size":    4      ,# minor tick size in points
+#     "ytick.direction":     'in',
+#     "ytick.minor.visible": True,
+#     "ytick.major.width":   2   , # major tick width in points
+#     "ytick.minor.width":   1 ,
+#     "xtick.major.width":   2   , # major tick width in points
+#     "xtick.minor.width":   1 ,
+#     "legend.framealpha": 0 ,
+#     "legend.loc": 'best',
+# })
+
+current_path = os.getcwd()
 
 def main():
     # list_rand_thet = []
@@ -74,7 +77,7 @@ def main():
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 3000    ## Valores de un ángulo Theta.
+    number_thet = 2000    ## Valores de un ángulo Theta.
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
     n_muons = number_thet * number_points_per_angle ## Número total de muones que se simularán.
 
@@ -101,12 +104,12 @@ def main():
         os.environ["EN_SMITH"] = str(Random_energy[0])
 
         ## Para la laptop en el ICN  ##
-        new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
-                             capture_output=True)
+        # new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
+        #                      capture_output=True)
 
         ## Para la computadora de casa ##
-        # new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
-        #                             capture_output=True)
+        new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
+                                    capture_output=True)
 
         ## Para el CLUSTER ##
         # new_env = subprocess.run(["root", "-l", "-b", "/home/icn/mausanram/Software/CodigosICN/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
@@ -132,29 +135,40 @@ def main():
     print('Hora final de cálculo: ', Final)
     print('Tiempo de cálculo: ', Final-Inicio)
 
-    fig, axs_all_angle = plt.subplots(1,2, figsize = [15, 10])
-    axs_all_angle[0].hist(list_rand_thet_deg, bins = 40,  histtype = 'step')
-    axs_all_angle[0].set_xlabel(r'Angle (°)')
-    axs_all_angle[0].set_title(r'Angular $\theta$ distribution')
+    dict_to_save_pkl = {'Theta_Deg' : list_rand_thet_deg, 'Phi_Deg' : list_rand_phi_deg, 'Energy_SM' : list_random_energy, 'Energy_DP' : list_energy_Landau}
+
+    file_name = 'Simulacion_ab_initio_MuonesSim' + str(number_thet) + '.pkl'
+
+    file_object_histogram = open(file_name, 'wb')
+    pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
+    file_object_histogram.close()
+
+    print('Dictionary saved in', current_path + '/' + file_name, ' as a binary file. To open use library "pickle". ')
 
 
-    axs_all_angle[1].hist(list_rand_phi_deg, bins = 40,  histtype = 'step')
-    axs_all_angle[1].set_xlabel(r'Angle (°)')
-    axs_all_angle[1].set_title(r'Angular $\phi$ distribution')
-
-    plt.show()
-
-    fig, axs_all_energy = plt.subplots(1,2, figsize = [15, 10])
-    axs_all_energy[0].hist(list_random_energy, bins = 100,  histtype = 'step')
-    axs_all_energy[0].set_xlabel(r'Energy (MeV)')
-    axs_all_energy[0].set_title(r'Energy distribution')
-
-    axs_all_energy[1].hist(list_energy_Landau, bins = 100,  histtype = 'step')
-    axs_all_energy[1].set_xlabel(r'Energy (MeV)')
-    axs_all_energy[1].set_title(r'Energy DP distribution')
+    # fig, axs_all_angle = plt.subplots(1,2, figsize = [15, 10])
+    # axs_all_angle[0].hist(list_rand_thet_deg, bins = 40,  histtype = 'step')
+    # axs_all_angle[0].set_xlabel(r'Angle (°)')
+    # axs_all_angle[0].set_title(r'Angular $\theta$ distribution')
 
 
-    plt.show()
+    # axs_all_angle[1].hist(list_rand_phi_deg, bins = 40,  histtype = 'step')
+    # axs_all_angle[1].set_xlabel(r'Angle (°)')
+    # axs_all_angle[1].set_title(r'Angular $\phi$ distribution')
+
+    # plt.show()
+
+    # fig, axs_all_energy = plt.subplots(1,2, figsize = [15, 10])
+    # axs_all_energy[0].hist(list_random_energy, bins = 100,  histtype = 'step')
+    # axs_all_energy[0].set_xlabel(r'Energy (MeV)')
+    # axs_all_energy[0].set_title(r'Energy distribution')
+
+    # axs_all_energy[1].hist(list_energy_Landau, bins = 100,  histtype = 'step')
+    # axs_all_energy[1].set_xlabel(r'Energy (MeV)')
+    # axs_all_energy[1].set_title(r'Energy DP distribution')
+
+
+    # plt.show()
 
     
 if __name__ == "__main__":
