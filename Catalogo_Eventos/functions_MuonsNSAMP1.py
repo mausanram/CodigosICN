@@ -712,5 +712,4 @@ def diffution_vertical_muon(dict, list_vertical_labels, Delta_in, Delta_fin, ext
     return list_all_sigmas, list_deep
 
 
-
         
