@@ -45,6 +45,13 @@ def main(argObj):
 
     # expgain = [110.78158608889959, 144.4661840232508, 100,  63.730700893071976] ## 
 
+    list_sigmas_vertical_event_extension_1 = []
+    list_sigmas_vertical_event_extension_2 = []
+    list_sigmas_vertical_event_extension_4 = []
+
+    list_sigmas_horizontal_event_extension_1 = []
+    list_sigmas_horizontal_event_extension_2 = []
+    list_sigmas_horizontal_event_extension_4 = []
 
     list_EventCharge_extension_2 =[]
     list_EventCharge_extension_1 = []
@@ -186,14 +193,17 @@ def main(argObj):
                         num_muons = num_muons + 1
 
                         if extension == 0:
+                            list_sigmas_vertical_event_extension_1.append(sig_ADUs)
                             list_vertical_event_extension_1.append(data_maskEvent)
                             list_EventCharge_extension_1.append(charge)
 
                         elif extension == 1:
+                            list_sigmas_vertical_event_extension_2.append(sig_ADUs)
                             list_vertical_event_extension_2.append(data_maskEvent)
                             list_EventCharge_extension_2.append(charge)
 
                         elif extension == 3:
+                            list_sigmas_vertical_event_extension_4.append(sig_ADUs)
                             list_vertical_event_extension_4.append(data_maskEvent)
                             list_EventCharge_extension_4.append(charge)
 
@@ -202,14 +212,17 @@ def main(argObj):
                         charge = data_maskEvent.sum()
 
                         if extension == 0:
+                            list_sigmas_horizontal_event_extension_1.append(sig_ADUs)
                             list_horizontal_event_extension_1.append(data_maskEvent)
                             list_EventCharge_extension_1.append(charge)
 
                         elif extension == 1:
+                            list_sigmas_horizontal_event_extension_1.append(sig_ADUs)
                             list_horizontal_event_extension_2.append(data_maskEvent)
                             list_EventCharge_extension_2.append(charge)
 
                         elif extension == 3:
+                            list_sigmas_horizontal_event_extension_1.append(sig_ADUs)
                             list_horizontal_event_extension_4.append(data_maskEvent)
                             list_EventCharge_extension_4.append(charge)
 
@@ -224,9 +237,15 @@ def main(argObj):
     # dict_to_save_pkl = {'Muons_Detected' : num_muons, 'charge' : list_EventCharge_AllExtensions, 'DeltaEL' : list_DeltaEL}
 
     dict_to_save_pkl = {'All_Muons_Detected' : num_muons, 
-                        'extension_1' : {'charge' : list_EventCharge_extension_1, 'Vertical_Events' : list_vertical_event_extension_1, 'Horizontal_Events' : list_horizontal_event_extension_1}, 
-                        'extension_2' : {'charge' : list_EventCharge_extension_2, 'Vertical_Events' : list_vertical_event_extension_2, 'Horizontal_Events' : list_horizontal_event_extension_2},
-                        'extension_4' : {'charge' : list_EventCharge_extension_4, 'Vertical_Events' : list_vertical_event_extension_4, 'Horizontal_Events' : list_horizontal_event_extension_4}}
+                        'extension_1' : {'charge' : list_EventCharge_extension_1, 'vertical_sigmas' : list_sigmas_vertical_event_extension_1,
+                        'Vertical_Events' : list_vertical_event_extension_1, 'horizontal_sigmas' : list_sigmas_horizontal_event_extension_1, 
+                        'Horizontal_Events' : list_horizontal_event_extension_1}, 
+                        'extension_2' : {'charge' : list_EventCharge_extension_2, 'vertical_sigmas' : list_sigmas_vertical_event_extension_2, 
+                        'Vertical_Events' : list_vertical_event_extension_2, 'horizontal_sigmas' : list_sigmas_horizontal_event_extension_2, 
+                        'Horizontal_Events' : list_horizontal_event_extension_2},
+                        'extension_4' : {'charge' : list_EventCharge_extension_4,  'vertical_sigmas' : list_sigmas_vertical_event_extension_4, 
+                        'Vertical_Events' : list_vertical_event_extension_4, 'horizontal_sigmas' : list_sigmas_horizontal_event_extension_4, 
+                        'Horizontal_Events' : list_horizontal_event_extension_4}}
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()
@@ -244,7 +263,7 @@ def main(argObj):
     # print(eventos_circulares)
 
 
-    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_ADUs__.pkl'
+    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_with_sigmas_ADUs__.pkl'
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
