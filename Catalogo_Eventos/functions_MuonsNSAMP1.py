@@ -588,7 +588,7 @@ def check_flip_vertical_muon(dict, label_muon, Delta_in, Delta_fin, extension):
     #     n = 0
 
 
-    if NaN_pixel_1 > NaN_pixel_2:
+    if NaN_pixel_1 >= NaN_pixel_2:
         Event = event
 
     elif NaN_pixel_1 < NaN_pixel_2:
