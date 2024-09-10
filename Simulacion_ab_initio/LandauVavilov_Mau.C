@@ -7,11 +7,11 @@
 #include <ctime>
 #include <chrono>
 
-int seed_rand(){
-	srand(1003);
-	// cout <<  << endl;
-	return 0;
-} 
+// int seed_rand(){
+// 	srand(1003);
+// 	// cout <<  << endl;
+// 	return 0;
+// } 
 
 // double srand(time(NULL));
 
