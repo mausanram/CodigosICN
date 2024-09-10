@@ -77,7 +77,7 @@ def main():
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 2000    ## Valores de un ángulo Theta.
+    number_thet = 1000    ## Valores de un ángulo Theta.
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
     n_muons = number_thet * number_points_per_angle ## Número total de muones que se simularán.
 
@@ -117,6 +117,7 @@ def main():
 
 
         Random_energy_Landau = float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1])
+        # print(Random_energy_Landau)
 
 
         # list_rand_thet.append(Random_th[0])

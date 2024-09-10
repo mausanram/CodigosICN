@@ -590,12 +590,14 @@ def check_flip_vertical_muon(dict, label_muon, Delta_in, Delta_fin, extension):
 
     if NaN_pixel_1 >= NaN_pixel_2:
         Event = event
+        flag_turn = False
 
     elif NaN_pixel_1 < NaN_pixel_2:
         turn_event = np.flip(event, 0)
         Event = turn_event
+        flag_turn = True
     
-    return Event
+    return Event, flag_turn
 
 def diffution_vertical_muon(dict, list_vertical_labels, Delta_in, Delta_fin, extension):
 
@@ -609,7 +611,7 @@ def diffution_vertical_muon(dict, list_vertical_labels, Delta_in, Delta_fin, ext
     for label_muon in list_vertical_labels:
         list_sigmas = []
         # event = data_histogram['extension_' + str(extension)]['Vertical_Events'][label_muon]
-        event = check_flip_vertical_muon(dict  = dict, label_muon = label_muon, Delta_in= Delta_inicial, Delta_fin=Delta_final, extension=extension)
+        event, _ = check_flip_vertical_muon(dict  = dict, label_muon = label_muon, Delta_in= Delta_inicial, Delta_fin=Delta_final, extension=extension)
         
 
         label_verticalMuon, nlabels_verticalMuon = ndimage.label(event,structure=[[0,0,0],[1,1,1],[0,0,0]])
