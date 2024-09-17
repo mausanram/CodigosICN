@@ -27,6 +27,8 @@ def Landau(x,a, MP,xi):
     # C3 = np.exp((-0.5 * (x + np.exp(-x))))
     return  C1 * C3
 
+
+##### ------------------- Catálogo de Muones ----------------- #####
 def oScan_fit_NSAMP1(extensión, active_area, oScan, Bins, make_figure_flag = False) -> dict:
     Maxfev = 10000000
     P0=[10, 2000, 900]
@@ -138,15 +140,16 @@ def oScan_fit_NSAMP324(extensión, active_area, oScan, Bins, make_figure_flag = 
         # print(median_oScan, diff, min_oScan)
 
         # Range = (min_oScan, max_oScan)
-        if 30 * abs(median_oScan) <  diff:
+        if 40 * abs(median_oScan) <  diff:
             Range = (min_oScan, diff)
-            # print(Range)
+            print(Range)
 
         else:
             Range = (min_oScan, diff * 2)
-            # print(Range)
+            print(Range)
 
-        bin_heights, bin_borders, _ = axs_all.hist(Overscan_plane.flatten(), bins = Bins,range = Range , label="Pixeles del Overscan")
+        bin_heights, bin_borders, _ = axs_all.hist(Overscan_plane.flatten(), bins = Bins,range = (-300, 800), label="Pixeles del Overscan")
+
         bin_centers = np.zeros(len(bin_heights), dtype=float)
         offset_fit = bin_borders[np.argmax(bin_heights)]
 
@@ -160,13 +163,15 @@ def oScan_fit_NSAMP324(extensión, active_area, oScan, Bins, make_figure_flag = 
         bin_heights = bin_heights[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
         bin_centers = bin_centers[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
  
-        popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, maxfev=Maxfev, p0 = [1,100,100])		# Fit histogram with gaussian
-        axs_all.plot(bin_centers, gaussian(bin_centers, *popt), 'k', label = 'Ajuste Gaussiano')	
+        popt, pcov = curve_fit(Gaussian2, bin_centers, bin_heights, maxfev=Maxfev, p0 = [0, 200,100, 900, 100])		# Fit histogram with gaussian
+        axs_all.plot(bin_centers, Gaussian2(bin_centers, *popt), 'k', label = 'Ajuste Gaussiano')	
 
-        dict_popt = {'Mean' : popt[1], 'Hight' : popt[0], 'sigma' : abs(popt[2]), 'Offset' : offset}
-        print('Centroide: ',popt[1], ' Amplitud: ', popt[0], 'sigma: ', abs(popt[2])) #gaussian(x, a, mean, sigma)
+        dict_popt = {'Mean' : popt[0], 'sigma' : abs(popt[1]), 'Gain' : popt[2], 'Offset' : offset}
+
+        print('Centroide: ',dict_popt['Mean'], ' Sigma: ', dict_popt['sigma'], 'Offset: ', dict_popt['Offset'], 'Gain: ', dict_popt['Gain']) #gaussian(x, a, mean, sigma)
 
         axs_all.set_title("Distribución de pixeles del Overscan")
+        axs_all.set_xlim(-300, 1000)
         axs_all.legend()
         plt.show()
         
@@ -183,13 +188,13 @@ def oScan_fit_NSAMP324(extensión, active_area, oScan, Bins, make_figure_flag = 
         # print(median_oScan, diff, min_oScan)
 
 
-        if 40 * abs(median_oScan) <  diff:
+        if 30 * abs(median_oScan) <  diff:
             Range = (min_oScan, diff)
             # print(Range)
 
         else:
             Range = (min_oScan, diff * 2)
-            # print(Range)
+            print(Range)
 
 
         bin_heights, bin_borders = np.histogram(Overscan_plane.flatten(), bins= Bins, range = Range) #'auto'
@@ -204,8 +209,8 @@ def oScan_fit_NSAMP324(extensión, active_area, oScan, Bins, make_figure_flag = 
         bin_heights = bin_heights[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
         bin_centers = bin_centers[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
 
-        popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, maxfev = Maxfev, p0 = [1,100,100])		# Fit histogram with gaussiano')
-        dict_popt = {'Mean' : popt[1], 'Hight' : popt[0], 'sigma' : abs(popt[2]),'Offset' : offset}
+        popt, pcov = curve_fit(Gaussian2, bin_centers, bin_heights, maxfev = Maxfev, p0 = [0,100,200, 900, 100])		# Fit histogram with gaussiano')
+        dict_popt = {'Mean' : popt[0], 'sigma' : abs(popt[1]), 'Gain' : popt[2], 'Offset' : offset}
     
     return dict_popt
 
@@ -222,6 +227,25 @@ def data_calibrated(active_area, extension, offset, list_gain, ratio_keV, unidad
         data = (ratio_keV * dataP) / list_gain[extension - 1]
 
     return data
+
+def data_calibrated_NSAMP(active_area, extension, offset, gain, ratio_keV, unidades, sigma_ADUs):
+    ## Se aplica el offset ##
+    dataP = active_area - offset
+
+    if unidades == 0:
+        data = dataP
+        sigma = sigma_ADUs
+
+    elif unidades == 1:
+        data = dataP / gain
+        sigma = abs(sigma_ADUs / gain)
+
+    elif unidades == 2:
+        data = (ratio_keV * dataP) / gain
+        sigma = abs( (ratio_keV *  sigma_ADUs)/ gain)
+
+    return data, sigma
+
 
 def event_DataFrame(dataCal, label_img, nlabels_img, prop, header, extension, unidades) -> pd.DataFrame:
     list_Runid = []
@@ -475,6 +499,146 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
 
     return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta, list_charge_all_events
 
+##### ------------------- Catálogo de Muones Rectos (verticales/horizontales) ---------------------- ###
+
+def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, min_Charge):
+    list_sigmas_vertical_event = []
+    list_vertical_event = []
+    list_charge_vertical_event = []
+
+    list_sigmas_horizontal_event = []
+    list_horizontal_event = []
+    list_charge_horizontal_event = []
+
+    list_vertical_events = []
+    list_horizontal_events = []
+
+
+
+    for event in range(1,n_events):
+        mask = np.invert(label_img == event)
+        loc = ndimage.find_objects(label_img == event)[0]
+        
+        data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
+                                            mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
+        
+        MinValue_Event = data_maskEvent.min()
+        MeanValue_Event = data_maskEvent.mean()
+
+        try: 
+            coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
+            coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
+            Barycentercharge = data_maskEvent[coordY_centerCharge, coordX_centerCharge]
+
+            differval = abs(Barycentercharge - MinValue_Event) 
+
+        except:
+            Barycentercharge = np.nan()
+            differval = 0
+
+        rM = prop[event-1].axis_major_length/2
+        rm = prop[event-1].axis_minor_length/2
+        
+        try:
+            elip = (rM - rm)/rM 
+        except: 
+            elip = 0
+
+
+        Solidity = prop[event-1].solidity
+        miny, minx, maxy, maxx = prop[event-1].bbox
+        Longitud_y, Longitud_x = maxy - miny , maxx - minx # px
+
+        if rM == 0 or rm == 0:
+            continue 
+
+        elif maxx - minx <= 3:
+            continue
+
+        elif not Barycentercharge:
+            continue
+
+        elif differval < MeanValue_Event: #keV
+            continue
+
+        elif  Solidity < Solidit:
+            continue 
+
+        elif  elip >= Elipticity :
+            charge = data_maskEvent.sum()
+
+            if charge < min_Charge:
+                continue
+            
+            if (Longitud_x < 7 and Longitud_y > 10): 
+                num_muons = num_muons + 1
+
+                list_sigmas_vertical_event.append(sig_ADUs)
+                list_vertical_event.append(data_maskEvent)
+                list_charge_vertical_event.append(charge)
+
+            if ( Longitud_y < 7 and Longitud_x > 10):
+                num_muons = num_muons + 1
+
+                list_sigmas_horizontal_event.append(sig_ADUs)
+                list_horizontal_event.append(data_maskEvent)
+                list_charge_horizontal_event.append(charge)
+
+            
+
+            # if (Longitud_x < 7 and Longitud_y > 10): 
+            #     num_muons = num_muons + 1
+
+        #     if extension == 0:
+        #         list_sigmas_vertical_event_extension_1.append(sig_ADUs)
+        #         list_vertical_event_extension_1.append(data_maskEvent)
+        #         list_EventCharge_extension_1.append(charge)
+
+        #     elif extension == 1:
+        #         list_sigmas_vertical_event_extension_2.append(sig_ADUs)
+        #         list_vertical_event_extension_2.append(data_maskEvent)
+        #         list_EventCharge_extension_2.append(charge)
+
+        #     elif extension == 3:
+        #         list_sigmas_vertical_event_extension_4.append(sig_ADUs)
+        #         list_vertical_event_extension_4.append(data_maskEvent)
+        #         list_EventCharge_extension_4.append(charge)
+
+        # if ( Longitud_y < 7 and Longitud_x > 10):
+        #     num_muons = num_muons + 1
+        #     charge = data_maskEvent.sum()
+
+        #     if extension == 0:
+        #         list_sigmas_horizontal_event_extension_1.append(sig_ADUs)
+        #         list_horizontal_event_extension_1.append(data_maskEvent)
+        #         list_EventCharge_extension_1.append(charge)
+
+        #     elif extension == 1:
+        #         list_sigmas_horizontal_event_extension_1.append(sig_ADUs)
+        #         list_horizontal_event_extension_2.append(data_maskEvent)
+        #         list_EventCharge_extension_2.append(charge)
+
+        #     elif extension == 3:
+        #         list_sigmas_horizontal_event_extension_1.append(sig_ADUs)
+        #         list_horizontal_event_extension_4.append(data_maskEvent)
+        #         list_EventCharge_extension_4.append(charge)
+
+
+
+        del data_maskEvent
+        # del Barycentercharge
+
+
+    list_vertical_events.append(list_sigmas_vertical_event)
+    list_vertical_events.append(list_vertical_event)
+    list_vertical_events.append(list_charge_vertical_event)
+
+    list_horizontal_events.append(list_sigmas_horizontal_event)
+    list_horizontal_events.append(list_horizontal_event)
+    list_horizontal_events.append(list_charge_horizontal_event)
+
+
+    return list_vertical_events, list_horizontal_events
 
 
 ################### ---------------------- Funciones para el Modelo de Difusión ---------------------------- ###############
@@ -599,6 +763,126 @@ def check_flip_vertical_muon(dict, label_muon, Delta_in, Delta_fin, extension):
     
     return Event, flag_turn
 
+def check_flip_horizontal_muon(dict, label_muon, Delta_in, Delta_fin, extension):
+
+    Delta_inicial = Delta_in    # px
+    Delta_final = Delta_fin     # px
+
+    event =  dict['extension_' + str(extension)]['Horizontal_Events'][label_muon]
+
+    label_verticalMuon, nlabels_verticalMuon = ndimage.label(event,structure=[[0,1,0],[0,1,0],[0,1,0]])
+
+    ### Parte de abajo de la imagen ##
+    line = label_verticalMuon == Delta_inicial
+    # print(Delta_inicial)
+    loc = ndimage.find_objects(label_verticalMuon == Delta_inicial)[0]
+    mask_35 = np.invert(label_verticalMuon == Delta_inicial)
+    data_mask = ma.masked_array(event[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop], mask_35[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
+
+    Longitud_linea = len(data_mask.flatten())
+    Carga_renglon = data_mask.flatten().sum()
+    Mean_carga = np.mean(data_mask.flatten())
+
+    Mean_in_1 = 0
+    var_1 = 0
+    carga_cuadrada = 0
+    NaN_pixel_1 = 0
+
+    for pixel in np.arange(0, Longitud_linea, 1):
+        if data_mask.flatten()[pixel]:
+            element_pixel = (pixel *data_mask.flatten()[pixel]) / Carga_renglon
+            Mean_in_1 = Mean_in_1 + element_pixel
+        else:
+            element_pixel = 0
+        
+        Mean_in_1 = Mean_in_1 + element_pixel
+
+    ## Calcula la suma de las cargas al cuadrado ##
+    for pixel in np.arange(0, Longitud_linea, 1):
+        if data_mask.flatten()[pixel]:
+            element_pixel = data_mask.flatten()[pixel]**2
+        else:
+            NaN_pixel_1 = NaN_pixel_1 + 1
+            element_pixel = 0
+        carga_cuadrada = carga_cuadrada + element_pixel 
+
+    Mean_carga_cuadrada_1 = carga_cuadrada/Longitud_linea
+
+
+    for pixel in np.arange(0, Longitud_linea, 1):
+        element_pixel =(1 / (Longitud_linea - 1)) * (pixel - Mean_in_1)**2
+        var_1 = var_1 + element_pixel 
+
+    var_1_true = var_1 * (Mean_carga_cuadrada_1 / (Mean_carga**2))
+    # var_1_true = var_1
+
+    sigma_in = np.sqrt(var_1_true)
+
+
+    ### Parte de arriba de la imagen ###
+    line = label_verticalMuon ==  nlabels_verticalMuon - Delta_final
+    # print( nlabels_verticalMuon - Delta_final)
+    loc = ndimage.find_objects(label_verticalMuon == nlabels_verticalMuon - Delta_final)[0]
+    mask_35 = np.invert(label_verticalMuon == nlabels_verticalMuon - Delta_final)
+    data_mask = ma.masked_array(event[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop], mask_35[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
+    # print(data_mask[0])
+
+    Longitud_linea = len(data_mask.flatten())
+    Carga_renglon = data_mask.flatten().sum()
+    Mean_carga = np.mean(data_mask.flatten())
+
+    Mean_in_2 = 0
+    var_2 = 0
+    carga_cuadrada = 0
+    NaN_pixel_2 = 0
+
+    for pixel in np.arange(0, Longitud_linea, 1):
+        if data_mask.flatten()[pixel]:
+            element_pixel = (pixel * data_mask.flatten()[pixel]) / Carga_renglon
+        else:
+            NaN_pixel_2 = NaN_pixel_2 + 1
+            element_pixel = 0
+        Mean_in_2 = Mean_in_2 + element_pixel
+        # print('Valor mean: ', Mean_in_2)
+
+    ## Calcula la suma de las cargas al cuadrado ##
+    for pixel in np.arange(0, Longitud_linea, 1):
+        if data_mask.flatten()[pixel]:
+            element_pixel = data_mask.flatten()[pixel]**2
+        else:
+            element_pixel = 0
+        carga_cuadrada = carga_cuadrada + element_pixel 
+
+    Mean_carga_cuadrada_2 = carga_cuadrada / Longitud_linea
+
+    for pixel in np.arange(0, Longitud_linea, 1):
+        element_pixel = (1 / (Longitud_linea - 1)) * (pixel - Mean_in_2)**2
+        var_2 = var_2 + element_pixel
+
+    var_2_true = var_2 * (Mean_carga_cuadrada_2 / (Mean_carga**2))
+    # var_2_true = var_2
+
+    sigma_fn = np.sqrt(var_2_true)
+
+    # if sigma_in > sigma_fn:
+    #     turn_event = np.flip(event, 0)
+    #     event = turn_event
+
+    # if sigma_in < sigma_fn:
+    #     n = 0
+
+
+    if NaN_pixel_1 >= NaN_pixel_2:
+        Event = event
+        flag_turn = False
+
+    elif NaN_pixel_1 < NaN_pixel_2:
+        turn_event = np.flip(event, 1)
+        Event = turn_event
+        flag_turn = True
+    
+    return Event, flag_turn
+
 def diffution_vertical_muon(dict, list_vertical_labels, Delta_in, Delta_fin, extension):
 
     list_all_sigmas = []
@@ -678,6 +962,125 @@ def diffution_vertical_muon(dict, list_vertical_labels, Delta_in, Delta_fin, ext
             list_xlabel_long = np.linspace(-Longitud_linea + int(Longitud_linea/2) , Longitud_linea + int(Longitud_linea/2), Longitud_linea)
             
             popt, pcov = curve_fit(gaussian, list_xlabel, data_mask[0], maxfev=100000, p0 = [1000, Mean_in, sigma_in])		# Fit histogram with gaussian
+
+            ## Se guardan lo parámetros del ajuste en un diccionario ##
+            dict_popt = {'Mean' : popt[1], 'Hight' : popt[0], 'sigma' : abs(popt[2]), 'Pcov' : pcov}
+            Centroide = popt[1]
+            Sigma = abs(popt[2])
+
+            # print(Sigma)
+
+            # if Sigma > 6:
+            #     continue
+
+            # ## Se grafican los puntos experimentales ##
+            # axs_all.scatter(list_xlabel_long, data_mask[0], lable_line, '.', color = 'k')
+
+            # ## Se crea otro arreglo para el plot del ajusto y se dibuja ##
+            # list_xlabel_long = np.linspace( Centroide - 4 , Centroide + 4)
+            
+            # axs_all.plot(list_xlabel_long, gaussian(list_xlabel_long, *popt), lable_line, 'k')	
+            # axs_all.legend()
+
+            # Se guarda la sigma de la distribución en una lista ##
+            list_all_sigmas.append(Sigma)
+            list_sigmas.append(Sigma)
+            # list_all_sigmas.append(Sigma)
+            # print('Centroide: ',popt[1], ' Amplitud: ', popt[0], 'sigma: ', abs(popt[2]))  #gaussian(x, a, mean, sigma)
+            lines = lines + 1
+
+        list_xlabel_sigmas = np.linspace(Z_inicial, CCD_depth, len(list_sigmas))
+
+        for deep in list_xlabel_sigmas:
+            list_deep.append(deep)
+
+    
+    return list_all_sigmas, list_deep
+
+def diffution_horizontal_muon(dict, list_horizontal_labels, Delta_in, Delta_fin, extension):
+
+    list_all_sigmas = []
+    list_deep = []
+
+    CCD_depth = 725 # micras
+    Delta_inicial = Delta_in    # px
+    Delta_final = Delta_fin     # px
+
+    for label_muon in list_horizontal_labels:
+        list_sigmas = []
+        # event = data_histogram['extension_' + str(extension)]['Vertical_Events'][label_muon]
+        event, _ = check_flip_horizontal_muon(dict  = dict, label_muon = label_muon, Delta_in= Delta_inicial, Delta_fin=Delta_final, extension=extension)
+        
+
+        label_verticalMuon, nlabels_verticalMuon = ndimage.label(event,structure=[[0,1,0],[0,1,0],[0,1,0]])
+
+        size_x = event.shape[1]
+        size_y = event.shape[0]
+
+        lines = 0
+        Longitud_XY = size_x 
+
+        Z_inicial = (Delta_inicial * CCD_depth) / (Longitud_XY - Delta_final)
+
+        for lable_line in np.arange(Delta_inicial, nlabels_verticalMuon - Delta_final):
+            ## Enmascara la linea en turno
+            line = label_verticalMuon == lable_line
+            loc = ndimage.find_objects(label_verticalMuon == lable_line)[0]
+            mask_35 = np.invert(label_verticalMuon == lable_line)
+            data_mask = ma.masked_array(event[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop], mask_35[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
+
+            Longitud_linea = len(data_mask.flatten())
+            Carga_renglon = data_mask.flatten().sum()
+            Mean_carga = np.mean(data_mask.flatten())
+
+            Mean_in  = 0
+            var = 0
+            carga_cuadrada = 0
+
+            ### Se calcula el X promedio ##
+            for pixel in np.arange(0, Longitud_linea, 1):
+                if data_mask.flatten()[pixel]:
+                    element_pixel = (pixel * data_mask.flatten()[pixel]) / Carga_renglon
+                    Mean_in = Mean_in + element_pixel
+                else:
+                    element_pixel = 0
+                
+                Mean_in = Mean_in + element_pixel
+
+            ## Calcula la suma de las cargas al cuadrado ##
+            for pixel in np.arange(0, Longitud_linea, 1):
+                if data_mask.flatten()[pixel]:
+                    element_pixel = data_mask.flatten()[pixel]**2
+                else:
+                    element_pixel = 0
+
+                carga_cuadrada = carga_cuadrada + element_pixel 
+
+            Mean_carga_cuadrada = carga_cuadrada/Longitud_linea
+
+            ### Se calcula la varianza ##
+            for pixel in np.arange(0, Longitud_linea, 1):
+                element_pixel =(1 / (Longitud_linea - 1)) * (pixel - Mean_in)**2
+                var = var + element_pixel  ### COreggir la varianza con otro estimados
+
+            ### Se corrige la varianza con la carga ###
+            var_true = var * (Mean_carga_cuadrada / (Mean_carga**2))
+
+            ### Se calcula la sigma ###
+            sigma_in = np.sqrt(var_true)
+            
+
+            ##Se crea un arreglo para usarlo en el plot de los datos, y se realiza el juste ##
+            list_xlabel = np.arange(0.5, len(data_mask.flatten()), 1)
+
+            list_xlabel_long = np.linspace(-Longitud_linea + int(Longitud_linea/2) , Longitud_linea + int(Longitud_linea/2), Longitud_linea)
+            
+            try:
+                popt, pcov = curve_fit(gaussian, list_xlabel, data_mask.flatten(), maxfev=100000, p0 = [1000, Mean_in, sigma_in])		# Fit histogram with gaussian
+
+            except: 
+                print('Fit error in label muon: ' + str(label_muon))
+                continue
 
             ## Se guardan lo parámetros del ajuste en un diccionario ##
             dict_popt = {'Mean' : popt[1], 'Hight' : popt[0], 'sigma' : abs(popt[2]), 'Pcov' : pcov}

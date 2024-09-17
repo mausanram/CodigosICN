@@ -770,6 +770,10 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
 
                 n_muons_in_CCD = n_muons_in_CCD + muon
 
+
+                os.environ["DELTA_L"] = str(Delta_L)
+
+
                 ## Para la laptop en el ICN  ##
                 # new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
                 #                      capture_output=True)
