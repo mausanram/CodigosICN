@@ -558,12 +558,12 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
                 n_muons_in_CCD = n_muons_in_CCD + muon
 
                 ## Para la laptop en el ICN  ##
-                # new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
-                #                      capture_output=True)
+                new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
+                                     capture_output=True)
 
                 ## Para la computadora de casa ##
-                new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
-                                            capture_output=True)
+                # new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
+                #                             capture_output=True)
 
                 ## Para el CLUSTER ##
                 # new_env = subprocess.run(["root", "-l", "-b", "/home/icn/mausanram/Software/CodigosICN/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
@@ -577,7 +577,7 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
                 # subprocess.run()
                 # print(new_env.stdout)
                 Random_energy_Landau = float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1])
-                # print(Random_energy_Landau)
+                print(Random_energy_Landau)
 
                 # print(float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1]))
                 list_energy_Landau.append(Random_energy_Landau)
