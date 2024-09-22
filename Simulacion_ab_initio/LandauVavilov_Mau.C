@@ -112,6 +112,12 @@ void LandauVavilov_Mau() {
 	// double p;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
    	// std::cin >> p;					// ---------------------------------------- //
 
+	// cout << "Introduce un entero: ";	// ---------------------------------------- //
+	// double s;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
+   	// std::cin >> s;					// ---------------------------------------- //
+
+
+
 	TCanvas *cnv = new TCanvas("cnv", "", 900, 700);
 	cnv->SetGrid();
 

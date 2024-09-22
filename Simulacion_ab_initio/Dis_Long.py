@@ -57,7 +57,7 @@ Radio = 10
 Theta = np.arange(Lim_inf_theta_rad, (np.pi/2) - np.pi * 0.001, 0.001)    ### Semi-esfera de radio 100 unidades
 
 ##### Tamaño del plano #####
-plane_side = 0.25
+plane_side = 1.5
 long_a = np.arange(-plane_side, plane_side, 0.001)
 long_b = np.arange(-plane_side, plane_side, 0.001)
 
@@ -81,7 +81,7 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
 
 ####    Número de Puntos a Simular  ####
-number_thet = 1010
+number_thet = 100000
 number_points_per_angle = 1
 
 n_muons = number_thet * number_points_per_angle
@@ -101,25 +101,26 @@ list_delta_L, n_muons_in_CCD, n_negative_long = func_longitud(number_thet, Theta
 
 
 
-if n_negative_long != 0:
-    print('Eventos con long negativa detectados: ', n_negative_long, '. Se estan volviendo a simular. ')
-    flag_long_negative = True
+# if n_negative_long != 0:
+#     print('Eventos con long negativa detectados: ', n_negative_long, '. Se estan volviendo a simular. ')
+#     flag_long_negative = True
 
-if flag_long_negative:
-    while flag_long_negative:
-        list_delta_L_1, n_muons_in_CCD_1, n_negative_long = func_longitud(n_negative_long, Theta, Theta_true, Phi, Radio, 1, 
-                                                                            long_a, long_b, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z)
+# if flag_long_negative:
+#     while flag_long_negative:
+#         list_delta_L_1, n_muons_in_CCD_1, n_negative_long = func_longitud(n_negative_long, Theta, Theta_true, Phi, Radio, 1, 
+#                                                                             long_a, long_b, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z)
     
     # if n_negative_long != 0 :
     #     print('Aun se detectaron eventos con long negativa')
 
 
-    list_delta_L_neg = list_delta_L_neg + list_delta_L_1
+#     list_delta_L_neg = list_delta_L_neg + list_delta_L_1
     
-    if n_negative_long == 0:
-        flag_long_negative = False
+#     if n_negative_long == 0:
+#         flag_long_negative = False
 
-list_delta_L_Total = list_delta_L + list_delta_L_neg
+# list_delta_L_Total = list_delta_L + list_delta_L_neg
+list_delta_L_Total = list_delta_L 
         
 Final = datetime.datetime.now()
 

@@ -69,7 +69,7 @@ def main():
     # print(os.environ)
     
     ## Se simulan los muones, se genera un diccionario con la información de cada evento (Theta, Phi, Energía) ##
-    dict_muons, _, _  = muon_generator_3(Energy, number_thet=n_muons, Theta=Theta, Theta_true=Theta_true, Phi=Phi, Radio=Radio, 
+    dict_muons, _, _  = muon_generator_CLUSTER(Energy, number_thet=n_muons, Theta=Theta, Theta_true=Theta_true, Phi=Phi, Radio=Radio, 
                                 number_points_per_angle=number_points_per_angle,long_a=long_a, long_b=long_b, medida_x=medida_x, 
                                 medida_y=medida_y, medida_z=medida_z, mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z)
 
