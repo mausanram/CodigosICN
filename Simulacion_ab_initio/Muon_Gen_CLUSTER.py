@@ -4,6 +4,9 @@ import random as rand
 import pandas as pd
 import matplotlib.pyplot as plt
 from funciones_Sim_ab_initio import *
+
+print('Estoy importando ROOT')
+
 import datetime
 import os
 import pickle as pkl
