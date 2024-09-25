@@ -272,7 +272,7 @@ def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, make_figure_fl
 
         fgaus2 = TF1("fgauss2","[3]*exp(-0.5*((x-[0])/[1])^2)+[4]*exp(-0.5*((x-[0]-[2])/[1])^2)",-300,600,5) # TF1("nombre", "funcion escrita como en root", min, max, #parametros)
         
-        h3=TH1F("histogram", "Distribution of OsCan",2000,-300,500)
+        h3=TH1F("histogram", "Distribution of OsCan",1500,-300,500)
         for pixel_value in Overscan_plane.flatten():
             # if not np.ma.is_masked(pixel_value):
             h3.Fill(pixel_value)
