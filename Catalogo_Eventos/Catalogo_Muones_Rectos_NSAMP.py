@@ -27,8 +27,8 @@ micra_to_cm = 1 / 10000
 DeltaEL_range = 85
 
 
-Solidit = 0.6
-Elipticity = 0.7
+Solidit = 0.7
+Elipticity = 0.9
 min_Charge =  100 # keV
 
 
