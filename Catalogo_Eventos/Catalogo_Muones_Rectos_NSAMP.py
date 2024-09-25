@@ -95,7 +95,7 @@ def main(argObj):
                 header = hdu_list[extension].header
                 # nsamp = float(header['NSAMP'])
 
-                print('Voy a obtener el valor medio de los píxeles')
+                # print('Voy a obtener el valor medio de los píxeles')
                 mean_rows_value = []
                 for element in np.arange(0, oscan_y):
                     row = oScan[element: element +1, 0: oscan_x]
@@ -192,7 +192,7 @@ def main(argObj):
         del hdu_list         
     
     num_muons = len(list_EventCharge_extension_1) + len(list_EventCharge_extension_2) + len(list_EventCharge_extension_4)
-    
+
     dict_to_save_pkl = {'All_Muons_Detected' : num_muons, 
                         'extension_1' : {'charge' : list_EventCharge_extension_1, 'vertical_sigmas' : list_sigmas_vertical_event_extension_1,
                         'Vertical_Events' : list_vertical_event_extension_1, 'horizontal_sigmas' : list_sigmas_horizontal_event_extension_1, 
