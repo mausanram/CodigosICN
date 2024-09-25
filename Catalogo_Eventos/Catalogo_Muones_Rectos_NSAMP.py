@@ -28,7 +28,7 @@ DeltaEL_range = 85
 
 
 Solidit = 0.6
-Elipticity = 0.6
+Elipticity = 0.7
 min_Charge =  100 # keV
 
 
