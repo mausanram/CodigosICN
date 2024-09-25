@@ -12,9 +12,11 @@ import datetime
 import pickle
 import os
 
+# from ROOT import *
+
 ## CONSTANTES ## 
 current_path = os.getcwd()
-units = 1
+units = 2
 
 n_sigmas = 4
 ratio_keV = 0.0037
@@ -25,12 +27,12 @@ micra_to_cm = 1 / 10000
 DeltaEL_range = 85
 
 
-Solidit = 0.7
-Elipticity = 0.9
-min_Charge =  3 * 10**6 # ADUs
+Solidit = 0.6
+Elipticity = 0.6
+min_Charge =  100 # keV
 
 
-numero_bins = 1000
+numero_bins = 500
 
 def Gaussian2(x,m,s,g,a1,a2): #data, mean, sigma, gain, height1, heigth2
     return a1*np.exp(-1/2*((x-m)/s)**2)+a2*np.exp(-1/2*((x-m-g)/s)**2)
@@ -83,6 +85,7 @@ def main(argObj):
         for extension in (0,1,3):
             # extension = 1
             try :
+                # print('Voy a obtener el OsCan y el active area')
                 data = hdu_list[extension].data[:,:550]
                 oScan = hdu_list[extension].data[:,550:]
 
@@ -90,11 +93,12 @@ def main(argObj):
                 oscan_y = oScan.shape[0]
 
                 header = hdu_list[extension].header
-                nsamp = float(header['NSAMP'])
+                # nsamp = float(header['NSAMP'])
 
+                print('Voy a obtener el valor medio de los píxeles')
                 mean_rows_value = []
                 for element in np.arange(0, oscan_y):
-                    row = Overscan[element: element +1, 0: oscan_x]
+                    row = oScan[element: element +1, 0: oscan_x]
                     num_row = element + 1
                     mean_value = np.median(row)
                     mean_rows_value.append([mean_value])
@@ -102,23 +106,28 @@ def main(argObj):
                 true_active_area = data - mean_rows_value
 
             except:
-                print('Loading error in image ' + str(img) + 'in load the data.')
+                print('Loading error in extension ' + str(extension) + ' of image ' + str(img) + 'in load the data.')
                 continue
 
             del header
 
             try:
-                dict_popt = oScan_fit_NSAMP324(extensión=extension, active_area=data, oScan=oScan, Bins=numero_bins, make_figure_flag=False)
+                dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, make_figure_flag=False)
+
+                sig_ADUs = dict_popt['sigma']
+                Offset = dict_popt['Offset']
+                Gain = dict_popt['Gain']
+
+                if Gain < 100:
+                    ### Aquí se deberá poner la ganancia promedio de cada extensión una vez que se obtenga de muchas imágenes
+                    print('Fit gain error in extension ' + str(extension) + ' of image ' + str(img))
+                        # continue
 
             except:
                 print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
                 continue
-                
-            sig_ADUs = dict_popt['sigma']
-            Offset = dict_popt['Offset']
-            Gain = dict_popt['Gain']
 
-            sig_electrons = abs((sig_ADUs) / Gain)
+            # sig_electrons = abs((sig_ADUs) / Gain)
 
             dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, extension=extension, gain=Gain, ratio_keV=ratio_keV, unidades= units, offset=Offset, sigma_ADUs = sig_ADUs)
             
@@ -130,6 +139,7 @@ def main(argObj):
             # label, n_events = ndimage.label(dataCal>6*abs(popt[2]),structure=[[1,1,1],[1,1,1],[1,1,1]])
             label_img, n_events = sk.measure.label(dataCal > fondo_value, connectivity=2, return_num=True)
             prop = sk.measure.regionprops(label_img, dataCal)
+            # print(type(prop))
 
             list_totalEvents.append(n_events)
             # print(nlabels_img)
@@ -142,7 +152,7 @@ def main(argObj):
             valor_promedio_fondo = fondo.data.mean()
 
             list_vertical, list_horizontal = muon_straight_filter(dataCal= dataCal, label_img=label_img, n_events=n_events, 
-                                                                      Solidit=Solidit, Elipticity=Elipticity, min_Charge=min_Charge)
+                                                                        Solidit=Solidit, Elipticity=Elipticity, Prop= prop, min_Charge=min_Charge, Sigma=sigma)
 
             if extension == 0:
                 for index in np.arange(0, len(list_vertical[0])):
@@ -176,8 +186,47 @@ def main(argObj):
                     list_EventCharge_extension_4.append(list_horizontal[2][index])
                     list_sigmas_horizontal_event_extension_4.append(list_horizontal[0][index])
                     list_horizontal_event_extension_4.append(list_horizontal[1][index])
+            
+            # print('Extension ' + str(extension) + ' terminada.')
 
-        del hdu_list            
+        del hdu_list         
+    
+    num_muons = len(list_EventCharge_extension_1) + len(list_EventCharge_extension_2) + len(list_EventCharge_extension_4)
+    
+    dict_to_save_pkl = {'All_Muons_Detected' : num_muons, 
+                        'extension_1' : {'charge' : list_EventCharge_extension_1, 'vertical_sigmas' : list_sigmas_vertical_event_extension_1,
+                        'Vertical_Events' : list_vertical_event_extension_1, 'horizontal_sigmas' : list_sigmas_horizontal_event_extension_1, 
+                        'Horizontal_Events' : list_horizontal_event_extension_1}, 
+                        'extension_2' : {'charge' : list_EventCharge_extension_2, 'vertical_sigmas' : list_sigmas_vertical_event_extension_2, 
+                        'Vertical_Events' : list_vertical_event_extension_2, 'horizontal_sigmas' : list_sigmas_horizontal_event_extension_2, 
+                        'Horizontal_Events' : list_horizontal_event_extension_2},
+                        'extension_4' : {'charge' : list_EventCharge_extension_4,  'vertical_sigmas' : list_sigmas_vertical_event_extension_4, 
+                        'Vertical_Events' : list_vertical_event_extension_4, 'horizontal_sigmas' : list_sigmas_horizontal_event_extension_4, 
+                        'Horizontal_Events' : list_horizontal_event_extension_4}}
+
+    total_events = sum(list_totalEvents)
+    Final = datetime.datetime.now()
+
+    print('Hora del final de cálculo: ', Final)
+    print('Tiempo de cálculo: ', Final-Inicio)
+    print(num_images)
+    Eventos_Totales = 'Eventos Detectados en Total: ' +  str(total_events)
+    eventos_rectos = 'Muones Rectos Detectados: ' + str(num_muons)
+    # eventos_circulares = 'Muones Circulares Detectados: ' + str(len(list_EventosCirc))
+    # print('Número de elementos de la lista "list_EventCharge_AllExtensions": ', len(list_EventCharge_AllExtensions))
+    # print('elementos de la lista "list_EventCharge_AllExtensions":', list_EventCharge_AllExtensions)
+    print(Eventos_Totales)
+    print(eventos_rectos)
+    # print(eventos_circulares)
+
+
+    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_with_sigmas_ADUs__NSAMP324.pkl'
+    file_object_histogram = open(file_name, 'wb')
+    pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
+    file_object_histogram.close()
+
+    print('Dictionary saved in ', current_path + '/' + file_name, ' as a binary file.')
+    print('To open use library "pickle". ')
 
 
 

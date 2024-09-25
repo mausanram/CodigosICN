@@ -774,7 +774,9 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
                 n_muons_in_CCD = n_muons_in_CCD + muon
 
 
-                os.environ["DELTA_L"] = str(Delta_L)
+                os.environ["DELTA_L"] = str(Delta_L[0])
+                # print(Delta_L)
+                # print( os.environ["DELTA_L"])
 
 
                 ## Para la laptop en el ICN  ##
@@ -797,7 +799,7 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
                 # subprocess.run()
                 # print(new_env.stdout)
                 Random_energy_Landau = float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1])
-                # print(Random_energy_Landau)
+                # print(Random_energy_Landau, end='\n\n')
 
                 # print(float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1]))
 

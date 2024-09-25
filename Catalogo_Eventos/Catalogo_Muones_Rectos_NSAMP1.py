@@ -92,7 +92,7 @@ def main(argObj):
                 oScan = hdu_list[extension].data[:,550:]
                 nsamp = float(header['NSAMP'])
             except:
-                print('Loading error in image ' + str(img) + 'in load the data.')
+                print('Loading error in extension ' + str(extension) + ' of image ' + str(img) + ' in load the data.')
                 continue
 
             del header
@@ -134,7 +134,7 @@ def main(argObj):
             valor_promedio_fondo = fondo.data.mean()
 
             list_vertical, list_horizontal = muon_straight_filter(dataCal= dataCal, label_img=label_img, n_events=n_events, 
-                                                                      Solidit=Solidit, Elipticity=Elipticity, min_Charge=min_Charge)
+                                                                      Solidit=Solidit, Elipticity=Elipticity, Prop= prop, min_Charge=min_Charge)
 
             if extension == 0:
                 for index in np.arange(0, len(list_vertical[0])):
@@ -202,7 +202,7 @@ def main(argObj):
     # print(eventos_circulares)
 
 
-    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_with_sigmas_ADUs__.pkl'
+    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_with_sigmas_ADUs__NSAMP1.pkl'
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()

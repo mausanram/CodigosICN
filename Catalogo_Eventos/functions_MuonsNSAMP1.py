@@ -8,6 +8,8 @@ import skimage as sk
 import random
 import time
 
+from ROOT import *
+
 ### Distribución Gaussiana ###
 def gaussian(x, a, mean, sigma): 
     return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))
@@ -16,16 +18,15 @@ def gaussian(x, a, mean, sigma):
 def Gaussian2(x,m,s,g,a1,a2): #data, mean, sigma, gain, height1, heigth2
     return a1*np.exp(-1/2*((x-m)/s)**2)+a2*np.exp(-1/2*((x-m-g)/s)**2)
 
+# ### Distribución aproximada de Landau ###
+# def Landau(x,a, MP,xi):
+#     C1 = a/np.sqrt((2 * np.pi))
+#     C2 = np.exp(-((x-MP)-1)/xi)
+#     C3 = np.exp((-0.5 * (((x-MP)-1)/xi + C2 )))
 
-### Distribución aproximada de Landau ###
-def Landau(x,a, MP,xi):
-    C1 = a/np.sqrt((2 * np.pi))
-    C2 = np.exp(-((x-MP)-1)/xi)
-    C3 = np.exp((-0.5 * (((x-MP)-1)/xi + C2 )))
-
-    # C1 = 1/np.sqrt((2 * np.pi))
-    # C3 = np.exp((-0.5 * (x + np.exp(-x))))
-    return  C1 * C3
+#     # C1 = 1/np.sqrt((2 * np.pi))
+#     # C3 = np.exp((-0.5 * (x + np.exp(-x))))
+#     return  C1 * C3
 
 
 ##### ------------------- Catálogo de Muones ----------------- #####
@@ -124,10 +125,11 @@ def oScan_fit_NSAMP1(extensión, active_area, oScan, Bins, make_figure_flag = Fa
 def oScan_fit_NSAMP324(extensión, active_area, oScan, Bins, make_figure_flag = False) -> dict:
     Maxfev = 100000
     P0=[10, 2000, 900]
+    Range_x_label = [-200, 400]
 
     if make_figure_flag:
         fig_all, axs_all = plt.subplots(1, 1, figsize=(10, 10))
-        hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins)
+        hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins,)
         offset = bins_edges[np.argmax(hist)]
         print('Offset Value: ', offset, ' ADUs')
 
@@ -148,7 +150,7 @@ def oScan_fit_NSAMP324(extensión, active_area, oScan, Bins, make_figure_flag = 
             Range = (min_oScan, diff * 2)
             print(Range)
 
-        bin_heights, bin_borders, _ = axs_all.hist(Overscan_plane.flatten(), bins = Bins,range = (-300, 800), label="Pixeles del Overscan")
+        bin_heights, bin_borders, _ = axs_all.hist(Overscan_plane.flatten(), bins = Bins,range = Range_x_label, label="Pixeles del Overscan")
 
         bin_centers = np.zeros(len(bin_heights), dtype=float)
         offset_fit = bin_borders[np.argmax(bin_heights)]
@@ -163,15 +165,15 @@ def oScan_fit_NSAMP324(extensión, active_area, oScan, Bins, make_figure_flag = 
         bin_heights = bin_heights[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
         bin_centers = bin_centers[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
  
-        popt, pcov = curve_fit(Gaussian2, bin_centers, bin_heights, maxfev=Maxfev, p0 = [0, 200,100, 900, 100])		# Fit histogram with gaussian
+        popt, pcov = curve_fit(Gaussian2, bin_centers, bin_heights, maxfev=Maxfev, p0 = [3, 200, 200, 900, 100], bounds = ((-10, 10), (150, 200), (150, 210)))		# Fit histogram with gaussian
         axs_all.plot(bin_centers, Gaussian2(bin_centers, *popt), 'k', label = 'Ajuste Gaussiano')	
 
         dict_popt = {'Mean' : popt[0], 'sigma' : abs(popt[1]), 'Gain' : popt[2], 'Offset' : offset}
 
-        print('Centroide: ',dict_popt['Mean'], ' Sigma: ', dict_popt['sigma'], 'Offset: ', dict_popt['Offset'], 'Gain: ', dict_popt['Gain']) #gaussian(x, a, mean, sigma)
+        print('Centroide: ',dict_popt['Mean'], ' Sigma: ', dict_popt['sigma'], 'Offset: ', dict_popt['Offset'], 'Gain: ', dict_popt['Gain']) 
 
         axs_all.set_title("Distribución de pixeles del Overscan")
-        axs_all.set_xlim(-300, 1000)
+        # axs_all.set_xlim(xmin_fit, xmax_fit)
         axs_all.legend()
         plt.show()
         
@@ -214,6 +216,85 @@ def oScan_fit_NSAMP324(extensión, active_area, oScan, Bins, make_figure_flag = 
     
     return dict_popt
 
+
+def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, make_figure_flag = False) -> dict:
+    Maxfev = 100000
+    Range_x_label = [-200, 400]
+
+    min_oScan = np.min(oScan)
+
+    if make_figure_flag == True:
+        hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins,  range=(min_oScan, 18000))
+        offset = bins_edges[np.argmax(hist)]
+        # print('Offset Value: ', offset, ' ADUs')
+
+        Overscan_plane = oScan - offset 
+
+        fgaus2 = TF1("fgauss2","[3]*exp(-0.5*((x-[0])/[1])^2)+[4]*exp(-0.5*((x-[0]-[2])/[1])^2)",-300,600,5) # TF1("nombre", "funcion escrita como en root", min, max, #parametros)
+
+        h3=TH1F("histogram", "Distribution of OsCan",1500,-300,500)
+        for pixel_value in Overscan_plane.flatten():
+            # if not np.ma.is_masked(pixel_value):
+            h3.Fill(pixel_value)
+            #print(pixel_value)
+
+        fgaus2.SetParameters(0,10,100, 100, 100) # Establecer parametros iniciales del fit, de manera visual es posible determinarlos como una primera aproximacion
+        h3.Fit(fgaus2)
+
+        c1=TCanvas()
+        h3.Draw()
+        c1.Draw()
+
+
+        fgaus2.Draw("same")
+        gStyle.SetOptFit(1100)
+        gStyle.SetPadGridX (True)
+        # fgaus2.Draw('Quiet')
+
+
+        print('Parameters of the Doble-Gaussian Fit')
+        print('Mean: ', fgaus2.GetParameters()[0],  ' +- ', fgaus2.GetParError(0))
+        print('Sigma: ', fgaus2.GetParameters()[1],  ' +- ', fgaus2.GetParError(1))
+        print('Gain: ', fgaus2.GetParameters()[2],  ' +- ', fgaus2.GetParError(2), '\n')
+
+        print("chiSquare: " + str(fgaus2.GetChisquare()))
+        print("NDegrees of Freedom: " + str(fgaus2.GetNDF()))
+        print("chiSquare / NDF :", fgaus2.GetChisquare() / fgaus2.GetNDF(), '\n')
+
+        dict_popt = {'Mean' :fgaus2.GetParameters()[0], 'sigma' : abs(fgaus2.GetParameters()[1]), 'Gain' : abs(fgaus2.GetParameters()[2]), 'Offset' : offset}
+        
+    if make_figure_flag == False:
+        hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins,  range=(min_oScan, 18000))
+        offset = bins_edges[np.argmax(hist)]
+        # print('Offset Value: ', offset, ' ADUs')
+
+        Overscan_plane = oScan - offset
+
+        fgaus2 = TF1("fgauss2","[3]*exp(-0.5*((x-[0])/[1])^2)+[4]*exp(-0.5*((x-[0]-[2])/[1])^2)",-300,600,5) # TF1("nombre", "funcion escrita como en root", min, max, #parametros)
+        
+        h3=TH1F("histogram", "Distribution of OsCan",2000,-300,500)
+        for pixel_value in Overscan_plane.flatten():
+            # if not np.ma.is_masked(pixel_value):
+            h3.Fill(pixel_value)
+            #print(pixel_value)
+        fgaus2.SetParameters(0,10,100, 100, 100) # Establecer parametros iniciales del fit, de manera visual es posible determinarlos como una primera aproximacion
+        h3.Fit(fgaus2)
+
+        # c3=TCanvas()
+
+        # h3.Draw()
+        # c3.Draw()
+        # fgaus2.Draw("same")
+        # gStyle.SetOptFit(1100)
+        # gStyle.SetPadGridX (True)
+        # # fgaus2.Draw('Quiet')
+
+        dict_popt = {'Mean' :fgaus2.GetParameters()[0], 'sigma' : abs(fgaus2.GetParameters()[1]), 'Gain' : abs(fgaus2.GetParameters()[2]), 'Offset' : offset}
+    
+    return dict_popt
+
+
+
 def data_calibrated(active_area, extension, offset, list_gain, ratio_keV, unidades):
     dataP = active_area - offset
 
@@ -230,19 +311,19 @@ def data_calibrated(active_area, extension, offset, list_gain, ratio_keV, unidad
 
 def data_calibrated_NSAMP(active_area, extension, offset, gain, ratio_keV, unidades, sigma_ADUs):
     ## Se aplica el offset ##
-    dataP = active_area - offset
+    dataP = active_area - offset ## En ADUs
 
     if unidades == 0:
-        data = dataP
+        data = dataP ## En ADUs
         sigma = sigma_ADUs
 
     elif unidades == 1:
-        data = dataP / gain
+        data = dataP / gain ## En electrones
         sigma = abs(sigma_ADUs / gain)
 
     elif unidades == 2:
-        data = (ratio_keV * dataP) / gain
-        sigma = abs( (ratio_keV *  sigma_ADUs)/ gain)
+        data = ratio_keV * (dataP / gain) ## En keV
+        sigma = abs( ratio_keV *  (sigma_ADUs/ gain))
 
     return data, sigma
 
@@ -394,7 +475,7 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
 
     list_charge_all_events = []
 
-    for event in range(1, nlabels_img):
+    for event in np.arange(1, nlabels_img):
         mask = np.invert(label_img == event)
         loc = ndimage.find_objects(label_img == event)[0]
         
@@ -484,24 +565,24 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
         elif  elip >= Elipticity :
             # charge = data_maskEvent.sum()
 
-            if charge > 100:
-                Delta_EL = (charge)/ (Delta_L) 
-                theta = np.arctan((Diagonal_lenght * px_to_cm)/(CCD_depth * micra_to_cm)) *(180 /np.pi)
+            # if charge > 100:
+            Delta_EL = (charge)/ (Delta_L) 
+            theta = np.arctan((Diagonal_lenght * px_to_cm)/(CCD_depth * micra_to_cm)) *(180 /np.pi)
 
-                list_DeltaL.append(Delta_L)
-                list_DeltaEL.append(Delta_EL)
-                list_charge.append(charge)
-                list_theta.append(theta)
-                # print(charge, DeltaEL)
+            list_DeltaL.append(Delta_L)
+            list_DeltaEL.append(Delta_EL)
+            list_charge.append(charge)
+            list_theta.append(theta)
+            # print(charge, DeltaEL)
 
-                # if DeltaEL_range_min <= DeltaEL <= DeltaEL_range_max:
-                list_Muon_labels.append(event)
+            # if DeltaEL_range_min <= DeltaEL <= DeltaEL_range_max:
+            list_Muon_labels.append(event)
 
     return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta, list_charge_all_events
 
 ##### ------------------- Catálogo de Muones Rectos (verticales/horizontales) ---------------------- ###
 
-def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, min_Charge):
+def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop, min_Charge, Sigma):
     list_sigmas_vertical_event = []
     list_vertical_event = []
     list_charge_vertical_event = []
@@ -513,9 +594,9 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, min_
     list_vertical_events = []
     list_horizontal_events = []
 
+    # num_muons = 0
 
-
-    for event in range(1,n_events):
+    for event in np.arange(1,n_events):
         mask = np.invert(label_img == event)
         loc = ndimage.find_objects(label_img == event)[0]
         
@@ -536,8 +617,8 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, min_
             Barycentercharge = np.nan()
             differval = 0
 
-        rM = prop[event-1].axis_major_length/2
-        rm = prop[event-1].axis_minor_length/2
+        rM = Prop[event-1].axis_major_length/2
+        rm = Prop[event-1].axis_minor_length/2
         
         try:
             elip = (rM - rm)/rM 
@@ -545,8 +626,8 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, min_
             elip = 0
 
 
-        Solidity = prop[event-1].solidity
-        miny, minx, maxy, maxx = prop[event-1].bbox
+        Solidity = Prop[event-1].solidity
+        miny, minx, maxy, maxx = Prop[event-1].bbox
         Longitud_y, Longitud_x = maxy - miny , maxx - minx # px
 
         if rM == 0 or rm == 0:
@@ -571,57 +652,18 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, min_
                 continue
             
             if (Longitud_x < 7 and Longitud_y > 10): 
-                num_muons = num_muons + 1
+                # num_muons = num_muons + 1
 
-                list_sigmas_vertical_event.append(sig_ADUs)
+                list_sigmas_vertical_event.append(Sigma)
                 list_vertical_event.append(data_maskEvent)
                 list_charge_vertical_event.append(charge)
 
             if ( Longitud_y < 7 and Longitud_x > 10):
-                num_muons = num_muons + 1
+                # num_muons = num_muons + 1
 
-                list_sigmas_horizontal_event.append(sig_ADUs)
+                list_sigmas_horizontal_event.append(Sigma)
                 list_horizontal_event.append(data_maskEvent)
                 list_charge_horizontal_event.append(charge)
-
-            
-
-            # if (Longitud_x < 7 and Longitud_y > 10): 
-            #     num_muons = num_muons + 1
-
-        #     if extension == 0:
-        #         list_sigmas_vertical_event_extension_1.append(sig_ADUs)
-        #         list_vertical_event_extension_1.append(data_maskEvent)
-        #         list_EventCharge_extension_1.append(charge)
-
-        #     elif extension == 1:
-        #         list_sigmas_vertical_event_extension_2.append(sig_ADUs)
-        #         list_vertical_event_extension_2.append(data_maskEvent)
-        #         list_EventCharge_extension_2.append(charge)
-
-        #     elif extension == 3:
-        #         list_sigmas_vertical_event_extension_4.append(sig_ADUs)
-        #         list_vertical_event_extension_4.append(data_maskEvent)
-        #         list_EventCharge_extension_4.append(charge)
-
-        # if ( Longitud_y < 7 and Longitud_x > 10):
-        #     num_muons = num_muons + 1
-        #     charge = data_maskEvent.sum()
-
-        #     if extension == 0:
-        #         list_sigmas_horizontal_event_extension_1.append(sig_ADUs)
-        #         list_horizontal_event_extension_1.append(data_maskEvent)
-        #         list_EventCharge_extension_1.append(charge)
-
-        #     elif extension == 1:
-        #         list_sigmas_horizontal_event_extension_1.append(sig_ADUs)
-        #         list_horizontal_event_extension_2.append(data_maskEvent)
-        #         list_EventCharge_extension_2.append(charge)
-
-        #     elif extension == 3:
-        #         list_sigmas_horizontal_event_extension_1.append(sig_ADUs)
-        #         list_horizontal_event_extension_4.append(data_maskEvent)
-        #         list_EventCharge_extension_4.append(charge)
 
 
 
