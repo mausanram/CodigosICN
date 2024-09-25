@@ -8,7 +8,7 @@ import skimage as sk
 import random
 import time
 
-from ROOT import *
+from ROOT import TF1, TH1F, Fit, TCanvas, gStyle
 
 ### Distribución Gaussiana ###
 def gaussian(x, a, mean, sigma): 
