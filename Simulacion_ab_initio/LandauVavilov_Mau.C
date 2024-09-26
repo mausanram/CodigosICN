@@ -108,13 +108,13 @@ void LandauVavilov_Mau() {
 
 	// cout << p endl;
 
-	// cout << "Introduce un entero: ";	// ---------------------------------------- //
-	// double p;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
-   	// std::cin >> p;					// ---------------------------------------- //
+	//cout << "Introduce un entero: ";	// ---------------------------------------- //
+	//double p;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
+   	//std::cin >> p;					// ---------------------------------------- //
 
-	// cout << "Introduce un entero: ";	// ---------------------------------------- //
-	// double s;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
-   	// std::cin >> s;					// ---------------------------------------- //
+	//cout << "Introduce un entero: ";	// ---------------------------------------- //
+	//double s;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
+   	//std::cin >> s;					// ---------------------------------------- //
 
 
 
