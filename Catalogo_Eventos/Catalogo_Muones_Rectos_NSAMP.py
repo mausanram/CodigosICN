@@ -220,7 +220,7 @@ def main(argObj):
     # print(eventos_circulares)
 
 
-    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_with_sigmas_ADUs__NSAMP324.pkl'
+    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_Skirts_'+str(n_skirts) + '_with_sigmas_ADUs__NSAMP324.pkl'
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
