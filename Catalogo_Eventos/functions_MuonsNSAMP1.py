@@ -2,7 +2,7 @@ from functions_py import *
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from mpl_toolkits.axes_grid1 import make_axes_locatable
-import numpy.ma as ma
+import numpy as np
 import pandas as pd 
 import skimage as sk
 import scipy.ndimage as nd
