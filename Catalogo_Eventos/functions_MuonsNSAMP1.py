@@ -621,7 +621,7 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop
             differval = abs(Barycentercharge - MinValue_Event) 
 
         except:
-            Barycentercharge = np.nan()
+            Barycentercharge = 0
             differval = 0
 
         rM = Prop[event-1].axis_major_length/2
