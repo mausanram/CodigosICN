@@ -1010,7 +1010,7 @@ def diffution_vertical_muon(dict, list_vertical_labels, Delta_in, Delta_fin, ext
 
             list_xlabel_long = np.linspace(-Longitud_linea + int(Longitud_linea/2) , Longitud_linea + int(Longitud_linea/2), Longitud_linea)
             
-            popt, pcov = curve_fit(gaussian, list_xlabel, data_mask[0], maxfev=100000, p0 = [1000, Mean_in, sigma_in])		# Fit histogram with gaussian
+            popt, pcov = curve_fit(gaussian, list_xlabel, data_mask[0], maxfev=100000)#, p0 = [1000, Mean_in, sigma_in])		# Fit histogram with gaussian
 
             ## Se guardan lo parámetros del ajuste en un diccionario ##
             dict_popt = {'Mean' : popt[1], 'Hight' : popt[0], 'sigma' : abs(popt[2]), 'Pcov' : pcov}
