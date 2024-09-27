@@ -5,6 +5,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy.ma as ma
 import pandas as pd 
 import skimage as sk
+import scipy.ndimage as nd
 import random
 import time
 
@@ -582,7 +583,7 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
 
 ##### ------------------- Catálogo de Muones Rectos (verticales/horizontales) ---------------------- ###
 
-def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop, min_Charge, Sigma):
+def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop, min_Charge, Sigma, skirts):
     list_sigmas_vertical_event = []
     list_vertical_event = []
     list_charge_vertical_event = []
@@ -597,8 +598,14 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop
     # num_muons = 0
 
     for event in np.arange(1,n_events):
-        mask = np.invert(label_img == event)
-        loc = ndimage.find_objects(label_img == event)[0]
+
+        if skirts > 0:
+            mask = np.invert(nd.binary_dilation(label_img == event, iterations= skirts))
+            loc = ndimage.find_objects(label_img == event)[0]
+        
+        elif skirts == 0:
+            mask = np.invert(label_img == event)
+            loc = ndimage.find_objects(label_img == event)[0]
         
         data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
                                             mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])

@@ -30,7 +30,7 @@ DeltaEL_range = 85
 Solidit = 0.7
 Elipticity = 0.9
 min_Charge =  100 # keV
-
+n_skirts = 1
 
 numero_bins = 500
 
@@ -151,8 +151,8 @@ def main(argObj):
             fondo = ma.masked_array(dataCal,fondo_mask)
             valor_promedio_fondo = fondo.data.mean()
 
-            list_vertical, list_horizontal = muon_straight_filter(dataCal= dataCal, label_img=label_img, n_events=n_events, 
-                                                                        Solidit=Solidit, Elipticity=Elipticity, Prop= prop, min_Charge=min_Charge, Sigma=sigma)
+            list_vertical, list_horizontal = muon_straight_filter(dataCal= dataCal, label_img=label_img, n_events=n_events, Solidit=Solidit, Elipticity=Elipticity, 
+                                                                    Prop= prop, min_Charge=min_Charge, Sigma=sigma, skirts= n_skirts)
 
             if extension == 0:
                 for index in np.arange(0, len(list_vertical[0])):
