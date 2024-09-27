@@ -601,11 +601,11 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop
 
         if skirts > 0:
             mask = np.invert(nd.binary_dilation(label_img == event, iterations= skirts))
-            loc = ndimage.find_objects(label_img == event)[0]
+            loc = nd.find_objects(label_img == event)[0]
         
         elif skirts == 0:
             mask = np.invert(label_img == event)
-            loc = ndimage.find_objects(label_img == event)[0]
+            loc = nd.find_objects(label_img == event)[0]
         
         data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
                                             mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
@@ -614,8 +614,8 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop
         MeanValue_Event = data_maskEvent.mean()
 
         try: 
-            coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
-            coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
+            coordX_centerCharge = round(nd.center_of_mass(data_maskEvent)[1])
+            coordY_centerCharge = round(nd.center_of_mass(data_maskEvent)[0])
             Barycentercharge = data_maskEvent[coordY_centerCharge, coordX_centerCharge]
 
             differval = abs(Barycentercharge - MinValue_Event) 
