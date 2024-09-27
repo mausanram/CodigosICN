@@ -395,7 +395,6 @@ def muon_generator_1(Radio, long_a, long_b, number_thet, number_points_per_angle
 
     return dict_muons
 
-
 def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_points_per_angle, 
                   long_a, long_b, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z):
     
@@ -780,12 +779,12 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
 
 
                 ## Para la laptop en el ICN  ##
-                new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
-                                     capture_output=True)
+                # new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
+                #                      capture_output=True)
 
                 ## Para la computadora de casa ##
-                # new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
-                #                             capture_output=True)
+                new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
+                                            capture_output=True)
 
 
                 # print('Energía de SMith-Duller: ', os.getenv("EN_SMITH"))
@@ -839,8 +838,6 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
                    'Energy_Landau' : list_energy_Landau} 
 
     return dict_muons, n_muons_in_CCD, n_negative_long
-
-
 
 def muon_generator_CLUSTER(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_points_per_angle, 
                   long_a, long_b, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z):
@@ -1067,8 +1064,6 @@ def muon_generator_CLUSTER(Energy, number_thet,Theta, Theta_true, Phi, Radio, nu
                    'Energy_Landau' : list_energy_Landau} 
 
     return dict_muons, n_muons_in_CCD, n_negative_long
-
-
 
 def func_longitud(number_thet,Theta, Theta_true, Phi, Radio, number_points_per_angle, 
                   long_a, long_b, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z):
@@ -1362,4 +1357,5 @@ def deffuse_model(number_thet,Theta, Theta_true, Phi, Radio, number_points_per_a
                     continue
             
     return list_delta_L, n_muons_in_CCD, n_negative_long
+
 
