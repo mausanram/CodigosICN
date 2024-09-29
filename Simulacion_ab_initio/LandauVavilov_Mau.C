@@ -98,13 +98,13 @@ double LV (double *lx, double *lpar) {
 void LandauVavilov_Mau() {
 	gRandom->SetSeed(0);	// Cambia la semilla aleatoria para el GetRandom 
 
-	// double s = 0.0725;	// Distance of CCD (in cm)
-	// double p = 600; // Momentum parameter (in MeV)
+	double s = 0.0725;	// Distance of CCD (in cm)
+	double p = 600; // Momentum parameter (in MeV)
 	
 	// double En_Smith;
 	// char En_Smith_char[100] =  getenv("EN_SMITH");
-	float p = atof(getenv("EN_SMITH"));	// Momentum parameter (in MeV)
-	float s = atof(getenv("DELTA_L")); // Distance of CCD (in cm)
+	//float p = atof(getenv("EN_SMITH"));	// Momentum parameter (in MeV)
+	//float s = atof(getenv("DELTA_L")); // Distance of CCD (in cm)
 
 	// cout << p endl;
 
