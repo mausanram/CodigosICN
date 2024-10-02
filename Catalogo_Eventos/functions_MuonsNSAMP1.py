@@ -1009,18 +1009,22 @@ def diffution_vertical_muon(dict, list_vertical_labels, Delta_in, Delta_fin, ext
             list_xlabel = np.arange(0.5, len(data_mask[0]), 1)
 
             list_xlabel_long = np.linspace(-Longitud_linea + int(Longitud_linea/2) , Longitud_linea + int(Longitud_linea/2), Longitud_linea)
-            
-            popt, pcov = curve_fit(gaussian, list_xlabel, data_mask[0], maxfev=100000)#, p0 = [1000, Mean_in, sigma_in])		# Fit histogram with gaussian
 
-            ## Se guardan lo parámetros del ajuste en un diccionario ##
-            dict_popt = {'Mean' : popt[1], 'Hight' : popt[0], 'sigma' : abs(popt[2]), 'Pcov' : pcov}
-            Centroide = popt[1]
-            Sigma = abs(popt[2])
+            try:
+                popt, pcov = curve_fit(gaussian, list_xlabel, data_mask[0], maxfev=100000, p0 = [1000, Mean_in, sigma_in], method={'lm'})		# Fit histogram with gaussian
 
-            # print(Sigma)
+                ## Se guardan lo parámetros del ajuste en un diccionario ##
+                dict_popt = {'Mean' : popt[1], 'Hight' : popt[0], 'sigma' : abs(popt[2]), 'Pcov' : pcov}
+                Centroide = popt[1]
+                Sigma = abs(popt[2])
 
-            # if Sigma > 6:
-            #     continue
+                # print(Sigma)
+
+                # if Sigma > 6:
+                #     continue
+
+            except: 
+                continue
 
             # ## Se grafican los puntos experimentales ##
             # axs_all.scatter(list_xlabel_long, data_mask[0], lable_line, '.', color = 'k')
@@ -1045,6 +1049,129 @@ def diffution_vertical_muon(dict, list_vertical_labels, Delta_in, Delta_fin, ext
 
     
     return list_all_sigmas, list_deep
+
+
+def diffution_vertical_muon_ROOT(dict, list_vertical_labels, Delta_in, Delta_fin, extension):
+
+    list_all_sigmas = []
+    list_deep = []
+
+    CCD_depth = 725 # micras
+    Delta_inicial = Delta_in    # px
+    Delta_final = Delta_fin     # px
+
+    for label_muon in list_vertical_labels:
+        list_sigmas = []
+        # event = data_histogram['extension_' + str(extension)]['Vertical_Events'][label_muon]
+        event, flag = check_flip_vertical_muon(dict  = dict, label_muon = label_muon, Delta_in= Delta_inicial, Delta_fin=Delta_final, extension=extension)
+        # print('Turn flag: ', flag)
+
+        label_verticalMuon, nlabels_verticalMuon = ndimage.label(event,structure=[[0,0,0],[1,1,1],[0,0,0]])
+
+        size_x = event.shape[1]
+        size_y = event.shape[0]
+
+        lines = 0
+        Longitud_XY = size_y 
+
+        Z_inicial = (Delta_inicial * CCD_depth) / (Longitud_XY - Delta_final)
+
+        for lable_line in np.arange(Delta_inicial, nlabels_verticalMuon - Delta_final):
+            ## Enmascara la linea en turno
+            line = label_verticalMuon == lable_line
+            loc = ndimage.find_objects(label_verticalMuon == lable_line)[0]
+            mask_35 = np.invert(label_verticalMuon == lable_line)
+            data_mask = ma.masked_array(event[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop], mask_35[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
+
+            Longitud_linea = len(data_mask[0])
+            Carga_renglon = data_mask[0].sum()
+            Mean_carga = np.mean(data_mask[0])
+
+            Mean_in  = 0
+            var = 0
+            carga_cuadrada = 0
+
+            ### Se calcula el X promedio ##
+            for pixel in np.arange(0, Longitud_linea, 1):
+                if data_mask[0][pixel]:
+                    element_pixel = (pixel * data_mask[0][pixel]) / Carga_renglon
+                    Mean_in = Mean_in + element_pixel
+                else:
+                    element_pixel = 0
+                
+                Mean_in = Mean_in + element_pixel
+
+            ## Calcula la suma de las cargas al cuadrado ##
+            for pixel in np.arange(0, Longitud_linea, 1):
+                if data_mask[0][pixel]:
+                    element_pixel = data_mask[0][pixel]**2
+                else:
+                    element_pixel = 0
+
+                carga_cuadrada = carga_cuadrada + element_pixel 
+
+            Mean_carga_cuadrada = carga_cuadrada/Longitud_linea
+
+            ### Se calcula la varianza ##
+            for pixel in np.arange(0, Longitud_linea, 1):
+                element_pixel =(1 / (Longitud_linea - 1)) * (pixel - Mean_in)**2
+                var = var + element_pixel  ### COreggir la varianza con otro estimados
+
+            ### Se corrige la varianza con la carga ###
+            var_true = var * (Mean_carga_cuadrada / (Mean_carga**2))
+
+            ### Se calcula la sigma ###
+            sigma_in = np.sqrt(var_true)
+            
+
+            ##Se crea un arreglo para usarlo en el plot de los datos, y se realiza el juste ##
+            # list_xlabel = np.arange(0.5, len(data_mask[0]), 1)
+
+            # list_xlabel_long = np.linspace(-Longitud_linea + int(Longitud_linea/2) , Longitud_linea + int(Longitud_linea/2), Longitud_linea)
+
+            try:
+                fgaus2 = TF1("fgauss","gaus", -7,  7, 3) # TF1("nombre", "funcion escrita como en root", min, max, #parametros)
+                h3 = TH1F("histogram", "Distribution of Line", 50, -7,  7)
+                
+                for pixel_value in data_mask[0].flatten():
+                    # if not np.ma.is_masked(pixel_value):
+                    # print(pixel_value)
+                    h3.Fill(pixel_value)
+                        #print(pixel_value)
+
+                fgaus2.SetParameters(1, Mean_in, sigma_in) # Establecer parametros iniciales del fit, de manera visual es posible determinarlos como una primera aproximacion
+                h3.Fit(fgaus2)
+
+                # dict_popt = {'Mean' :fgaus2.GetParameters()[1], 'sigma' : abs(fgaus2.GetParameters()[2])}
+                Sigma = abs(fgaus2.GetParameters()[2])
+
+            except: 
+                continue
+
+            # ## Se grafican los puntos experimentales ##
+            # axs_all.scatter(list_xlabel_long, data_mask[0], lable_line, '.', color = 'k')
+
+            # ## Se crea otro arreglo para el plot del ajusto y se dibuja ##
+            # list_xlabel_long = np.linspace( Centroide - 4 , Centroide + 4)
+            
+            # axs_all.plot(list_xlabel_long, gaussian(list_xlabel_long, *popt), lable_line, 'k')	
+            # axs_all.legend()
+
+            # Se guarda la sigma de la distribución en una lista ##
+            list_all_sigmas.append(Sigma)
+            list_sigmas.append(Sigma)
+            # list_all_sigmas.append(Sigma)
+            # print('Centroide: ',popt[1], ' Amplitud: ', popt[0], 'sigma: ', abs(popt[2]))  #gaussian(x, a, mean, sigma)
+            lines = lines + 1
+
+        list_xlabel_sigmas = np.linspace(Z_inicial, CCD_depth, len(list_sigmas))
+
+        for deep in list_xlabel_sigmas:
+            list_deep.append(deep)
+
+    
+    return list_all_sigmas, list_deep
+
 
 def diffution_horizontal_muon(dict, list_horizontal_labels, Delta_in, Delta_fin, extension):
 

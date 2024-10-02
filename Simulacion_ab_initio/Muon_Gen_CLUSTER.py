@@ -10,7 +10,7 @@ print('Estoy importando ROOT')
 import datetime
 import os
 import pickle as pkl
-import ROOT 
+from ROOT import TFile, TTree
 from array import array
 
 
@@ -84,8 +84,8 @@ def main():
     # muons_dataFrame.to_csv('muons_data.txt', sep='\t')
 
     file_root_name = 'Sim_ab_initio_NMUONS_' + str(number_thet) + '.root'
-    file = ROOT.TFile.Open(file_root_name, "RECREATE")
-    tree = ROOT.TTree('tree', 'tree')
+    file = TFile.Open(file_root_name, "RECREATE")
+    tree = TTree('tree', 'tree')
     # print(type(tree))
 
     print('Longitud la lista de "Energy_Landau": ', len(dict_muons['Energy_Landau']))
