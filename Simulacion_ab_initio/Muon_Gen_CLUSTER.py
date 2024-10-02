@@ -5,8 +5,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from funciones_Sim_ab_initio import *
 
-print('Estoy importando ROOT')
-
 import datetime
 import os
 import pickle as pkl
@@ -61,7 +59,7 @@ def main():
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 10    ## Valores de un ángulo Theta.
+    number_thet = 1000    ## Valores de un ángulo Theta.
 
     
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
@@ -83,7 +81,7 @@ def main():
     # muons_dataFrame = pd.DataFrame(dict_muons)
     # muons_dataFrame.to_csv('muons_data.txt', sep='\t')
 
-    file_root_name = 'Sim_ab_initio_NMUONS_' + str(number_thet) + '.root'
+    file_root_name = 'Sim_ab_initio_CLUSTER_NMUONS_' + str(number_thet) + '.root'
     file = TFile.Open(file_root_name, "RECREATE")
     tree = TTree('tree', 'tree')
     # print(type(tree))
