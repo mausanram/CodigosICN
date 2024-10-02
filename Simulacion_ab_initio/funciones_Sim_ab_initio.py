@@ -1009,9 +1009,12 @@ def muon_generator_CLUSTER(Energy, number_thet,Theta, Theta_true, Phi, Radio, nu
                 # print(os.environ["DELTA_L"])
                 # print('Entrando al proceso de ROOT')
                 
-                new_env = subprocess.run(["root", "-l", "-b", "/home/icn/mausanram/Software/CodigosICN/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
-                                            capture_output=True)
+                # new_env = subprocess.run(["root", "-l", "-b", "/home/icn/mausanram/Software/CodigosICN/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
+                #                             capture_output=True)
 
+                ## Para la computadora de casa ##
+                new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
+                                            capture_output=True)
 
                 # print('Energía de SMith-Duller: ', os.getenv("EN_SMITH"))
                 # print(new_env.stdout)

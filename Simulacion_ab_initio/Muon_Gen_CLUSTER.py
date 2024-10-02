@@ -19,7 +19,7 @@ def main():
 
 
     ##### Cortes en el ángulo theta ####
-    Lim_inf_theta_deg = 22 # grados
+    Lim_inf_theta_deg = 0 # grados
     Lim_inf_theta_rad = np.radians(Lim_inf_theta_deg)  ## rad
 
     ###### Rango de los ángulos theta y phi  #######
@@ -59,7 +59,7 @@ def main():
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 1000    ## Valores de un ángulo Theta.
+    number_thet = 30000    ## Valores de un ángulo Theta.
 
     
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
@@ -100,19 +100,19 @@ def main():
     DeltaL_array = array('f', [-9999])
     Energy_Landau_array = array('f', [-9999])
 
-    tree.Branch('Thet_Rad', Thet_Rad, 'Thet_Rad/F')
-    tree.Branch('Thet_Deg', Thet_Deg, 'Thet_Deg/F')
-    tree.Branch('Phi_Rad', Phi_Rad, 'Phi_Rad/F')
-    tree.Branch('Phi_Deg', Phi_Deg, 'Phi_Deg/F')
-    tree.Branch('Energy', Energy_array, 'Energy/F')
-    tree.Branch('DeltaL', DeltaL_array, 'DeltaL/F')
-    tree.Branch('Energy_DP', Energy_Landau_array, 'Energy_DP/F')
+    # tree.Branch('thet_pri', Thet_Rad, 'Thet_Rad/F')
+    tree.Branch('thet_pri', Thet_Deg, 'thet_pri/F')
+    # tree.Branch('phi_pri', Phi_Rad, 'phi_pri/F')
+    tree.Branch('phi_pri', Phi_Deg, 'phi_pri/F')
+    tree.Branch('energy_pri', Energy_array, 'energy_pri/F')
+    tree.Branch('l', DeltaL_array, 'l/F')
+    tree.Branch('edep', Energy_Landau_array, 'edep/F')
 
 
     for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
-        Thet_Rad = dict_muons['Theta(Rad)'][i]
+        # Thet_Rad = dict_muons['Theta(Rad)'][i]
         Thet_Deg[0] = dict_muons['Theta(Deg)'][i]
-        Phi_Rad[0] = dict_muons['Phi(Rad)'][i]
+        # Phi_Rad[0] = dict_muons['Phi(Rad)'][i]
         Phi_Deg[0] = dict_muons['Phi(Deg)'][i]
         Energy_array[0] =  dict_muons['Energy-SD(MeV)'][i] 
         DeltaL_array[0] = dict_muons['Delta_L'][i]
