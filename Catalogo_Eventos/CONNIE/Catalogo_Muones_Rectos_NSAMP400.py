@@ -28,10 +28,10 @@ DeltaEL_range = 85
 
 
 Solidit = 0.7
-Elipticity = 0.85
+Elipticity = 0.8
 # min_Charge =  100 # keV
 min_Charge =  100 # electrons
-n_skirts = 1
+n_skirts = 0
 
 numero_bins = 500
 
