@@ -62,8 +62,9 @@ def main(argObj):
             hdu_list = fits.open(img)
             image_in_bucle += 1
         except:
-                print('Loading error in image ' + str(img) + 'in open the image.')
-                continue
+            print('Loading error in image ' + str(img) + 'in open the image.')
+            image_in_bucle += 1
+            continue
         
         print('Image ' + str(image_in_bucle) + '/' + str(total_images), end = '\r')
         
