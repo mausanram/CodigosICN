@@ -48,7 +48,7 @@ plt.rcParams.update({
     "legend.loc": 'best',
 })
 
-Lim_inf_theta = 22 ## grados
+Lim_inf_theta = 0 ## grados
 Lim_inf_theta_rad = np.radians(Lim_inf_theta)  ## rad
 
 ###### Dominios de variables #######
@@ -81,7 +81,7 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
 
 ####    Número de Puntos a Simular  ####
-number_thet = 100000
+number_thet = 1
 number_points_per_angle = 1
 
 n_muons = number_thet * number_points_per_angle
@@ -96,9 +96,11 @@ n_muons_CCD = 0
 list_delta_L_neg = []
 list_delta_L_Total = []
 
+In = datetime.datetime.now()
 list_delta_L, n_muons_in_CCD, n_negative_long = func_longitud(number_thet, Theta, Theta_true, Phi, Radio, number_points_per_angle, long_a, long_b, 
                                                               medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z)
-
+Fin = datetime.datetime.now()
+print('Tiempo de cálculo para delta_L: ', Fin-In)
 
 
 # if n_negative_long != 0:

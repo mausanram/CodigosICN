@@ -43,7 +43,7 @@ plt.rcParams.update({
 
 ########## Checar que la constante de ajuste sea la correcta y se ajuste bien a la dstribución ########
 
-Lim_inf_theta = 22 ## grados
+Lim_inf_theta = 0 ## grados
 Lim_inf_theta_rad = np.radians(Lim_inf_theta)  ## rad
 
 ###### Definiciones y dominios #######
@@ -68,7 +68,7 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 # print('Longitud Total: ', len(Theta_true))
 # print('Longitud: ', Theta[-1])
 
-number_thet = 61120
+number_thet = 100000
 number_points_per_angle = 1
 
 n_muons = number_thet * number_points_per_angle
@@ -146,7 +146,7 @@ plt.show()
 
 ########### Gráfica de Phi #################
 fig, axs = plt.subplots(figsize=[8,5])
-axs.hist(list_random_phi_deg, bins = Bins)
+axs.hist(list_random_phi_deg, bins = Bins, color = 'k', histtype = 'step')
 fig.suptitle(r'Distribución angular $\phi$', y = 0.95, size = 20)
 axs.set_xlabel('Ángulo (°)')
 plt.show()

@@ -1,3 +1,6 @@
+import datetime
+
+# In = datetime.datetime.now()
 import numpy as np
 import mpmath as mp
 import random as rand
@@ -5,11 +8,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 # from random_geometry_points.plane import Plane   ### Para instalar utilizar "pip install random-geometry-points"
 from funciones_Sim_ab_initio import *
-import datetime
 import os
 import pickle as pkl
 import scipy.integrate as integrate
 import pickle
+
+# Fin = datetime.datetime.now()
+# print('Tiempo de cálculo para importar librerías: ', Fin-In, end='\n\n')
 
 ### Configuración de estilo de las gráficas ###
 # plt.rcParams.update({
@@ -58,33 +63,41 @@ def main():
     print('Hora de inicio del cálculo: ', Inicio)
 
     ##### Cortes en el ángulo theta ####
-    Lim_inf_theta_deg = 22 # grados
+    Lim_inf_theta_deg = 0 # grados
     Lim_inf_theta_rad = np.radians(Lim_inf_theta_deg)  ## rad
 
     ###### Rango de los ángulos theta y phi  #######
     Phi = np.arange(0, 2 * np.pi, 0.001) ## rad
     Theta = np.arange(Lim_inf_theta_rad, np.pi/2, 0.001) ## rad
 
-    list_Energy = []
-
     #### Mapeo de la energía (se hace en escala logarítmica para tener valores igualmente distribuidos) ####
-    E_in = 10 ** (-2)   ### Límite inferior
-    E_fin = 10 ** 8     ### Límite superior
-    N = 1000    ### Número de puntos
-    Energy = Energy_list(E_in, E_fin, N)
+    # E_in = 10 ** (-2)   ### Límite inferior
+    # E_fin = 10 ** 8     ### Límite superior
+    # N = 1000    ### Número de puntos
+
+    Max_energy = 1000000 # En MeV
+    Energy = np.arange(1, Max_energy) # En MeV
+    # Energy = np.linspace(1, Max_energy, Max_energy)
+
+    Max_energy = 100 # En MeV
+    Energy = np.arange(1, Max_energy, 0.001) # En MeV
 
     #### Distribución angular de theta (Distribución angular de Smith-Duller) ####
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 3000    ## Valores de un ángulo Theta.
+    number_thet = 1000    ## Valores de un ángulo Theta.
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
     n_muons = number_thet * number_points_per_angle ## Número total de muones que se simularán.
 
     print('Se simularán ' + str(n_muons) + ' muones.')
 
     for i in np.arange(0,number_thet):
+        # In = datetime.datetime.now()
         Random_th = rand.choices(Theta, Theta_true) ## Escoje un ángulo segun la distribución de Theta_true en radianes
+        # Fin = datetime.datetime.now()
+        # print('Tiempo de cálculo para Random_th: ', Fin-In)
+
         Random_phi = rand.choice(Phi)   ## Lo mismo pero con phi en radianes
         # print(Random_th[0])
         Random_th_deg = np.degrees(Random_th[0]) ## El ángulo theta en grados
@@ -95,21 +108,38 @@ def main():
         # list_rand_thet_deg.append(Random_th_deg)
         # list_rand_phi_deg.append(Random_phi_deg)
 
-        list_dis_Energy = []
-        for energy in Energy:   ## Aquí se crea la distribución de Smith-Duller en MeV
-            dis_Energy = dis_energy(energy, Random_th[0])
-            list_dis_Energy.append(dis_Energy)
-            
-        Random_energy = rand.choices(Energy, list_dis_Energy) ## Escoje una energía segun la distribución de Smith-Duller 
-        os.environ["EN_SMITH"] = str(Random_energy[0])
+        # list_dis_Energy = []
+        In = datetime.datetime.now()
+        # for energy in Energy:   ## Aquí se crea la distribución de Smith-Duller en MeV
+        dis_Energy = dis_energy(Energy, Random_th[0], units=1)
+
+        # print(dis_Energy[0:20])
+
+            # list_dis_Energy.append(dis_Energy)
+        Fin = datetime.datetime.now()
+        # print('Tiempo de cálculo para distribucion_En: ', Fin-In)
+
+        # In = datetime.datetime.now()
+        # Random_energy = rand.choices(Energy, list_dis_Energy) ## Escoje una energía segun la distribución de Smith-Duller 
+        Random_energy = np.around(rand.choices(Energy, dis_Energy)[0],3) * 1000 ## Escoje una energía segun la distribución de Smith-Duller (GeV to MeV)
+
+
+        # print('Energy_pri: ', Random_energy, ' MeV')
+        # Fin = datetime.datetime.now()
+        # print('Tiempo de cálculo para Random_energy: ', Fin-In)
+
+        os.environ["EN_SMITH"] = str(Random_energy)
 
         ## Para la laptop en el ICN  ##
         # new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
         #                      capture_output=True)
 
+        In = datetime.datetime.now()
         ## Para la computadora de casa ##
-        new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
+        new_env = subprocess.run(["root", "-l", "-b", "-n", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
                                     capture_output=True)
+        Fin = datetime.datetime.now()
+        # print('Tiempo de cálculo para new_env: ', Fin-In, end='\n\n')
 
         ## Para el CLUSTER ##
         # new_env = subprocess.run(["root", "-l", "-b", "/home/icn/mausanram/Software/CodigosICN/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
@@ -124,13 +154,14 @@ def main():
         # list_rand_phi.append(Random_phi)
         list_rand_thet_deg.append(Random_th_deg)
         list_rand_phi_deg.append(Random_phi_deg)
-        list_random_energy.append(Random_energy[0])
+        list_random_energy.append(Random_energy)
         list_energy_Landau.append(Random_energy_Landau)
 
         muon_in_bucle += 1
 
         print('Muon simulado ' + str(muon_in_bucle) + '/' + str(number_thet * number_points_per_angle), end = '\r')
         
+    # print(dis_Energy[0:20])
 
     Final = datetime.datetime.now()
     print('Hora final de cálculo: ', Final)

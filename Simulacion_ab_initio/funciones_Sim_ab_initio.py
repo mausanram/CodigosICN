@@ -11,22 +11,24 @@ def dis_probability(theta, I_0):
 def dis_angular(theta): ## Distribucion angular
     return 1 * np.cos(theta)**2 * np.sin(theta)
 
-def dis_energy(E_mu, theta): ### Modelo de Smith-Duller 
+def dis_energy(E_mu, theta, units): ### Modelo de Smith-Duller (units: 0 == MeV, units: 1 == GeV)
     ## Constantes físicas
     k = 8 / 3
     b = 0.771
     lambda_pi = 120     ## g/cm^2
     y_0 = 1000      ## g/cm^2
     r = 0.76
-    a = 2.5         ## MeV cm^2/g
     b_mu = 0.8      
 
-    m_mu = 105.7    ## MeV/c^2 
-    m_pi = 139.6    ## MeV/c^2
+    if units == 0:
+        a = 2.5         ## MeV cm^2/g
+        m_mu = 105.7    ## MeV/c^2 
+        m_pi = 139.6    ## MeV/c^2
 
-    # a = 0.0025         ## GeV cm^2/g
-    # m_mu = 0.1057    ## GeV/c^2 
-    # m_pi = 0.1396    ## GeV/c^2
+    elif units == 1:
+        a = 0.0025         ## GeV cm^2/g
+        m_mu = 0.1057    ## GeV/c^2 
+        m_pi = 0.1396    ## GeV/c^2
 
     tau_mu_0 = 2.2 * 10**(-6)   ## s
     tau_0 = 2.6 * 10 **(-8)     ## s
@@ -34,13 +36,18 @@ def dis_energy(E_mu, theta): ### Modelo de Smith-Duller
     c = 3 * 10 ** 10 ## cm/s
 
     ### Parámetros
-    E_pi = (1 / r) * (E_mu + a * y_0 * (mp.sec(theta) - 0.1))
+    E_pi = (1 / r) * (E_mu + a * y_0 * ((1/np.cos(theta)) - 0.1))
     B_mu = (b_mu * m_mu * y_0)/(tau_mu_0 * rho_0 * c)
-    P_mu = ((0.1 * np.cos(theta)) * (1 - (a * (y_0 * mp.sec(theta) - 100))/( r * E_pi)) ) ** ((B_mu)/((r * E_pi + 100 * a) * np.cos(theta)))
+    P_mu = ((0.1 * np.cos(theta)) * (1 - (a * (y_0 *(1/np.cos(theta)) - 100))/( r * E_pi)) ) ** ((B_mu)/((r * E_pi + 100 * a) * np.cos(theta)))
     j_pi = (m_pi * y_0)/(c * tau_0 * rho_0)
 
+    # E_pi = (1 / r) * (E_mu + a * y_0 * (mp.sec(theta) - 0.1))
+    # B_mu = (b_mu * m_mu * y_0)/(tau_mu_0 * rho_0 * c)
+    # P_mu = ((0.1 * np.cos(theta)) * (1 - (a * (y_0 *mp.sec(theta) - 100))/( r * E_pi)) ) ** ((B_mu)/((r * E_pi + 100 * a) * np.cos(theta)))
+    # j_pi = (m_pi * y_0)/(c * tau_0 * rho_0)
 
     ## Intensidad diferencial
+    # C_1 = E_pi ** (-k) * P_mu * lambda_pi * b * j_pi
     C_1 = E_pi ** (-k) * P_mu * lambda_pi * b * j_pi
     C_2 = E_pi * np.cos(theta)
     C_3 = b * j_pi
@@ -60,7 +67,7 @@ def norma_vec(Vector):
     norma = np.sqrt(Vector[0] ** 2 + Vector[1] ** 2  + Vector[2] ** 2 )
     return norma
 
-def Energy_list(lim_inf, lim_sup, N):
+def Energy_list_log(lim_inf, lim_sup, N):
     list_Energy = []
     Delta_log = (np.log10(lim_sup) - np.log10(lim_inf))/ (N - 1)
 
@@ -311,9 +318,6 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     #     print(delta_L)
 
     return delta_L, n_muons_in_CCD
-
-def Landau_energy():
-    return None
 
 def muon_generator_1(Radio, long_a, long_b, number_thet, number_points_per_angle, Theta, 
                                   Theta_true, Phi, Energy):
@@ -641,12 +645,17 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
         # list_rand_thet_deg.append(Random_th_deg)
         # list_rand_phi_deg.append(Random_phi_deg)
 
-        list_dis_Energy = []
-        for energy in Energy:   ## Aquí se crea la distribución de Smith-Duller en MeV
-            dis_Energy = dis_energy(energy, Random_th[0])
-            list_dis_Energy.append(dis_Energy)
+        # list_dis_Energy = []
+        # for energy in Energy:   ## Aquí se crea la distribución de Smith-Duller en MeV
+        #     dis_Energy = dis_energy(energy, Random_th[0])
+        #     list_dis_Energy.append(dis_Energy)
+
+        In = datetime.datetime.now()
+        list_dis_Energy = dis_energy(Energy, Random_th[0], units=1)
+        Fin = datetime.datetime.now()
+        # print('Tiempo de cálculo para distribucion_En: ', Fin-In)
             
-        Random_energy = rand.choices(Energy, list_dis_Energy) ## Escoje una energía segun la distribución de Smith-Duller en 
+        Random_energy = rand.choices(Energy, list_dis_Energy)[0] * 1000 ## Escoje una energía segun la distribución de Smith-Duller en MeV
         # list_random_energy.append(Random_energy[0])
 
         ### Momento del muon ###
@@ -655,6 +664,9 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
 
         os.environ["EN_SMITH"] = str(momentum)
         
+
+        In = datetime.datetime.now()
+
         Vec = coord_cartesian(Random_th, Random_phi)
         Norma = norma_vec(Vec)
         # print(type(Vec[0]))
@@ -764,6 +776,9 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
         
         Delta_L, muon = intersection_CCD(list_flags, list_z, medida_z, Random_th)
 
+        Fin = datetime.datetime.now()
+        print('Tiempo de cálculo para Delta L: ', Fin-In)
+
         if Delta_L != 0:
 
             if Delta_L > 0 and Delta_L < 2.1:
@@ -782,10 +797,14 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
                 # new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
                 #                      capture_output=True)
 
+                In = datetime.datetime.now()
+
                 ## Para la computadora de casa ##
                 new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
                                             capture_output=True)
 
+                Fin = datetime.datetime.now()
+                print('Tiempo de cálculo para Edep: ', Fin-In)
 
                 # print('Energía de SMith-Duller: ', os.getenv("EN_SMITH"))
                 # print(new_env.stdout)
@@ -804,7 +823,7 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
                 list_rand_phi.append(Random_phi)
                 list_rand_thet_deg.append(Random_th_deg)
                 list_rand_phi_deg.append(Random_phi_deg)
-                list_random_energy.append(Random_energy[0])
+                list_random_energy.append(Random_energy)
                 list_delta_L.append(Delta_L)
                 list_energy_Landau.append(Random_energy_Landau)
                 
@@ -872,17 +891,19 @@ def muon_generator_CLUSTER(Energy, number_thet,Theta, Theta_true, Phi, Radio, nu
         # list_rand_thet_deg.append(Random_th_deg)
         # list_rand_phi_deg.append(Random_phi_deg)
 
-        list_dis_Energy = []
-        for energy in Energy:   ## Aquí se crea la distribución de Smith-Duller en MeV
-            dis_Energy = dis_energy(energy, Random_th[0])
-            list_dis_Energy.append(dis_Energy)
-            
-        Random_energy = rand.choices(Energy, list_dis_Energy) ## Escoje una energía segun la distribución de Smith-Duller en 
+        # list_dis_Energy = []
+        # for energy in Energy:   ## Aquí se crea la distribución de Smith-Duller en MeV
+        #     dis_Energy = dis_energy(energy, Random_th[0])
+        #     list_dis_Energy.append(dis_Energy)
+        
+        list_dis_Energy = dis_energy(Energy, Random_th[0], units=1)
+
+        Random_energy = rand.choices(Energy, list_dis_Energy)[0] * 1000 ## Escoje una energía segun la distribución de Smith-Duller en MeV
         # list_random_energy.append(Random_energy[0])
 
         ### Momento del muon ###
         # momentum = np.sqrt(Random_energy[0]**2 - m_mu**2)
-        momentum = Random_energy[0]
+        momentum = Random_energy
 
         os.environ["EN_SMITH"] = str(momentum)
         
@@ -1019,7 +1040,7 @@ def muon_generator_CLUSTER(Energy, number_thet,Theta, Theta_true, Phi, Radio, nu
                 # print(os.getenv('PATH'))
                 # subprocess.run()
                 # print(new_env.stdout)
-                Random_energy_Landau = float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1])
+                Random_energy_Landau = float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1]) # En KeV
                 # print(Random_energy_Landau)
 
                 # print(float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1]))
@@ -1029,7 +1050,7 @@ def muon_generator_CLUSTER(Energy, number_thet,Theta, Theta_true, Phi, Radio, nu
                 list_rand_phi.append(Random_phi)
                 list_rand_thet_deg.append(Random_th_deg)
                 list_rand_phi_deg.append(Random_phi_deg)
-                list_random_energy.append(Random_energy[0])
+                list_random_energy.append(Random_energy)
                 list_delta_L.append(Delta_L)
                 list_energy_Landau.append(Random_energy_Landau)
                 

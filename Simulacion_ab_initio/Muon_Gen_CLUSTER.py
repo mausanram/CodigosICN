@@ -50,16 +50,22 @@ def main():
 
 
     #### Mapeo de la energía (se hace en escala logarítmica para tener valores igualmente distribuidos) ####
-    E_in = 10 ** (-2)   ### Límite inferior
-    E_fin = 10 ** 8     ### Límite superior
-    N = 1000    ### Número de puntos
-    Energy = Energy_list(E_in, E_fin, N)
+    # E_in = 10 ** (-2)   ### Límite inferior
+    # E_fin = 10 ** 8     ### Límite superior
+    # N = 1000    ### Número de puntos
+    # Energy = Energy_list(E_in, E_fin, N)
+
+    # Max_energy = 1000000 # En MeV
+    # Energy = np.arange(1, Max_energy) # En MeV
+
+    Max_energy = 100 # En GeV
+    Energy = np.arange(1, Max_energy, 0.001) # En GeV
 
     #### Distribución angular de theta (Distribución angular de Smith-Duller) ####
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 120000    ## Valores de un ángulo Theta.
+    number_thet = 1000    ## Valores de un ángulo Theta.
 
     
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.

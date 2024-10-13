@@ -2,10 +2,11 @@
 // Here is rewritten the entire Bethe-Bloch formula because is needed in the Landau-Vavilov distribution.
 // All the steps were taken from the Leo's book.
 // Hare are needed 2 parameters: the distance traveled by the particle inside the bar and its momentum.
-#include <iostream> 
-#include <random>
-#include <ctime>
-#include <chrono>
+
+// #include <iostream> 
+// #include <random>
+// #include <ctime>
+// #include <chrono>
 
 // int seed_rand(){
 // 	srand(1003);
@@ -42,16 +43,17 @@ double LV (double *lx, double *lpar) {
 	double C = -4.44;		//
 	// double d0 = 0.0;		//
 	double X = log10(bg);
-		if (X>=X1) {
-			d = 2*log(10.0)*X-C;
-			}
-		else if (X0<=X && X<X1) {
-			d = 2*log(10.0)*X-C+a*(pow((X1-X),k));
-			}
-		else if (X<X0) {
-			// d = d0*(pow(10,(2*(X-X0))));
-			d = 0;
-			}
+
+	if (X>=X1) {
+		d = 2*log(10.0)*X-C;
+		}
+	else if (X0<=X && X<X1) {
+		d = 2*log(10.0)*X-C+a*(pow((X1-X),k));
+		}
+	else if (X<X0) {
+		// d = d0*(pow(10,(2*(X-X0))));
+		d = 0;
+		}
 
 	double WM = 2*me*(pow((beta*gamma),2))/(1+(2*me*gamma/M)+pow((me/M),2));   // Maximum energy tranfer
 
@@ -99,12 +101,12 @@ void LandauVavilov_Mau() {
 	gRandom->SetSeed(0);	// Cambia la semilla aleatoria para el GetRandom 
 
 	double s = 0.0725;	// Distance of CCD (in cm)
-	double p = 600; // Momentum parameter (in MeV)
+	// double p = 600; // Momentum parameter (in MeV)
 	
 	// double En_Smith;
 	// char En_Smith_char[100] =  getenv("EN_SMITH");
-	//float p = atof(getenv("EN_SMITH"));	// Momentum parameter (in MeV)
-	//float s = atof(getenv("DELTA_L")); // Distance of CCD (in cm)
+	float p = atof(getenv("EN_SMITH"));	// Momentum parameter (in MeV)
+	// float s = atof(getenv("DELTA_L")); // Distance of CCD (in cm)
 
 	// cout << p endl;
 
@@ -118,36 +120,37 @@ void LandauVavilov_Mau() {
 
 
 
-	TCanvas *cnv = new TCanvas("cnv", "", 900, 700);
-	cnv->SetGrid();
+	// TCanvas *cnv = new TCanvas("cnv", "", 900, 700);
+	// cnv->SetGrid();
 
-	TLatex lat;
+	// TLatex lat;
 
-	TF1 *f = new TF1("f", LV, 0, 100, 2);
-	f->SetNpx(1000);
+	TF1 *f = new TF1("f", LV, 0, 10, 2);
+	// f->SetNpx(100);
 
 
 	f->SetParameter(0, s);
 	f->SetParameter(1, p);
-	f->SetRange(0, 0.7);
+	// f->SetRange(0, 0.7);
 	//f->SetTitle("Landau-Vavilov distribution (for 0.0725cm of Si);#font[12]{Energy} (MeV);Probability");
-	f->SetTitle("Landau-Vavilov distribution (0.0725cm of Si);Energy (MeV);Probability");
-	f->Draw();
+	// f->SetTitle("Landau-Vavilov distribution (0.0725cm of Si);Energy (MeV);Probability");
+	// f->Draw();
 
-	double  If = f->Integral(0,2.0);
+	// double  If = f->Integral(0,2.0);
 
-	double loE= 0.0;
-	double hiE= 0.7;
-	int NB = 100;
-	double bWidth = (hiE-loE)/NB;
+	// double loE= 0.0;
+	// double hiE= 0.7;
+	// int NB = 100;
+	// double bWidth = (hiE-loE)/NB;
 
-	TH1F *h = new TH1F("h", "", NB, loE, hiE);
+	// TH1F *h = new TH1F("h", "", NB, loE, hiE);
 	double Edep = 0;
 
-	int SetSeed(0);
-	Edep = f->GetRandom(0, 0.7); 
+	// int SetSeed(0);
+	Edep = f->GetRandom(); 
+	// Edep = f->GetRandom(0, 0.7); 
 	std::cout << "Edep = "<< Edep * 1000 << " KeV" << std::endl;
-	char buff[100];
+	// char buff[100];
 
 	// sprintf(buff,"%f",Edep);
 

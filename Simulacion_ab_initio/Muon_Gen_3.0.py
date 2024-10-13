@@ -19,7 +19,7 @@ def main():
 
 
     ##### Cortes en el ángulo theta ####
-    Lim_inf_theta_deg = 22 # grados
+    Lim_inf_theta_deg = 0 # grados
     Lim_inf_theta_rad = np.radians(Lim_inf_theta_deg)  ## rad
 
     ###### Rango de los ángulos theta y phi  #######
@@ -50,16 +50,22 @@ def main():
 
 
     #### Mapeo de la energía (se hace en escala logarítmica para tener valores igualmente distribuidos) ####
-    E_in = 10 ** (-2)   ### Límite inferior
-    E_fin = 10 ** 8     ### Límite superior
-    N = 1000    ### Número de puntos
-    Energy = Energy_list(E_in, E_fin, N)
+    # E_in = 10 ** (-2)   ### Límite inferior
+    # E_fin = 10 ** 8     ### Límite superior
+    # N = 1000    ### Número de puntos
+    # Energy = Energy_list(E_in, E_fin, N)
+
+    # Max_energy = 1000000 # E MeV
+    # Energy = np.arange(1, Max_energy) # En MeV
+
+    Max_energy = 100 # En GeV
+    Energy = np.arange(1, Max_energy, 0.001) # En GeV
 
     #### Distribución angular de theta (Distribución angular de Smith-Duller) ####
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 12000    ## Valores de un ángulo Theta.
+    number_thet = 1    ## Valores de un ángulo Theta.
 
     
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
@@ -80,6 +86,7 @@ def main():
 
     # muons_dataFrame = pd.DataFrame(dict_muons)
     # muons_dataFrame.to_csv('muons_data.txt', sep='\t')
+    In = datetime.datetime.now()
 
     file_root_name = 'Sim_ab_initio_NMUONS_' + str(number_thet) + '.root'
     file = TFile.Open(file_root_name, "RECREATE")
@@ -125,6 +132,8 @@ def main():
     # tree.Draw()
     # print(tree.GetBranch('Theta(Rad)').GetEntries())
     tree.Write()
+    Fin = datetime.datetime.now()
+    print('Tiempo de cálculo para tree_ROOT: ', Fin-In, end='\n\n')
 
     Final = datetime.datetime.now()
     print('Hora final de cálculo: ', Final)
