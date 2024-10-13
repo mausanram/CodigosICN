@@ -81,6 +81,13 @@ def main():
                                 medida_y=medida_y, medida_z=medida_z, mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z)
 
 
+    file_name = 'Simulacion_ab_initio_MuonesSim' + str(number_thet) + '.pkl'
+
+    file_object_histogram = open(file_name, 'wb')
+    pickle.dump(dict_muons, file_object_histogram) ## Save the dictionary with all info 
+    file_object_histogram.close()
+
+    print('Dictionary saved in', current_path + '/' + file_name, ' as a binary file. To open use library "pickle". ')
 
     # print(os.environ)
 
@@ -135,7 +142,7 @@ def main():
     Final = datetime.datetime.now()
     print('Hora final de cálculo: ', Final)
     print('Tiempo de cálculo: ', Final-Inicio)
-    print('Se guardó la información de los muones simulados en el archivo ' + file_root_name)
+    print('TTree file saved in ' + file_root_name)
 
     # fig, axs = plt.subplots(figsize=[7,5])
     # # axs.plot(Theta, 70 * Theta_true)
