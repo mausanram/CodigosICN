@@ -79,14 +79,14 @@ def main():
     Energy = np.arange(1, Max_energy) # En MeV
     # Energy = np.linspace(1, Max_energy, Max_energy)
 
-    Max_energy = 100 # En MeV
-    Energy = np.arange(1, Max_energy, 0.001) # En MeV
+    Max_energy = 100 # En GeV
+    Energy = np.arange(1, Max_energy, 0.001) # En GeV
 
     #### Distribución angular de theta (Distribución angular de Smith-Duller) ####
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 1000    ## Valores de un ángulo Theta.
+    number_thet = 1    ## Valores de un ángulo Theta.
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
     n_muons = number_thet * number_points_per_angle ## Número total de muones que se simularán.
 
@@ -117,7 +117,7 @@ def main():
 
             # list_dis_Energy.append(dis_Energy)
         Fin = datetime.datetime.now()
-        # print('Tiempo de cálculo para distribucion_En: ', Fin-In)
+        print('Tiempo de cálculo para distribucion_En: ', Fin-In)
 
         # In = datetime.datetime.now()
         # Random_energy = rand.choices(Energy, list_dis_Energy) ## Escoje una energía segun la distribución de Smith-Duller 
@@ -139,7 +139,7 @@ def main():
         new_env = subprocess.run(["root", "-l", "-b", "-n", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
                                     capture_output=True)
         Fin = datetime.datetime.now()
-        # print('Tiempo de cálculo para new_env: ', Fin-In, end='\n\n')
+        print('Tiempo de cálculo para new_env: ', Fin-In, end='\n\n')
 
         ## Para el CLUSTER ##
         # new_env = subprocess.run(["root", "-l", "-b", "/home/icn/mausanram/Software/CodigosICN/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
@@ -172,7 +172,7 @@ def main():
     file_name = 'Simulacion_ab_initio_MuonesSim' + str(number_thet) + '.pkl'
 
     file_object_histogram = open(file_name, 'wb')
-    pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
+    pkl.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
 
     print('Dictionary saved in', current_path + '/' + file_name, ' as a binary file. To open use library "pickle". ')

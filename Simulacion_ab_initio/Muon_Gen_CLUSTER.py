@@ -65,7 +65,7 @@ def main():
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 1000    ## Valores de un ángulo Theta.
+    number_thet = 60000    ## Valores de un ángulo Theta.
 
     
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
@@ -81,13 +81,13 @@ def main():
                                 medida_y=medida_y, medida_z=medida_z, mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z)
 
 
-    file_name = 'Simulacion_ab_initio_MuonesSim' + str(number_thet) + '.pkl'
+    # file_name = 'Simulacion_ab_initio_MuonesSim' + str(number_thet) + '.pkl'
 
-    file_object_histogram = open(file_name, 'wb')
-    pickle.dump(dict_muons, file_object_histogram) ## Save the dictionary with all info 
-    file_object_histogram.close()
+    # file_object_histogram = open(file_name, 'wb')
+    # pickle.dump(dict_muons, file_object_histogram) ## Save the dictionary with all info 
+    # file_object_histogram.close()
 
-    print('Dictionary saved in', current_path + '/' + file_name, ' as a binary file. To open use library "pickle". ')
+    # print('Dictionary saved in', current_path + '/' + file_name, ' as a binary file. To open use library "pickle". ')
 
     # print(os.environ)
 

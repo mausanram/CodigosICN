@@ -93,8 +93,8 @@ def main():
     tree = TTree('tree', 'tree')
     # print(type(tree))
 
-    print('Longitud la lista de "Energy_Landau": ', len(dict_muons['Energy_Landau']))
-    print('Longitud la lista de "Theta(Rad)": ', len(dict_muons['Theta(Rad)']))
+    # print('Longitud la lista de "Energy_Landau": ', len(dict_muons['Energy_Landau']))
+    # print('Longitud la lista de "Theta(Rad)": ', len(dict_muons['Theta(Rad)']))
 
     # print(dict_muons['Energy_Landau'])
     # print(dict_muons['Theta(Deg)'])
@@ -133,12 +133,14 @@ def main():
     # print(tree.GetBranch('Theta(Rad)').GetEntries())
     tree.Write()
     Fin = datetime.datetime.now()
-    print('Tiempo de cálculo para tree_ROOT: ', Fin-In, end='\n\n')
+    print('Tiempo de cálculo para hacer el tree_ROOT: ', Fin-In, end='\n\n')
 
     Final = datetime.datetime.now()
     print('Hora final de cálculo: ', Final)
     print('Tiempo de cálculo: ', Final-Inicio)
-    print('Se guardó la información de los muones simulados en el archivo ' + file_root_name)
+
+    print('Muones que impactaron en la CCD: ', len(dict_muons['Energy_Landau']))
+    print('TTree file saved in ' + file_root_name)
 
     # fig, axs = plt.subplots(figsize=[7,5])
     # # axs.plot(Theta, 70 * Theta_true)

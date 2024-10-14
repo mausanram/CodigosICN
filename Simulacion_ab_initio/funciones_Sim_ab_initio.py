@@ -653,14 +653,14 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
         In = datetime.datetime.now()
         list_dis_Energy = dis_energy(Energy, Random_th[0], units=1)
         Fin = datetime.datetime.now()
-        # print('Tiempo de cálculo para distribucion_En: ', Fin-In)
+        print('Tiempo de cálculo para distribucion_En: ', Fin-In)
             
         Random_energy = rand.choices(Energy, list_dis_Energy)[0] * 1000 ## Escoje una energía segun la distribución de Smith-Duller en MeV
         # list_random_energy.append(Random_energy[0])
 
         ### Momento del muon ###
         # momentum = np.sqrt(Random_energy[0]**2 - m_mu**2)
-        momentum = Random_energy[0]
+        momentum = Random_energy
 
         os.environ["EN_SMITH"] = str(momentum)
         
