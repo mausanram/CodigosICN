@@ -322,7 +322,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     return delta_L, n_muons_in_CCD
 
 ## ----------------------- Funciones de Landau (ROOT) ------------------------------ ##
-def LV(lx, lpar):
+def LandV(lx, lpar):
     Delta = lx[0]	# Energy loss in absorber
     L = lpar[0]		# Thickness of absorber (Distance crossed by the particle)
     p = lpar[1]		# Momentum (in MeV/c)
@@ -392,7 +392,7 @@ def LV(lx, lpar):
         return gauss
 
 def random_LV(s, p):
-    f = TF1("f", LV, 0.0, 10, 2)
+    f = TF1("f", LandV, 0, 100, 2)
     f.SetParameter(0, s)
     f.SetParameter(1, p)
 
