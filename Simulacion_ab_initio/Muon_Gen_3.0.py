@@ -9,7 +9,7 @@ import os
 import pickle as pkl
 # import ROOT 
 
-from ROOT import TFile, TTree
+from ROOT import TFile, TTree, TF1, TMath
 from array import array
 
 
