@@ -1073,66 +1073,32 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
         # Fin = datetime.datetime.now()
         # print('Tiempo de cálculo para Delta L: ', Fin-In)
 
-        if Delta_L != 0:
+        if Delta_L > 0:
 
-            if Delta_L > 0 and Delta_L < 2.1:
+            # if Delta_L > 0 and Delta_L < 2.1:
                 # list_delta_L.append(Delta_L)
                 # print('Estoy agregando el deltaL')
-
+                # print(Delta_L[0])
                 n_muons_in_CCD = n_muons_in_CCD + muon
 
-
-                # os.environ["DELTA_L"] = str(Delta_L[0])
-                # print(Delta_L)
-                # print( os.environ["DELTA_L"])
-
-
-                ## Para la laptop en el ICN  ##
-                # new_env = subprocess.run(["root", "-l", "-b", "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"],
-                #                      capture_output=True)
-
-                # In = datetime.datetime.now()
-
-                ## Para la computadora de casa ##
-                # new_env = subprocess.run(["root", "-l", "-b", "/home/bruce/Documents/Programas/Simulacion_ab_initio/LandauVavilov_Mau.C", "-q"], 
-                #                             capture_output=True)
-
                 Random_energy_Landau = random_LV(s = Delta_L, p = momentum) # En KeV
-
-                # Fin = datetime.datetime.now()
-                # print('Tiempo de cálculo para Edep: ', Fin-In)
-
-                # print('Energía de SMith-Duller: ', os.getenv("EN_SMITH"))
-                # print(new_env.stdout)
-                # print(new_env.stderr)
-
-                # print(os.getenv('PATH'))
-                # subprocess.run()
-                # print(new_env.stdout)
-                # Random_energy_Landau = float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1])
-                # print(Random_energy_Landau, end='\n\n')
-
-                # print(float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1]))
 
                 list_thet_in_CCD.append(Random_th_deg)
                 list_phi_in_CCD.append(Random_phi_deg)
                 list_energy_pri_in_CCD.append(Random_energy)
-                list_delta_L.append(Delta_L)
+                list_delta_L.append(Delta_L[0])
                 list_energy_Landau.append(Random_energy_Landau)
 
                 # list_rand_thet.append(Random_th[0])
                 # list_rand_phi.append(Random_phi)
                 
                 muon_in_bucle += 1
-                # print("El valor de EDEP", str(os.getenv('USERNAME')))
-
-                # print(muon_in_bucle, Random_th, Random_phi, Random_energy[0], Random_energy_Landau)
 
                 print('Muon simulado ' + str(muon_in_bucle) + '/' + str(number_thet * number_points_per_angle), end = '\r')
 
-            else:
-                n_negative_long = n_negative_long + 1
-                continue
+            # else:
+            #     n_negative_long = n_negative_long + 1
+            #     continue
 
         else:
             muon_in_bucle += 1

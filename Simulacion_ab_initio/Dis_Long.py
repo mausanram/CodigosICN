@@ -61,14 +61,18 @@ Radio = 100
 Theta = np.arange(Lim_inf_theta_rad, np.pi/2, 0.001)    ### Semi-esfera de radio 100 unidades
 
 ##### Tamaño del plano #####
-plane_side = 0.5
+plane_side = 10 # cm
 long_a = np.arange(-plane_side, plane_side, 0.001)
 long_b = np.arange(-plane_side, plane_side, 0.001)
 
 ######### Medidas de la CCD ##########
-medida_x = 1.197 / 2    # cm
-medida_y = 1.587 / 2   # cm
-medida_z = 0.0725   # cm
+# medida_x = 1.197 / 2    # cm
+# medida_y = 1.587 / 2   # cm
+# medida_z = 0.0725   # cm
+
+medida_x = 100 / 2    # cm
+medida_y = 10 / 2   # cm
+medida_z = 10   # cm
 
 # mapeo_x = np.arange(-medida_x, medida_x, 0.01)
 # mapeo_y = np.arange(-medida_y, medida_y, 0.01)
@@ -85,7 +89,7 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
 
 ####    Número de Puntos a Simular  ####
-number_thet = 100000
+number_thet = 10000
 number_points_per_angle = 1
 
 n_muons = number_thet * number_points_per_angle
@@ -185,8 +189,8 @@ pico =  hist_long[index_max_long]
 # print(pico)
 # axs.set_xlim(0, 0.5)
 
-axs.vlines([0.0725], ymin = 0, ymax = pico, colors='k', linestyles='dashed', label = 'Grosor de la CCD: 0.0725 cm')
-axs.set_xlim(0, 0.2)
+# axs.vlines([0.0725], ymin = 0, ymax = pico, colors='k', linestyles='dashed', label = 'Grosor de la CCD: 0.0725 cm')
+# axs.set_xlim(0, 0.2)
 
 axs.set_xlabel('Distancia (cm)')
 axs.legend()
