@@ -122,13 +122,214 @@ def dimension_z(long_z):
 
     return list_long_z
 
+# def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
+#     # list_delta_L = []
+#     delta_L = None
+
+#     ## Caras 1 y 2
+#     if flags_CCD[0] and flags_CCD[1]:
+#         delta_L = np.abs(medida_z / np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         n_muons_in_CCD = 1
+#         # list_delta_L.append(delta_L)
+#         # continue
+
+#     ## Caras 1 y 3
+#     if flags_CCD[0] and flags_CCD[2]:
+#         h = medida_z - list_z[0]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 1 y 4
+#     if flags_CCD[0] and flags_CCD[3]:
+#         h = medida_z - list_z[1]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 1 y 5
+#     if flags_CCD[0] and flags_CCD[4]:
+#         h = medida_z - list_z[2]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 1 y 6
+#     if flags_CCD[0] and flags_CCD[5]:
+#         h = medida_z - list_z[3]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 3 y 2
+#     if flags_CCD[2] and flags_CCD[1]:
+#         h = list_z[0]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 3 y 4
+#     if flags_CCD[2] and flags_CCD[3]:
+#         h = list_z[0]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 3 y 5
+#     if flags_CCD[2] and flags_CCD[4]:
+#         h = list_z[0]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 3 y 6
+#     if flags_CCD[2] and flags_CCD[5]:
+#         h = list_z[0]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 4 y 2
+#     if flags_CCD[3] and flags_CCD[1]:
+#         h = list_z[1]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 4 y 3
+#     if flags_CCD[3] and flags_CCD[2]:
+#         h = list_z[1]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 4 y 5
+#     if flags_CCD[3] and flags_CCD[4]:
+#         h = list_z[1]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 4 y 6
+#     if flags_CCD[3] and flags_CCD[5]:
+#         h = list_z[1]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 5 y 2
+#     if flags_CCD[4] and flags_CCD[1]:
+#         h = list_z[2]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 5 y 3
+#     if flags_CCD[4] and flags_CCD[2]:
+#         h = list_z[2]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 5 y 4
+#     if flags_CCD[4] and flags_CCD[3]:
+#         h = list_z[2]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 5 y 6
+#     if flags_CCD[4] and flags_CCD[5]:
+#         h = list_z[2]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 6 y 2
+#     if flags_CCD[5] and flags_CCD[1]:
+#         h = list_z[3]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 6 y 3
+#     if flags_CCD[5] and flags_CCD[2]:
+#         h = list_z[3]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+#     ## Caras 6 y 4
+#     if flags_CCD[5] and flags_CCD[3]:
+#         h = medida_z - list_z[3]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     ## Caras 6 y 5
+#     if flags_CCD[5] and flags_CCD[4]:
+#         h = list_z[3]
+#         delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+#         # n_muons_in_CCD = n_muons_in_CCD + 1
+#         # list_delta_L.append(delta_L)
+#         n_muons_in_CCD = 1
+#         # continue
+
+#     # if (flags_CCD[0] == False) and  (flags_CCD[1] == False) and (flags_CCD[2] == False) and (flags_CCD[3] == False) and (flags_CCD[4] == False) and (flags_CCD[5] == False):
+#     if delta_L is None:    
+#         delta_L, n_muons_in_CCD = 0, 0
+
+#     # if delta_L < 0.0725 and delta_L != 0:
+#     #     print(delta_L)
+
+#     return delta_L, n_muons_in_CCD
+
+
 def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     # list_delta_L = []
     delta_L = None
 
     ## Caras 1 y 2
     if flags_CCD[0] and flags_CCD[1]:
-        delta_L = np.abs(medida_z / np.abs(np.cos(Random_th)))  ## cm
+        delta_L = medida_z / np.cos(Random_th)  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         n_muons_in_CCD = 1
         # list_delta_L.append(delta_L)
@@ -137,7 +338,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 1 y 3
     if flags_CCD[0] and flags_CCD[2]:
         h = medida_z - list_z[0]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L = h /  np.cos(Random_th)  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -146,7 +347,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 1 y 4
     if flags_CCD[0] and flags_CCD[3]:
         h = medida_z - list_z[1]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -155,7 +356,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 1 y 5
     if flags_CCD[0] and flags_CCD[4]:
         h = medida_z - list_z[2]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -164,7 +365,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 1 y 6
     if flags_CCD[0] and flags_CCD[5]:
         h = medida_z - list_z[3]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -173,7 +374,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 3 y 2
     if flags_CCD[2] and flags_CCD[1]:
         h = list_z[0]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -182,7 +383,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 3 y 4
     if flags_CCD[2] and flags_CCD[3]:
         h = list_z[0]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -191,7 +392,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 3 y 5
     if flags_CCD[2] and flags_CCD[4]:
         h = list_z[0]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -200,7 +401,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 3 y 6
     if flags_CCD[2] and flags_CCD[5]:
         h = list_z[0]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -209,7 +410,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 4 y 2
     if flags_CCD[3] and flags_CCD[1]:
         h = list_z[1]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -218,7 +419,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 4 y 3
     if flags_CCD[3] and flags_CCD[2]:
         h = list_z[1]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -227,7 +428,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 4 y 5
     if flags_CCD[3] and flags_CCD[4]:
         h = list_z[1]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -236,7 +437,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 4 y 6
     if flags_CCD[3] and flags_CCD[5]:
         h = list_z[1]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -245,7 +446,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 5 y 2
     if flags_CCD[4] and flags_CCD[1]:
         h = list_z[2]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -254,7 +455,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 5 y 3
     if flags_CCD[4] and flags_CCD[2]:
         h = list_z[2]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -263,7 +464,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 5 y 4
     if flags_CCD[4] and flags_CCD[3]:
         h = list_z[2]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -272,7 +473,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 5 y 6
     if flags_CCD[4] and flags_CCD[5]:
         h = list_z[2]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -281,7 +482,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 6 y 2
     if flags_CCD[5] and flags_CCD[1]:
         h = list_z[3]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -290,7 +491,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 6 y 3
     if flags_CCD[5] and flags_CCD[2]:
         h = list_z[3]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -298,7 +499,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 6 y 4
     if flags_CCD[5] and flags_CCD[3]:
         h = medida_z - list_z[3]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -307,7 +508,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     ## Caras 6 y 5
     if flags_CCD[5] and flags_CCD[4]:
         h = list_z[3]
-        delta_L = np.abs(h /  np.abs(np.cos(Random_th)))  ## cm
+        delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
@@ -321,6 +522,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     #     print(delta_L)
 
     return delta_L, n_muons_in_CCD
+
 
 ## ----------------------- Funciones de Landau (ROOT) ------------------------------ ##
 def LandV(lx, lpar):

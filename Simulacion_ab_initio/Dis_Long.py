@@ -61,7 +61,7 @@ Radio = 100
 Theta = np.arange(Lim_inf_theta_rad, np.pi/2, 0.001)    ### Semi-esfera de radio 100 unidades
 
 ##### Tamaño del plano #####
-plane_side = 1.5
+plane_side = 0.5
 long_a = np.arange(-plane_side, plane_side, 0.001)
 long_b = np.arange(-plane_side, plane_side, 0.001)
 
