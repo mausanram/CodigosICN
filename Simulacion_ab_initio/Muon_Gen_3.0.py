@@ -66,7 +66,7 @@ def main():
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 10000      ## Valores de un ángulo Theta.
+    number_thet = 100      ## Valores de un ángulo Theta.
 
     
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
@@ -151,7 +151,7 @@ def main():
         Energy_array[0] =  dict_muons_in_CCD['Energy-SD(MeV)'][i] 
         DeltaL_array[0] = dict_muons_in_CCD['Delta_L'][i]
         Energy_Landau_array[0] = dict_muons_in_CCD['Energy_Landau'][i]
-        print(Energy_Landau_array[0])
+        # print(Energy_Landau_array[0])
         # th_deg = dict_muons['Theta(Deg)'][0]
         tree.Fill()
 
