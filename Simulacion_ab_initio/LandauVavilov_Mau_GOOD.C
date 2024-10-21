@@ -21,7 +21,7 @@ double LV (double *lx, double *lpar) {
 	double L = lpar[0];		// Thickness of absorber (Distance crossed by the particle)
 
 	double p = lpar[1];		// Momentum (in MeV/c)
-	double K = 0.307075;	// K coefficient = 4*pi*N*r^2*m*c^2 (in MeV mol^-1 cm^2)
+	double K = 0.1535;	// K coefficient = 4*pi*N*r^2*m*c^2 (in MeV mol^-1 cm^2)
 	int z = -1;		// Charge number of incident particle
 	double ZA = 0.498487;	// Atomic number over Atomic mass of absorber (for Si)
 	double c = TMath::C();	// Speed of light
@@ -55,15 +55,15 @@ double LV (double *lx, double *lpar) {
 		d = 0;
 		}
 
-	double WM = 2*me*(pow((beta*gamma),2))/(1+(2*me*gamma/M)+pow((me/M),2));   // Maximum energy tranfer
+	double WM = 2*me*(pow((beta*gamma),2))/(1+(2*me/M)*(sqrt(1 + pow(beta*gamma, 2)))+pow((me/M),2));   // Maximum energy tranfer
 
 	double loge = log((1-(pow(beta,2)))*(pow(I,2))/(2*M*(pow(beta,2))))+(pow(beta,2)); // log epsilon variable
 
 	double EC = 0.577;	// Euler's constant
 
-	double DeltaAv = K*rho*L*(pow(z,2))*ZA*(1.0/(pow(beta,2)))*((1.0/2.0)*log(2*me*(pow(beta,2))*(pow(gamma,2))*WM/(pow(I,2)))-(pow(beta,2))-(d/2.0));// Mean energy loss (Bethe-Bloch)
+	double DeltaAv = K*rho*L*(pow(z,2))*ZA*(1.0/(pow(beta,2)))*(log(2*me*(pow(gamma,2))*(pow(p,2))*WM/(pow(I,2)))-(pow(beta,2))-(d));// Mean energy loss (Bethe-Bloch)
 
-	double xi = (K/2)*rho*ZA*L*pow((z/beta),2);		// Xi variable 
+	double xi = (K)*rho*ZA*L*pow((z/beta),2);		// Xi variable 
 
 	double lambda = (Delta-xi*(log(xi)-loge+1-EC))/xi;	// Lambda parameter
 
@@ -96,7 +96,7 @@ double LV (double *lx, double *lpar) {
 		}
 }
 
-void LandauVavilov_Mau() {
+void LandauVavilov_Mau_GOOD() {
 	gRandom->SetSeed(0);	// Cambia la semilla aleatoria para el GetRandom 
 
 	// double s = 0.0725;	// Distance of CCD (in cm)
@@ -104,23 +104,23 @@ void LandauVavilov_Mau() {
 	
 	// double En_Smith;
 	// char En_Smith_char[100] =  getenv("EN_SMITH");
-	float p = atof(getenv("EN_SMITH"));	// Momentum parameter (in MeV)
-	float s = atof(getenv("DELTA_L")); // Distance of CCD (in cm)
+	// float p = atof(getenv("EN_SMITH"));	// Momentum parameter (in MeV)
+	// float s = atof(getenv("DELTA_L")); // Distance of CCD (in cm)
 
 	// cout << p endl;
 
-	//cout << "Introduce un entero: ";	// ---------------------------------------- //
-	//double p;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
-   	//std::cin >> p;					// ---------------------------------------- //
+	cout << "Introduce un entero: ";	// ---------------------------------------- //
+	double p;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
+   	std::cin >> p;					// ---------------------------------------- //
 
-	//cout << "Introduce un entero: ";	// ---------------------------------------- //
-	//double s;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
-   	//std::cin >> s;					// ---------------------------------------- //
+	cout << "Introduce un entero: ";	// ---------------------------------------- //
+	double s;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
+   	std::cin >> s;					// ---------------------------------------- //
 
 
 
-	// TCanvas *cnv = new TCanvas("cnv", "", 900, 700);
-	// cnv->SetGrid();
+	TCanvas *cnv = new TCanvas("cnv", "", 900, 700);
+	cnv->SetGrid();
 
 	// TLatex lat;
 
@@ -130,10 +130,10 @@ void LandauVavilov_Mau() {
 
 	f->SetParameter(0, s);
 	f->SetParameter(1, p);
-	// f->SetRange(0, 0.7);
-	//f->SetTitle("Landau-Vavilov distribution (for 0.0725cm of Si);#font[12]{Energy} (MeV);Probability");
-	// f->SetTitle("Landau-Vavilov distribution (0.0725cm of Si);Energy (MeV);Probability");
-	// f->Draw();
+	f->SetRange(0, 0.7);
+	f->SetTitle("Landau-Vavilov distribution (for 0.0725cm of Si);#font[12]{Energy} (MeV);Probability");
+	f->SetTitle("Landau-Vavilov distribution (0.0725cm of Si);Energy (MeV);Probability");
+	f->Draw();
 
 	// double  If = f->Integral(0,2.0);
 
