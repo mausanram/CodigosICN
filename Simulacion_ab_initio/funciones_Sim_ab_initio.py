@@ -4,6 +4,7 @@ import random as rand
 import datetime
 import os
 import subprocess
+from array import array
 
 from ROOT import TMath, TF1
 
@@ -392,7 +393,7 @@ def LandV(lx, lpar):
         return gauss
 
 def random_LV(s, p):
-    f = TF1("f", LandV, 0.0, 10.0, 2)
+    f = TF1("f", LandV, np.array(0), np.array(10), 2)
     f.SetParameter(0, s)
     f.SetParameter(1, p)
 
