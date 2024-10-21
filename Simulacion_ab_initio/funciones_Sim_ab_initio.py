@@ -392,7 +392,7 @@ def LV(lx, lpar):
         return gauss
 
 def random_LV(s, p):
-    f = TF1("f", LV, 0, 5, 2)
+    f = TF1("f", LV, 0.0, 10, 2)
     f.SetParameter(0, s)
     f.SetParameter(1, p)
 
@@ -1001,7 +1001,7 @@ def muon_generator_CLUSTER(Energy, number_thet,Theta, Theta_true, Phi, Radio, nu
         list_rand_thet_deg.append(Random_th_deg)
         list_rand_phi_deg.append(Random_phi_deg)
         list_random_energy.append(Random_energy)
-        
+
         ### Momento del muon ###
         # momentum = np.sqrt(Random_energy[0]**2 - m_mu**2)
         momentum = Random_energy
