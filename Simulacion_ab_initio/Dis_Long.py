@@ -52,9 +52,13 @@ Lim_inf_theta = 0 ## grados
 Lim_inf_theta_rad = np.radians(Lim_inf_theta)  ## rad
 
 ###### Dominios de variables #######
-Phi = np.arange(0.001, 2 * np.pi - np.pi * 0.001, 0.001)
-Radio = 10
-Theta = np.arange(Lim_inf_theta_rad, (np.pi/2) - np.pi * 0.001, 0.001)    ### Semi-esfera de radio 100 unidades
+# Phi = np.arange(0.001, 2 * np.pi - np.pi * 0.001, 0.001)
+# Radio = 10
+# Theta = np.arange(Lim_inf_theta_rad, (np.pi/2) - np.pi * 0.001, 0.001)    ### Semi-esfera de radio 100 unidades
+
+Phi = np.arange(0, 2 * np.pi, 0.001)
+Radio = 100
+Theta = np.arange(Lim_inf_theta_rad, np.pi/2, 0.001)    ### Semi-esfera de radio 100 unidades
 
 ##### Tamaño del plano #####
 plane_side = 1.5
@@ -81,7 +85,7 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
 
 ####    Número de Puntos a Simular  ####
-number_thet = 1
+number_thet = 100000
 number_points_per_angle = 1
 
 n_muons = number_thet * number_points_per_angle
