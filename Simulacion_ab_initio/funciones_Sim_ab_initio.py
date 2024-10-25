@@ -1083,13 +1083,13 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
                 # print(Delta_L[0])
                 n_muons_in_CCD = n_muons_in_CCD + muon
 
-                Random_energy_Landau = random_LV(s = Delta_L, p = momentum) # En KeV
+                # Random_energy_Landau = random_LV(s = Delta_L, p = momentum) # En KeV
 
+                # list_energy_Landau.append(Random_energy_Landau)
                 list_thet_in_CCD.append(Random_th_deg)
                 list_phi_in_CCD.append(Random_phi_deg)
                 list_energy_pri_in_CCD.append(Random_energy)
                 list_delta_L.append(Delta_L[0])
-                list_energy_Landau.append(Random_energy_Landau)
 
                 # list_rand_thet.append(Random_th[0])
                 # list_rand_phi.append(Random_phi)
