@@ -4,6 +4,7 @@ import random as rand
 import datetime
 import os
 import subprocess
+import matplotlib.pyplot as plt
 from array import array
 
 from ROOT import TMath, TF1
@@ -63,7 +64,7 @@ def coord_cartesian(Thet, Phi): ##### Coordenadas Cartesianas
     coord_Y = np.sin(Thet) * np.sin(Phi)
     coord_Z = np.cos(Thet)
 
-    Vec_sph = (float(coord_X), float(coord_Y), float(coord_Z))
+    Vec_sph = [float(coord_X), float(coord_Y), float(coord_Z)]
     return Vec_sph 
 
 def norma_vec(Vector):
@@ -971,14 +972,15 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
         # print('Norma del Vector:', norma)
         # Points.append(Point)
 
-        normal_Vec = (-1 * Vec[0] / Norma, -1 * Vec[1] / Norma, -1 * Vec[2] / Norma)     ## Es un vector normal unitario apuntando 
+        # normal_Vec = (-1 * Vec[0] / Norma, -1 * Vec[1] / Norma, -1 * Vec[2] / Norma)
+        normal_Vec =  [-1 * np.sin(Random_th) * np.cos(Random_phi), -1 * np.sin(Random_th) * np.sin(Random_phi), -1 * np.cos(Random_th)]     ## Es un vector normal unitario apuntando 
                                                                                             ##  hacia el centro de coordenadas
         # normal_Norma_Vec = norma_vec(normal_Vec)
         # print('Norma del vector anti-normal a la esfera:', normal_Norma_Vec)
         # print(len(normal_Vec))
         # Vectors.append(normal_Vec)
 
-        vec_thet = [np.cos(Random_th) * np.cos(Random_phi), np.cos(Random_th) * np.sin(Random_phi), np.sin(Random_th)]
+        vec_thet = [np.cos(Random_th) * np.cos(Random_phi), np.cos(Random_th) * np.sin(Random_phi), -np.sin(Random_th)]
         vec_phi = [-np.sin(Random_phi), np.cos(Random_phi), 0]
         # print('Vector Unitario Theta: ', vec_thet)
         # print('Vector Unitario Theta: ', vec_phi)
@@ -1010,35 +1012,35 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
         
         #### Cara Superior ###
         t_1 = (medida_z - random_plane_point[2]) / normal_Vec[2] 
-        x_1 = random_plane_point[0] + normal_Vec[0] * t_1 
-        y_1 = random_plane_point[1] + normal_Vec[1] * t_1 
+        x_1 = random_plane_point[0] + normal_Vec[0] * t_1[0] 
+        y_1 = random_plane_point[1] + normal_Vec[1] * t_1[0] 
 
         #### Cara Inferior ###
         t_2 = (0 - random_plane_point[2]) / normal_Vec[2] 
-        x_2 = random_plane_point[0] + normal_Vec[0] * t_2 
-        y_2 = random_plane_point[1] + normal_Vec[1] * t_2
+        x_2 = random_plane_point[0] + normal_Vec[0] * t_2[0] 
+        y_2 = random_plane_point[1] + normal_Vec[1] * t_2[0]
 
         ### Caras en X ###
         ### Cara 3 ###
-        t_3 = (-medida_x - random_plane_point[0]) / normal_Vec[0]
-        z_3 = random_plane_point[2] + normal_Vec[2] * t_3 
-        y_3 = random_plane_point[1] + normal_Vec[1] * t_3
+        t_3 = (medida_x - random_plane_point[0]) / normal_Vec[0]
+        z_3 = random_plane_point[2] + normal_Vec[2] * t_3[0] 
+        y_3 = random_plane_point[1] + normal_Vec[1] * t_3[0]
 
         ### Cara 4 ###
-        t_4 = (medida_x - random_plane_point[0]) / normal_Vec[0]
-        z_4 = random_plane_point[2] + normal_Vec[2] * t_4 
-        y_4 = random_plane_point[1] + normal_Vec[1] * t_4
+        t_4 = (-medida_x - random_plane_point[0]) / normal_Vec[0]
+        z_4 = random_plane_point[2] + normal_Vec[2] * t_4[0] 
+        y_4 = random_plane_point[1] + normal_Vec[1] * t_4[0]
 
         #### Caras en Y ###
         ### Cara 3 ###
-        t_5 = (-medida_y - random_plane_point[1]) / normal_Vec[1]
-        z_5 = random_plane_point[2] + normal_Vec[2] * t_5 
-        x_5 = random_plane_point[0] + normal_Vec[0] * t_5
+        t_5 = (medida_y - random_plane_point[1]) / normal_Vec[1]
+        z_5 = random_plane_point[2] + normal_Vec[2] * t_5[0] 
+        x_5 = random_plane_point[0] + normal_Vec[0] * t_5[0]
 
         ### Cara 4 ###
-        t_6 = (medida_y - random_plane_point[1]) / normal_Vec[1]
-        z_6 = random_plane_point[2] + normal_Vec[2] * t_4 
-        x_6 = random_plane_point[0] + normal_Vec[0] * t_4
+        t_6 = (-medida_y - random_plane_point[1]) / normal_Vec[1]
+        z_6 = random_plane_point[2] + normal_Vec[2] * t_4[0]
+        x_6 = random_plane_point[0] + normal_Vec[0] * t_4[0]
 
         list_z = [z_3, z_4, z_5, z_6]
         
@@ -1364,6 +1366,10 @@ def func_longitud(number_thet,Theta, Theta_true, Phi, Radio, number_points_per_a
     list_P_vector = []
     list_random_point = []
     list_delta_L = []
+
+    list_random_th = []
+    list_random_phi = []
+
     n_muons_in_CCD = 0
     n_negative_long = 0
 
@@ -1374,9 +1380,12 @@ def func_longitud(number_thet,Theta, Theta_true, Phi, Radio, number_points_per_a
         Random_th = rand.choices(Theta, Theta_true) ## Escoje un ángulo segun la distribución de Theta_true
         Random_phi = rand.choice(Phi)   ## Lo mismo pero con phi
 
+        # print('Random Thet: ', np.degrees(Random_th[0]))
+        # print('Random Phi: ', np.degrees(Random_phi))
         Vec = coord_cartesian(Random_th, Random_phi)
         Norma = norma_vec(Vec)
         # print(type(Vec[0]))
+
         Point = [Radio * Vec[0], Radio * Vec[1], Radio * Vec[2]]  ## Genera un punto sobre la esfera.
         # norma = np.sqrt(Point[0] ** 2 + Point[1] ** 2 + Point[2] ** 2)
         # Point = (Vec[0], Vec[1], Vec[2])  ## Genera un punto sobre la esfera.
@@ -1384,14 +1393,16 @@ def func_longitud(number_thet,Theta, Theta_true, Phi, Radio, number_points_per_a
         # print('Norma del Vector:', norma)
         # Points.append(Point)
 
-        normal_Vec = (-1 * Vec[0] / Norma, -1 * Vec[1] / Norma, -1 * Vec[2] / Norma)     ## Es un vector normal unitario apuntando 
-                                                                                            ##  hacia el centro de coordenadas
+        # normal_Vec = (-1 * Vec[0] / Norma, -1 * Vec[1] / Norma, -1 * Vec[2] / Norma) 
+        normal_Vec =  [-1 * np.sin(Random_th) * np.cos(Random_phi), -1 * np.sin(Random_th) * np.sin(Random_phi), -1 * np.cos(Random_th)]  ## Es un vector normal unitario apuntando hacia el centro de coordenadas
+        # print('Direction Vec: ', normal_Vec)
+
         # normal_Norma_Vec = norma_vec(normal_Vec)
         # print('Norma del vector anti-normal a la esfera:', normal_Norma_Vec)
         # print(len(normal_Vec))
         # Vectors.append(normal_Vec)
 
-        vec_thet = [np.cos(Random_th) * np.cos(Random_phi), np.cos(Random_th) * np.sin(Random_phi), np.sin(Random_th)]
+        vec_thet = [np.cos(Random_th) * np.cos(Random_phi), np.cos(Random_th) * np.sin(Random_phi), -np.sin(Random_th)]
         vec_phi = [-np.sin(Random_phi), np.cos(Random_phi), 0]
         # print('Vector Unitario Theta: ', vec_thet)
         # print('Vector Unitario Theta: ', vec_phi)
@@ -1421,40 +1432,116 @@ def func_longitud(number_thet,Theta, Theta_true, Phi, Radio, number_points_per_a
             list_random_point.append(random_plane_point)
 
             #### Intersecciones con cada cara   ####
-            
+            # print('Coord. del punto sobre el plano: (', random_plane_point[0], random_plane_point[1], random_plane_point[2],')')
+
             #### Cara Superior ###
+
             t_1 = (medida_z - random_plane_point[2]) / normal_Vec[2] 
-            x_1 = random_plane_point[0] + normal_Vec[0] * t_1 
-            y_1 = random_plane_point[1] + normal_Vec[1] * t_1 
+            x_1 = random_plane_point[0] + normal_Vec[0] * t_1[0] 
+            y_1 = random_plane_point[1] + normal_Vec[1] * t_1[0] 
 
             #### Cara Inferior ###
             t_2 = (0 - random_plane_point[2]) / normal_Vec[2] 
-            x_2 = random_plane_point[0] + normal_Vec[0] * t_2 
-            y_2 = random_plane_point[1] + normal_Vec[1] * t_2
+            x_2 = random_plane_point[0] + normal_Vec[0] * t_2[0] 
+            y_2 = random_plane_point[1] + normal_Vec[1] * t_2[0]
 
             ### Caras en X ###
             ### Cara 3 ###
-            t_3 = (-medida_x - random_plane_point[0]) / normal_Vec[0]
-            z_3 = random_plane_point[2] + normal_Vec[2] * t_3 
-            y_3 = random_plane_point[1] + normal_Vec[1] * t_3
+            t_3 = (medida_x - random_plane_point[0]) / normal_Vec[0]
+            z_3 = random_plane_point[2] + normal_Vec[2] * t_3[0] 
+            y_3 = random_plane_point[1] + normal_Vec[1] * t_3[0]
 
             ### Cara 4 ###
-            t_4 = (medida_x - random_plane_point[0]) / normal_Vec[0]
-            z_4 = random_plane_point[2] + normal_Vec[2] * t_4 
-            y_4 = random_plane_point[1] + normal_Vec[1] * t_4
+            t_4 = (-medida_x - random_plane_point[0]) / normal_Vec[0]
+            z_4 = random_plane_point[2] + normal_Vec[2] * t_4[0] 
+            y_4 = random_plane_point[1] + normal_Vec[1] * t_4[0]
 
             #### Caras en Y ###
-            ### Cara 3 ###
-            t_5 = (-medida_y - random_plane_point[1]) / normal_Vec[1]
-            z_5 = random_plane_point[2] + normal_Vec[2] * t_5 
-            x_5 = random_plane_point[0] + normal_Vec[0] * t_5
+            ### Cara 5 ###
+            t_5 = (medida_y - random_plane_point[1]) / normal_Vec[1]
+            z_5 = random_plane_point[2] + normal_Vec[2] * t_5[0] 
+            x_5 = random_plane_point[0] + normal_Vec[0] * t_5[0]
 
             ### Cara 4 ###
-            t_6 = (medida_y - random_plane_point[1]) / normal_Vec[1]
-            z_6 = random_plane_point[2] + normal_Vec[2] * t_4 
-            x_6 = random_plane_point[0] + normal_Vec[0] * t_4
+            t_6 = (-medida_y - random_plane_point[1]) / normal_Vec[1]
+            z_6 = random_plane_point[2] + normal_Vec[2] * t_6[0] 
+            x_6 = random_plane_point[0] + normal_Vec[0] * t_6[0]
+
+            # print(random_plane_point[0][0])
+            # x, y, z = np.indices((10, 10, 10))
+
+            # draw cuboids in the top left and bottom right corners, and a link between
+            # them
+            # cube1 = (x > 0) & (y > 0) & (z > 0)
+            # cube2 = (x >= 5) & (y >= 5) & (z >= 5)
+            # link = abs(x - y) + abs(y - z) + abs(z - x) <= 2
+
+            # combine the objects into a single boolean array
+            # voxelarray = cube1 | cube2 | link
+            # voxelarray = cube1 | cube2 
+            # voxelarray = cube1
+
+            # set the colors of each object
+            # colors = np.empty(voxelarray.shape, dtype=object)
+            # colors[link] = 'red'
+            # colors[cube1] = 'blue'
+            # colors[cube2] = 'green'
+
+            # and plot everything
+            # ax = plt.figure().add_subplot(projection='3d')
+            # # ax.voxels(filled = voxelarray, facecolors=colors)
+            # VecStart_x = [-50, -50, -50, -50]
+            # VecStart_y = [-5, -5, 5, 5]
+            # VecStart_z = [0, 10, 0, 10]
+            # VecEnd_x = [50, 50, 50, 50]
+            # VecEnd_y = [-5, -5, 5, 5]
+            # VecEnd_z  =[0, 10, 0, 10]
+
+            # for i in range(0, len(VecStart_x)):
+            #     ax.plot([VecStart_x[i], VecEnd_x[i]], [VecStart_y[i],VecEnd_y[i]],zs=[VecStart_z[i],VecEnd_z[i]], color = 'b')
+
+            # VecStart_x = [-50, -50, -50, -50]
+            # VecStart_y = [-5, -5, 5, 5]
+            # VecStart_z = [0, 0, 0, 10]
+            # VecEnd_x = [-50, -50, -50, -50]
+            # VecEnd_y = [-5, 5, 5, -5]
+            # VecEnd_z  =[10, 0, 10, 10]
+            # for i in range(0, len(VecStart_x)):
+            #     ax.plot([VecStart_x[i], VecEnd_x[i]], [VecStart_y[i],VecEnd_y[i]],zs=[VecStart_z[i],VecEnd_z[i]], color = 'b')
+
+            # # t = 100
+            # # t = (medida_z - random_plane_point[2][0]) / normal_Vec[2][0]
+            # t = (-10 - random_plane_point[2][0]) / normal_Vec[2][0]
+            # VecStart_x = [random_plane_point[0][0]]
+            # VecStart_y = [random_plane_point[1][0]]
+            # VecStart_z = [random_plane_point[2][0]]
+            # VecEnd_x = [random_plane_point[0][0] + normal_Vec[0][0] * t]
+            # VecEnd_y = [random_plane_point[1][0] + normal_Vec[1][0] * t]
+            # VecEnd_z  =[random_plane_point[2][0] + normal_Vec[2][0] * t]
+
+            # ax.scatter(VecStart_x[0], VecStart_y[0], VecStart_z[0], color = 'k')
+
+            # for i in range(1):
+            #     ax.plot([VecStart_x[i], VecEnd_x[i]], [VecStart_y[i],VecEnd_y[i]],zs=[VecStart_z[i],VecEnd_z[i]], color = 'k')
+            
+            # ax.scatter(0,0,0, color = 'k')
+            # ax.scatter(x_1[0], y_1[0], medida_z, color = 'r')
+            # ax.scatter(x_2[0], y_2[0], 0, color = 'r')
+            # ax.scatter(medida_x, y_3[0], z_3[0], color = 'g')
+            # ax.scatter(-medida_x, y_4[0], z_4[0], color = 'g')
+            # ax.scatter(x_5[0], medida_y, z_5[0], color = 'purple')
+            # # ax.scatter(random_plane_point[0], random_plane_point[1], random_plane_point[2], 'k')
+            # # ax.plot([random_plane_point[0], 0], [random_plane_point[1],0], [random_plane_point[2],0])
+            # # ax.scatter(x_2, y_2,0, 'k')
+
+            # plt.show()
+
 
             list_z = [z_3, z_4, z_5, z_6]
+            # print('Valores de t: ', t_1[0], t_2[0], t_3[0], t_4[0], t_5[0], t_6[0])
+            # print('Valores de x: ', x_1[0], x_2[0], x_5[0], x_6[0])
+            # print('Valores de y: ', y_1[0], y_2[0], y_3[0], y_4[0])
+            # print('Valores de z: ', z_3[0], z_4[0], z_5[0], z_6[0])
             
             if np.around(x_1[0], 4) in mapeo_x and np.around(y_1[0], 4) in mapeo_y:
                 flag_cara_1 = True
@@ -1484,19 +1571,22 @@ def func_longitud(number_thet,Theta, Theta_true, Phi, Radio, number_points_per_a
             
             Delta_L, muon = intersection_CCD(list_flags, list_z, medida_z, Random_th)
 
-            if Delta_L != 0:
-                if Delta_L > 0 and Delta_L < 2.1:
+            if Delta_L > 0:
+                # if Delta_L > 0 and Delta_L < 2.1:
                     list_delta_L.append(Delta_L)
+                    list_random_th.append(np.degrees(Random_th[0]))
+                    list_random_phi.append(np.degrees(Random_phi))
+
                     n_muons_in_CCD = n_muons_in_CCD + muon
 
-                else:
-                    n_negative_long = n_negative_long + 1
-                    continue
+                # else:
+                #     n_negative_long = n_negative_long + 1
+                #     continue
 
             else:
                     continue
             
-    return list_delta_L, n_muons_in_CCD, n_negative_long
+    return list_delta_L, n_muons_in_CCD, n_negative_long, list_random_th, list_random_phi
 
 def deffuse_model(number_thet,Theta, Theta_true, Phi, Radio, number_points_per_angle, long_a, long_b, 
                         medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z, dict_diffuse_model):
@@ -1561,7 +1651,8 @@ def deffuse_model(number_thet,Theta, Theta_true, Phi, Radio, number_points_per_a
             list_random_point.append(random_plane_point)
 
             #### Intersecciones con cada cara   ####
-            
+
+
             #### Cara Superior ###
             t_1 = (medida_z - random_plane_point[2]) / normal_Vec[2] 
             x_1 = random_plane_point[0] + normal_Vec[0] * t_1 

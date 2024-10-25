@@ -57,23 +57,47 @@ Lim_inf_theta_rad = np.radians(Lim_inf_theta)  ## rad
 # Theta = np.arange(Lim_inf_theta_rad, (np.pi/2) - np.pi * 0.001, 0.001)    ### Semi-esfera de radio 100 unidades
 
 Phi = np.arange(0, 2 * np.pi, 0.001)
-Radio = 100
+Radio = 8
 Theta = np.arange(Lim_inf_theta_rad, np.pi/2, 0.001)    ### Semi-esfera de radio 100 unidades
 
 ##### Tamaño del plano #####
-plane_side = 10 # cm
+plane_side = 5 # cm
 long_a = np.arange(-plane_side, plane_side, 0.001)
 long_b = np.arange(-plane_side, plane_side, 0.001)
 
 ######### Medidas de la CCD ##########
-# medida_x = 1.197 / 2    # cm
-# medida_y = 1.587 / 2   # cm
-# medida_z = 0.0725   # cm
+medida_x = 1.197 / 2    # cm
+medida_y = 1.587 / 2   # cm
+medida_z = 0.0725   # cm
 
-medida_x = 100 / 2    # cm
-medida_y = 10 / 2   # cm
-medida_z = 10   # cm
+# medida_x = 100 / 2    # cm
+# medida_y = 10 / 2   # cm
+# medida_z = 10   # cm
 
+# x, y, z = np.indices((100, 10, 10))
+
+# # draw cuboids in the top left and bottom right corners, and a link between
+# # them
+# cube1 = (x > 0) & (y > 0) & (z > 0)
+# # cube2 = (x >= 5) & (y >= 5) & (z >= 5)
+# # link = abs(x - y) + abs(y - z) + abs(z - x) <= 2
+
+# # combine the objects into a single boolean array
+# # voxelarray = cube1 | cube2 | link
+# # voxelarray = cube1 | cube2 
+# voxelarray = cube1
+
+# # set the colors of each object
+# colors = np.empty(voxelarray.shape, dtype=object)
+# # colors[link] = 'red'
+# colors[cube1] = 'blue'
+# # colors[cube2] = 'green'
+
+# # and plot everything
+# ax = plt.figure().add_subplot(projection='3d')
+# ax.voxels(filled = voxelarray, facecolors=colors)
+
+# plt.show()
 # mapeo_x = np.arange(-medida_x, medida_x, 0.01)
 # mapeo_y = np.arange(-medida_y, medida_y, 0.01)
 # mapeo_z = np.arange(0, medida_z, 0.0001)
@@ -89,7 +113,7 @@ Theta_true = dis_angular(Theta) ## Distribución angular theta real.
 
 
 ####    Número de Puntos a Simular  ####
-number_thet = 10000
+number_thet = 100000
 number_points_per_angle = 1
 
 n_muons = number_thet * number_points_per_angle
@@ -105,7 +129,7 @@ list_delta_L_neg = []
 list_delta_L_Total = []
 
 In = datetime.datetime.now()
-list_delta_L, n_muons_in_CCD, n_negative_long = func_longitud(number_thet, Theta, Theta_true, Phi, Radio, number_points_per_angle, long_a, long_b, 
+list_delta_L, n_muons_in_CCD, n_negative_long, list_th, list_phi = func_longitud(number_thet, Theta, Theta_true, Phi, Radio, number_points_per_angle, long_a, long_b, 
                                                               medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z)
 Fin = datetime.datetime.now()
 print('Tiempo de cálculo para delta_L: ', Fin-In)
@@ -184,17 +208,19 @@ array_Delta_L = np.array(list_delta_L_Total)
 fig, axs = plt.subplots(figsize=[7,5])
 # hist_long, bins_edges_long, _ = axs.hist(array_Delta_L, bins = BINS, label = 'Eventos Simulados: ' + str(number_thet * number_points_per_angle))
 hist_long, bins_edges_long, _ = axs.hist(array_Delta_L, color = 'b', bins = BINS, label = 'Eventos Simulados: ' + str(n_muons_in_CCD),  histtype = 'step')
+plt.show()
 index_max_long =  np.argmax(hist_long)
 pico =  hist_long[index_max_long]
 # print(pico)
 # axs.set_xlim(0, 0.5)
 
-# axs.vlines([0.0725], ymin = 0, ymax = pico, colors='k', linestyles='dashed', label = 'Grosor de la CCD: 0.0725 cm')
-# axs.set_xlim(0, 0.2)
+fig, axs = plt.subplots(figsize=[7,5])
+# hist_long, bins_edges_long, _ = axs.hist(array_Delta_L, bins = BINS, label = 'Eventos Simulados: ' + str(number_thet * number_points_per_angle))
+hist_long, bins_edges_long, _ = axs.hist(list_th, color = 'b', histtype = 'step')
 
-axs.set_xlabel('Distancia (cm)')
+axs.set_xlabel('Ángulo (°)')
 axs.legend()
-fig.suptitle(r'Distribución de Longitudes', y = 0.95, size = 20)
+fig.suptitle(r'Distribución de Ángulos $\theta$', y = 0.95, size = 20)
 plt.show()
 
 # file_name = 'array_Delta_L_' + str(n_muons) + '.pkl'
