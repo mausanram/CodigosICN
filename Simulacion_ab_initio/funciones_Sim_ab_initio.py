@@ -898,8 +898,8 @@ def muon_generator(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_poi
 
     return dict_muons, n_muons_in_CCD, n_negative_long
 
-def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_points_per_angle, 
-                  long_a, long_b, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z):
+def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_points_per_angle, long_a, long_b, 
+                    medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z):
     ### Primary lists ###
     list_rand_thet = []
     list_rand_phi = []
@@ -918,8 +918,6 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
     list_random_point = []
     list_delta_L = []
     list_energy_Landau = []
-
-    m_mu = 105.7
 
     n_muons_in_CCD = 0
     n_negative_long = 0

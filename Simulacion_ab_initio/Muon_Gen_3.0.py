@@ -55,14 +55,7 @@ def main():
     mapeo_y = dimension_y(medida_y)
     mapeo_z = dimension_z(medida_z)
 
-
-    #### Mapeo de la energía (se hace en escala logarítmica para tener valores igualmente distribuidos) ####
-    # E_in = 10 ** (-2)   ### Límite inferior
-    # E_fin = 10 ** 8     ### Límite superior
-    # N = 1000    ### Número de puntos
-    # Energy = Energy_list(E_in, E_fin, N)
-
-    # Max_energy = 1000000 # E MeV
+    # Max_energy = 1000000 # En MeV
     # Energy = np.arange(1, Max_energy) # En MeV
 
     Max_energy = 100 # En GeV (no pasar de 100 GeV o la simulación se hará mas lenta)
@@ -87,45 +80,6 @@ def main():
                                 number_points_per_angle=number_points_per_angle,long_a=long_a, long_b=long_b, medida_x=medida_x, 
                                 medida_y=medida_y, medida_z=medida_z, mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z)
 
-    # print(dict_muons['NMuon'])
-
-    # print(os.environ)
-
-    # muons_dataFrame = pd.DataFrame(dict_muons)
-    # muons_dataFrame.to_csv('muons_data.txt', sep='\t')
-    # In = datetime.datetime.now()
-
-    # print(type(tree))
-
-    # print('Longitud la lista de "Energy_Landau": ', len(dict_muons['Energy_Landau']))
-    # print('Longitud la lista de "Theta(Rad)": ', len(dict_muons['Theta(Rad)']))
-
-    # print(dict_muons['Energy_Landau'])
-    # print(dict_muons['Theta(Deg)'])
-
-
-    ### TTre file primary elements ###
-    # Thet_Deg_pri = array('f', [-9999])
-    # Phi_Deg_pri = array('f', [-9999])
-    # Energy_pri = array('f', [-9999])
-
-    # file_root_name_1 = 'Sim_ab_initio_1_NMUONS_' + str(number_thet) + '.root'
-    # file_1 = TFile.Open(file_root_name_1, "RECREATE")
-    # tree_1 = TTree('tree', 'tree')
-
-    # tree_1.Branch('Thet_Deg', Thet_Deg_pri, 'Thet_Deg/F')
-    # tree_1.Branch('Phi_Deg', Phi_Deg_pri, 'Phi_Deg/F')
-    # tree_1.Branch('Energy', Energy_pri, 'Energy/F')
-
-
-    # for i in np.arange(0, len(dict_all_muons['Theta(Deg)'])):
-    #     Thet_Deg_pri[0] = dict_all_muons['Theta(Deg)'][i]
-    #     Phi_Deg_pri[0] = dict_all_muons['Phi(Deg)'][i]
-    #     Energy_pri[0] =  dict_all_muons['Energy-SD(MeV)'][i] 
-    #     # th_deg = dict_muons['Theta(Deg)'][0]
-    #     tree_1.Fill()
-
-    # file_1.Close()
 
     #### TTree file in CCD ###
     N_Muons = array('f', [-9999])
@@ -166,29 +120,6 @@ def main():
         # th_deg = dict_muons['Theta(Deg)'][0]
         tree.Fill()
 
-    # plt.hist(dict_muons_in_CCD['Energy_Landau'], range = (0,500))
-    # plt.show()
-    
-    # tree.Write()
-    # tree_1 = TTree('tree_1', 'tree_1')
-
-    # tree_1.Branch('thetall', Thet_Deg_pri, 'thetall/F')
-    # tree_1.Branch('phiall', Phi_Deg_pri, 'phiall/F')
-    # tree_1.Branch('energySMall', Energy_pri, 'energySMall/F')
-
-    # for i in np.arange(0, len(dict_all_muons['Theta(Deg)'])):
-    #     Thet_Deg_pri[0] = dict_all_muons['Theta(Deg)'][i]
-    #     # print(Thet_Deg_pri[0])
-    #     Phi_Deg_pri[0] = dict_all_muons['Phi(Deg)'][i]
-    #     Energy_pri[0] =  dict_all_muons['Energy-SD(MeV)'][i] 
-    #     # th_deg = dict_muons['Theta(Deg)'][0]
-    #     tree_1.Fill()
-    # tree_1.Write()
-
-    # tree.Show(-1)
-    # tree.Print()
-    # tree.Draw()
-    # print(tree.GetBranch('Theta(Rad)').GetEntries())
     tree.Write()
 
     # Fin = datetime.datetime.now()
