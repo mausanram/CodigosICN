@@ -1113,7 +1113,7 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
             list_thet_in_CCD.append(Random_th[0])
             list_phi_in_CCD.append(Random_phi)
             list_energy_pri_in_CCD.append(Random_energy)
-            list_delta_L.append(Delta_L[0])
+            list_delta_L.append(Delta_L)
 
             muon_in_bucle += 1
 
