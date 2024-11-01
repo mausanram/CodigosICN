@@ -157,7 +157,9 @@ def main():
         Phi_Deg[0] = dict_muons_in_CCD['Phi(Deg)'][i]
         Energy_array[0] =  dict_muons_in_CCD['Energy-SD(MeV)'][i] 
         DeltaL_array[0] = dict_muons_in_CCD['Delta_L'][i]
-        Energy_Landau_array[0] = dict_muons_in_CCD['Energy_Landau'][i]
+        #print(f'Ei={i} Energy_Landau={dict_muons_in_CCD}')
+        if len(dict_muons_in_CCD['Energy_Landau'])>i: 
+              Energy_Landau_array[0] = dict_muons_in_CCD['Energy_Landau'][i]
         # print(Energy_Landau_array[0])
         # th_deg = dict_muons['Theta(Deg)'][0]
         tree.Fill()
