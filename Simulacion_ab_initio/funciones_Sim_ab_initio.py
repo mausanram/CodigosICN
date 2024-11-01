@@ -596,8 +596,8 @@ def LandV(lx, lpar):
         return gauss
 
 def random_LV(s, p):
-    f = TF1("f", LandV, 0.0, 10.0,2)
-    # f = TF1("f", LandV, 0, 10, 2)
+    # f = TF1(chr(4), LandV, 0.0, 10.0,2)
+    f = TF1("", LandV, 0, 10, 2)
     f.SetParameter(0, s)
     f.SetParameter(1, p)
 
