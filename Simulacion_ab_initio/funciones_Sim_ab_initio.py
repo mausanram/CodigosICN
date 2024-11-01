@@ -1083,6 +1083,7 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
                 # print(Delta_L[0])
                 n_muons_in_CCD = n_muons_in_CCD + 1
 
+                print('Se va a calcular la energy_Landau')
                 Random_energy_Landau = random_LV(s = Delta_L, p = momentum) # En KeV
 
                 list_nmuons.append(n_muon)
