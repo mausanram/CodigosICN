@@ -25,8 +25,8 @@ func1->SetParameter(0, 7500);
 //TF1 *func2 = new TF1("func2", "[0]*((3799278/TMath::Pi()) + (23011.5)*abs(cos(x)) + (17356.5)*abs(sin(x)))", 0,2*TMath::Pi());
 // TF1 *func2 = new TF1("func2", "[0]*((2103) + (65.85)*abs(cos(x)) + (-78.36)*abs(sin(x)))", 0,2*TMath::Pi());
 
-TF1 *func2 = new TF1("func2", "[0]*((1 * 1.899639/TMath::Pi()) + (1 * 0.014382188)*abs(cos(x)) + (1 * 0.010847812)*abs(sin(x)))", 0,2*TMath::Pi()); 
-// TF1 *func2 = new TF1("func2", "[0]*((1 * 1.899639/TMath::Pi()) + (4 * 0.014382188)*abs(cos(x)) + (2 * 0.010847812)*abs(sin(x)))", 0,2*TMath::Pi()); // EL mejor
+// TF1 *func2 = new TF1("func2", "[0]*((1 * 1.899639/TMath::Pi()) + (1 * 0.014382188)*abs(cos(x)) + (1 * 0.010847812)*abs(sin(x)))", 0,2*TMath::Pi()); 
+TF1 *func2 = new TF1("func2", "[0]*((1 * 1.899639/TMath::Pi()) + (4 * 0.014382188)*abs(cos(x)) + (2 * 0.010847812)*abs(sin(x)))", 0,2*TMath::Pi()); // EL mejor
 // func2->SetParameter(0, 1600);
 //func2->SetParameter(1, 1000);
 
