@@ -912,6 +912,7 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
     list_thet_in_CCD = []
     list_phi_in_CCD = []
     list_energy_pri_in_CCD = []
+    list_nmuons = []
 
     list_P_vector = []
     list_random_point = []
@@ -925,6 +926,7 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
     muon_in_bucle = 0
 
     for i in np.arange(0,number_thet):
+        n_muon = i
         Random_th = rand.choices(Theta, Theta_true) ## Escoje un ángulo segun la distribución de Theta_true en radianes
         Random_phi = rand.choice(Phi)   ## Lo mismo pero con phi en radianes
         # print(Random_th[0])
@@ -1081,13 +1083,14 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
                 # list_delta_L.append(Delta_L)
                 # print('Estoy agregando el deltaL')
                 # print(Delta_L[0])
-                n_muons_in_CCD = n_muons_in_CCD + muon
+                n_muons_in_CCD = n_muons_in_CCD + 1
 
-                # Random_energy_Landau = random_LV(s = Delta_L, p = momentum) # En KeV
+                Random_energy_Landau = random_LV(s = Delta_L, p = momentum) # En KeV
 
-                # list_energy_Landau.append(Random_energy_Landau)
-                list_thet_in_CCD.append(Random_th_deg)
-                list_phi_in_CCD.append(Random_phi_deg)
+                list_nmuons.append(n_muon)
+                list_energy_Landau.append(Random_energy_Landau)
+                list_thet_in_CCD.append(Random_th[0])
+                list_phi_in_CCD.append(Random_phi)
                 list_energy_pri_in_CCD.append(Random_energy)
                 list_delta_L.append(Delta_L[0])
 
@@ -1103,8 +1106,19 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
             #     continue
 
         else:
+            Random_energy_Landau = 0 # En KeV
+            Delta_L = 0
+
+            list_nmuons.append(n_muon)
+            list_energy_Landau.append(Random_energy_Landau)
+            list_thet_in_CCD.append(Random_th[0])
+            list_phi_in_CCD.append(Random_phi)
+            list_energy_pri_in_CCD.append(Random_energy)
+            list_delta_L.append(Delta_L)
+
             muon_in_bucle += 1
-            continue
+
+            print('Muon simulado ' + str(muon_in_bucle) + '/' + str(number_thet * number_points_per_angle), end = '\r')
         
         # print(os.environ)
 
@@ -1116,12 +1130,12 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
 
     # dict_muons =  {'Random_Thet': list_rand_thet, 'Random_Phi' : list_rand_phi, 'Random_Energy' : list_random_energy, 'DeltaL' : list_delta_L} 
 
-    dict_all_muons =  {'Theta(Deg)': list_rand_thet_deg, 'Phi(Deg)' : list_rand_phi_deg, 'Energy-SD(MeV)' : list_random_energy} 
+    # dict_all_muons =  {'Theta(Deg)': list_rand_thet_deg, 'Phi(Deg)' : list_rand_phi_deg, 'Energy-SD(MeV)' : list_random_energy} 
 
-    dict_muons_in_CCD =  {'Theta(Deg)': list_thet_in_CCD, 'Phi(Deg)' : list_phi_in_CCD, 'Energy-SD(MeV)' : list_energy_pri_in_CCD, 
-                        'Delta_L' : list_delta_L, 'Energy_Landau' : list_energy_Landau} 
+    dict_muons =  {'NMuon': list_nmuons, 'Theta(Rad)': list_thet_in_CCD, 'Phi(Rad)' : list_phi_in_CCD, 'Energy-SD(MeV)' : list_energy_pri_in_CCD, 
+                        'Delta_L(cm)' : list_delta_L, 'Energy_Landau(KeV)' : list_energy_Landau} 
 
-    return dict_all_muons, dict_muons_in_CCD, n_muons_in_CCD 
+    return dict_muons, n_muons_in_CCD 
 
 def muon_generator_CLUSTER(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_points_per_angle, 
                   long_a, long_b, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z):
