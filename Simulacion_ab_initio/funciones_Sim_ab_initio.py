@@ -1077,28 +1077,28 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
 
         if Delta_L > 0:
 
-            # if Delta_L > 0 and Delta_L < 2.1:
-                # list_delta_L.append(Delta_L)
-                # print('Estoy agregando el deltaL')
-                # print(Delta_L[0])
-                n_muons_in_CCD = n_muons_in_CCD + 1
+        # if Delta_L > 0 and Delta_L < 2.1:
+            # list_delta_L.append(Delta_L)
+            # print('Estoy agregando el deltaL')
+            # print(Delta_L[0])
+            n_muons_in_CCD = n_muons_in_CCD + 1
 
-                print('Se va a calcular la energy_Landau')
-                Random_energy_Landau = random_LV(s = Delta_L[0], p = momentum) # En KeV
+            print('Se va a calcular la energy_Landau')
+            Random_energy_Landau = random_LV(s = Delta_L[0], p = momentum) # En KeV
 
-                list_nmuons.append(n_muon)
-                list_energy_Landau.append(Random_energy_Landau)
-                list_thet_in_CCD.append(Random_th[0])
-                list_phi_in_CCD.append(Random_phi)
-                list_energy_pri_in_CCD.append(Random_energy)
-                list_delta_L.append(Delta_L[0])
+            list_nmuons.append(n_muon)
+            list_energy_Landau.append(Random_energy_Landau)
+            list_thet_in_CCD.append(Random_th[0])
+            list_phi_in_CCD.append(Random_phi)
+            list_energy_pri_in_CCD.append(Random_energy)
+            list_delta_L.append(Delta_L[0])
 
-                # list_rand_thet.append(Random_th[0])
-                # list_rand_phi.append(Random_phi)
-                
-                muon_in_bucle += 1
+            # list_rand_thet.append(Random_th[0])
+            # list_rand_phi.append(Random_phi)
+            
+            muon_in_bucle += 1
 
-                print('Muon simulado ' + str(muon_in_bucle) + '/' + str(number_thet * number_points_per_angle), end = '\r')
+            print('Muon simulado ' + str(muon_in_bucle) + '/' + str(number_thet * number_points_per_angle), end = '\r')
 
             # else:
             #     n_negative_long = n_negative_long + 1
@@ -1113,7 +1113,7 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
             list_thet_in_CCD.append(Random_th[0])
             list_phi_in_CCD.append(Random_phi)
             list_energy_pri_in_CCD.append(Random_energy)
-            list_delta_L.append(Delta_L)
+            list_delta_L.append(Delta_L[0])
 
             muon_in_bucle += 1
 
