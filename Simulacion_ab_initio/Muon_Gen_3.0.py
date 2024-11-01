@@ -72,7 +72,7 @@ def main():
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 1000      ## Valores de un ángulo Theta.
+    number_thet = 100      ## Valores de un ángulo Theta.
 
     
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
