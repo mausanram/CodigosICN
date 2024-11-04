@@ -77,6 +77,10 @@ def main(argObj):
     list_theta_extension_1 = []
     list_theta_extension_4 = []
 
+    list_phi_extension_2 = []
+    list_phi_extension_1 = []
+    list_phi_extension_4 = []
+
     list_fit_gain_2 = []
     list_fit_gain_1 = []
     list_fit_gain_4 = []
@@ -166,7 +170,7 @@ def main(argObj):
             fondo = ma.masked_array(dataCal,fondo_mask)
             valor_promedio_fondo = fondo.data.mean()
 
-            DeltaL, DeltaEL, list_charge, _, list_theta, list_charge_all_events = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
+            DeltaL, DeltaEL, list_charge, _, list_theta,list_phi, list_charge_all_events = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
                                                                                                 prop=prop, Solidit=Solidit, Elipticity=Elip)
             if extension == 0: 
                 for index in np.arange(0, len(DeltaEL)):
@@ -175,6 +179,7 @@ def main(argObj):
                     list_EventCharge_extension_1.append(list_charge[index])
                     list_DeltaL_extension_1.append(DeltaL[index])
                     list_theta_extension_1.append(list_theta[index])
+                    list_phi_extension_1.append(list_phi[index])
                     list_fit_gain_1.append(Gain)
                     
             if extension == 1: 
@@ -184,6 +189,7 @@ def main(argObj):
                     list_EventCharge_extension_2.append(list_charge[index])
                     list_DeltaL_extension_2.append(DeltaL[index])
                     list_theta_extension_2.append(list_theta[index])
+                    list_phi_extension_2.append(list_phi[index])
                     list_fit_gain_2.append(Gain)
             
             if extension == 3: 
@@ -193,6 +199,7 @@ def main(argObj):
                     list_EventCharge_extension_4.append(list_charge[index])
                     list_DeltaL_extension_4.append(DeltaL[index])
                     list_theta_extension_4.append(list_theta[index])
+                    list_phi_extension_4.append(list_phi[index])
                     list_fit_gain_4.append(Gain)
 
         print('Imagen ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
@@ -204,13 +211,13 @@ def main(argObj):
                         'Solidity' : list_Solidit,
                         'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_DeltaEL_extension_1,
                                          'deltaL' : list_DeltaL_extension_1, 'all_events' : list_charge_of_all_extension_1,
-                                         'theta': list_theta_extension_1, 'gain' : list_fit_gain_1}, 
+                                         'theta': list_theta_extension_1, 'phi': list_phi_extension_1, 'gain' : list_fit_gain_1}, 
                         'extension_2' : {'charge' : list_EventCharge_extension_2, 'deltaEL' : list_DeltaEL_extension_2, 
                                         'deltaL' : list_DeltaL_extension_2, 'all_events' : list_charge_of_all_extension_2,
-                                        'theta': list_theta_extension_2, 'gain' : list_fit_gain_2},
+                                        'theta': list_theta_extension_2, 'phi': list_phi_extension_2,'gain' : list_fit_gain_2},
                         'extension_4' : {'charge' : list_EventCharge_extension_4, 'deltaEL' : list_DeltaEL_extension_4, 
                                          'deltaL' : list_DeltaL_extension_4, 'all_events' : list_charge_of_all_extension_4,
-                                         'theta': list_theta_extension_4, 'gain' : list_fit_gain_4}}
+                                         'theta': list_theta_extension_4, 'phi': list_phi_extension_4, 'gain' : list_fit_gain_4}}
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()

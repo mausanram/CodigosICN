@@ -26,8 +26,8 @@ func1->SetParameter(0, 5000);
 // TF1 *func2 = new TF1("func2", "[0]*((12725.6)*sin(x)*(cos(x))^3+(373.769)*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
 // TF1 *func2 = new TF1("func2", "[0]*(7598556*sin(x)*(cos(x))^3+(645888/TMath::Pi())*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
 
-// TF1 *func2 = new TF1("func2", "[0]*((7.598556/1)*sin(x)*(cos(x))^3+(1.6147/(4*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
-TF1 *func2 = new TF1("func2", "[0]*((7.598556/4)*sin(x)*(cos(x))^3+(0.80896/(4*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180); // El mejor 
+TF1 *func2 = new TF1("func2", "[0]*((3.29909/1)*sin(x)*(cos(x))^3+(2.8041616/(8*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
+// TF1 *func2 = new TF1("func2", "[0]*((7.598556/4)*sin(x)*(cos(x))^3+(0.80896/(4*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180); // El mejor 
 func2->SetParameter(0, 2000);
 
 // Fit functions //
