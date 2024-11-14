@@ -35,13 +35,13 @@ list_Solidit = [0.7, 0.7, 0, 0.7]
 
 DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
 
-ratio_keV = 0.0037
+ratio_keV = 0.0036
 DeltaEL_range = 85
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 units = 2
 n_sigmas = 4
-numero_bins = 500
+numero_bins = 600
 
 def Gaussian2(x,m,s,g,a1,a2): #data, mean, sigma, gain, height1, heigth2
     return a1*np.exp(-1/2*((x-m)/s)**2)+a2*np.exp(-1/2*((x-m-g)/s)**2)
@@ -85,6 +85,8 @@ def main(argObj):
     list_fit_gain_1 = []
     list_fit_gain_4 = []
 
+    nerr_img = 0
+    nerr_ext = 0
 
     total_images = len(argObj)
     image_in_bucle = 0
@@ -99,6 +101,7 @@ def main(argObj):
             image_in_bucle += 1
 
         except:
+            nerr_img = nerr_img + 1
             print('Loading error in image ' + str(img) + 'in open the image.')
             continue
         
@@ -134,16 +137,30 @@ def main(argObj):
                 continue
             
             try:
-                dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, make_figure_flag=False)
+                dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, 
+                                                    Bins_fit=numero_bins,make_figure_flag=False, range_fit=[-30, 350])
 
                 sig_ADUs = dict_popt['sigma']
                 Offset = dict_popt['Offset']
                 Gain = dict_popt['Gain']
+                Prob = dict_popt['Prob']
+                
+                if Prob < 0.05:
+                    del_Bin = 600
+                    dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
+                                                        Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-30, 400])
+                    sig_ADUs = dict_popt['sigma']
+                    Offset = dict_popt['Offset']
+                    Gain = dict_popt['Gain']
+                    Prob = dict_popt['Prob']
 
-                if Gain < 100 or Gain > 240:
-                    ### Aquí se deberá poner la ganancia promedio de cada extensión una vez que se obtenga de muchas imágenes
-                    print('Fit gain error in extension ' + str(extension) + ' of image ' + str(img))
-                    continue
+                    if  Prob < 0.05:
+                        nerr_ext = nerr_ext + 1
+                        print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
+                # if Gain < 100 or Gain > 240:
+                #     ### Aquí se deberá poner la ganancia promedio de cada extensión una vez que se obtenga de muchas imágenes
+                #     print('Fit gain error in extension ' + str(extension) + ' of image ' + str(img))
+                #     continue
 
             except:
                 print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
@@ -227,11 +244,15 @@ def main(argObj):
     print(num_images)
     Eventos_Totales = 'Eventos Detectados en Total: ' +  str(total_events)
     eventos_rectos = 'Muones Detectados: ' + str(num_muons)
+    img_err = 'Imágenes con error al cargar: ' + str(nerr_img)
+    ext_err = 'Error en fit de extension: ' + str(nerr_ext)
     # relacion = total_events / num_muons
     
     # eventos_circulares = 'Muones Circulares Detectados: ' + str(len(list_EventosCirc))
     # print('Número de elementos de la lista "list_EventCharge_AllExtensions": ', len(list_EventCharge_AllExtensions))
     # print('elementos de la lista "list_EventCharge_AllExtensions":', list_EventCharge_AllExtensions)
+    print(img_err)
+    print(ext_err)
     print(Eventos_Totales)
     print(eventos_rectos)
 

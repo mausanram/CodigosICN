@@ -9,7 +9,7 @@ import scipy.ndimage as nd
 import random
 import time
 
-from ROOT import TF1, TH1F, Fit, TCanvas, gStyle
+from ROOT import TMath, TF1, TH1F, Fit, TCanvas, gStyle
 
 ### Distribución Gaussiana ###
 def gaussian(x, a, mean, sigma): 
@@ -218,9 +218,8 @@ def oScan_fit_NSAMP324(extensión, active_area, oScan, Bins, make_figure_flag = 
     return dict_popt
 
 
-def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, make_figure_flag = False) -> dict:
-    Maxfev = 100000
-    Range_x_label = [-200, 400]
+def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, Bins_fit, make_figure_flag, range_fit):
+    Range_x_label = range_fit
 
     min_oScan = np.min(oScan)
 
@@ -233,7 +232,7 @@ def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, make_figure_fl
 
         fgaus2 = TF1("fgauss2","[3]*exp(-0.5*((x-[0])/[1])^2)+[4]*exp(-0.5*((x-[0]-[2])/[1])^2)",-300,600,5) # TF1("nombre", "funcion escrita como en root", min, max, #parametros)
 
-        h3=TH1F("histogram", "Distribution of OsCan",1500,-300,500)
+        h3=TH1F("histogram", "Distribution of OsCan", Bins_fit, Range_x_label[0], Range_x_label[1])
         for pixel_value in Overscan_plane.flatten():
             # if not np.ma.is_masked(pixel_value):
             h3.Fill(pixel_value)
@@ -242,12 +241,13 @@ def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, make_figure_fl
         fgaus2.SetParameters(0,10,100, 100, 100) # Establecer parametros iniciales del fit, de manera visual es posible determinarlos como una primera aproximacion
         h3.Fit(fgaus2)
 
-        c1=TCanvas()
+        canv=TCanvas()
+        canv.SetLogy()
+        h3.SetStats(0)
         h3.Draw()
-        c1.Draw()
-
-
         fgaus2.Draw("same")
+        canv.Draw()
+
         gStyle.SetOptFit(1100)
         gStyle.SetPadGridX (True)
         # fgaus2.Draw('Quiet')
@@ -260,11 +260,13 @@ def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, make_figure_fl
 
         print("chiSquare: " + str(fgaus2.GetChisquare()))
         print("NDegrees of Freedom: " + str(fgaus2.GetNDF()))
-        print("chiSquare / NDF :", fgaus2.GetChisquare() / fgaus2.GetNDF(), '\n')
+        print("chiSquare / NDF :", fgaus2.GetChisquare() / fgaus2.GetNDF())
+        print("Prob:", fgaus2.GetProb(), '\n')
 
-        dict_popt = {'Mean' :fgaus2.GetParameters()[0], 'sigma' : abs(fgaus2.GetParameters()[1]), 'Gain' : abs(fgaus2.GetParameters()[2]), 'Offset' : offset}
+        dict_popt = {'Mean' :fgaus2.GetParameters()[0], 'sigma' : abs(fgaus2.GetParameters()[1]), 'Gain' : abs(fgaus2.GetParameters()[2]), 
+                     'Offset' : offset, 'Prob' :  fgaus2.GetProb()}
         
-    if make_figure_flag == False:
+    elif make_figure_flag == False:
         hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins,  range=(min_oScan, 18000))
         offset = bins_edges[np.argmax(hist)]
         # print('Offset Value: ', offset, ' ADUs')
@@ -273,7 +275,7 @@ def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, make_figure_fl
 
         fgaus2 = TF1("fgauss2","[3]*exp(-0.5*((x-[0])/[1])^2)+[4]*exp(-0.5*((x-[0]-[2])/[1])^2)",-300,600,5) # TF1("nombre", "funcion escrita como en root", min, max, #parametros)
         
-        h3=TH1F("histogram", "Distribution of OsCan",1500,-300,500)
+        h3=TH1F("histogram", "Distribution of OsCan",Bins_fit, range_fit[0], range_fit[1])
         for pixel_value in Overscan_plane.flatten():
             # if not np.ma.is_masked(pixel_value):
             h3.Fill(pixel_value)
@@ -281,20 +283,99 @@ def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, make_figure_fl
         fgaus2.SetParameters(0,10,100, 100, 100) # Establecer parametros iniciales del fit, de manera visual es posible determinarlos como una primera aproximacion
         h3.Fit(fgaus2)
 
-        # c3=TCanvas()
-
-        # h3.Draw()
-        # c3.Draw()
-        # fgaus2.Draw("same")
-        # gStyle.SetOptFit(1100)
-        # gStyle.SetPadGridX (True)
-        # # fgaus2.Draw('Quiet')
-
-        dict_popt = {'Mean' :fgaus2.GetParameters()[0], 'sigma' : abs(fgaus2.GetParameters()[1]), 'Gain' : abs(fgaus2.GetParameters()[2]), 'Offset' : offset}
+        dict_popt = {'Mean' :fgaus2.GetParameters()[0], 'sigma' : abs(fgaus2.GetParameters()[1]), 'Gain' : abs(fgaus2.GetParameters()[2]), 
+                     'Offset' : offset, 'Prob' :  fgaus2.GetProb()}
     
     return dict_popt
 
+#### Gaus-Poisson convolution fit (only for NSAMP324) ###
 
+def gauss_comppoisson_fit(x, par):
+    k =5
+    #  m = 4
+    #  ydata = 0;
+    xval = x[0]
+    a     = par[0]
+    mu    = par[1]
+    sigma = par[2]
+    lambda_poisson = par[3]
+    pgeom = par[4]
+    gain  = par[5]
+
+    fitval = 0.0
+    for p in np.arange(0, k):
+        fitval = fitval + a * TMath.Gaus(xval*gain,p-mu,sigma,1) * TMath.PoissonI(p,lambda_poisson)
+
+    return fitval
+
+def fit_gausCONVcomppois(oScan_data,):
+    data = oScan_data.flatten() ## get oScan data and turn 1D array
+    long_data = len(data)
+    NBins = long_data - 1
+
+    histo = TH1F("histo","",NBins, -100, 350)
+    histo.GetXaxis().SetTitle("charge (e^{-})")
+
+    # for ibin in np.arange(0, NBins):
+    #     histo.SetBinContent(ibin,BinCont[ibin])
+
+    # nevents = histo.Integral()
+    # print('N_events: ', nevents)
+
+    npar = 2
+    norm = 3091.7   
+    offs = 0.020    # offset
+    sigm = 0.211    # sigma
+    lamb = 0.163    # lambda de Poisson
+    pgeo = 0.083    # probabilidad (se ignora en el cálculo)
+    gain = 1.014
+
+    lofit = -0.5
+    hifit =  4.5
+
+    fitf = TF1("fitf",gauss_comppoisson_fit,lofit,hifit,npar)
+    fitf.SetParameter(0,norm)
+    fitf.SetParameter(1,offs)
+    fitf.SetParameter(2,sigm)
+    fitf.SetParameter(3,lamb)
+    fitf.SetParameter(4,pgeo)
+    fitf.SetParameter(5,gain)
+
+    # fitf.SetNpx(400)
+    # fitf.SetMinimum(1e-3)
+    fitf.SetLineWidth(1)
+
+    # histo.Fit("fitf","R")
+    norm = fitf.GetParameter(0)
+    offs = fitf.GetParameter(1)
+    sigm = fitf.GetParameter(2)
+    lamb = fitf.GetParameter(3)
+    pgeo = fitf.GetParameter(4)
+    gain = fitf.GetParameter(5)
+
+    norme = fitf.GetParError(0)
+    offse = fitf.GetParError(1)
+    sigme = fitf.GetParError(2)
+    lambe = fitf.GetParError(3)
+    pgeoe = fitf.GetParError(4)
+    gaine = fitf.GetParError(5)
+
+    chisq = fitf.GetChisquare()
+    ndegf = fitf.GetNDF()
+    proba = fitf.GetProb()
+
+    canv = TCanvas("canv","",600,400)
+    histo.Draw("h same")
+    fitf.Draw("same")
+
+    canv.Draw()
+
+    dict_info = {'par' : {'Offset':offs, 'Sigma':sigm, 'Gain':gain}, 'err' :  {'Offset':offse, 'Sigma':sigme, 'Gain':gaine},
+                 'fit_quality': {'Chiq' : chisq, 'Ndegf' : ndegf, 'Prob': proba}}
+                 
+    return dict_info
+
+# ------------------------------------------------------- #
 
 def data_calibrated(active_area, extension, offset, list_gain, ratio_keV, unidades):
     dataP = active_area - offset

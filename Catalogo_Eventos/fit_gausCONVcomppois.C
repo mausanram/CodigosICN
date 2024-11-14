@@ -7,6 +7,9 @@ Double_t comp_poisson(Int_t k, Double_t lambda, Double_t pgeom) {
     const int KMAX = 1000;
     Double_t P[KMAX];
     Double_t q = 1.-pgeom;
+
+    // Double_t q = 1.;
+
     Double_t z=(lambda*q/(1.0-q));
     //printf("Valor de z=%f\n",z);
 
@@ -53,7 +56,7 @@ Double_t gauss_comppoisson_fit(Double_t *x, Double_t *par) {
 
     Double_t fitval = 0.0;
     for (Int_t p = 0; p <= k; p++){
-        //fitval += a * TMath::Gaus(xval*gain,p-mu,sigma,1) * TMath::PoissonI(p,lambda_poisson);
+        // fitval += a * TMath::Gaus(xval*gain,p-mu,sigma,1) * TMath::PoissonI(p,lambda_poisson);
           fitval += a * TMath::Gaus(xval*gain,p-mu,sigma,1) * comp_poisson(1.*p,lambda_poisson, pgeom);
                //+ b * TMath::Gaus(xval,mu+1,sigma,1) * TMath::PoissonI(p,1)
                //+ c * TMath::Gaus(xval,mu+2,sigma,1) * TMath::PoissonI(p,2)
@@ -144,7 +147,7 @@ double norm = 3091.7;
 double offs = 0.020;
 double sigm = 0.211;
 double lamb = 0.163;
-double pgeo = 0.116;
+double pgeo = 0.083;
 double gain = 1.014;
 
 double lofit = -0.5;
