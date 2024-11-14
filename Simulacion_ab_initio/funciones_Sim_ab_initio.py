@@ -924,17 +924,12 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
     muon_in_bucle = 0
 
     for i in np.arange(0,number_thet):
-        n_muon = i
+        # n_muon = i
         Random_th = rand.choices(Theta, Theta_true) ## Escoje un ángulo segun la distribución de Theta_true en radianes
         Random_phi = rand.choice(Phi)   ## Lo mismo pero con phi en radianes
         # print(Random_th[0])
         Random_th_deg = np.degrees(Random_th[0]) ## El ángulo theta en grados
         Random_phi_deg = np.degrees(Random_phi) ## El ángulo phi en grados
-
-        # list_rand_thet.append(Random_th[0])
-        # list_rand_phi.append(Random_phi)
-        # list_rand_thet_deg.append(Random_th_deg)
-        # list_rand_phi_deg.append(Random_phi_deg)
 
         # list_dis_Energy = []
         # for energy in Energy:   ## Aquí se crea la distribución de Smith-Duller en MeV
@@ -1083,10 +1078,10 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
             # print(Delta_L[0])
             n_muons_in_CCD = n_muons_in_CCD + 1
 
-            print('Se va a calcular la energy_Landau')
+            # print('Se va a calcular la energy_Landau')
             Random_energy_Landau = random_LV(s = Delta_L[0], p = momentum) # En KeV
 
-            list_nmuons.append(n_muon)
+            # list_nmuons.append(n_muon)
             list_energy_Landau.append(Random_energy_Landau)
             list_thet_in_CCD.append(Random_th[0])
             list_phi_in_CCD.append(Random_phi)
@@ -1108,7 +1103,7 @@ def muon_generator_3(Energy, number_thet,Theta, Theta_true, Phi, Radio, number_p
             Random_energy_Landau = 0 # En KeV
             Delta_L = 0
 
-            list_nmuons.append(n_muon)
+            # list_nmuons.append(n_muon)
             list_energy_Landau.append(Random_energy_Landau)
             list_thet_in_CCD.append(Random_th[0])
             list_phi_in_CCD.append(Random_phi)

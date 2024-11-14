@@ -65,7 +65,7 @@ def main():
     Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 10      ## Valores de un ángulo Theta.
+    number_thet = 10000      ## Valores de un ángulo Theta.
 
     
     number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
@@ -80,6 +80,7 @@ def main():
                                 number_points_per_angle=number_points_per_angle,long_a=long_a, long_b=long_b, medida_x=medida_x, 
                                 medida_y=medida_y, medida_z=medida_z, mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z)
 
+    list_nmuons = np.arange(0, len(dict_muons['Theta(Rad)']))
 
     #### TTree file in CCD ###
     N_Muons = array('f', [-9999])
@@ -108,7 +109,8 @@ def main():
     tree.Branch('edep', Energy_Landau_array, 'edep/F')
 
     for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
-        N_Muons[0] = dict_muons['NMuon'][i]
+        N_Muons[0] = list_nmuons[i]
+        # N_Muons[0] = dict_muons['NMuon'][i]
         Thet_Rad[0] = dict_muons['Theta(Rad)'][i]
         # print(Thet_Deg[0])
         #print(f'Ei={i} Energy_Landau={dict_muons_in_CCD}') 

@@ -650,9 +650,12 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
 
             # if charge > 100:
             Delta_EL = (charge)/ (Delta_L) 
+
+            #### ------------------------ CÁLCULO DEL ÁNGULO THETA ---------------------------- ###
+            #### ---------  Se toma que TODOS los muones atravezaron por completo la CCD ------ ###
             theta = np.arctan((Diagonal_lenght * px_to_cm)/(CCD_depth * micra_to_cm)) 
 
-            ## Cálculo del ángulo phi 
+            #### ------------------------ CÁLCULO DEL ÁNGULO PHI ---------------------------- ### 
             len_y, len_x = data_maskEvent.shape
             flag_ld, flag_rd, flag_ru, flag_lu = False, False, False, False
 
