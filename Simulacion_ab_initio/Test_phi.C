@@ -22,13 +22,13 @@ TF1 *func1 = new TF1("func1", "[0]", 0.01, 2*TMath::Pi() - 0.1);
 
 //TF1 *func2 = new TF1("func2", "[0]*((1899639/(2*TMath::Pi())) + (11505.75/2)*abs(cos(x)) + (8678.25/2)*abs(sin(x)))", 0,2*TMath::Pi());
 // TF1 *func2 = new TF1("func2", "([0] + ([1])*abs(cos(x)) + ([2])*abs(sin(x)))",0.01,2*TMath::Pi() - 0.1);
-TF1 *func2 = new TF1("func2", "([0] + ([1])*abs(cos(x)))",0.01,2*TMath::Pi() - 0.1);
+// TF1 *func2 = new TF1("func2", "([0] + ([1])*abs(cos(x)))",0.01,2*TMath::Pi() - 0.1);
 //TF1 *func2 = new TF1("func2", "[0]*((3799278/TMath::Pi()) + (23011.5)*abs(cos(x)) + (17356.5)*abs(sin(x)))",,0.01,2*TMath::Pi() - 0.1);
 // TF1 *func2 = new TF1("func2", "[0]*((20/TMath::Pi()) + (5)*abs(cos(x)) + (0)*abs(sin(x)))",0.01,2*TMath::Pi() - 0.1);
 
-// TF1 *func2 = new TF1("func2", "[0]*((1 * 1.899639/TMath::Pi()) + (1 * 0.014382188)*abs(cos(x)) + (1 * 0.010847812)*abs(sin(x)))", 0,2*TMath::Pi()); 
+TF1 *func2 = new TF1("func2", "[0]*((1 * 0.8247739/(2 * TMath::Pi())) + (0.049952/4)*abs(cos(x)) + (0.0376767715/16)*abs(sin(x)))", 0.01,2*TMath::Pi() - 0.1); 
 // TF1 *func2 = new TF1("func2", "[0]*((8 * 0.8247739/(2 * TMath::Pi())) + (4 * 0.0499529/4)*(cos(x)) + (4 * 0.0376767715/4)*(sin(x)))", 0.01,2*TMath::Pi() - 0.1); 
-// TF1 *func2 = new TF1("func2", "[0]*((8 * 0.8247739/(2 * TMath::Pi())) + (4 * 0.0499529/4)*(cos(x)))", 0.01,2*TMath::Pi() - 0.1); // EL mejor
+// TF1 *func2 = new TF1("func2", "[0]*((8 * 0.8247739/(2 * TMath::Pi())) + (4 * 0.0499529/4)*abs(cos(x)))", 0.01,2*TMath::Pi() - 0.1); // EL mejor
 // func2->SetParameter(0, 1600);
 //func2->SetParameter(1, 1000);
 
