@@ -28,13 +28,13 @@ def main():
     Theta = np.arange(Lim_inf_theta_rad, np.pi/2, 0.001) ## rad
 
     ##### Valor del radio de la semi-esfera #####
-    Radio = 4     ## cm
+    Radio = 8     ## cm
     # Radio = 100     ## cm
 
 
     #### Tamaño de los planos tangentes a la esfera ####
     # Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
-    plane_size = 1  ## cm
+    plane_size = 2  ## cm
     # plane_size = 75  ## cm
     long_a = np.arange(-plane_size, plane_size, 0.001)
     long_b = np.arange(-plane_size, plane_size, 0.001)
