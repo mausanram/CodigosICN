@@ -35,10 +35,11 @@ list_Solidit = [0.7, 0.7, 0, 0.7]
 
 DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
 
-ratio_keV = 0.0037
+ratio_keV = 0.0036
 DeltaEL_range = 85
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
+#### ---- LOS DATOS DE CONNIE YA ESTÁN CALIBRADOS EN ELECTRONES Y SE CARGAN LOS DATOS ASÍ --------- ###
 units = 1
 n_sigmas = 4
 numero_bins = 500
@@ -52,6 +53,7 @@ def main(argObj):
     list_DeltaEL_extension_1 = []
     list_DeltaL_extension_1 = []
     list_theta_extension_1 = []
+    list_phi_extension_1 = []
 
     total_images = len(argObj)
     image_in_bucle = 0
@@ -86,7 +88,7 @@ def main(argObj):
             continue
 
 
-        sigma_eletrons = header['RD_NOISE']
+        sigma_eletrons = header['RD_NOISE']     # Se lee la sigma del header de cada extensión 
         fondo_value = n_sigmas * sigma_eletrons
 
         label_img, n_events = sk.measure.label(dataCal > fondo_value, connectivity=2, return_num=True)
@@ -102,7 +104,7 @@ def main(argObj):
         fondo = ma.masked_array(dataCal,fondo_mask)
         valor_promedio_fondo = fondo.data.mean()
 
-        DeltaL, DeltaEL, list_charge, _, list_theta, list_charge_all_events = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
+        DeltaL, DeltaEL, list_charge, _, list_theta, list_phi, list_charge_all_events = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
                                                                                         prop=prop, Solidit=Solidit, Elipticity=Elip)
 
         for index in np.arange(0, len(DeltaEL)):
@@ -111,6 +113,7 @@ def main(argObj):
             list_EventCharge_extension_1.append(list_charge[index])
             list_DeltaL_extension_1.append(DeltaL[index])
             list_theta_extension_1.append(list_theta[index])
+            list_phi_extension_1.append(list_phi[index])
 
         print('Imagen ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
         del hdu_list              
@@ -122,7 +125,7 @@ def main(argObj):
                         'Solidity' : Solidit,
                         'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_DeltaEL_extension_1,
                                          'deltaL' : list_DeltaL_extension_1, 'all_events' : list_charge_of_all_extension_1,
-                                         'theta': list_theta_extension_1}}
+                                         'theta': list_theta_extension_1, 'phi': list_phi_extension_1}}
 
     # dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_muons, 'Energy_Units' : units, 'Elipcidad' : list_Elip, 
     #                     'Solidity' : list_Solidit,
