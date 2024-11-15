@@ -366,6 +366,7 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             list_DeltaEL.append(Delta_EL)
             list_charge.append(charge)
             list_theta.append(theta)
+            list_phi.append(phi)
             # print(charge, DeltaEL)
 
             # if DeltaEL_range_min <= DeltaEL <= DeltaEL_range_max:
