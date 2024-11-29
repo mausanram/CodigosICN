@@ -92,7 +92,7 @@ def dimension_z(long_z):
 def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     # list_delta_L = []
     delta_L = None
-
+    ### =========== CORRECTO ========= ###
     ## Caras 1 y 2
     if flags_CCD[0] and flags_CCD[1]:
         delta_L = medida_z / np.cos(Random_th)  ## cm
@@ -103,7 +103,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
 
     ## Caras 1 y 3
     if flags_CCD[0] and flags_CCD[2]:
-        h = list_z[0]
+        h = medida_z - list_z[0]
         delta_L = h /  np.cos(Random_th)  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
@@ -112,7 +112,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
 
     ## Caras 1 y 4
     if flags_CCD[0] and flags_CCD[3]:
-        h = list_z[1]
+        h = medida_z - list_z[1]
         delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
@@ -121,7 +121,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
 
     ## Caras 1 y 5
     if flags_CCD[0] and flags_CCD[4]:
-        h = list_z[2]
+        h = medida_z - list_z[2]
         delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
@@ -130,7 +130,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
 
     ## Caras 1 y 6
     if flags_CCD[0] and flags_CCD[5]:
-        h = list_z[3]
+        h = medida_z - list_z[3]
         delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
@@ -145,6 +145,8 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
         # continue
+
+    ### ================================ ###
 
     ## Caras 3 y 4
     if flags_CCD[2] and flags_CCD[3]:
@@ -262,6 +264,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
         # list_delta_L.append(delta_L)
         n_muons_in_CCD = 1
         # continue
+
     ## Caras 6 y 4
     if flags_CCD[5] and flags_CCD[3]:
         h = medida_z - list_z[3]
@@ -287,7 +290,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
     # if delta_L < 0.0725 and delta_L != 0:
     #     print(delta_L)
 
-    return np.abs(delta_L), n_muons_in_CCD
+    return delta_L, n_muons_in_CCD
 
 ## ----------------------- Funcinones Smith-Duller (ROOT) -------------------------- ##
 def Smith_Dull(lx , lpar): ### Modelo de Smith-Duller
@@ -443,9 +446,9 @@ def muon_generator_1(Radio, long_a, long_b, number_thet, number_points_per_angle
         # print(Random_th[0])
 
         list_dis_Energy = []
-        for energy in Energy:
-            dis_Energy = dis_energy(energy, Random_th[0])
-            list_dis_Energy.append(dis_Energy)
+        # for energy in Energy:
+            # dis_Energy = dis_energy(energy, Random_th[0])
+            # list_dis_Energy.append(dis_Energy)
 
         # Vec = coord_cartesian(Random_th, Random_phi)
         # Norma = norma_vec(Vec)
@@ -532,32 +535,39 @@ def muon_generator_2(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
         ### ============================================================= ###
         
         ### =========== Vector de direccion del muon y punto al azar sobre el plano =========== ###
-        flag_z = True
-        while flag_z:
-            Vec = coord_cartesian(Random_th, Random_phi)
-            Norma = norma_vec(Vec)
-            Point = [Radio * Vec[0], Radio * Vec[1], Radio * Vec[2]]  ## Genera un punto sobre la esfera.
+        # flag_z = True
+        # while flag_z:
+        Vec = coord_cartesian(Random_th, Random_phi)
+        Norma = norma_vec(Vec)
+        Point = [Radio * Vec[0], Radio * Vec[1], Radio * Vec[2]]  ## Genera un punto sobre la esfera.
 
-            # normal_Vec = (-1 * Vec[0] / Norma, -1 * Vec[1] / Norma, -1 * Vec[2] / Norma)
-            normal_Vec =  [-1 * np.sin(Random_th) * np.cos(Random_phi), 
-                        -1 * np.sin(Random_th) * np.sin(Random_phi), 
-                        -1 * np.cos(Random_th)] ## Es un vector normal unitario apuntando  hacia el centro de coordenadas
-            # print('Normal_vec: ', normal_Vec)
+        # normal_Vec = (-1 * Vec[0] / Norma, -1 * Vec[1] / Norma, -1 * Vec[2] / Norma)
+        normal_Vec =  [-1 * np.sin(Random_th) * np.cos(Random_phi), 
+                    -1 * np.sin(Random_th) * np.sin(Random_phi), 
+                    -1 * np.cos(Random_th)] ## Es un vector normal unitario apuntando  hacia el centro de coordenadas
+        # print('Normal_vec: ', normal_Vec)
 
-            vec_thet = [np.cos(Random_th) * np.cos(Random_phi), np.cos(Random_th) * np.sin(Random_phi), -np.sin(Random_th)]
-            vec_phi = [-np.sin(Random_phi), np.cos(Random_phi), 0]
+        vec_thet = [np.cos(Random_th) * np.cos(Random_phi), 
+                    np.cos(Random_th) * np.sin(Random_phi),
+                    -np.sin(Random_th)]
+        
+        vec_phi = [-np.sin(Random_phi), 
+                   np.cos(Random_phi), 
+                   0]
 
-            random_a = -half_plane_size + rand.random() * 2 * half_plane_size ## Selecciona un valor uniforme para el parámetro a
-            random_b = -half_plane_size + rand.random() * 2 * half_plane_size ##      ''      ''      ''      ''          ''    b
+        random_a = -half_plane_size + rand.random() * 2 * half_plane_size ## Selecciona un valor uniforme para el parámetro a
+        random_b = -half_plane_size + rand.random() * 2 * half_plane_size ##      ''      ''      ''      ''          ''    b
 
-            P_vector = [random_a * vec_thet[0] + random_b * vec_phi[0], 
-                        random_a * vec_thet[1] + random_b * vec_phi[1], 
-                        random_a * vec_thet[2] + random_b * vec_phi[2]]
+        P_vector = [random_a * vec_thet[0] + random_b * vec_phi[0], 
+                    random_a * vec_thet[1] + random_b * vec_phi[1], 
+                    random_a * vec_thet[2] + random_b * vec_phi[2]]
 
-            random_plane_point = [Point[0] + P_vector[0], Point[1] + P_vector[1], Point[2] + P_vector[2]]
+        random_plane_point = [Point[0] + P_vector[0], 
+                              Point[1] + P_vector[1], 
+                              Point[2] + P_vector[2]]
 
-            if random_plane_point[2] > 0:
-                flag_z = False
+            # if random_plane_point[2] > 0:
+            #     flag_z = False
         
 
         # print('Punto sobre el plano: ', random_plane_point)
@@ -594,13 +604,13 @@ def muon_generator_2(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
         pointx_2 = [-medida_x, y_4, z_4]
 
         #### Caras en Y ###
-        ### Cara 3 ###
+        ### Cara 5 ###
         t_5 = (medida_y - random_plane_point[1]) / normal_Vec[1]
         z_5 = random_plane_point[2] + normal_Vec[2] * t_5 
         x_5 = random_plane_point[0] + normal_Vec[0] * t_5
         pointy_1 = [x_5, medida_y, z_5]
 
-        ### Cara 4 ###
+        ### Cara 6 ###
         t_6 = (-medida_y - random_plane_point[1]) / normal_Vec[1]
         z_6 = random_plane_point[2] + normal_Vec[2] * t_6
         x_6 = random_plane_point[0] + normal_Vec[0] * t_6
@@ -769,7 +779,7 @@ def muon_generator_2(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
             plt.show()
             ### ======================================================================== ###
 
-        Delta_L, muon = intersection_CCD(list_flags, list_z, medida_z, Random_th)
+        Delta_L, _ = intersection_CCD(list_flags, list_z, medida_z, Random_th)
 
         # Fin = datetime.datetime.now()
         # print('Tiempo de cálculo para Delta L: ', Fin-In)
@@ -1039,18 +1049,18 @@ def muon_generator_CLUSTER(Energy, number_thet,Theta, Theta_true, Phi, Radio, nu
         #     dis_Energy = dis_energy(energy, Random_th[0])
         #     list_dis_Energy.append(dis_Energy)
         
-        list_dis_Energy = dis_energy(Energy, Random_th[0], units=1)
+        # list_dis_Energy = dis_energy(Energy, Random_th[0], units=1)
 
-        Random_energy = rand.choices(Energy, list_dis_Energy)[0] * 1000 ## Escoje una energía segun la distribución de Smith-Duller en MeV
+        # Random_energy = rand.choices(Energy, list_dis_Energy)[0] * 1000 ## Escoje una energía segun la distribución de Smith-Duller en MeV
         # list_random_energy.append(Random_energy[0])
 
         list_rand_thet_deg.append(Random_th_deg)
         list_rand_phi_deg.append(Random_phi_deg)
-        list_random_energy.append(Random_energy)
+        # list_random_energy.append(Random_energy)
 
         ### Momento del muon ###
         # momentum = np.sqrt(Random_energy[0]**2 - m_mu**2)
-        momentum = Random_energy
+        # momentum = Random_energy
 
         # os.environ["EN_SMITH"] = str(momentum)
         
@@ -1192,16 +1202,16 @@ def muon_generator_CLUSTER(Energy, number_thet,Theta, Theta_true, Phi, Radio, nu
 
                 # print(float(new_env.stdout.decode('ascii').split('=')[-1].split(' ')[1]))
 
-                Random_energy_Landau = random_LV(s = Delta_L, p = momentum) # En KeV
+                # Random_energy_Landau = random_LV(s = Delta_L, p = momentum) # En KeV
 
 
                 list_rand_thet.append(Random_th[0])
                 list_rand_phi.append(Random_phi)
                 list_rand_thet_deg.append(Random_th_deg)
                 list_rand_phi_deg.append(Random_phi_deg)
-                list_random_energy.append(Random_energy)
+                # list_random_energy.append(Random_energy)
                 list_delta_L.append(Delta_L)
-                list_energy_Landau.append(Random_energy_Landau)
+                # list_energy_Landau.append(Random_energy_Landau)
                 
                 muon_in_bucle += 1
                 # print("El valor de EDEP", str(os.getenv('USERNAME')))
@@ -1645,13 +1655,24 @@ def muon_generator_BARRA(number_thet, Radio, medida_x, medida_y, medida_z, mapeo
 
         Vec = coord_cartesian(Random_th, Random_phi)
         Norma = norma_vec(Vec)
-        Point = [Radio * Vec[0], Radio * Vec[1], Radio * Vec[2]]  ## Genera un punto sobre la esfera.
+        # Point = [Radio * Vec[0], Radio * Vec[1], Radio * Vec[2]]  ## Genera un punto sobre la esfera.
+        Point = [Radio * np.sin(Random_th) * np.cos(Random_phi), 
+                 Radio * np.sin(Random_th) * np.sin(Random_phi), 
+                 Radio * np.cos(Random_th)]
+
         normal_Vec =  [-1 * np.sin(Random_th) * np.cos(Random_phi), 
                        -1 * np.sin(Random_th) * np.sin(Random_phi), 
                        -1 * np.cos(Random_th)]     ## Es un vector normal unitario apuntando hacia el centro de coordenadas
 
-        vec_thet = [np.cos(Random_th) * np.cos(Random_phi), np.cos(Random_th) * np.sin(Random_phi), -np.sin(Random_th)]
-        vec_phi = [-np.sin(Random_phi), np.cos(Random_phi), 0]
+        ### ======= Vectores unitarios ====== ###
+        vec_thet = [np.cos(Random_th) * np.cos(Random_phi), 
+                    np.cos(Random_th) * np.sin(Random_phi),
+                    -np.sin(Random_th)]
+        
+        vec_phi = [-np.sin(Random_phi), 
+                   np.cos(Random_phi), 
+                   0]
+        ### ================================= ###
 
         random_a = -half_plane_size + rand.random()*2 * half_plane_size ## Selecciona un valor uniforme para el parámetro a
         random_b = -half_plane_size + rand.random()*2 * half_plane_size ##      ''      ''      ''      ''          ''    b
@@ -1661,17 +1682,18 @@ def muon_generator_BARRA(number_thet, Radio, medida_x, medida_y, medida_z, mapeo
                     random_a * vec_thet[2] + random_b * vec_phi[2]]
 
         random_plane_point = [Point[0] + P_vector[0], Point[1] + P_vector[1], Point[2] + P_vector[2]]
+
         #### Intersecciones con cada cara   ####
         flag_cara_1, flag_cara_2, flag_cara_3 = False, False, False
         flag_cara_4, flag_cara_5, flag_cara_6 = False, False, False
 
-        #### Cara Superior ###
+        #### Cara Superior 1 ###
         t_1 = (medida_z - random_plane_point[2]) / normal_Vec[2] 
         x_1 = random_plane_point[0] + normal_Vec[0] * t_1 
         y_1 = random_plane_point[1] + normal_Vec[1] * t_1 
 
-        #### Cara Inferior ###
-        t_2 = (0 - random_plane_point[2]) / normal_Vec[2] 
+        #### Cara Inferior 2 ###
+        t_2 = (-medida_z - random_plane_point[2]) / normal_Vec[2] 
         x_2 = random_plane_point[0] + normal_Vec[0] * t_2 
         y_2 = random_plane_point[1] + normal_Vec[1] * t_2
 
@@ -1687,12 +1709,12 @@ def muon_generator_BARRA(number_thet, Radio, medida_x, medida_y, medida_z, mapeo
         y_4 = random_plane_point[1] + normal_Vec[1] * t_4
 
         #### Caras en Y ###
-        ### Cara 3 ###
+        ### Cara 5 ###
         t_5 = (medida_y - random_plane_point[1]) / normal_Vec[1]
         z_5 = random_plane_point[2] + normal_Vec[2] * t_5 
         x_5 = random_plane_point[0] + normal_Vec[0] * t_5
 
-        ### Cara 4 ###
+        ### Cara 6 ###
         t_6 = (-medida_y - random_plane_point[1]) / normal_Vec[1]
         z_6 = random_plane_point[2] + normal_Vec[2] * t_6
         x_6 = random_plane_point[0] + normal_Vec[0] * t_6
@@ -1726,7 +1748,7 @@ def muon_generator_BARRA(number_thet, Radio, medida_x, medida_y, medida_z, mapeo
 
         list_flags = [flag_cara_1, flag_cara_2, flag_cara_3, flag_cara_4, flag_cara_5, flag_cara_6]
         
-        Delta_L, muon = intersection_CCD(list_flags, list_z, medida_z, Random_th)
+        Delta_L, _ = intersection_CCD(list_flags, list_z, medida_z, Random_th)
 
         # Fin = datetime.datetime.now()
         # print('Tiempo de cálculo para Delta L: ', Fin-In)

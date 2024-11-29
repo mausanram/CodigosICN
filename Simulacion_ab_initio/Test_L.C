@@ -7,7 +7,7 @@ TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_100000_PLANES_150x150_RADIO_
 TTree *tree = (TTree*) file->Get("tree");
 
 
-int NB = 60;
+int NB = 300;
 double tlow = 0;
 // double thi = 0.4;
 double thi = 40;
@@ -36,7 +36,7 @@ TCanvas *canv = new TCanvas("canv","", 2*700, 600);
 canv->Divide(2,1);
 canv->cd(1);
 L->Draw();
-Lcut->Draw("same");
+// Lcut->Draw("same");
 // func1->Draw("same");
 
 canv->cd(2);

@@ -9,7 +9,7 @@ TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_100000_PLANES_150x150_RADIO_
 TTree *tree = (TTree*) file->Get("tree");
 
 
-int NB = 50;
+int NB = 70;
 double tlow = 0;
 double thi = 2*TMath::Pi() + 0.1;
 TH1F *theta_all = new TH1F("phi_all", "", NB, tlow, thi);

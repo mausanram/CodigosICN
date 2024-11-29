@@ -32,9 +32,9 @@ def main():
     # medida_y = 1.587 / 2   # cm
     # medida_z = 0.0725   # cm
 
-    medida_x = 100 / 2    # cm
-    medida_y = 10 / 2   # cm
-    medida_z = 10   # cm
+    medida_x = 10 / 2    # cm
+    medida_y = 100 / 2   # cm
+    medida_z = 10 / 2   # cm
 
 
     #### Arreglos de los valores para mapear la CCD ####

@@ -8,7 +8,7 @@ TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_100000_PLANES_150x150_RADIO_
 TTree *tree = (TTree*) file->Get("tree");
 
 
-int NB = 80;
+int NB = 50;
 // int NB = 60;
 double tlow = 0;
 double thi = TMath::Pi()/2.0;
