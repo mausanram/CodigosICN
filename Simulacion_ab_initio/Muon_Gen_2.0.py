@@ -7,7 +7,7 @@ from funciones_Sim_ab_initio import *
 import datetime
 import os
 import pickle as pkl
-import ROOT 
+from ROOT import TFile, TTree
 from array import array
 
 
@@ -16,19 +16,13 @@ def main():
     Inicio = datetime.datetime.now()
     print('Hora de inicio del cálculo: ', Inicio)
 
-    ###### Rango de los ángulos theta y phi  #######
-    Phi = np.arange(0, 2 * np.pi, 0.001) ## rad
-    Theta = np.arange(0, np.pi/2, 0.001) ## rad
-
     ##### Valor del radio de la semi-esfera #####
-    Radio = 100     ## cm
+    Radio = 12     ## cm
 
 
     #### Tamaño de los planos tangentes a la esfera ####
     # Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
-    plane_size = 0.5  ## cm
-    long_a = np.arange(-plane_size, plane_size, 0.001)
-    long_b = np.arange(-plane_size, plane_size, 0.001)
+    half_plane_size = 1.5  ## cm
 
 
     # ######### Medidas de la CCD (para centrarla en el origen) ##########
@@ -42,88 +36,65 @@ def main():
     mapeo_y = dimension_y(medida_y)
     mapeo_z = dimension_z(medida_z)
 
-
-    #### Mapeo de la energía (se hace en escala logarítmica para tener valores igualmente distribuidos) ####
-    E_in = 10 ** (-2)   ### Límite inferior
-    E_fin = 10 ** 8     ### Límite superior
-    N = 5000    ### Número de puntos
-    Energy = Energy_list(E_in, E_fin, N)
-
-    #### Distribución angular de theta (Distribución angular de Smith-Duller) ####
-    Theta_true = dis_angular(Theta) 
-
     ### Número de muones a simular ### 
-    number_thet = 200    ## Valores de un ángulo Theta.
-    number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
-    n_muons = number_thet * number_points_per_angle ## Número total de muones que se simularán.
+    number_thet = 100    
+    n_muons = number_thet ## Número total de muones que se simularán.
 
     print('Se simularán ' + str(n_muons) + ' muones.')
 
     # print(os.environ)
     
     ## Se simulan los muones, se genera un diccionario con la información de cada evento (Theta, Phi, Energía) ##
-    dict_muons, _, _  = muon_generator(Energy, number_thet=n_muons, Theta=Theta, Theta_true=Theta_true, Phi=Phi, Radio=Radio, 
-                                number_points_per_angle=number_points_per_angle,long_a=long_a, long_b=long_b, medida_x=medida_x, 
-                                medida_y=medida_y, medida_z=medida_z, mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z)
+    dict_muons, nmuons_in_CCD  = muon_generator_2(number_thet=n_muons, Radio=Radio,
+                                       medida_x=medida_x, medida_y=medida_y, medida_z=medida_z, 
+                                       mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z, 
+                                       half_plane_size = half_plane_size)
 
-    # print(os.environ)
+    # print('Numero de muones que impactaron: ', nmuons_in_CCD)
+    list_nmuons = np.arange(0, len(dict_muons['Theta(Rad)']))
 
-    # muons_dataFrame = pd.DataFrame(dict_muons)
-    # muons_dataFrame.to_csv('muons_data.txt', sep='\t')
-
-    file_root_name = 'GenMuon_complete.root'
-    file = ROOT.TFile.Open(file_root_name, "RECREATE")
-    tree = ROOT.TTree('tree', 'tree')
-    # print(type(tree))
-
-    print('Longitud de una lista del diccionario: ', len(dict_muons['Energy_Landau']))
-
+    #### TTree file in CCD ###
+    N_Muons = array('f', [-9999])
     Thet_Rad = array('f', [-9999])
-    Thet_Deg = array('f', [-9999])
     Phi_Rad = array('f', [-9999])
-    Phi_Deg = array('f', [-9999])
     Energy_array = array('f', [-9999])
+    DeltaL_array = array('f', [-9999])
     Energy_Landau_array = array('f', [-9999])
 
-    tree.Branch('Thet_Rad', Thet_Rad, 'Thet_Rad/F')
-    tree.Branch('Thet_Deg', Thet_Deg, 'Thet_Deg/F')
-    tree.Branch('Phi_Rad', Phi_Rad, 'Phi_Rad/F')
-    tree.Branch('Phi_Deg', Phi_Deg, 'Phi_Deg/F')
-    tree.Branch('Energy', Energy_array, 'Energy/F')
-    tree.Branch('Energy_DP', Energy_Landau_array, 'Energy_DP/F')
+    file_root_name = 'Sim_ab_initio_NMUONS_' + str(number_thet) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_0.root'
+    file = TFile.Open(file_root_name, "RECREATE")
+    tree = TTree('tree', 'tree')
 
+    tree.Branch('nmuon',N_Muons, 'nmuon/F' )
+    tree.Branch('thet', Thet_Rad, 'thet/F')
+    tree.Branch('phi', Phi_Rad, 'phi/F')
+    tree.Branch('epri', Energy_array, 'epri/F')
+    tree.Branch('l', DeltaL_array, 'l/F')
+    tree.Branch('edep', Energy_Landau_array, 'edep/F')
 
     for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
-        Thet_Rad = dict_muons['Theta(Rad)'][i]
-        Thet_Deg[0] = dict_muons['Theta(Deg)'][i]
+        N_Muons[0] = list_nmuons[i]
+        # N_Muons[0] = dict_muons['NMuon'][i]
+        Thet_Rad[0] = dict_muons['Theta(Rad)'][i]
+        # print(Thet_Deg[0])
+        #print(f'Ei={i} Energy_Landau={dict_muons_in_CCD}') 
         Phi_Rad[0] = dict_muons['Phi(Rad)'][i]
-        Phi_Deg[0] = dict_muons['Phi(Deg)'][i]
         Energy_array[0] =  dict_muons['Energy-SD(MeV)'][i] 
-        Energy_Landau_array[0] = dict_muons['Energy_Landau'][i]
+        DeltaL_array[0] = dict_muons['Delta_L(cm)'][i]
+        # Energy_Landau_array[0] = dict_muons['Energy_Landau(KeV)'][i]
+        # print(Energy_Landau_array[0])
         # th_deg = dict_muons['Theta(Deg)'][0]
         tree.Fill()
 
-    # tree.Show(-1)
-    # tree.Print()
-    # tree.Draw()
-    # print(tree.GetBranch('Theta(Rad)').GetEntries())
     tree.Write()
 
     Final = datetime.datetime.now()
     print('Hora final de cálculo: ', Final)
     print('Tiempo de cálculo: ', Final-Inicio)
-    print('Se guardó la información de los muones simulados en el archivo ' + file_root_name)
 
-    # fig, axs = plt.subplots(figsize=[7,5])
-    # # axs.plot(Theta, 70 * Theta_true)
-    # axs.hist(np.array(dict_muons['Theta(Rad)']), bins = 110)
-    # fig.suptitle(r'Distribución angular $\theta$', y = 0.95, size = 20)
-    # plt.show()
-
-    # fig, axs = plt.subplots(figsize=[7,5])
-    # axs.hist(np.array(dict_muons['Energy(MeV)']), bins = 110)
-    # fig.suptitle(r'Distribución de la Energía', y = 0.95, size = 20)
-    # plt.show()
+    print('Muones que impactaron en la CCD: ', nmuons_in_CCD)
+    # print('TTree primary file saved in ' + file_root_name_1)
+    print('TTree muons in CCd file saved in ' + file_root_name)
 
 if __name__ == "__main__":
     exitcode = main()

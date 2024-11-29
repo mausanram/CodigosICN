@@ -1,19 +1,24 @@
 void Test_phi(){
 //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_3.0x3.0_RADIO_12_0.root");
+
+// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
+// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_500000_PLANES_150x150_RADIO_100(1).root");
+TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_100000_PLANES_150x150_RADIO_450_0.root");
 TTree *tree = (TTree*) file->Get("tree");
 
 
-int NB = 70;
+int NB = 50;
 double tlow = 0;
-double thi = 2*TMath::Pi() + 0.07;
+double thi = 2*TMath::Pi() + 0.1;
 TH1F *theta_all = new TH1F("phi_all", "", NB, tlow, thi);
 TH1F *theta_in = new TH1F("phi_in", "", NB, tlow, thi);
 // TH1F *theta_incut = new TH1F("theta_incut", "", NB, tlow, thi);
 
 // Fill histograms //
 tree->Draw("phi>>phi_all");
-tree->Draw("phi>>phi_in", "edep>0");
+tree->Draw("phi>>phi_in", "l>0");
 // tree->Draw("phi>>theta_incut", "thet>22");
 
 // Define fuctions //
@@ -23,10 +28,10 @@ TF1 *func1 = new TF1("func1", "[0]", 0.01, 2*TMath::Pi() - 0.1);
 //TF1 *func2 = new TF1("func2", "[0]*((1899639/(2*TMath::Pi())) + (11505.75/2)*abs(cos(x)) + (8678.25/2)*abs(sin(x)))", 0,2*TMath::Pi());
 // TF1 *func2 = new TF1("func2", "([0] + ([1])*abs(cos(x)) + ([2])*abs(sin(x)))",0.01,2*TMath::Pi() - 0.1);
 // TF1 *func2 = new TF1("func2", "([0] + ([1])*abs(cos(x)))",0.01,2*TMath::Pi() - 0.1);
-//TF1 *func2 = new TF1("func2", "[0]*((3799278/TMath::Pi()) + (23011.5)*abs(cos(x)) + (17356.5)*abs(sin(x)))",,0.01,2*TMath::Pi() - 0.1);
-// TF1 *func2 = new TF1("func2", "[0]*((20/TMath::Pi()) + (5)*abs(cos(x)) + (0)*abs(sin(x)))",0.01,2*TMath::Pi() - 0.1);
+// TF1 *func2 = new TF1("func2", "[0]*((3799278/TMath::Pi()) + (23011.5)*abs(cos(x)) + (17356.5)*abs(sin(x)))",0.01,2*TMath::Pi() - 0.1);
+TF1 *func2 = new TF1("func2", "[0]*((20/TMath::Pi()) + (5)*abs(cos(x)) + (1/2)*abs(sin(x)))",0.01,2*TMath::Pi() - 0.1);
 
-TF1 *func2 = new TF1("func2", "[0]*((1 * 0.8247739/(2 * TMath::Pi())) + (0.049952/4)*abs(cos(x)) + (0.0376767715/16)*abs(sin(x)))", 0.01,2*TMath::Pi() - 0.1); 
+// TF1 *func2 = new TF1("func2", "[0]*((0.8247739/(2 * TMath::Pi())) + (0.0499529/2)*abs(cos(x)) + (0.0376767715/2)*abs(sin(x)))", 0.01,2*TMath::Pi() - 0.05); 
 // TF1 *func2 = new TF1("func2", "[0]*((8 * 0.8247739/(2 * TMath::Pi())) + (4 * 0.0499529/4)*(cos(x)) + (4 * 0.0376767715/4)*(sin(x)))", 0.01,2*TMath::Pi() - 0.1); 
 // TF1 *func2 = new TF1("func2", "[0]*((8 * 0.8247739/(2 * TMath::Pi())) + (4 * 0.0499529/4)*abs(cos(x)))", 0.01,2*TMath::Pi() - 0.1); // EL mejor
 // func2->SetParameter(0, 1600);

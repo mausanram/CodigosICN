@@ -1,10 +1,15 @@
 void Test_thet(){
 //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_3.0x3.0_RADIO_12_0.root");
+
+// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
+TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_100000_PLANES_150x150_RADIO_450_0.root");
 TTree *tree = (TTree*) file->Get("tree");
 
 
-int NB = 70;
+int NB = 80;
+// int NB = 60;
 double tlow = 0;
 double thi = TMath::Pi()/2.0;
 TH1F *theta_all = new TH1F("theta_all", "", NB, tlow, thi);
@@ -13,11 +18,12 @@ TH1F *theta_in = new TH1F("theta_in", "", NB, tlow, thi);
 
 // Fill histograms //
 tree->Draw("thet>>theta_all");
-tree->Draw("thet>>theta_in", "edep>0");
+
+tree->Draw("thet>>theta_in", "l>0");
 // tree->Draw("thet>>theta_incut", "thet>22*TMath::Pi()/180");
 
 // Define fuctions //
-TF1 *func1 = new TF1("func1", "[0]*sin(x)*(cos(x))^2", 0, 90*TMath::Pi()/180);
+TF1 *func1 = new TF1("func1", "[0]*sin(x)*(cos(x))^2", 0.01, 85*TMath::Pi()/180);
 func1->SetParameter(0, 5000);
 
 // TF1 *func2 = new TF1("func2", "[0]*(1899639*sin(x)*(cos(x))^3+(161472/TMath::Pi())*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
@@ -26,8 +32,12 @@ func1->SetParameter(0, 5000);
 // TF1 *func2 = new TF1("func2", "[0]*((12725.6)*sin(x)*(cos(x))^3+(373.769)*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
 // TF1 *func2 = new TF1("func2", "[0]*(7598556*sin(x)*(cos(x))^3+(645888/TMath::Pi())*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
 
-TF1 *func2 = new TF1("func2", "[0]*((3.29909/1)*sin(x)*(cos(x))^3+(1.4020808/(4*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
-// TF1 *func2 = new TF1("func2", "[0]*((7.598556/4)*sin(x)*(cos(x))^3+(0.80896/(4*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180); // El mejor 
+// TF1 *func2 = new TF1("func2", "[0]*((3.29909/1)*sin(x)*(cos(x))^3+(2.8041616/(1*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0.01, 85*TMath::Pi()/180);
+// TF1 *func2 = new TF1("func2", "[0]*((3.298956/1)*sin(x)*(cos(x))^3+(1.4020808/(1*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0.01, 85*TMath::Pi()/180);
+
+// ---------------------- Funcion para la barra ---------------------------------- //
+TF1 *func2 = new TF1("func2", "[0]*((10)*sin(x)*(cos(x))^3+(22/(TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
+
 func2->SetParameter(0, 2000);
 
 // Fit functions //

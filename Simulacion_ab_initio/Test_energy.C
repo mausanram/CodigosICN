@@ -1,6 +1,9 @@
 void Test_energy(){
 //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_3.0x3.0_RADIO_12_0.root");
+
+TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_100000_PLANES_150x150_RADIO_450_0.root");
 TTree *tree = (TTree*) file->Get("tree");
 
 
@@ -12,7 +15,7 @@ TH1F *energy_in = new TH1F("energy_in", "", NB, tlow, thi);
 
 // Fill histograms //
 tree->Draw("epri>>energy_all");
-tree->Draw("epri>>energy_in", "edep>0");
+tree->Draw("epri>>energy_in", "l>0");
 
 // Define fuctions //
 // TF1 *func1 = new TF1("func1", "[0]*sin(x)*(cos(x))^2", 0, 90);

@@ -1,3 +1,4 @@
+print('Se están importando todas las paqueterías')
 import numpy as np
 import mpmath as mp
 import random as rand
@@ -28,16 +29,16 @@ def main():
     Theta = np.arange(Lim_inf_theta_rad, np.pi/2, 0.001) ## rad
 
     ##### Valor del radio de la semi-esfera #####
-    Radio = 8     ## cm
+    Radio = 12     ## cm
     # Radio = 100     ## cm
 
 
     #### Tamaño de los planos tangentes a la esfera ####
     # Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
-    plane_size = 2  ## cm
+    half_plane_size = 2  ## cm
     # plane_size = 75  ## cm
-    long_a = np.arange(-plane_size, plane_size, 0.001)
-    long_b = np.arange(-plane_size, plane_size, 0.001)
+    # long_a = np.arange(-plane_size, plane_size, 0.01)
+    # long_b = np.arange(-plane_size, plane_size, 0.01)
 
 
     # ######### Medidas de la CCD (para centrarla en el origen) ##########
@@ -54,50 +55,38 @@ def main():
     mapeo_x = dimension_x(medida_x)
     mapeo_y = dimension_y(medida_y)
     mapeo_z = dimension_z(medida_z)
-
+    # print(mapeo_x[-1])
     # Max_energy = 1000000 # En MeV
     # Energy = np.arange(1, Max_energy) # En MeV
 
-    Max_energy = 100 # En GeV (no pasar de 100 GeV o la simulación se hará mas lenta)
-    Energy = np.arange(1, Max_energy, 0.001) # En GeV
-
     #### Distribución angular de theta (Distribución angular de Smith-Duller) ####
-    Theta_true = dis_angular(Theta) 
+    # Theta_true = dis_angular(Theta) 
 
     ### Número de muones a simular ### 
-    number_thet = 10000      ## Valores de un ángulo Theta.
-
-    
-    number_points_per_angle = 1  ## Valores aleatorios sobre cada plano.
-    n_muons = number_thet * number_points_per_angle ## Número total de muones que se simularán.
+    number_thet = 100000     ## Valores de un ángulo Theta.
+    n_muons = number_thet  ## Número total de muones que se simularán.
 
     print('Se simularán ' + str(n_muons) + ' muones.')
 
     # print(os.environ)
     
     ## Se simulan los muones, se genera un diccionario con la información de cada evento (Theta, Phi, Energía) ##
-    dict_muons, nmuons_in_CCD  = muon_generator_3(Energy, number_thet=n_muons, Theta=Theta, Theta_true=Theta_true, Phi=Phi, Radio=Radio, 
-                                number_points_per_angle=number_points_per_angle,long_a=long_a, long_b=long_b, medida_x=medida_x, 
-                                medida_y=medida_y, medida_z=medida_z, mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z)
+    dict_muons, nmuons_in_CCD  = muon_generator_3(number_thet=n_muons, Radio=Radio,  
+                                                  medida_x=medida_x, medida_y=medida_y, medida_z=medida_z, 
+                                                  mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z, 
+                                                  half_plane_size=half_plane_size)
 
     list_nmuons = np.arange(0, len(dict_muons['Theta(Rad)']))
 
     #### TTree file in CCD ###
     N_Muons = array('f', [-9999])
     Thet_Rad = array('f', [-9999])
-    Thet_Deg = array('f', [-9999])
     Phi_Rad = array('f', [-9999])
-    Phi_Deg = array('f', [-9999])
     Energy_array = array('f', [-9999])
     DeltaL_array = array('f', [-9999])
     Energy_Landau_array = array('f', [-9999])
 
-    Thet_Deg_pri = array('f', [-9999])
-    Phi_Deg_pri = array('f', [-9999])
-    Energy_pri = array('f', [-9999])
-
-    file_root_name = 'Sim_ab_initio_NMUONS_' + str(number_thet) + '.root'
-    # file_root_name = 'Sim_ab_initio_Barra_NMUONS_' + str(number_thet) + '.root'
+    file_root_name = 'Sim_ab_initio_NMUONS_' + str(number_thet) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_0.root'
     file = TFile.Open(file_root_name, "RECREATE")
     tree = TTree('tree', 'tree')
 
@@ -117,7 +106,7 @@ def main():
         Phi_Rad[0] = dict_muons['Phi(Rad)'][i]
         Energy_array[0] =  dict_muons['Energy-SD(MeV)'][i] 
         DeltaL_array[0] = dict_muons['Delta_L(cm)'][i]
-        Energy_Landau_array[0] = dict_muons['Energy_Landau(KeV)'][i]
+        # Energy_Landau_array[0] = dict_muons['Energy_Landau(KeV)'][i]
         # print(Energy_Landau_array[0])
         # th_deg = dict_muons['Theta(Deg)'][0]
         tree.Fill()
