@@ -3,11 +3,12 @@ void Test_L(){
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_3.0x3.0_RADIO_12_0.root");
 
-TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_100000_PLANES_150x150_RADIO_450_0.root");
+// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_100000_PLANES_150x150_RADIO_450_0.root");
+TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_150000_PLANES_150x150_RADIO_450_0.root");
 TTree *tree = (TTree*) file->Get("tree");
 
 
-int NB = 300;
+int NB = 80;
 double tlow = 0;
 // double thi = 0.4;
 double thi = 40;

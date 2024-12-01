@@ -39,7 +39,7 @@ ratio_keV = 0.0036
 DeltaEL_range = 85
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
-units = 2
+units = 1
 n_sigmas = 4
 numero_bins = 600
 
@@ -187,8 +187,8 @@ def main(argObj):
             fondo = ma.masked_array(dataCal,fondo_mask)
             valor_promedio_fondo = fondo.data.mean()
 
-            DeltaL, DeltaEL, list_charge, _, list_theta,list_phi, list_charge_all_events = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
-                                                                                                prop=prop, Solidit=Solidit, Elipticity=Elip)
+            DeltaL, DeltaEL, list_charge, _, list_theta, list_phi, list_charge_all_events = muon_filter(dataCal=dataCal, label_img=label_img, 
+                                                                                        nlabels_img=n_events, prop=prop, Solidit=Solidit, Elipticity=Elip)
             if extension == 0: 
                 for index in np.arange(0, len(DeltaEL)):
                     list_charge_of_all_extension_1.append(list_charge_all_events[index])

@@ -34,7 +34,7 @@ def main():
 
     medida_x = 10 / 2    # cm
     medida_y = 100 / 2   # cm
-    medida_z = 10 / 2   # cm
+    medida_z = 10   # cm
 
 
     #### Arreglos de los valores para mapear la CCD ####
@@ -73,7 +73,7 @@ def main():
     Phi_Deg_pri = array('f', [-9999])
     Energy_pri = array('f', [-9999])
 
-    file_root_name = 'Sim_ab_initio_Barra_NMUONS_' + str(number_thet)  + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio)  + '_0.root'
+    file_root_name = 'Sim_ab_initio_Barra_NMUONS_' + str(number_thet)  + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio)  + '_1.root'
     file = TFile.Open(file_root_name, "RECREATE")
     tree = TTree('tree', 'tree')
 
