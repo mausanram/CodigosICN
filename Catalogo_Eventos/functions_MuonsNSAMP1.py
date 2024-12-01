@@ -9,7 +9,7 @@ import scipy.ndimage as nd
 import random as rand
 import time
 
-from ROOT import TMath, TF1, TH1F, Fit, TCanvas, gStyle, TProfile, TGraphErrors
+from ROOT import TMath, TF1, TH1F, TCanvas, gStyle, TProfile, TGraphErrors
 
 ### Distribución Gaussiana ###
 def gaussian(x, a, mean, sigma): 
