@@ -3,7 +3,7 @@ import mpmath as mp
 import random as rand
 import pandas as pd
 import matplotlib.pyplot as plt
-from funciones_Sim_ab_initio import *
+from funciones_Sim_ab_initio import dimension_x_barr, dimension_y_barr, dimension_z_barr, muon_generator_BARRA
 import datetime
 import os
 # import pickle as pkl
@@ -43,7 +43,7 @@ def main():
     mapeo_z = dimension_z_barr(medida_z)
 
     ### Número de muones a simular ### 
-    number_thet = 100      ## Valores de un ángulo Theta.
+    number_thet = 10      ## Valores de un ángulo Theta.
 
     n_muons = number_thet  ## Número total de muones que se simularán.
 
