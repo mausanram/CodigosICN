@@ -16,14 +16,14 @@ def dis_probability(theta, I_0):
 ### ------------- Funciones de distribución angular theta ----------- ##
 def dis_thet(lx, lpar): ## Distribucion dis_angular
     theta = lx[0]
-    return pow(TMath.Cos(theta),2) * TMath.Sin(theta)
+    return (pow(TMath.Cos(theta),2) * TMath.Sin(theta))
 
 def random_thet():
-    gRandom.SetSeed(0) ## Cambia la semilla aleatoria para el GetRandom
-    f = TF1("f", dis_thet, 0, np.pi/2)
-    # f = TF1("", "Cos(x)^2 * Sin(x)", 0, np.pi/2, 1)
+    gRandom.SetSeed(0); ## Cambia la semilla aleatoria para el GetRandom
+    f = TF1.TF1("", dis_thet, 0, np.pi/2,1);
+    #f = TF1("", "cos(x)^2 * sin(x)", 0, np.pi/2, 1)
     # print(type(f))
-    thet = f.GetRandom()
+    thet = f.GetRandom();
     return thet 
 ### ----------------------------------------------------------------- ###
 
