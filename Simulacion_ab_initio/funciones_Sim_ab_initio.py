@@ -16,7 +16,7 @@ def dis_probability(theta, I_0):
 ### ------------- Funciones de distribución angular theta ----------- ##
 def dis_thet(lx, lpar): ## Distribucion dis_angular
     theta = lx[0]
-    return TMath.Cos(theta)**2 * TMath.Sin(theta)
+    return pow(TMath.Cos(theta),2) * TMath.Sin(theta)
 
 def random_thet():
     gRandom.SetSeed(0) ## Cambia la semilla aleatoria para el GetRandom
