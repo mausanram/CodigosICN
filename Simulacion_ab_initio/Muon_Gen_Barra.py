@@ -43,7 +43,7 @@ def main():
     mapeo_z = dimension_z_barr(medida_z)
 
     ### Número de muones a simular ### 
-    number_thet = 500000      ## Valores de un ángulo Theta.
+    number_thet = 100      ## Valores de un ángulo Theta.
 
     n_muons = number_thet  ## Número total de muones que se simularán.
 
