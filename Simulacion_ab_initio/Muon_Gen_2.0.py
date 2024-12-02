@@ -37,7 +37,7 @@ def main():
     mapeo_z = dimension_z(medida_z)
 
     ### Número de muones a simular ### 
-    number_thet = 100    
+    number_thet = 500000    
     n_muons = number_thet ## Número total de muones que se simularán.
 
     print('Se simularán ' + str(n_muons) + ' muones.')

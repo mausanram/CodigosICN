@@ -448,10 +448,12 @@ def phi_angle_ROOT(data_mask):
     for i in np.arange(0, NBX):
         GRprofY.SetPoint(int(i), i, list_yprofile_mean[i])
         GRprofY.SetPointError(int(i), 1/2, list_yprofile_sigma[i])  ### Se colocan los errores en X y Y
+    # print('Se llenó el GRprofY')
         
     for ip in np.arange(0, NBY):
         GRprofX.SetPoint(int(ip),  list_xprofile_mean[ip], ip)
         GRprofX.SetPointError(int(ip), list_xprofile_sigma[ip], 1/2)
+    # print('Se llenó el GRprofY')
     
     if NBX > 3 * NBY: ### El muon es muy horizontal y se tomará la componente X para hacer los ajustes
         lox = 0
@@ -460,7 +462,8 @@ def phi_angle_ROOT(data_mask):
         pend = (NBY)/(NBX)
         fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
         fitline.SetParameters(0, pend)
-        GRprofY.Fit("fitline")
+        GRprofY.Fit("fitline", "W")
+
         pendiente = fitline.GetParameters()[1]
         Prob_fitline = fitline.GetProb()
 
@@ -483,7 +486,7 @@ def phi_angle_ROOT(data_mask):
         else:
             fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
             fitline.SetParameters(NBY-1, -pend)
-            GRprofY.Fit("fitline")
+            GRprofY.Fit("fitline", "W")
             Prob_fitline = fitline.GetProb()
             pendiente = fitline.GetParameters()[1]
 
@@ -503,6 +506,410 @@ def phi_angle_ROOT(data_mask):
                         phi = np.arctan(NBX/(NBY/2)) + np.radians(270)
             else:
                 phi = -1
+
+    elif NBY > 3 * NBX: ### El muon es muy vertical y se tomará la componente Y para hacer los ajustes
+        lox = 0
+        hix = NBX
+
+        pend = (NBY)/(NBX)
+
+        fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+        fitline.SetParameters(0, pend)
+        # GRprofX.Fit("fitline", "W")
+        GRprofX.Fit("fitline")
+        Prob_fitline = fitline.GetProb()
+        pendientefit = fitline.GetParameters()[1]
+
+        if Prob_fitline > 0.01:
+            First = list_xprofile_sigma[4]
+            Last = list_xprofile_sigma[-3]
+            # print(First, Last)
+            if pendientefit > 0:
+                if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                    phi = np.arctan(NBY/(NBX/2))
+                else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                    phi = np.arctan(NBY/(NBX/2)) + np.radians(180)
+            else: 
+                if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                    phi = np.arctan((NBX/2)/NBY) + np.radians(270)
+                else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                    phi = np.arctan((NBX/2)/NBY) + np.radians(90)
+        
+        else:
+            fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+            fitline.SetParameters(NBY-1, -pend)
+            # GRprofX.Fit("fitline", "W")
+            GRprofX.Fit("fitline")
+            Prob_fitline = fitline.GetProb()
+            pendientefit = fitline.GetParameters()[1]
+
+            if Prob_fitline > 0.01:
+                First = list_xprofile_sigma[4]
+                Last = list_xprofile_sigma[-3]
+                # print(First, Last)
+                if pendientefit > 0:
+                    if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                        phi = np.arctan(NBY/(NBX/2))
+                    else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                        phi = np.arctan(NBY/(NBX/2)) + np.radians(180)
+                else:
+                    if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                        phi = np.arctan((NBX/2)/NBY) + np.radians(270)
+                    else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                        phi = np.arctan((NBX/2)/NBY) + np.radians(90)
+            else:
+                fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+                fitline.SetParameters(0, pend)
+                GRprofX.Fit("fitline")
+                Prob_fitline = fitline.GetProb()
+                pendientefit = fitline.GetParameters()[1]
+
+                if Prob_fitline > 0.01:
+                    First = list_xprofile_sigma[4]
+                    Last = list_xprofile_sigma[-3]
+                    # print(First, Last)
+                    if pendientefit > 0:
+                        if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                            phi = np.arctan(NBY/(NBX/2))
+                        else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                            phi = np.arctan(NBY/(NBX/2)) + np.radians(180)
+                    else: 
+                        if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                            phi = np.arctan((NBX/2)/NBY) + np.radians(270)
+                        else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                            phi = np.arctan((NBX/2)/NBY) + np.radians(90)
+                
+                else:
+                    fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+                    fitline.SetParameters(NBY-1, -pend)
+                    GRprofX.Fit("fitline")
+                    Prob_fitline = fitline.GetProb()
+                    pendientefit = fitline.GetParameters()[1]
+
+                    if Prob_fitline > 0.01:
+                        First = list_xprofile_sigma[4]
+                        Last = list_xprofile_sigma[-3]
+                        # print(First, Last)
+                        if pendientefit > 0:
+                            if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                                phi = np.arctan(NBY/(NBX/2))
+                            else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                                phi = np.arctan(NBY/(NBX/2)) + np.radians(180)
+                        else:
+                            if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                                phi = np.arctan((NBX/2)/NBY) + np.radians(270)
+                            else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                                phi = np.arctan((NBX/2)/NBY) + np.radians(90)
+                    else:
+                        phi = -2
+        
+    else:   ### El muon es oblicuo y se tomarán las componentes X y Y para hacer los ajustes
+        #### ================ MEAN XY =============== ###
+        list_x_XY = list(np.arange(0, NBX))
+        for element in list_xprofile_mean:
+            list_x_XY.append(element)
+        # print(list_x_XY)
+
+        list_y_XY = list(list_yprofile_mean)
+        for element in np.arange(0, NBY):
+            list_y_XY.append(element)
+        # print(list_y_XY)
+
+        #### =============== SIGMA XY =============== ###
+        zerosXY = list(np.zeros(NBX))
+        list_xsigma_XY = []
+        for index in np.arange(0, len(zerosXY)):
+            list_xsigma_XY.append(1/2)
+        # print(list_xsigma_XY)
+
+        for element in list_xprofile_sigma:
+            list_xsigma_XY.append(element)
+        # print(list_xsigma_XY)
+
+        list_ysigma_XY = list(list_yprofile_sigma)
+        for element in list(np.zeros(NBY)):
+            list_ysigma_XY.append(1/2)
+        # print(list_ysigma_XY)
+
+        ### ===== Se llena el TGraphErrors de las componentes X y Y JUNTAS ====== ###
+        GRprofXY = TGraphErrors()
+        for index in np.arange(0, len(list_y_XY)):
+            GRprofXY.SetPoint(int(index), list_x_XY[index], list_y_XY[index])
+            GRprofXY.SetPointError(int(index), list_xsigma_XY[index], list_ysigma_XY[index])
+
+        lox = 0
+        hix = NBX
+        pend = (NBY)/(NBX)
+
+        if NBY < NBX:
+            fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+            fitline.SetParameters(0, pend)
+            GRprofX.Fit("fitline", "W")
+            Prob_fitline = fitline.GetProb()
+            pendientefit = fitline.GetParameters()[1]
+
+            if Prob_fitline > 0.01: 
+                First = list_yprofile_sigma[3]
+                Last = list_yprofile_sigma[-4]
+                # print(len(list_xprofile_sigma), len(list_yprofile_sigma), First, Last)
+                # print(list_yprofile_mean[3], list_yprofile_mean[-4], First, Last)
+
+                if pendientefit > 0:
+                    if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                        phi = np.arctan(NBY/NBX)
+                    else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                        phi = np.arctan(NBY/NBX) + np.radians(180)
+                else: 
+                    if First < Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                        phi = np.arctan(NBX/NBY) + np.radians(270)
+                    else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                        phi = np.arctan(NBX/NBY) + np.radians(90)
+            else:
+                fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+                fitline.SetParameters(NBY-1, -pend)
+                GRprofX.Fit("fitline", "W")
+                Prob_fitline = fitline.GetProb()
+                pendientefit = fitline.GetParameters()[1]
+
+                if Prob_fitline > 0.01: 
+                    First = list_yprofile_sigma[3]
+                    Last = list_yprofile_sigma[-4]
+
+                    if pendientefit > 0:
+                        if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                            phi = np.arctan(NBY/NBX)
+                        else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                            phi = np.arctan(NBY/NBX) + np.radians(180)
+                    else: 
+                        # print('pendiente negativa')
+                        if First < Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                            phi = np.arctan(NBX/NBY) + np.radians(270)
+                        else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                            phi = np.arctan(NBX/NBY) + np.radians(90)
+                else: 
+                    # print('No fit- fail in fit -pend (NBY<NBX)')
+                    fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+                    fitline.SetParameters(0, pend)
+                    GRprofX.Fit("fitline")
+                    Prob_fitline = fitline.GetProb()
+                    pendientefit = fitline.GetParameters()[1]
+
+                    if Prob_fitline > 0.01: 
+                        First = list_yprofile_sigma[3]
+                        Last = list_yprofile_sigma[-4]
+                        # print(len(list_xprofile_sigma), len(list_yprofile_sigma), First, Last)
+                        # print(list_yprofile_mean[3], list_yprofile_mean[-4], First, Last)
+
+                        if pendientefit > 0:
+                            if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                                phi = np.arctan(NBY/NBX)
+                            else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                                phi = np.arctan(NBY/NBX) + np.radians(180)
+                        else: 
+                            if First < Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                                phi = np.arctan(NBX/NBY) + np.radians(270)
+                            else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                                phi = np.arctan(NBX/NBY) + np.radians(90)
+                    else:
+                        fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+                        fitline.SetParameters(NBY-1, -pend)
+                        GRprofX.Fit("fitline")
+                        Prob_fitline = fitline.GetProb()
+                        pendientefit = fitline.GetParameters()[1]
+
+                        if Prob_fitline > 0.01: 
+                            First = list_yprofile_sigma[3]
+                            Last = list_yprofile_sigma[-4]
+
+                            if pendientefit > 0:
+                                if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                                    phi = np.arctan(NBY/NBX)
+                                else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                                    phi = np.arctan(NBY/NBX) + np.radians(180)
+                            else: 
+                                # print('pendiente negativa')
+                                if First < Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                                    phi = np.arctan(NBX/NBY) + np.radians(270)
+                                else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                                    phi = np.arctan(NBX/NBY) + np.radians(90)
+                        else: 
+                            # print('No fit- fail in fit -pend (NBY<NBX)')
+                            phi = -3
+                        
+        else:
+            fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+            fitline.SetParameters(0, pend)
+            GRprofY.Fit("fitline", "W")
+            Prob_fitline = fitline.GetProb()
+            pendientefit = fitline.GetParameters()[1]
+
+            if Prob_fitline > 0.01: 
+                First = list_xprofile_sigma[3]
+                Last = list_xprofile_sigma[-4]
+
+                if pendientefit > 0:
+                    if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                        phi = np.arctan(NBY/NBX)
+                    else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                        phi = np.arctan(NBY/NBX) + np.radians(180)
+                else: 
+                    if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                        phi = np.arctan(NBX/NBY) + np.radians(270)
+                    else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                        phi = np.arctan(NBX/NBY) + np.radians(90)
+            else:
+                fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+                fitline.SetParameters(NBY-1, -pend)
+                GRprofY.Fit("fitline", "W")
+                Prob_fitline = fitline.GetProb()
+                pendientefit = fitline.GetParameters()[1]
+
+                if Prob_fitline > 0.01: 
+                    First = list_xprofile_sigma[3]
+                    Last = list_xprofile_sigma[-4]
+                    # print(First, Last)
+                    if pendientefit > 0:
+                        if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                            phi = np.arctan(NBY/NBX)
+                        else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                            phi = np.arctan(NBY/NBX) + np.radians(180)
+                    else: 
+                        if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                            phi = np.arctan(NBX/NBY) + np.radians(270)
+                        else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                            phi = np.arctan(NBX/NBY) + np.radians(90)
+                else: 
+                    fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+                    fitline.SetParameters(0, pend)
+                    GRprofY.Fit("fitline")
+                    Prob_fitline = fitline.GetProb()
+                    pendientefit = fitline.GetParameters()[1]
+
+                    if Prob_fitline > 0.01: 
+                        First = list_xprofile_sigma[3]
+                        Last = list_xprofile_sigma[-4]
+
+                        if pendientefit > 0:
+                            if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                                phi = np.arctan(NBY/NBX)
+                            else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                                phi = np.arctan(NBY/NBX) + np.radians(180)
+                        else: 
+                            if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                                phi = np.arctan(NBX/NBY) + np.radians(270)
+                            else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                                phi = np.arctan(NBX/NBY) + np.radians(90)
+                    else:
+                        fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+                        fitline.SetParameters(NBY-1, -pend)
+                        GRprofY.Fit("fitline")
+                        Prob_fitline = fitline.GetProb()
+                        pendientefit = fitline.GetParameters()[1]
+
+                        if Prob_fitline > 0.01: 
+                            First = list_xprofile_sigma[3]
+                            Last = list_xprofile_sigma[-4]
+                            # print(First, Last)
+                            if pendientefit > 0:
+                                if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                                    phi = np.arctan(NBY/NBX)
+                                else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                                    phi = np.arctan(NBY/NBX) + np.radians(180)
+                            else: 
+                                if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                                    phi = np.arctan(NBX/NBY) + np.radians(270)
+                                else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                                    phi = np.arctan(NBX/NBY) + np.radians(90)
+                        else:
+                            phi = -3
+                            
+    return phi
+
+def phi_angle_ROOT_pendpos(data_mask):
+    ## ======== Dimensiones del evento a analizar ============ ###
+    NBX = data_mask.shape[1]
+    xmin = 0
+    xmax = NBX
+    # print(NBX, len(data_mask[:, 1]))
+
+    NBY = data_mask.shape[0]
+    ymin = 0
+    ymax = NBY
+
+    ### ========== Se crean y llenan los TProfile de X y Y ===== ###
+    YProf = TProfile("YProf", "", NBX, 0, xmax)
+    XProf = TProfile("XProf", "", NBY, 0, ymax)
+
+    for i in np.arange(0, NBX):
+    # print(i)
+        for j in np.arange(0, NBY):
+            # print(j)
+            if data_mask[j][i]:
+                XProf.Fill(j, i, data_mask[j][i])
+                YProf.Fill(i, j, data_mask[j][i])
+
+    ### ======= Se obtienen las medias y las sigmas de cada TProfile ====== ###
+    list_yprofile_mean = []
+    list_yprofile_sigma = []
+    for index in np.arange(0, NBX):
+        mean_y = YProf.GetBinContent(int(index+1))
+        sigma_y = YProf.GetBinError(int(index+1))
+
+        list_yprofile_mean.append(mean_y)
+        list_yprofile_sigma.append(sigma_y)
+    # print(list_yprofile_sigma)
+
+    list_xprofile_mean = []
+    list_xprofile_sigma = []
+    for index in np.arange(0, NBY):
+        mean_x = XProf.GetBinContent(int(index+1))
+        sigma_x = XProf.GetBinError(int(index+1))
+
+        list_xprofile_mean.append(mean_x)
+        list_xprofile_sigma.append(sigma_x)
+
+    ### ====== Se llenan los TGrapsErrors para X y Y ====== ###
+    GRprofX = TGraphErrors()
+    GRprofY = TGraphErrors()
+
+    for i in np.arange(0, NBX):
+        GRprofY.SetPoint(int(i), i, list_yprofile_mean[i])
+        GRprofY.SetPointError(int(i), 1/2, list_yprofile_sigma[i])  ### Se colocan los errores en X y Y
+    # print('Se llenó el GRprofY')
+        
+    for ip in np.arange(0, NBY):
+        GRprofX.SetPoint(int(ip),  list_xprofile_mean[ip], ip)
+        GRprofX.SetPointError(int(ip), list_xprofile_sigma[ip], 1/2)
+    # print('Se llenó el GRprofY')
+
+
+    if NBX > 3 * NBY: ### El muon es muy horizontal y se tomará la componente X para hacer los ajustes
+        lox = 0
+        hix = NBX
+
+        pend = (NBY)/(NBX)
+        fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+        fitline.SetParameters(0, pend)
+        GRprofY.Fit("fitline")
+
+        pendiente = fitline.GetParameters()[1]
+        Prob_fitline = fitline.GetProb()
+
+        if Prob_fitline > 0.01:
+            First = list_yprofile_sigma[3]
+            Last = list_yprofile_sigma[-4]
+
+            if pendiente > 0:
+                if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                    phi = np.arctan((NBY/2)/NBX)
+                else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                    phi = np.arctan((NBY/2)/NBX) + np.radians(180)
+            else:
+                if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                    phi = np.arctan(NBX/(NBY/2)) + np.radians(90)
+                else: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 2
+                    phi = np.arctan(NBX/(NBY/2)) + np.radians(270)
+
 
     elif NBY > 3 * NBX: ### El muon es muy vertical y se tomará la componente Y para hacer los ajustes
         lox = 0
@@ -529,30 +936,6 @@ def phi_angle_ROOT(data_mask):
                     phi = np.arctan((NBX/2)/NBY) + np.radians(270)
                 else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
                     phi = np.arctan((NBX/2)/NBY) + np.radians(90)
-        
-        else:
-            fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
-            fitline.SetParameters(NBY-1, -pend)
-            GRprofX.Fit("fitline")
-            Prob_fitline = fitline.GetProb()
-            pendientefit = fitline.GetParameters()[1]
-
-            if Prob_fitline > 0.01:
-                First = list_xprofile_sigma[4]
-                Last = list_xprofile_sigma[-3]
-                # print(First, Last)
-                if pendientefit > 0:
-                    if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
-                        phi = np.arctan(NBY/(NBX/2))
-                    else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
-                        phi = np.arctan(NBY/(NBX/2)) + np.radians(180)
-                else:
-                    if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
-                        phi = np.arctan((NBX/2)/NBY) + np.radians(270)
-                    else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
-                        phi = np.arctan((NBX/2)/NBY) + np.radians(90)
-            else:
-                phi = -2
         
     else:   ### El muon es oblicuo y se tomarán las componentes X y Y para hacer los ajustes
         #### ================ MEAN XY =============== ###
@@ -615,31 +998,7 @@ def phi_angle_ROOT(data_mask):
                         phi = np.arctan(NBX/NBY) + np.radians(270)
                     else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
                         phi = np.arctan(NBX/NBY) + np.radians(90)
-            else:
-                fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
-                fitline.SetParameters(NBY-1, -pend)
-                GRprofX.Fit("fitline")
-                Prob_fitline = fitline.GetProb()
-                pendientefit = fitline.GetParameters()[1]
 
-                if Prob_fitline > 0.01: 
-                    First = list_xprofile_sigma[3]
-                    Last = list_xprofile_sigma[-4]
-
-                    if pendientefit > 0:
-                        if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
-                            phi = np.arctan(NBY/NBX)
-                        else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
-                            phi = np.arctan(NBY/NBX) + np.radians(180)
-                    else: 
-                        # print('pendiente negativa')
-                        if First < Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
-                            phi = np.arctan(NBX/NBY) + np.radians(90)
-                        else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
-                            phi = np.arctan(NBX/NBY) + np.radians(270)
-                else: 
-                    # print('No fit- fail in fit -pend (NBY<NBX)')
-                    phi = -3
         else:
             fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
             fitline.SetParameters(0, pend)
@@ -661,29 +1020,202 @@ def phi_angle_ROOT(data_mask):
                         phi = np.arctan(NBX/NBY) + np.radians(270)
                     else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
                         phi = np.arctan(NBX/NBY) + np.radians(90)
-            else:
-                fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
-                fitline.SetParameters(NBY-1, -pend)
-                GRprofY.Fit("fitline")
-                Prob_fitline = fitline.GetProb()
-                pendientefit = fitline.GetParameters()[1]
 
-                if Prob_fitline > 0.01: 
-                    First = list_xprofile_sigma[3]
-                    Last = list_xprofile_sigma[-4]
-                    # print(First, Last)
-                    if pendientefit > 0:
-                        if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
-                            phi = np.arctan(NBY/NBX)
-                        else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
-                            phi = np.arctan(NBY/NBX) + np.radians(180)
-                    else: 
-                        if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
-                            phi = np.arctan(NBX/NBY) + np.radians(270)
-                        else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
-                            phi = np.arctan(NBX/NBY) + np.radians(90)
+    return phi
+
+def phi_angle_ROOT_pendneg(data_mask):
+    ## ======== Dimensiones del evento a analizar ============ ###
+    NBX = data_mask.shape[1]
+    xmin = 0
+    xmax = NBX
+    # print(NBX, len(data_mask[:, 1]))
+
+    NBY = data_mask.shape[0]
+    ymin = 0
+    ymax = NBY
+
+    ### ========== Se crean y llenan los TProfile de X y Y ===== ###
+    YProf = TProfile("YProf", "", NBX, 0, xmax)
+    XProf = TProfile("XProf", "", NBY, 0, ymax)
+
+    for i in np.arange(0, NBX):
+    # print(i)
+        for j in np.arange(0, NBY):
+            # print(j)
+            if data_mask[j][i]:
+                XProf.Fill(j, i, data_mask[j][i])
+                YProf.Fill(i, j, data_mask[j][i])
+
+    ### ======= Se obtienen las medias y las sigmas de cada TProfile ====== ###
+    list_yprofile_mean = []
+    list_yprofile_sigma = []
+    for index in np.arange(0, NBX):
+        mean_y = YProf.GetBinContent(int(index+1))
+        sigma_y = YProf.GetBinError(int(index+1))
+
+        list_yprofile_mean.append(mean_y)
+        list_yprofile_sigma.append(sigma_y)
+    # print(list_yprofile_sigma)
+
+    list_xprofile_mean = []
+    list_xprofile_sigma = []
+    for index in np.arange(0, NBY):
+        mean_x = XProf.GetBinContent(int(index+1))
+        sigma_x = XProf.GetBinError(int(index+1))
+
+        list_xprofile_mean.append(mean_x)
+        list_xprofile_sigma.append(sigma_x)
+
+    ### ====== Se llenan los TGrapsErrors para X y Y ====== ###
+    GRprofX = TGraphErrors()
+    GRprofY = TGraphErrors()
+
+    for i in np.arange(0, NBX):
+        GRprofY.SetPoint(int(i), i, list_yprofile_mean[i])
+        GRprofY.SetPointError(int(i), 1/2, list_yprofile_sigma[i])  ### Se colocan los errores en X y Y
+    # print('Se llenó el GRprofY')
+        
+    for ip in np.arange(0, NBY):
+        GRprofX.SetPoint(int(ip),  list_xprofile_mean[ip], ip)
+        GRprofX.SetPointError(int(ip), list_xprofile_sigma[ip], 1/2)
+    # print('Se llenó el GRprofY')
+
+
+    if NBX > 3 * NBY: ### El muon es muy horizontal y se tomará la componente X para hacer los ajustes
+        lox = 0
+        hix = NBX
+
+        pend = (NBY)/(NBX)
+        fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+        fitline.SetParameters(NBY-1, -pend)
+        GRprofY.Fit("fitline")
+        Prob_fitline = fitline.GetProb()
+        pendiente = fitline.GetParameters()[1]
+
+        if Prob_fitline > 0.01:
+            First = list_yprofile_sigma[3]
+            Last = list_yprofile_sigma[-4]
+
+            if pendiente > 0:
+                if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                    phi = np.arctan((NBY/2)/NBX)
+                else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                    phi = np.arctan((NBY/2)/NBX) + np.radians(180)
+            else:
+                if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                    phi = np.arctan(NBX/(NBY/2)) + np.radians(90)
+                else: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 2
+                    phi = np.arctan(NBX/(NBY/2)) + np.radians(270)
+
+
+    elif NBY > 3 * NBX: ### El muon es muy vertical y se tomará la componente Y para hacer los ajustes
+        lox = 0
+        hix = NBX
+
+        pend = (NBY)/(NBX)
+        fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+        fitline.SetParameters(NBY-1, -pend)
+        GRprofX.Fit("fitline")
+        Prob_fitline = fitline.GetProb()
+        pendientefit = fitline.GetParameters()[1]
+
+        if Prob_fitline > 0.01:
+            First = list_xprofile_sigma[4]
+            Last = list_xprofile_sigma[-3]
+            # print(First, Last)
+            if pendientefit > 0:
+                if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                    phi = np.arctan(NBY/(NBX/2))
+                else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                    phi = np.arctan(NBY/(NBX/2)) + np.radians(180)
+            else:
+                if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                    phi = np.arctan((NBX/2)/NBY) + np.radians(270)
+                else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                    phi = np.arctan((NBX/2)/NBY) + np.radians(90)
+        
+    else:   ### El muon es oblicuo y se tomarán las componentes X y Y para hacer los ajustes
+        #### ================ MEAN XY =============== ###
+        list_x_XY = list(np.arange(0, NBX))
+        for element in list_xprofile_mean:
+            list_x_XY.append(element)
+        # print(list_x_XY)
+
+        list_y_XY = list(list_yprofile_mean)
+        for element in np.arange(0, NBY):
+            list_y_XY.append(element)
+        # print(list_y_XY)
+
+        #### =============== SIGMA XY =============== ###
+        zerosXY = list(np.zeros(NBX))
+        list_xsigma_XY = []
+        for index in np.arange(0, len(zerosXY)):
+            list_xsigma_XY.append(1/2)
+        # print(list_xsigma_XY)
+
+        for element in list_xprofile_sigma:
+            list_xsigma_XY.append(element)
+        # print(list_xsigma_XY)
+
+        list_ysigma_XY = list(list_yprofile_sigma)
+        for element in list(np.zeros(NBY)):
+            list_ysigma_XY.append(1/2)
+        # print(list_ysigma_XY)
+
+        ### ===== Se llena el TGraphErrors de las componentes X y Y JUNTAS ====== ###
+        GRprofXY = TGraphErrors()
+        for index in np.arange(0, len(list_y_XY)):
+            GRprofXY.SetPoint(int(index), list_x_XY[index], list_y_XY[index])
+            GRprofXY.SetPointError(int(index), list_xsigma_XY[index], list_ysigma_XY[index])
+
+        lox = 0
+        hix = NBX
+        pend = (NBY)/(NBX)
+
+        if NBY < NBX:
+            fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+            fitline.SetParameters(NBY-1, -pend)
+            GRprofX.Fit("fitline")
+            Prob_fitline = fitline.GetProb()
+            pendientefit = fitline.GetParameters()[1]
+
+            if Prob_fitline > 0.01: 
+                First = list_xprofile_sigma[3]
+                Last = list_xprofile_sigma[-4]
+
+                if pendientefit > 0:
+                    if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                        phi = np.arctan(NBY/NBX)
+                    else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                        phi = np.arctan(NBY/NBX) + np.radians(180)
                 else: 
-                    phi = -3
+                    # print('pendiente negativa')
+                    if First < Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                        phi = np.arctan(NBX/NBY) + np.radians(90)
+                    else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                        phi = np.arctan(NBX/NBY) + np.radians(270)
+
+        else:
+            fitline = TF1("fitline", "[0] + [1]*x",lox,hix) 
+            fitline.SetParameters(NBY-1, -pend)
+            GRprofY.Fit("fitline")
+            Prob_fitline = fitline.GetProb()
+            pendientefit = fitline.GetParameters()[1]
+
+            if Prob_fitline > 0.01: 
+                First = list_xprofile_sigma[3]
+                Last = list_xprofile_sigma[-4]
+                # print(First, Last)
+                if pendientefit > 0:
+                    if First < Last: ## La "cola" está en la parte de abajo, y el muon está en el cuadrante 1
+                        phi = np.arctan(NBY/NBX)
+                    else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 3
+                        phi = np.arctan(NBY/NBX) + np.radians(180)
+                else: 
+                    if First > Last: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                        phi = np.arctan(NBX/NBY) + np.radians(270)
+                    else: ## La "cola" está en la parte de arriba, y el muon está en el cuadrante 4
+                        phi = np.arctan(NBX/NBY) + np.radians(90)
         
 
     return phi
@@ -1044,7 +1576,18 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             # # print(phi)
 
             ### ============ CÁLCULO DEL ÁNGULO PHI (Perfiles X y Y) ===================== ###
-            phi = phi_angle_ROOT(data_maskEvent)
+            # nphi = 0
+            try:
+                phi = phi_angle_ROOT(data_maskEvent)
+            except:
+                phi = -4
+            # try:
+            #     phi = phi_angle_ROOT_pendpos(data_maskEvent)
+            # except:
+            #     print('Error en pendiente positiva')
+            #     phi = phi_angle_ROOT_pendneg(data_maskEvent)
+                # nphi = nphi + 1
+                # print('Error phi in muon: ', nphi)
 
             list_phi.append(phi)    
             list_DeltaL.append(Delta_L)

@@ -12,7 +12,7 @@ import datetime
 import pickle
 import os
 
-from functions_MuonsNSAMP1 import oScan_fit_NSAMP324_ROOT, data_calibrated_NSAMP, muon_filter
+from functions_MuonsNSAMP1 import *
 
 # from ROOT import *
 
