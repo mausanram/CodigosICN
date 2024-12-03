@@ -20,10 +20,10 @@ def dis_thet(lx, lpar): ## Distribucion dis_angular
 
 def random_thet():
     gRandom.SetSeed(0); ## Cambia la semilla aleatoria para el GetRandom
-    f = TF1.TF1("", dis_thet, 0, np.pi/2,1);
+    f = TF1.TF1("", dis_thet, 0, np.pi/2,1)
     #f = TF1("", "cos(x)^2 * sin(x)", 0, np.pi/2, 1)
     # print(type(f))
-    thet = f.GetRandom();
+    thet = f.GetRandom()
     return thet 
 ### ----------------------------------------------------------------- ###
 
