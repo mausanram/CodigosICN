@@ -205,17 +205,17 @@ def main(argObj):
 
     num_muons = len(list_EventCharge_extension_1) + len(list_EventCharge_extension_2) + len(list_EventCharge_extension_4)
 
-    dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_muons, 'Energy_Units' : units, 'Elipcidad' : list_Elip, 
+    dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_muons, 'Energy_Units' : units, 'Elipticity' : list_Elip, 
                         'Solidity' : list_Solidit,
                         'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_DeltaEL_extension_1,
                                          'deltaL' : list_DeltaL_extension_1, 'all_events' : list_charge_of_all_extension_1,
-                                         'theta': list_theta_extension_1}, 
+                                         'theta': list_theta_extension_1, 'phi': list_phi_extension_1}, 
                         'extension_2' : {'charge' : list_EventCharge_extension_2, 'deltaEL' : list_DeltaEL_extension_2, 
                                         'deltaL' : list_DeltaL_extension_2, 'all_events' : list_charge_of_all_extension_2,
-                                        'theta': list_theta_extension_2},
+                                        'theta': list_theta_extension_2, 'phi': list_phi_extension_2},
                         'extension_4' : {'charge' : list_EventCharge_extension_4, 'deltaEL' : list_DeltaEL_extension_4, 
                                          'deltaL' : list_DeltaL_extension_4, 'all_events' : list_charge_of_all_extension_4,
-                                         'theta': list_theta_extension_4}}
+                                         'theta': list_theta_extension_4, 'phi': list_phi_extension_4}}
 
 
     total_events = sum(list_totalEvents)

@@ -19,7 +19,7 @@ def gaussian(x, a, mean, sigma):
 def Gaussian2(x,m,s,g,a1,a2): #data, mean, sigma, gain, height1, heigth2
     return a1*np.exp(-1/2*((x-m)/s)**2)+a2*np.exp(-1/2*((x-m-g)/s)**2)
 
-##### ------------------- Catálogo de Muones ----------------- #####
+### ============================== Funciones de calibración de imágenes ============================== ###
 def oScan_fit_NSAMP1(extensión, active_area, oScan, Bins, make_figure_flag = False) -> dict:
     Maxfev = 10000000
     P0=[10, 2000, 900]
@@ -206,7 +206,6 @@ def oScan_fit_NSAMP324(extensión, active_area, oScan, Bins, make_figure_flag = 
     
     return dict_popt
 
-
 def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, Bins_fit, make_figure_flag, range_fit):
     Range_x_label = range_fit
 
@@ -277,8 +276,40 @@ def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, Bins_fit, make
     
     return dict_popt
 
-#### Gaus-Poisson convolution fit (only for NSAMP324) ###
+def data_calibrated(active_area, extension, offset, list_gain, ratio_keV, unidades):
+    dataP = active_area - offset
 
+    if unidades == 0:
+        data = dataP
+
+    elif unidades == 1:
+        data = dataP / list_gain[extension - 1]
+
+    elif unidades == 2:
+        data = (ratio_keV * dataP) / list_gain[extension - 1]
+
+    return data
+
+def data_calibrated_NSAMP(active_area, extension, offset, gain, ratio_keV, unidades, sigma_ADUs):
+    ## Se aplica el offset ##
+    dataP = active_area - offset ## En ADUs
+
+    if unidades == 0:
+        data = dataP ## En ADUs
+        sigma = sigma_ADUs
+
+    elif unidades == 1:
+        data = dataP / gain ## En electrones
+        sigma = abs(sigma_ADUs / gain)
+
+    elif unidades == 2:
+        data = ratio_keV * (dataP / gain) ## En keV
+        sigma = abs( ratio_keV *  (sigma_ADUs/ gain))
+
+    return data, sigma
+### =================================================================================================== ###
+
+### ================ Gaus-Poisson convolution fit (only for NSAMP324) ================= ###
 def gauss_comppoisson_fit(x, par):
     k =5
     #  m = 4
@@ -363,41 +394,9 @@ def fit_gausCONVcomppois(oScan_data,):
                  'fit_quality': {'Chiq' : chisq, 'Ndegf' : ndegf, 'Prob': proba}}
                  
     return dict_info
+### ==================================================================================== ###
 
-# ------------------------------------------------------- #
-
-def data_calibrated(active_area, extension, offset, list_gain, ratio_keV, unidades):
-    dataP = active_area - offset
-
-    if unidades == 0:
-        data = dataP
-
-    elif unidades == 1:
-        data = dataP / list_gain[extension - 1]
-
-    elif unidades == 2:
-        data = (ratio_keV * dataP) / list_gain[extension - 1]
-
-    return data
-
-def data_calibrated_NSAMP(active_area, extension, offset, gain, ratio_keV, unidades, sigma_ADUs):
-    ## Se aplica el offset ##
-    dataP = active_area - offset ## En ADUs
-
-    if unidades == 0:
-        data = dataP ## En ADUs
-        sigma = sigma_ADUs
-
-    elif unidades == 1:
-        data = dataP / gain ## En electrones
-        sigma = abs(sigma_ADUs / gain)
-
-    elif unidades == 2:
-        data = ratio_keV * (dataP / gain) ## En keV
-        sigma = abs( ratio_keV *  (sigma_ADUs/ gain))
-
-    return data, sigma
-
+### =========== Funciones para determinar ángulo Phi ================== ###
 def phi_angle_ROOT(data_mask):
     ## ======== Dimensiones del evento a analizar ============ ###
     NBX = data_mask.shape[1]
@@ -1219,8 +1218,10 @@ def phi_angle_ROOT_pendneg(data_mask):
         
 
     return phi
+### =================================================================== ###
 
 
+### ================================ Filtro de Muones General ============================================ ###
 def event_DataFrame(dataCal, label_img, nlabels_img, prop, header, extension, unidades) -> pd.DataFrame:
     list_Runid = []
     list_ext = []
@@ -1600,9 +1601,9 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             list_Muon_labels.append(event)
 
     return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta, list_phi, list_charge_all_events
+### ====================================================================================================== ###
 
-##### ------------------- Catálogo de Muones Rectos (verticales/horizontales) ---------------------- ###
-
+### ========================= Catálogo de Muones Rectos (verticales/horizontales) ========================= ###
 def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop, min_Charge, Sigma, skirts):
     list_sigmas_vertical_event = []
     list_vertical_event = []
@@ -1708,10 +1709,9 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop
 
 
     return list_vertical_events, list_horizontal_events
+### ======================================================================================================= ###
 
-
-################### ---------------------- Funciones para el Modelo de Difusión ---------------------------- ###############
-
+### ================ Funciones para el Modelo de Difusión ========================= ###
 def check_flip_vertical_muon(dict, label_muon, Delta_in, Delta_fin, extension):
 
     Delta_inicial = Delta_in    # px
@@ -2070,7 +2070,6 @@ def diffution_vertical_muon(dict, list_vertical_labels, Delta_in, Delta_fin, ext
     
     return list_all_sigmas, list_deep
 
-
 def diffution_vertical_muon_ROOT(dict, list_vertical_labels, Delta_in, Delta_fin, extension):
 
     list_all_sigmas = []
@@ -2192,7 +2191,6 @@ def diffution_vertical_muon_ROOT(dict, list_vertical_labels, Delta_in, Delta_fin
     
     return list_all_sigmas, list_deep
 
-
 def diffution_horizontal_muon(dict, list_horizontal_labels, Delta_in, Delta_fin, extension):
 
     list_all_sigmas = []
@@ -2311,6 +2309,6 @@ def diffution_horizontal_muon(dict, list_horizontal_labels, Delta_in, Delta_fin,
 
     
     return list_all_sigmas, list_deep
-
+### =============================================================================== ###
 
         
