@@ -1,5 +1,6 @@
 # from functions_py import math
 from functions_MuonsNSAMP1 import *
+
 import math
 from astropy.io import fits
 import scipy.ndimage as ndimage
@@ -28,7 +29,7 @@ Elip = 0.65
 
 ## Datos del filtro POR EXTENSIÓN
 list_Elip = [0.65, 0.65, 0, 0.65]
-list_Solidit = [0.7, 0.65, 0, 0.7]
+list_Solidit = [0.7, 0.7, 0, 0.7]
 
 DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
 
@@ -97,8 +98,8 @@ def main(argObj):
                 print('Loading error in image ' + str(img) + 'in open the image.')
                 continue
         
-        # for extension in (0,1,3):
-        for extension in (0, 1):
+        for extension in (0,1,3):
+        # for extension in (0, 1):
             # extension = 1
             Elip = list_Elip[extension]
             Solidit = list_Solidit[extension]
