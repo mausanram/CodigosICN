@@ -10,6 +10,7 @@ import random
 import time
 
 # from ROOT import TF1, TH1F, Fit, TCanvas, gStyle
+from ROOT import TMath, TF1, TH1F, TCanvas, gStyle, TProfile, TGraphErrors
 
 
 def event_DataFrame(dataCal, label_img, nlabels_img, prop, header, extension, unidades) -> pd.DataFrame:
