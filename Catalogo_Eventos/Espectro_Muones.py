@@ -28,7 +28,7 @@ Elip = 0.65
 
 ## Datos del filtro POR EXTENSIÓN
 list_Elip = [0.65, 0.65, 0, 0.65]
-list_Solidit = [0.7, 0.60, 0, 0.7]
+list_Solidit = [0.7, 0.65, 0, 0.7]
 
 DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
 
@@ -76,6 +76,10 @@ def main(argObj):
     list_theta_extension_2 = []
     list_theta_extension_1 = []
     list_theta_extension_4 = []
+
+    list_phi_extension_2 = []
+    list_phi_extension_1 = []
+    list_phi_extension_4 = []
 
 
     total_images = len(argObj)
@@ -159,7 +163,7 @@ def main(argObj):
                 # list_charge_of_all.append(charge)
                 
             
-            DeltaL, DeltaEL, list_charge, _, list_theta, list_charge_all_events = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
+            DeltaL, DeltaEL, list_charge, _, list_theta, list_phi, list_charge_all_events = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
                                                                     prop=prop, Solidit=Solidit, Elipticity=Elip)
 
             if extension == 0: 
@@ -169,6 +173,7 @@ def main(argObj):
                     list_EventCharge_extension_1.append(list_charge[index])
                     list_DeltaL_extension_1.append(DeltaL[index])
                     list_theta_extension_1.append(list_theta[index])
+                    list_phi_extension_1.append(list_phi[index])
                     
             if extension == 1: 
                 for index in np.arange(0, len(DeltaEL)):
@@ -177,6 +182,7 @@ def main(argObj):
                     list_EventCharge_extension_2.append(list_charge[index])
                     list_DeltaL_extension_2.append(DeltaL[index])
                     list_theta_extension_2.append(list_theta[index])
+                    list_phi_extension_2.append(list_phi[index])
             
             if extension == 3: 
                 for index in np.arange(0, len(DeltaEL)):
@@ -185,6 +191,7 @@ def main(argObj):
                     list_EventCharge_extension_4.append(list_charge[index])
                     list_DeltaL_extension_4.append(DeltaL[index])
                     list_theta_extension_4.append(list_theta[index])
+                    list_phi_extension_4.append(list_phi[index])
             # del data_maskEvent
             # del Barycentercharge
 
@@ -215,7 +222,7 @@ def main(argObj):
 
     print('Hora del final de cálculo: ', Final)
     print('Tiempo de cálculo: ', Final-Inicio)
-    print(num_images)
+    # print(num_images)
     Eventos_Totales = 'Eventos Detectados en Total: ' +  str(total_events)
     eventos_rectos = 'Muones Detectados: ' + str(num_muons)
     # relacion = total_events / num_muons
@@ -230,7 +237,7 @@ def main(argObj):
     # file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs__all.pkl'
 
     if units == 0:
-        file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs__per_ext2.pkl'
+        file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs__.pkl'
     elif units == 1:
         file_name = 'dict_muons_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_electrons__.pkl'
     elif units == 2:
