@@ -34,7 +34,7 @@ def main():
 
     medida_x = 10 / 2    # cm
     medida_y = 100 / 2   # cm
-    medida_z = 10   # cm
+    medida_z = 10 / 2  # cm
 
 
     #### Arreglos de los valores para mapear la CCD ####
@@ -43,7 +43,7 @@ def main():
     mapeo_z = dimension_z_barr(medida_z)
 
     ### Número de muones a simular ### 
-    number_thet = 10      ## Valores de un ángulo Theta.
+    number_thet = 300000      ## Valores de un ángulo Theta.
 
     n_muons = number_thet  ## Número total de muones que se simularán.
 

@@ -2,18 +2,18 @@ void Test_thet(){
 //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
 // TFile *file0 = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_0.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_1.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_3.0x3.0_RADIO_12_0.root");
 
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
-// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_1.root");
+TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_500000_PLANES_150x150_RADIO_450_0.root");
 
 
 // TTree *tree0 = (TTree*) file0->Get("tree");
 TTree *tree = (TTree*) file->Get("tree");
 
 
-int NB = 120;
-// int NB = 60;
+// int NB = 90;
+int NB = 60;
 double tlow = 0;
 double thi = TMath::Pi()/2.0;
 TH1F *theta_all = new TH1F("theta_all", "", NB, tlow, thi);
@@ -34,10 +34,10 @@ func1->SetParameter(0, 5000);
 
 // ====================== Función para la CCD =========================== //
 // TF1 *func2 = new TF1("func2", "[0]*((3.29909/1)*sin(x)*(cos(x))^3+(2.8041616/(1*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0.01, 85*TMath::Pi()/180);
-TF1 *func2 = new TF1("func2", "[0]*((3.298956/1)*sin(x)*(cos(x))^3+(1.4020808/(1*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0.01, 85*TMath::Pi()/180);
+// TF1 *func2 = new TF1("func2", "[0]*((3.298956/1)*sin(x)*(cos(x))^3+(1.4020808/(1*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0.01, 85*TMath::Pi()/180);
 
 // ====================== Funcion para la barra ========================  //
-// TF1 *func2 = new TF1("func2", "[0]*((10)*sin(x)*(cos(x))^3+(22/(TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
+TF1 *func2 = new TF1("func2", "[0]*((10)*sin(x)*(cos(x))^3+(22/(TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
 
 func2->SetParameter(0, 2000);
 
