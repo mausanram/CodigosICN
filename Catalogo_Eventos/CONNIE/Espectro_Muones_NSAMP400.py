@@ -19,7 +19,7 @@ from functions_CONNIE import *
 current_path = os.getcwd()
 
 ## Datos de la CCd
-CCD_depth = 725 #micras
+CCD_depth = 680 #micras
 px_to_cm = 0.0015
 px_to_micras = 15
 micra_to_cm = 1 / 10000
@@ -39,7 +39,7 @@ ratio_keV = 0.0036
 DeltaEL_range = 85
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
-#### ---- LOS DATOS DE CONNIE YA ESTÁN CALIBRADOS EN ELECTRONES Y SE CARGAN LOS DATOS ASÍ --------- ###
+#### ==== LOS DATOS DE CONNIE YA ESTÁN CALIBRADOS EN ELECTRONES Y SE CARGAN LOS DATOS ASÍ ==== ###
 units = 1
 n_sigmas = 4
 numero_bins = 500
