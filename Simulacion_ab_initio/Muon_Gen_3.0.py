@@ -28,8 +28,8 @@ def main():
 
 
     # ######### Medidas de la CCD (para centrarla en el origen) ##########
-    medida_x = 1.197 / 2    # cm
-    medida_y = 1.587 / 2   # cm
+    medida_x = 1.587 / 2    # cm
+    medida_y = 1.917 / 2   # cm
     medida_z = 0.0725 / 2  # cm
 
     #### Arreglos de los valores para mapear la CCD ####
@@ -40,7 +40,7 @@ def main():
     ### Número de muones a simular ### 
     number_thet = 1000     ## Valores de un ángulo Theta.
     n_muons = number_thet  ## Número total de muones que se simularán.
-    nmuons_perbucle = 10000
+    nmuons_perbucle = 100000
 
     niterations = n_muons / nmuons_perbucle
 
@@ -107,7 +107,7 @@ def main():
 
     # print('Muones que impactaron en la CCD: ', nmuons_in_CCD)
     # print('TTree primary file saved in ' + file_root_name_1)
-    print('All TTree muons in CCd file saved in /home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD')
+    # print('All TTree muons in CCd file saved in /home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD')
 
     # fig, axs = plt.subplots(figsize=[7,5])
     # # axs.plot(Theta, 70 * Theta_true)

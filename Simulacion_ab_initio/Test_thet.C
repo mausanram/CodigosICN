@@ -3,9 +3,8 @@ void Test_thet(){
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
 // TFile *file0 = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_0.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_50000_PLANES_3.0x3.0_RADIO_12_0.root");
-TFile *file = new TFile("MuonGenChain_NMUONS_200_PLANES_3.0x3.0_RADIO_12.root");
 
-file->Print();
+
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_0.root");
 
