@@ -38,7 +38,7 @@ def main():
     mapeo_z = dimension_z(medida_z)
 
     ### Número de muones a simular ### 
-    number_thet = 1000000     ## Valores de un ángulo Theta.
+    number_thet = 1000     ## Valores de un ángulo Theta.
     n_muons = number_thet  ## Número total de muones que se simularán.
     nmuons_perbucle = 10000
 
@@ -46,56 +46,57 @@ def main():
 
     print('Se simularán ' + str(n_muons) + ' muones y se guardarán en objetos TTree de ' + str(nmuons_perbucle) + ' elementos.')
 
-    for iteration in np.arange(0, niterations):
-        ## Se simulan los muones, se genera un diccionario con la información de cada evento (Theta, Phi, Energía) ##
-        dict_muons, nmuons_in_CCD  = muon_generator_3(number_thet=nmuons_perbucle, Radio=Radio,  
-                                                    medida_x=medida_x, medida_y=medida_y, medida_z=medida_z, 
-                                                    mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z, 
-                                                    half_plane_size=half_plane_size)
+    # for iteration in np.arange(0, niterations):
+    ## Se simulan los muones, se genera un diccionario con la información de cada evento (Theta, Phi, Energía) ##
+    dict_muons, nmuons_in_CCD  = muon_generator_3(number_thet=nmuons_perbucle, Radio=Radio,  
+                                                medida_x=medida_x, medida_y=medida_y, medida_z=medida_z, 
+                                                mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z, 
+                                                half_plane_size=half_plane_size)
 
-        list_nmuons = np.arange(0, len(dict_muons['Theta(Rad)']))
+    list_nmuons = np.arange(0, len(dict_muons['Theta(Rad)']))
 
-        #### TTree file in CCD ###
-        N_Muons = array('f', [-9999])
-        Thet_Rad = array('f', [-9999])
-        Phi_Rad = array('f', [-9999])
-        Energy_array = array('f', [-9999])
-        DeltaL_array = array('f', [-9999])
-        Energy_Landau_array = array('f', [-9999])
+    #### TTree file in CCD ###
+    N_Muons = array('f', [-9999])
+    Thet_Rad = array('f', [-9999])
+    Phi_Rad = array('f', [-9999])
+    Energy_array = array('f', [-9999])
+    DeltaL_array = array('f', [-9999])
+    Energy_Landau_array = array('f', [-9999])
 
-        # file_root_name = '/home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD/Sim_ab_initio_NMUONS_' + str(number_thet) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_' + str(iteration) + '.root'
-        file_direction = '/home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD/10k/'
-        file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_' + str(int(iteration)) + '.root'
+    # file_root_name = '/home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD/Sim_ab_initio_NMUONS_' + str(number_thet) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_' + str(iteration) + '.root'
+    # file_direction = '/home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD/10k/'
+    # file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_' + str(int(iteration)) + '.root'
+    file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_.root'
 
 
-        file = TFile.Open(file_direction+file_root_name, "RECREATE")
-        tree = TTree('tree', 'tree')
+    file = TFile.Open(file_direction+file_root_name, "RECREATE")
+    tree = TTree('tree', 'tree')
 
-        tree.Branch('nmuon',N_Muons, 'nmuon/F' )
-        tree.Branch('thet', Thet_Rad, 'thet/F')
-        tree.Branch('phi', Phi_Rad, 'phi/F')
-        tree.Branch('epri', Energy_array, 'epri/F')
-        tree.Branch('l', DeltaL_array, 'l/F')
-        tree.Branch('edep', Energy_Landau_array, 'edep/F')
+    tree.Branch('nmuon',N_Muons, 'nmuon/F' )
+    tree.Branch('thet', Thet_Rad, 'thet/F')
+    tree.Branch('phi', Phi_Rad, 'phi/F')
+    tree.Branch('epri', Energy_array, 'epri/F')
+    tree.Branch('l', DeltaL_array, 'l/F')
+    tree.Branch('edep', Energy_Landau_array, 'edep/F')
 
-        for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
-            N_Muons[0] = list_nmuons[i]
-            # N_Muons[0] = dict_muons['NMuon'][i]
-            Thet_Rad[0] = dict_muons['Theta(Rad)'][i]
-            # print(Thet_Deg[0])
-            #print(f'Ei={i} Energy_Landau={dict_muons_in_CCD}') 
-            Phi_Rad[0] = dict_muons['Phi(Rad)'][i]
-            Energy_array[0] =  dict_muons['Energy-SD(MeV)'][i] 
-            DeltaL_array[0] = dict_muons['Delta_L(cm)'][i]
-            Energy_Landau_array[0] = dict_muons['Energy_Landau(KeV)'][i]
-            # print(Energy_Landau_array[0])
-            # th_deg = dict_muons['Theta(Deg)'][0]
-            tree.Fill()
+    for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
+        N_Muons[0] = list_nmuons[i]
+        # N_Muons[0] = dict_muons['NMuon'][i]
+        Thet_Rad[0] = dict_muons['Theta(Rad)'][i]
+        # print(Thet_Deg[0])
+        #print(f'Ei={i} Energy_Landau={dict_muons_in_CCD}') 
+        Phi_Rad[0] = dict_muons['Phi(Rad)'][i]
+        Energy_array[0] =  dict_muons['Energy-SD(MeV)'][i] 
+        DeltaL_array[0] = dict_muons['Delta_L(cm)'][i]
+        Energy_Landau_array[0] = dict_muons['Energy_Landau(KeV)'][i]
+        # print(Energy_Landau_array[0])
+        # th_deg = dict_muons['Theta(Deg)'][0]
+        tree.Fill()
 
-        tree.Write()
-        file.Close()
+    tree.Write()
+    file.Close()
 
-        del tree, N_Muons,Thet_Rad, Phi_Rad, Energy_array, DeltaL_array, Energy_Landau_array, dict_muons, list_nmuons
+    del tree, N_Muons,Thet_Rad, Phi_Rad, Energy_array, DeltaL_array, Energy_Landau_array, dict_muons, list_nmuons
 
     # Fin = datetime.datetime.now()
     # print('Tiempo de cálculo para hacer el tree_ROOT: ', Fin-In, end='\n\n')
