@@ -109,11 +109,11 @@ void LandauVavilov_Mau_GOOD() {
 
 	// cout << p endl;
 
-	cout << "Introduce un entero: ";	// ---------------------------------------- //
+	cout << "Introduce el momento del muon: ";	// ---------------------------------------- //
 	double p;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
    	std::cin >> p;					// ---------------------------------------- //
 
-	cout << "Introduce un entero: ";	// ---------------------------------------- //
+	cout << "Introduce la distancia que recorrió: ";	// ---------------------------------------- //
 	double s;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
    	std::cin >> s;					// ---------------------------------------- //
 
@@ -124,13 +124,13 @@ void LandauVavilov_Mau_GOOD() {
 
 	// TLatex lat;
 
-	TF1 *f = new TF1("f", LV, 0, 10, 2);
+	TF1 *f = new TF1("f", LV, 0, 5, 2);
 	// f->SetNpx(100);
 
 
 	f->SetParameter(0, s);
 	f->SetParameter(1, p);
-	f->SetRange(0, 0.7);
+	// f->SetRange(0, 0.7);
 	f->SetTitle("Landau-Vavilov distribution (for 0.0725cm of Si);#font[12]{Energy} (MeV);Probability");
 	f->SetTitle("Landau-Vavilov distribution (0.0725cm of Si);Energy (MeV);Probability");
 	f->Draw();

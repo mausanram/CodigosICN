@@ -6,7 +6,8 @@ import matplotlib.pyplot as plt
 from funciones_Sim_ab_initio import *
 import datetime
 import os
-import pickle as pkl
+# import pickle as pkl
+
 from ROOT import TFile, TTree
 from array import array
 
@@ -18,7 +19,6 @@ def main():
 
     ##### Valor del radio de la semi-esfera #####
     Radio = 12     ## cm
-
 
     #### Tamaño de los planos tangentes a la esfera ####
     # Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
