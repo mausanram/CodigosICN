@@ -14,7 +14,7 @@ TTree *tree = (TTree*) file->Get("tree");
 // tree->Print();
 
 // int NB = 90;
-int NB = 60;
+int NB = 40;
 double tlow = 0;
 double thi = TMath::Pi()/2.0;
 TH1F *theta_all = new TH1F("theta_all", "", NB, tlow, thi);
@@ -35,7 +35,7 @@ func1->SetParameter(0, 5000);
 
 // ====================== Función para la CCD =========================== //
 // TF1 *func2 = new TF1("func2", "[0]*((3.29909/1)*sin(x)*(cos(x))^3+(2.8041616/(1*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0.01, 85*TMath::Pi()/180);
-TF1 *func2 = new TF1("func2", "[0]*((3.298956/1)*sin(x)*(cos(x))^3+(1.4020808/(1*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0.01, 85*TMath::Pi()/180);
+TF1 *func2 = new TF1("func2", "[0]*((3.4275732/1)*sin(x)*(cos(x))^3+(2.289706464/(1*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0.01, 85*TMath::Pi()/180);
 
 
 // Buscar como se hace un TChain para guardar multiples arboles
