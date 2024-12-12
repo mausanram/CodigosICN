@@ -40,7 +40,7 @@ def main():
     ### Número de muones a simular ### 
     number_thet = 1000     ## Valores de un ángulo Theta.
     n_muons = number_thet  ## Número total de muones que se simularán.
-    nmuons_perbucle = 100000
+    nmuons_perbucle = 10000
 
     niterations = n_muons / nmuons_perbucle
 
@@ -69,7 +69,7 @@ def main():
     file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_.root'
 
 
-    file = TFile.Open(file_direction+file_root_name, "RECREATE")
+    file = TFile.Open(file_root_name, "RECREATE")
     tree = TTree('tree', 'tree')
 
     tree.Branch('nmuon',N_Muons, 'nmuon/F' )
