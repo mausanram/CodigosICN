@@ -1,11 +1,11 @@
 void Test_edep(){
 //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_1x1_RADIO_12_CCDSIZE_400x650_.root");
+TFile *file = new TFile("Sim_ab_initio_NMUONS_50000_PLANES_1x1_RADIO_12_CCDSIZE_400x600_.root");
 TTree *tree = (TTree*) file->Get("tree");
 
 
-int NB = 30;
+int NB = 90;
 double tlow = 0;
 // double thi = 620;
 double thi = 1000;
@@ -14,7 +14,7 @@ TH1F *edep_cut = new TH1F("edep_cut", "", NB, tlow, thi);
 
 // Fill histograms //
 tree->Draw("edep>>edep", "l>0");
-tree->Draw("edep>>edep_cut", "thet>20*TMath::Pi()/180 & edep>0");
+tree->Draw("edep>>edep_cut", "thet>22*TMath::Pi()/180 & edep>0");
 
 // // Define fuctions //
 // TF1 *func1 = new TF1("func1", "[0]*sin(x)*(cos(x))^2", 0, 90);
