@@ -1,13 +1,13 @@
 void Test_edep(){
 //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_50000_PLANES_3.0x3.0_RADIO_12_0.root");
+TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_.root");
 TTree *tree = (TTree*) file->Get("tree");
 
 
 int NB = 150;
-double tlow = 0;
-double thi = 1000;
+double tlow = -20;
+double thi = 620;
 TH1F *edep = new TH1F("edep", "", NB, tlow, thi);
 TH1F *edep_cut = new TH1F("edep_cut", "", NB, tlow, thi);
 

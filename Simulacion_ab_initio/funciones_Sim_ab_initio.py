@@ -411,6 +411,7 @@ def LandV(lx, lpar):
 
     if kappa<=0.01:
         phi = TMath.Landau(Lambda, lambdamp, 1.0)
+        TMath.Landau()
         return phi/xi
 
     elif 0.01<kappa and kappa<10:
