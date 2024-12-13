@@ -49,22 +49,22 @@ def Energy_list_log(lim_inf, lim_sup, N):
 
     return list_Energy
 
-def dimension_x(long_x):
-    step = 0.0001
+def dimension_x(long_x, Step):
+    step = Step
 
     list_long_x = [-long_x]
 
     while long_x:
         x = np.around(list_long_x[-1] + step, 4)
         list_long_x.append(x)
-
+        # print(x)
         if list_long_x[-1] == long_x:
             break
 
     return list_long_x
 
-def dimension_y(long_y):
-    step = 0.0001
+def dimension_y(long_y, Step):
+    step = Step
 
     list_long_y = [-long_y]
 
@@ -78,8 +78,8 @@ def dimension_y(long_y):
 
     return list_long_y
 
-def dimension_z(long_z):
-    step = 0.00001
+def dimension_z(long_z, Step):
+    step = Step
 
     list_long_z = [-long_z]
     # list_long_z = [0]
@@ -411,7 +411,6 @@ def LandV(lx, lpar):
 
     if kappa<=0.01:
         phi = TMath.Landau(Lambda, lambdamp, 1.0)
-        TMath.Landau()
         return phi/xi
 
     elif 0.01<kappa and kappa<10:
@@ -425,10 +424,11 @@ def LandV(lx, lpar):
 
 def random_LV(s, p):
     gRandom.SetSeed(0) ## Cambia la semilla aleatoria para el GetRandom
-    f = TF1("", LandV, 0, 5, 2)
+    f = TF1("", LandV, 0, 1, 2)
     # f = TF1("", LandV, 0, 10, 2)
-    f.SetParameter(0, s)
-    f.SetParameter(1, p)
+    # f.SetParameter(0, np.double(s))
+    # f.SetParameter(1, np.double(p))
+    f.SetParameters(s, p)
 
     Edep = f.GetRandom()
     return Edep * 1000    #### Energía en KeV
@@ -1035,9 +1035,12 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
 
         if Delta_L > 0:
             nmuons_in_CCD =  nmuons_in_CCD + 1
+            print('Delta L: ', Delta_L)
+            print('Energy S-D: ', Random_energy)
+            print('Momentum: ', momentum)
             ### ================== Calculo de la energía de Landau ================ ###
             Random_energy_Landau = random_LV(s=Delta_L, p = momentum)
-            # print('Energy Landau: ', Random_energy_Landau)
+            print('Energy Landau: ', Random_energy_Landau)
             ### =================================================================== ###
 
             # list_nmuons.append(n_muon)

@@ -22,7 +22,7 @@ def main():
     pixel_size = 0.0015 # cm
 
     sizex_pixels = 400 # px
-    sizey_pixels = 650 # px (Esta dimensión debe ser mas larga que X)
+    sizey_pixels = 600 # px (Esta dimensión debe ser mas larga que X)
 
     ##### Valor del radio de la semi-esfera #####
     Radio = 12     ## cm
@@ -33,19 +33,23 @@ def main():
 
 
     # ######### Medidas de la CCD (para centrarla en el origen) ##########
-    medida_x = (sizex_pixels * pixel_size) / 2    # cm
-    medida_y = (sizey_pixels * pixel_size)  / 2   # cm
+    medida_x = np.around((sizex_pixels * pixel_size) / 2, 4)    # cm
+    medida_y = np.around((sizey_pixels * pixel_size)  / 2, 4)   # cm
     medida_z = 0.0725 / 2  # cm
 
+    # medida_x = 1.587 / 2   # cm
+    # medida_y = 1.917 / 2 # cm
+    # medida_z = 0.0725 / 2  # cm
+
     #### Arreglos de los valores para mapear la CCD ####
-    mapeo_x = dimension_x(medida_x)
-    mapeo_y = dimension_y(medida_y)
-    mapeo_z = dimension_z(medida_z)
+    mapeo_x = dimension_x(medida_x, 0.0001)
+    mapeo_y = dimension_y(medida_y, 0.0001)
+    mapeo_z = dimension_z(medida_z, 0.0001)
 
     ### Número de muones a simular ### 
     number_thet = 1000     ## Valores de un ángulo Theta.
     n_muons = number_thet  ## Número total de muones que se simularán.
-    nmuons_perbucle = 100000
+    nmuons_perbucle = 100
 
     niterations = n_muons / nmuons_perbucle
 
@@ -71,7 +75,7 @@ def main():
     # file_root_name = '/home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD/Sim_ab_initio_NMUONS_' + str(number_thet) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_' + str(iteration) + '.root'
     # file_direction = '/home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD/10k/'
     # file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_' + str(int(iteration)) + '.root'
-    file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(int(half_plane_size * 2)) +'x' + str(int(half_plane_size * 2)) + '_RADIO_' + str(Radio) + '_CCDSIZE_ ' + str(int(sizex_pixels))+ 'x' + str(int(sizey_pixels))+'_.root'
+    file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(int(half_plane_size * 2)) +'x' + str(int(half_plane_size * 2)) + '_RADIO_' + str(Radio) + '_CCDSIZE_' + str(int(sizex_pixels))+ 'x' + str(int(sizey_pixels))+'_.root'
 
 
     file = TFile.Open(file_root_name, "RECREATE")

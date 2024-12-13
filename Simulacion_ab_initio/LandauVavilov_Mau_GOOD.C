@@ -124,12 +124,14 @@ void LandauVavilov_Mau_GOOD() {
 
 	// TLatex lat;
 
-	TF1 *f = new TF1("f", LV, 0, 5, 2);
+	TF1 *f = new TF1("f", LV, 0, 1, 2);
 	// f->SetNpx(100);
 
 
-	f->SetParameter(0, s);
-	f->SetParameter(1, p);
+	// f->SetParameter(0, s);
+	// f->SetParameter(1, p);
+
+	f->SetParameters(s, p);
 	// f->SetRange(0, 0.7);
 	f->SetTitle("Landau-Vavilov distribution (for 0.0725cm of Si);#font[12]{Energy} (MeV);Probability");
 	f->SetTitle("Landau-Vavilov distribution (0.0725cm of Si);Energy (MeV);Probability");
