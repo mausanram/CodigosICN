@@ -29,7 +29,7 @@ def main():
 
     #### Tamaño de los planos tangentes a la esfera ####
     # Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
-    half_plane_size = 1  ## cm
+    half_plane_size = 0.5  ## cm
 
 
     # ######### Medidas de la CCD (para centrarla en el origen) ##########
@@ -110,7 +110,7 @@ def main():
     print('Hora final de cálculo: ', Final)
     print('Tiempo de cálculo: ', Final-Inicio)
 
-    # print('Muones que impactaron en la CCD: ', nmuons_in_CCD)
+    print('Muones que impactaron en la CCD: ', nmuons_in_CCD)
     # print('TTree primary file saved in ' + file_root_name_1)
     # print('All TTree muons in CCd file saved in /home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD')
 
