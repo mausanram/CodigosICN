@@ -29,7 +29,7 @@ def main():
 
     #### Tamaño de los planos tangentes a la esfera ####
     # Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
-    half_plane_size = 0.5  ## cm
+    half_plane_size = 1  ## cm
 
 
     # ######### Medidas de la CCD (para centrarla en el origen) ##########
@@ -49,7 +49,7 @@ def main():
     ### Número de muones a simular ### 
     number_thet = 1000     ## Valores de un ángulo Theta.
     n_muons = number_thet  ## Número total de muones que se simularán.
-    nmuons_perbucle = 50000
+    nmuons_perbucle = 500000
 
     niterations = n_muons / nmuons_perbucle
 
