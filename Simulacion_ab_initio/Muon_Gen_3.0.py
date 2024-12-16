@@ -44,10 +44,14 @@ def main():
     # medida_z = 0.0725 / 2  # cm
 
     #### Arreglos de los valores para mapear la CCD ####
-    step = 0.001
+    step = 0.0001
     mapeo_x = dimension_x(medida_x, step)
     mapeo_y = dimension_y(medida_y, step)
-    mapeo_z = dimension_z(medida_z, 0.0001)
+    mapeo_z = dimension_z(medida_z, step)
+
+    print(mapeo_x[-1], mapeo_x[0])
+    print(mapeo_y[-1], mapeo_y[0])
+    print(mapeo_z[-1], mapeo_z[0])
 
     ### Número de muones a simular ### 
     number_thet = 1000     ## Valores de un ángulo Theta.

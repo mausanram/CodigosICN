@@ -977,7 +977,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
         
         list_z = [z_3, z_4, z_5, z_6]
         # print(list_z)
-        limit_around = 3
+        limit_around = 4
         n_flags = 0
         
         flag_faces = True
@@ -1034,6 +1034,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
         # print('Tiempo de cálculo para Delta L: ', Fin-In)
 
         if Delta_L > 0:
+            # print(list_flags)
             nmuons_in_CCD =  nmuons_in_CCD + 1
             # print('Delta L: ', Delta_L)
             # print('Energy S-D: ', Random_energy)
