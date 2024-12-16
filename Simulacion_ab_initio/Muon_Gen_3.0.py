@@ -56,7 +56,7 @@ def main():
     ### Número de muones a simular ### 
     number_thet = 1000     ## Valores de un ángulo Theta.
     n_muons = number_thet  ## Número total de muones que se simularán.
-    nmuons_perbucle = 50000
+    nmuons_perbucle = 500000
 
     niterations = n_muons / nmuons_perbucle
 
