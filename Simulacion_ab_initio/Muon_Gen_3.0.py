@@ -25,11 +25,11 @@ def main():
     sizey_pixels = 600 # px (Esta dimensión debe ser mas larga que X)
 
     ##### Valor del radio de la semi-esfera #####
-    Radio = 12     ## cm
+    Radio = 5     ## cm
 
     #### Tamaño de los planos tangentes a la esfera ####
     # Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
-    half_plane_size = 1  ## cm
+    half_plane_size = 0.5  ## cm
 
 
     # ######### Medidas de la CCD (para centrarla en el origen) ##########
@@ -37,19 +37,22 @@ def main():
     medida_y = np.around((sizey_pixels * pixel_size)  / 2, 4)   # cm
     medida_z = 0.0725 / 2  # cm
 
+    # print(medida_x, medida_y, medida_z)
+
     # medida_x = 1.587 / 2   # cm
     # medida_y = 1.917 / 2 # cm
     # medida_z = 0.0725 / 2  # cm
 
     #### Arreglos de los valores para mapear la CCD ####
-    mapeo_x = dimension_x(medida_x, 0.0001)
-    mapeo_y = dimension_y(medida_y, 0.0001)
+    step = 0.001
+    mapeo_x = dimension_x(medida_x, step)
+    mapeo_y = dimension_y(medida_y, step)
     mapeo_z = dimension_z(medida_z, 0.0001)
 
     ### Número de muones a simular ### 
     number_thet = 1000     ## Valores de un ángulo Theta.
     n_muons = number_thet  ## Número total de muones que se simularán.
-    nmuons_perbucle = 500000
+    nmuons_perbucle = 50000
 
     niterations = n_muons / nmuons_perbucle
 
@@ -115,7 +118,7 @@ def main():
     print('Tiempo de cálculo: ', Final-Inicio)
 
     print('Muones que impactaron en la CCD: ', nmuons_in_CCD)
-    # print('TTree primary file saved in ' + file_root_name_1)
+    print('TTree primary file saved in ' + file_root_name)
     # print('All TTree muons in CCd file saved in /home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD')
 
     # fig, axs = plt.subplots(figsize=[7,5])

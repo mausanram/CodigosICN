@@ -1,7 +1,8 @@
 void Test_edep(){
 //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_50000_PLANES_1x1_RADIO_12_CCDSIZE_400x600_.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_50000_PLANES_1x1_RADIO_12_CCDSIZE_400x600_.root");
+TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_2x2_RADIO_12_CCDSIZE_400x600_.root");
 TTree *tree = (TTree*) file->Get("tree");
 
 

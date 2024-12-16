@@ -1035,12 +1035,12 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
 
         if Delta_L > 0:
             nmuons_in_CCD =  nmuons_in_CCD + 1
-            print('Delta L: ', Delta_L)
-            print('Energy S-D: ', Random_energy)
-            print('Momentum: ', momentum)
+            # print('Delta L: ', Delta_L)
+            # print('Energy S-D: ', Random_energy)
+            # print('Momentum: ', momentum)
             ### ================== Calculo de la energía de Landau ================ ###
             Random_energy_Landau = random_LV(s=Delta_L, p = momentum)
-            print('Energy Landau: ', Random_energy_Landau)
+            # print('Energy Landau: ', Random_energy_Landau)
             ### =================================================================== ###
 
             # list_nmuons.append(n_muon)
