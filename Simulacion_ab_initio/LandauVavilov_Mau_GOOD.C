@@ -82,7 +82,7 @@ double LV (double *lx, double *lpar) {
 	//td::cout << Deltamp * 1000 << std::endl;
 
 	if (kappa<=0.01) {
-		double phi = TMath::Landau(lambda, lambdamp, 1.0);
+		double phi = TMath::Landau(lambda, lambdamp, 0.1);
 		return phi/xi;
 		}
 	else if (0.01<kappa && kappa<10) {
