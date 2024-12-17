@@ -410,7 +410,7 @@ def LandV(lx, lpar):
     sigma2 = (xi**2)*(1-beta2/2)/kappa		# Standard deviation for relativistic particles
 
     if kappa<=0.01:
-        phi = TMath.Landau(Lambda, lambdamp, 0.3)
+        phi = TMath.Landau(Lambda, lambdamp, 0.1)
         return phi/xi
 
     elif 0.01<kappa and kappa<10:
