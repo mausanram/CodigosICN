@@ -82,7 +82,7 @@ double LV (double *lx, double *lpar) {
 	//td::cout << Deltamp * 1000 << std::endl;
 
 	if (kappa<=0.01) {
-		double phi = TMath::Landau(lambda, lambdamp, 0.1);
+		double phi = TMath::Landau(lambda, lambdamp, 1);
 		return phi/xi;
 		}
 	else if (0.01<kappa && kappa<10) {
@@ -124,7 +124,7 @@ void LandauVavilov_Mau_GOOD() {
 
 	// TLatex lat;
 
-	TF1 *f = new TF1("f", LV, 0, 1, 2);
+	TF1 *f = new TF1("f", LV, 0, 0.1, 2);
 	// f->SetNpx(100);
 
 

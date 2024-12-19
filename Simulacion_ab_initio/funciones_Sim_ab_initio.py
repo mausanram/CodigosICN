@@ -1702,8 +1702,54 @@ def deffuse_model(number_thet,Theta, Theta_true, Phi, Radio, number_points_per_a
             
     return list_delta_L, n_muons_in_CCD, n_negative_long
 
-#### ------------------------ FUNCIONES PARA LA BARRA CENTELLADORA ------------------------------ #### 
+### ========================== Funciones de la pixelización ============================= ###
+def diffution_curve(z, alpha, beta):
+    return np.sqrt(np.abs(alpha * np.log(1 - (beta * z))))
 
+def pixelizacion(alpha, beta, h, edep, theta, L):
+    ratio_micra_cm = 10000 # micra / cm
+    pixel_size = 15 # micras/px
+
+    ### ------------------ Parámetros extra para dibujar la traza ----------------- ###
+    CCD_thickness = 725 # micras
+
+    CCD_thickness_px = CCD_thickness / pixel_size # px
+
+    ### --------------------- Variables -------------------------- ###
+    muon_height = h * ratio_micra_cm # micras
+    muon_height_px = muon_height / pixel_size
+
+    ratio_eV_electron = 3.7 # eV/e-
+
+    Edep = edep # KeV
+    Edep_eV = Edep * 10**(3) # eV
+    Edep_elec = Edep_eV / ratio_eV_electron # e-
+
+    Thet = np.degrees(theta) # Degrees
+    Delta_L = L * ratio_micra_cm # micras
+    ### ----------------------------------------------------------- ###
+
+
+    delta_XY = np.sqrt(delta_L**2 - muon_height**2 ) # micras
+    # delta_XY = Delta_L * np.sin(Thet) # micras
+
+    delta_XY_px = delta_XY / pixel_size # px
+    list_XY_deep = np.linspace(0, muon_height_px, int(np.around(delta_XY_px, 0)))
+
+    z_deeps = np.arange(7.5, CCD_thickness, 7.5) # micras
+
+    sigma_values = diffution_curve(list_XY_deep * pixel_size, alpha, beta) # micras
+    max_width = int(np.around(sigma_values[-1] * 4 , 0))
+
+
+    ### Distribución de la carga por linea ###
+    charge_per_line = Edep_elec / delta_XY_px
+
+
+
+    return
+
+#### ======================== FUNCIONES PARA LA BARRA CENTELLADORA ============================== #### 
 def muon_generator_BARRA(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z, half_plane_size):
     list_thet_in_CCD = []
     list_phi_in_CCD = []
@@ -1947,5 +1993,5 @@ def dimension_z_barr(long_z):
             break
 
     return list_long_z
+#### ============================================================================================ ####
 
-#### -------------------------------------------------------------------------------------------- ####
