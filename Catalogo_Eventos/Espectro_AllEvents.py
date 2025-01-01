@@ -18,15 +18,6 @@ Solidit = 0.7
 Elip = 2
 numero_bins = 5000
 
-def gaussian(x, a, mean, sigma):
-    return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))
-
-def Landau(x,a, MP,xi):
-    C1 = a/np.sqrt((2 * np.pi))
-    C2 = np.exp(-(x-MP)/xi)
-    C3 = np.exp((-0.5 * ((x-MP)/xi + C2 )))
-    return  C1 * C3
-
 
 def main(argObj):
     expgain = [227, 220.4, 94.72, 197.7]
@@ -43,7 +34,8 @@ def main(argObj):
     for img in argObj:
         hdu_list = fits.open(img)
         
-        for extension in (0,1,3):
+        # for extension in (0,1,3):
+        for extension in (0,1):
 
             data = hdu_list[extension].data
             header = hdu_list[extension].header
