@@ -2,7 +2,9 @@ void Test_L(){
 //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_50000_PLANES_1x1_RADIO_5_CCDSIZE_400x600_.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_50000_PLANES_1x1_RADIO_5_CCDSIZE_400x600_.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1x1_RADIO_5_CCDSIZE_400x600_SIGMA_LV_1_.root");
+TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_0.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_2x2_RADIO_12_CCDSIZE_400x600_.root");
 
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_1.root");
@@ -17,6 +19,9 @@ double tlow = 0;
 double thi = 0.4;
 // double thi = 30;
 TH1F *L = new TH1F("L", "", NB, tlow, thi);
+L->GetXaxis()->SetTitle("Distance (cm)");
+
+
 TH1F *Lcut = new TH1F("Lcut", "", NB, tlow, thi);
 
 // Fill histograms //
