@@ -1,6 +1,6 @@
 void Test_xyz(){
 //TFile *file = new TFile("../build/muons_100K_vacuum_file.root");
-TFile *file = new TFile("../build/B02ntuples.root");
+TFile *file = new TFile("./root_files/muons_100K_vacuum_file.root");
 
 
 // TTree *tree0 = (TTree*) file0->Get("tree");
