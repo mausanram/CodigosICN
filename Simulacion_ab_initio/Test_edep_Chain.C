@@ -3,7 +3,7 @@ void Test_edep_Chain(){
     TChain *chain = new TChain("tree");
     // chain->Add("/home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD/100k/Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_0.root");
     // chain->Add("Sim_ab_initio_NMUONS_50000_PLANES_1x1_RADIO_5_CCDSIZE_400x600_.root");
-    chain->Add("Sim_ab_initio_NMUONS_100000_PLANES_1x1_RADIO_5_CCDSIZE_400x600_SIGMA_LV_1_.root");
+    chain->Add("Sim_ab_initio_NMUONS_100000_PLANES_1x1_RADIO_8_CCDSIZE_400x600_SIGMA_LV_0.3_.root");
     chain->Add("Edep_allclusters_NSAMP324_KeV.root");
     // chain->Add("Edep_NSAMP324_KeV.root");
 

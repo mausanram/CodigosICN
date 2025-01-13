@@ -410,7 +410,7 @@ def LandV(lx, lpar):
     sigma2 = (xi**2)*(1-beta2/2)/kappa		# Standard deviation for relativistic particles
 
     if kappa<=0.01:
-        phi = TMath.Landau(Lambda, lambdamp, 0.3)
+        phi = TMath.Landau(Lambda, lambdamp, 1.0)
         return phi/xi
 
     elif 0.01<kappa and kappa<10:
@@ -908,8 +908,8 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
 
         # normal_Vec = (-1 * Vec[0] / Norma, -1 * Vec[1] / Norma, -1 * Vec[2] / Norma)
         normal_Vec =  [-1 * np.sin(Random_th) * np.cos(Random_phi), 
-                    -1 * np.sin(Random_th) * np.sin(Random_phi), 
-                    -1 * np.cos(Random_th)] ## Es un vector normal unitario apuntando  hacia el centro de coordenadas
+                       -1 * np.sin(Random_th) * np.sin(Random_phi), 
+                       -1 * np.cos(Random_th)] ## Es un vector normal unitario apuntando  hacia el centro de coordenadas
         # print('Normal_vec: ', normal_Vec)
 
         vec_thet = [np.cos(Random_th) * np.cos(Random_phi), 
@@ -1030,6 +1030,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
         
         Delta_L, _ = intersection_CCD(list_flags, list_z, medida_z, Random_th)
 
+        print(Delta_L)
         # Fin = datetime.datetime.now()
         # print('Tiempo de cálculo para Delta L: ', Fin-In)
 
