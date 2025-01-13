@@ -21,15 +21,26 @@ def main():
 
     pixel_size = 0.0015 # cm
 
-    sizex_pixels = 400 # px
-    sizey_pixels = 600 # px (Esta dimensión debe ser mas larga que X)
+    ### ======== Dimensiones originales ============ ### (CHECAR LAS DIMENSIONES DEl RADIO Y DE LOS PLANOS)
+    sizex_pixels = 1058 # px
+    sizey_pixels = 1278 # px (Esta dimensión debe ser mas larga que X)
+    ### ============================================ ###
 
-    ##### Valor del radio de la semi-esfera #####
-    Radio = 8     ## cm
+    # ### ======== Dimensiones Nuevas ================ ###
+    # sizex_pixels = 400 # px
+    # sizey_pixels = 600 # px (Esta dimensión debe ser mas larga que X)
+    # ### ============================================ ###
 
-    #### Tamaño de los planos tangentes a la esfera ####
+    ### =============== Valor del radio de la semi-esfera =========== ###
+    Radio = 12     ## cm
+    # Radio = 8     ## cm
+    ### ============================================================= ###
+    
+    ### =========== Tamaño de los planos tangentes a la esfera ============ ###
     # Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
-    half_plane_size = 0.75  ## cm
+    half_plane_size = 1.1  ## cm
+    # half_plane_size = 0.75  ## cm
+    ### ==================================================================== ###
 
 
     # ######### Medidas de la CCD (para centrarla en el origen) ##########
