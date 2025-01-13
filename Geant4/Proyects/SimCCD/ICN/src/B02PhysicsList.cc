@@ -110,10 +110,10 @@ B02PhysicsList::~B02PhysicsList()
 
 void B02PhysicsList::SetCuts()
 {
-  SetCutValue(1*mm, "proton");
-  SetCutValue(1*mm, "e-");
-  SetCutValue(1*mm, "e+");
-  SetCutValue(1*mm, "gamma");      
+  SetCutValue(0.01*mm, "proton");
+  SetCutValue(0.01*mm, "e-");
+  SetCutValue(0.01*mm, "e+");
+  SetCutValue(0.01*mm, "gamma");      
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

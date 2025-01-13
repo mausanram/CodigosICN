@@ -1030,7 +1030,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
         
         Delta_L, _ = intersection_CCD(list_flags, list_z, medida_z, Random_th)
 
-        print(Delta_L)
+        #print(Delta_L)
         # Fin = datetime.datetime.now()
         # print('Tiempo de cálculo para Delta L: ', Fin-In)
 
@@ -1731,7 +1731,7 @@ def pixelizacion(alpha, beta, h, edep, theta, L):
     ### ----------------------------------------------------------- ###
 
 
-    delta_XY = np.sqrt(delta_L**2 - muon_height**2 ) # micras
+    delta_XY = np.sqrt(Delta_L**2 - muon_height**2 ) # micras
     # delta_XY = Delta_L * np.sin(Thet) # micras
 
     delta_XY_px = delta_XY / pixel_size # px

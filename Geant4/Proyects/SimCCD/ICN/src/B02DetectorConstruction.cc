@@ -66,10 +66,12 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   // ============ Materials ======================== //
   auto Air = G4Material::GetMaterial("G4_AIR");
   auto LAr = new G4Material("LAr",   18.,  39.95*g/mole,  1.393*g/cm3);
-  LAr->GetIonisation()->SetBirksConstant(0.069*cm/MeV); //LarSoft documentation C. Zhang
+  //LAr->GetIonisation()->SetBirksConstant(0.069*cm/MeV); //LarSoft documentation C. Zhang
   
   auto nistManager = G4NistManager::Instance();
   auto Si = nistManager->FindOrBuildMaterial("G4_Si");
+  Si->GetIonisation()->SetBirksConstant(0.09*cm/MeV); // El valor de 0.1 parece ajustar bastante bien el espectro pero se necesita mas estudio
+  
   
   //auto Si = new G4Material("Si",   14.,  28.0849*g/mole,  2.3396*g/cm3);
   //auto Si = G4Material::GetMaterial("G4_Si");
@@ -117,13 +119,13 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   //G4double YLength = 0.01587; // m
   //G4double ZLength = 0.00725; // m
   
-  G4double XLength = 0.003; // m
-  G4double YLength = 0.0045; // m
-  G4double ZLength = 0.0003625; // m
+  G4double XLength = 0.006; // m
+  G4double YLength = 0.009; // m
+  G4double ZLength = 0.000725*1.; // m
   
   
   //Sibox = new G4Box("ccd", HalfWorldLength, HalfWorldLength, HalfWorldLength);
-  G4Box *Sibox = new G4Box("CCD", XLength*m, YLength*m, ZLength*m);
+  G4Box *Sibox = new G4Box("CCD", 0.5*XLength*m, 0.5*YLength*m, 0.5*ZLength*m);
   G4LogicalVolume *SiLogic = new G4LogicalVolume(Sibox, Si, "CCD", 0, 0, 0);
   new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), SiLogic, "CCD", logicWorld, false, 0,true);
   

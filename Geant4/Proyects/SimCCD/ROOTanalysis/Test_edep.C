@@ -1,6 +1,6 @@
 void Test_edep(){
-TFile *file = new TFile("./root_files/muons_100K_vacuum_file.root");
-
+//TFile *file = new TFile("./root_files/muons_100K_vacuum_file.root");
+TFile *file = new TFile("../ICN/build/muons_100K_vacuum_file.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
 
@@ -30,27 +30,30 @@ TH1F *edep1 = new TH1F("edep1", "", NB, tlow, thi);
 edep1->SetStats(0);
 
 // ============= Fill histograms =========== //
-//tree->Draw("WevtBar>>edep"); // GEANT4 INFO
-tree->Draw(" EevtBar>>edep"); // GEANT4 INFO
+tree->Draw("WevtBar>>edep"); // GEANT4 INFO
+tree->Draw(" EevtBar>>edep1"); // GEANT4 INFO
 //tree->Draw("Ehitbar>>edep_cut", "thet>22*TMath::Pi()/180 & edep>0");
 // ========================================= //
 
 tree0->Draw("edep>>edep0"); // EXPERIMENTAL INFO
-tree1->Draw("edep/1000>>edep1"); // SIM_AB_INITIO INFO
+//tree1->Draw("edep/1000>>edep1"); // SIM_AB_INITIO INFO
 
 // ========== Scale histograms =========== //
-edep->Scale(0.75, "");
+//edep->Scale(0.65, "");
+edep->Scale(5.2, "");
 edep->SetLineColor(2);
 
 edep0->Scale(1);
 edep0->SetLineColor(4);
 
-edep1->Scale(0.33);
+edep1->Scale(8.);
 edep1->SetLineColor(1);
-
-
 // ======================================= //
 
+
+// ======== Fits ========== //
+
+// ======================== //
 
 // Create Canvas //
 TCanvas *canv = new TCanvas("canv","", 2*700, 600);
@@ -61,8 +64,8 @@ edep0->Draw("H same");
 edep1->Draw("H same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
-leg->AddEntry(edep, "Sim-GEANT4", "lep");
-leg->AddEntry(edep1, "Sim-PP", "LEP");
+leg->AddEntry(edep, "Sim-Wedep", "lep");
+leg->AddEntry(edep1, "Sim-Edep", "LEP");
 leg->AddEntry(edep0, "Datos NSAMP324", "LEP");
 leg->Draw();
 

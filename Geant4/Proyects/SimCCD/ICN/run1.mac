@@ -17,7 +17,7 @@
 /analysis/ntuple/setFileName 0 muons_100K_vacuum_file
 /analysis/ntuple/setFileName 1 muons_100K_vacuum_file
 
-/run/beamOn 100000
+/run/beamOn 10000
 
 
 

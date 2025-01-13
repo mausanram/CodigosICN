@@ -224,7 +224,7 @@ void B02AnalysisManager::EndOfEvent(const G4Event* aEvent){
 
 		//ADCevtBar = p1+p2*GevtBar/(1+p3*GevtBar);
 
-    fEvtTuple->fill(0,event_id);
+          fEvtTuple->fill(0,event_id);
 	  fEvtTuple->fill(1,EevtBar/MeV);
 	  fEvtTuple->fill(2,WevtBar/MeV);
 	  //fEvtTuple->fill(3,GevtBar/MeV);
