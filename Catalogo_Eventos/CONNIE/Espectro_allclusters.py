@@ -1,3 +1,4 @@
+# from functions_py import math
 import math
 from astropy.io import fits
 import scipy.ndimage as ndimage
@@ -10,8 +11,8 @@ import skimage as sk
 import datetime
 import pickle
 import os
-from functions_CONNIE import *
 
+from functions_CONNIE import *
 
 # from ROOT import *
 
@@ -40,12 +41,12 @@ DeltaEL_range = 85
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 #### ==== LOS DATOS DE CONNIE YA ESTÁN CALIBRADOS EN ELECTRONES Y SE CARGAN LOS DATOS ASÍ ==== ###
-units = 1
+units = 2
 n_sigmas = 4
 numero_bins = 500
 
-
 def main(argObj):
+    
     list_totalEvents = []
 
     list_charge_of_all_extension_1 = []
@@ -104,61 +105,55 @@ def main(argObj):
         fondo = ma.masked_array(dataCal,fondo_mask)
         valor_promedio_fondo = fondo.data.mean()
 
-        DeltaL, DeltaEL, list_charge, _, list_theta, list_phi, list_charge_all_events = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
-                                                                                        prop=prop, Solidit=Solidit, Elipticity=Elip)
+        list_charge = all_cluster(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, prop=prop)
 
-        for index in np.arange(0, len(DeltaEL)):
-            list_charge_of_all_extension_1.append(list_charge_all_events[index])
-            list_DeltaEL_extension_1.append(DeltaEL[index])
+        for index in np.arange(0, len(list_charge)):
             list_EventCharge_extension_1.append(list_charge[index])
-            list_DeltaL_extension_1.append(DeltaL[index])
-            list_theta_extension_1.append(list_theta[index])
-            list_phi_extension_1.append(list_phi[index])
 
-        print('Imagen ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
+        print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
         del hdu_list              
 
-    # num_muons = len(list_EventCharge_extension_1) + len(list_EventCharge_extension_2) + len(list_EventCharge_extension_4)
-    num_muons = len(list_EventCharge_extension_1)
+    num_clusters = len(list_EventCharge_extension_1)
 
-    dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_muons, 'Energy_Units' : units, 'Elipcidad' : Elip, 
-                        'Solidity' : Solidit,
-                        'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_DeltaEL_extension_1,
-                                         'deltaL' : list_DeltaL_extension_1, 'all_events' : list_charge_of_all_extension_1,
-                                         'theta': list_theta_extension_1, 'phi': list_phi_extension_1}}
-
+    dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_clusters, 'Energy_Units' : units,
+                        'extension_1' : {'charge' : list_EventCharge_extension_1}}
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()
 
     print('Hora del final de cálculo: ', Final)
     print('Tiempo de cálculo: ', Final-Inicio)
-    print(num_images)
-    Eventos_Totales = 'Eventos Detectados en Total: ' +  str(total_events)
-    eventos_rectos = 'Muones Detectados: ' + str(num_muons)
-    # relacion = total_events / num_muons
-    
-    # eventos_circulares = 'Muones Circulares Detectados: ' + str(len(list_EventosCirc))
-    # print('Número de elementos de la lista "list_EventCharge_AllExtensions": ', len(list_EventCharge_AllExtensions))
-    # print('elementos de la lista "list_EventCharge_AllExtensions":', list_EventCharge_AllExtensions)
-    print(Eventos_Totales)
-    print(eventos_rectos)
 
     ext = img.split('/')[-1].split('_')[-2].split('g')[-1]
     if units == 0:
-        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs.pkl'
+        file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_img' + str(ext) + '_ADUs.pkl'
 
     elif units == 1:
-        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_electrons.pkl'
+        file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_img' + str(ext) + '_electrons.pkl'
 
     elif units == 2:
-        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_KeV.pkl'
+        file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_img' + str(ext) + '_KeV.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
 
+    Eventos_Totales = 'Eventos Detectados en Total: ' +  str(total_events)
+    print(Eventos_Totales)
+
     print('Dictionary saved in', current_path + '/' + file_name, ' as a binary file. To open use library "pickle". ')
+
+    # eventos_rectos = 'Muones Detectados: ' + str(num_muons)
+    # img_err = 'Imágenes con error al cargar: ' + str(nerr_img)
+    # ext_err = 'Error en fit de extension: ' + str(nerr_ext)
+    # relacion = total_events / num_muons
+    
+    # eventos_circulares = 'Muones Circulares Detectados: ' + str(len(list_EventosCirc))
+    # print('Número de elementos de la lista "list_EventCharge_AllExtensions": ', len(list_EventCharge_AllExtensions))
+    # print('elementos de la lista "list_EventCharge_AllExtensions":', list_EventCharge_AllExtensions)
+    # print(img_err)
+    # print(ext_err)
+    # print(eventos_rectos)
 
     # plt.show() 
 
@@ -167,3 +162,4 @@ if __name__ == "__main__":
     argObj = sys.argv[1:]
     exitcode = main(argObj)
     exit(code = exitcode)
+
