@@ -25,11 +25,11 @@ def main():
     sizey_pixels = 600 # px (Esta dimensión debe ser mas larga que X)
 
     ##### Valor del radio de la semi-esfera #####
-    Radio = 5     ## cm
+    Radio = 8     ## cm
 
     #### Tamaño de los planos tangentes a la esfera ####
     # Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
-    half_plane_size = 0.5  ## cm
+    half_plane_size = 0.75  ## cm
 
 
     # ######### Medidas de la CCD (para centrarla en el origen) ##########
@@ -83,7 +83,7 @@ def main():
     # file_direction = '/home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD/10k/'
     # file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_' + str(int(iteration)) + '.root'
     # file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(int(half_plane_size * 2)) +'x' + str(int(half_plane_size * 2)) + '_RADIO_' + str(Radio) + '_CCDSIZE_' + str(int(sizex_pixels))+ 'x' + str(int(sizey_pixels))+'_.root'
-    file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(int(half_plane_size * 2)) +'x' + str(int(half_plane_size * 2)) + '_RADIO_' + str(Radio) + '_CCDSIZE_' + str(int(sizex_pixels))+ 'x' + str(int(sizey_pixels))+ '_SIGMA_LV_1' + '_.root'
+    file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(int(half_plane_size * 2)) +'x' + str(int(half_plane_size * 2)) + '_RADIO_' + str(Radio) + '_CCDSIZE_' + str(int(sizex_pixels))+ 'x' + str(int(sizey_pixels))+ '_SIGMA_LV_0.3' + '_.root'
 
     file = TFile.Open(file_root_name, "RECREATE")
     tree = TTree('tree', 'tree')
