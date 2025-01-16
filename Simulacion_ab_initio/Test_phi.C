@@ -2,7 +2,12 @@ void Test_phi(){
 //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_3.0x3.0_RADIO_12_.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_2x2_RADIO_12_CCDSIZE_400x600_.root");
+
+
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_.root");
+TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_3.0x3.0_RADIO_12_CCDSIZE_1058x1278_SIGMA_LV_1_.root");
+
+
 
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_500000_PLANES_150x150_RADIO_100(1).root");
@@ -12,7 +17,7 @@ TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_2x2_RADIO_12_CCDSIZE
 TTree *tree = (TTree*) file->Get("tree");
 
 
-int NB = 40;
+int NB = 50;
 double tlow = 0;
 double thi = 2*TMath::Pi() + 0.1;
 TH1F *theta_all = new TH1F("phi_all", "", NB, tlow, thi);

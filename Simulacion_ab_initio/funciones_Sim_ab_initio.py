@@ -890,7 +890,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
         gRandom.SetSeed(0)
         ### ================== Seleccion aleatoria de theta, phi y en_pri(Smith-Duller) =============== ###
         Random_th = random_thet() ## Escoje un ángulo segun la distribución de Theta_true en radianes
-        Random_phi = rand.random()*(2*np.pi) ## Escoje un ángulo phi uniforme en radianes
+        Random_phi = rand.random()*(2 * np.pi) ## Escoje un ángulo phi uniforme en radianes
         Random_energy = random_SD(Random_th) ## Escoje una energía cinética segun la distribución de Smith-Duller en MeV
         ### =========================================================================================== ###
 
@@ -1023,6 +1023,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
                 if n_flags == 2:
                     flag_faces = False
                 # print('Bandera 2: ', flag_cara_2)
+            
             else:
                 flag_faces = False
 
@@ -1040,6 +1041,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
             # print('Delta L: ', Delta_L)
             # print('Energy S-D: ', Random_energy)
             # print('Momentum: ', momentum)
+
             ### ================== Calculo de la energía de Landau ================ ###
             Random_energy_Landau = random_LV(s=Delta_L, p = momentum)
             # print('Energy Landau: ', Random_energy_Landau)
@@ -1848,7 +1850,7 @@ def muon_generator_BARRA(number_thet, Radio, medida_x, medida_y, medida_z, mapeo
 
         list_z = [z_3, z_4, z_5, z_6]
         n_flags = 0
-        limit_around = 3
+        limit_around = 4
         
         flag_faces = True
         while flag_faces:

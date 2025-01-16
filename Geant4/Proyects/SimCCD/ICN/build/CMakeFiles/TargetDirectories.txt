@@ -1,8 +1,0 @@
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/ICN/build/CMakeFiles/b02.dir
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/ICN/build/CMakeFiles/B02.dir
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/ICN/build/CMakeFiles/edit_cache.dir
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/ICN/build/CMakeFiles/rebuild_cache.dir
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/ICN/build/CMakeFiles/list_install_components.dir
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/ICN/build/CMakeFiles/install.dir
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/ICN/build/CMakeFiles/install/local.dir
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/ICN/build/CMakeFiles/install/strip.dir

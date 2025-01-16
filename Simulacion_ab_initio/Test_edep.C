@@ -5,7 +5,10 @@ void Test_edep(){
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_50000_PLANES_1x1_RADIO_5_CCDSIZE_400x600_.root");
 
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1x1_RADIO_5_CCDSIZE_400x600_SIGMA_LV_0.1_.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_0.root");
+
+
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_.root");
+TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_3.0x3.0_RADIO_12_CCDSIZE_1058x1278_SIGMA_LV_1_.root");
 TTree *tree = (TTree*) file->Get("tree");
 
 // TFile *file0 = new TFile("Edep_allclusters_NSAMP324_MeV.root");

@@ -1,8 +1,0 @@
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/StandAloneMuonSimulation-main/build/CMakeFiles/b02.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/StandAloneMuonSimulation-main/build/CMakeFiles/B02.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/StandAloneMuonSimulation-main/build/CMakeFiles/edit_cache.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/StandAloneMuonSimulation-main/build/CMakeFiles/rebuild_cache.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/StandAloneMuonSimulation-main/build/CMakeFiles/list_install_components.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/StandAloneMuonSimulation-main/build/CMakeFiles/install.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/StandAloneMuonSimulation-main/build/CMakeFiles/install/local.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/StandAloneMuonSimulation-main/build/CMakeFiles/install/strip.dir
