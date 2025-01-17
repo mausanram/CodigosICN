@@ -22,22 +22,24 @@ def main():
 
     #### Tamaño de los planos tangentes a la esfera ####
     # Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
-    half_plane_size = 1.5  ## cm
+    half_plane_size = 0.7  ## cm
 
 
     # ######### Medidas de la CCD (para centrarla en el origen) ##########
-    medida_x = 1.197 / 2    # cm
-    medida_y = 1.587 / 2   # cm
-    medida_z = 0.0725   # cm
+    medida_x = 0.6 / 2    # cm
+    medida_y = 0.9 / 2   # cm
+    medida_z = 0.0725 / 2  # cm
 
 
     #### Arreglos de los valores para mapear la CCD ####
-    mapeo_x = dimension_x(medida_x)
-    mapeo_y = dimension_y(medida_y)
-    mapeo_z = dimension_z(medida_z)
-
+    stepxy = 0.0001
+    stepz = 0.00001
+    mapeo_x = dimension_x(medida_x, stepxy)
+    mapeo_y = dimension_y(medida_y, stepxy)
+    mapeo_z = dimension_z(medida_z, stepz)
+    # print(mapeo_z)
     ### Número de muones a simular ### 
-    number_thet = 500000    
+    number_thet = 10000
     n_muons = number_thet ## Número total de muones que se simularán.
 
     print('Se simularán ' + str(n_muons) + ' muones.')
@@ -61,7 +63,7 @@ def main():
     DeltaL_array = array('f', [-9999])
     Energy_Landau_array = array('f', [-9999])
 
-    file_root_name = 'Sim_ab_initio_NMUONS_' + str(number_thet) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_0.root'
+    file_root_name = 'Sim_ab_initio_NMUONS_' + str(number_thet) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_1.root'
     file = TFile.Open(file_root_name, "RECREATE")
     tree = TTree('tree', 'tree')
 

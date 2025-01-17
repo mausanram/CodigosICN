@@ -16,7 +16,7 @@ def dis_probability(theta, I_0):
 ### ------------- Funciones de distribución angular theta ----------- ##
 def dis_thet(lx, lpar): ## Distribucion dis_angular
     theta = lx[0]
-    return (np.cos(theta)**2) * (np.sin(theta))
+    return (TMath.Cos(theta)**2) * (TMath.Sin(theta))
 
 def random_thet():
     gRandom.SetSeed(0); ## Cambia la semilla aleatoria para el GetRandom
@@ -147,7 +147,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
 
     ## Caras 3 y 2
     if flags_CCD[2] and flags_CCD[1]:
-        h = list_z[0] + medida_z
+        h = medida_z + list_z[0] 
         delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
@@ -183,7 +183,7 @@ def intersection_CCD(flags_CCD, list_z, medida_z, Random_th ):
 
     ## Caras 4 y 2
     if flags_CCD[3] and flags_CCD[1]:
-        h = list_z[1] + medida_z
+        h = medida_z + list_z[1] 
         delta_L =  (h /  np.cos(Random_th))  ## cm
         # n_muons_in_CCD = n_muons_in_CCD + 1
         # list_delta_L.append(delta_L)
@@ -626,7 +626,7 @@ def muon_generator_2(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
 
         list_z = [z_3, z_4, z_5, z_6]
         # print(list_z)
-        limit_around = 3
+        limit_around = 4
         n_flags = 0
         
         flag_faces = True
@@ -645,28 +645,28 @@ def muon_generator_2(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
                     flag_faces = False
                 # print('Bandera 2: ', flag_cara_2)
 
-            if np.around(y_3, limit_around) in mapeo_y and np.around(z_3, limit_around) in mapeo_z:
+            if np.around(y_3, limit_around) in mapeo_y and np.around(z_3, limit_around + 1) in mapeo_z:
                 flag_cara_3 = True
                 n_flags = n_flags + 1
                 if n_flags == 2:
                     flag_faces = False
                 # print('Bandera 1: ', flag_cara_1) 
 
-            if np.round(y_4, limit_around) in mapeo_y and np.round(z_4, limit_around) in mapeo_z:
+            if np.round(y_4, limit_around) in mapeo_y and np.round(z_4, limit_around + 1) in mapeo_z:
                 flag_cara_4 = True
                 n_flags = n_flags + 1
                 if n_flags == 2:
                     flag_faces = False
                 # print('Bandera 2: ', flag_cara_2)
 
-            if np.around(x_5, limit_around) in mapeo_x and np.around(z_5, limit_around) in mapeo_z:
+            if np.around(x_5, limit_around) in mapeo_x and np.around(z_5, limit_around + 1) in mapeo_z:
                 flag_cara_5 = True
                 n_flags = n_flags + 1
                 if n_flags == 2:
                     flag_faces = False
                 # print('Bandera 1: ', flag_cara_1) 
 
-            if np.round(x_6, limit_around) in mapeo_x and np.round(z_6, limit_around) in mapeo_z:
+            if np.round(x_6, limit_around) in mapeo_x and np.round(z_6, limit_around + 1) in mapeo_z:
                 flag_cara_6 = True
                 n_flags = n_flags + 1
                 if n_flags == 2:
@@ -678,8 +678,21 @@ def muon_generator_2(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
 
         list_flags = [flag_cara_1, flag_cara_2, flag_cara_3, flag_cara_4, flag_cara_5, flag_cara_6]
 
-        # print('Flags 1,2,3,4,6: ', list_flags, Random_th)
-
+        # print(list_flags, Random_th)
+        if n_flags == 1:
+            print(list_flags)
+            print("x1: ", np.around(x_1, limit_around))
+            print("y1: ", np.around(y_1, limit_around))
+            print("x2: ", np.around(x_2, limit_around))
+            print("y2: ", np.around(y_2, limit_around))
+            print("y3: ", np.around(y_3, limit_around))
+            print("z3: ", np.around(z_3, limit_around + 1))
+            print("y4: ", np.around(y_4, limit_around))
+            print("z4: ", np.around(z_4, limit_around + 1))
+            print("x5: ", np.around(x_5, limit_around))
+            print("z5: ", np.around(z_5, limit_around + 1))
+            print("x6: ", np.around(x_6, limit_around))
+            print("z6: ", np.around(z_6, limit_around + 1))
         graf_flag = False
         if graf_flag:
 
@@ -907,10 +920,10 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
         Point = [Radio * Vec[0], Radio * Vec[1], Radio * Vec[2]]  ## Genera un punto sobre la esfera.
 
         # normal_Vec = (-1 * Vec[0] / Norma, -1 * Vec[1] / Norma, -1 * Vec[2] / Norma)
+
         normal_Vec =  [-1 * np.sin(Random_th) * np.cos(Random_phi), 
                        -1 * np.sin(Random_th) * np.sin(Random_phi), 
                        -1 * np.cos(Random_th)] ## Es un vector normal unitario apuntando  hacia el centro de coordenadas
-        # print('Normal_vec: ', normal_Vec)
 
         vec_thet = [np.cos(Random_th) * np.cos(Random_phi), 
                     np.cos(Random_th) * np.sin(Random_phi),
@@ -930,10 +943,6 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
         random_plane_point = [Point[0] + P_vector[0], 
                               Point[1] + P_vector[1], 
                               Point[2] + P_vector[2]]
-
-            # if random_plane_point[2] > 0:
-            #     flag_z = False
-        
 
         # print('Punto sobre el plano: ', random_plane_point)
         ### ===================================================================================== ###
@@ -989,7 +998,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
                     flag_faces = False
                 # print('Bandera 1: ', flag_cara_1) 
 
-            if np.round(x_2, limit_around) in mapeo_x and np.round(y_2, limit_around) in mapeo_y:
+            if np.around(x_2, limit_around) in mapeo_x and np.around(y_2, limit_around) in mapeo_y:
                 flag_cara_2 = True
                 n_flags = n_flags + 1
                 if n_flags == 2:
@@ -1003,7 +1012,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
                     flag_faces = False
                 # print('Bandera 1: ', flag_cara_1) 
 
-            if np.round(y_4, limit_around) in mapeo_y and np.round(z_4, limit_around + 1) in mapeo_z:
+            if np.around(y_4, limit_around) in mapeo_y and np.around(z_4, limit_around + 1) in mapeo_z:
                 flag_cara_4 = True
                 n_flags = n_flags + 1
                 if n_flags == 2:
@@ -1017,7 +1026,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
                     flag_faces = False
                 # print('Bandera 1: ', flag_cara_1) 
 
-            if np.round(x_6, limit_around) in mapeo_x and np.round(z_6, limit_around + 1) in mapeo_z:
+            if np.around(x_6, limit_around) in mapeo_x and np.around(z_6, limit_around + 1) in mapeo_z:
                 flag_cara_6 = True
                 n_flags = n_flags + 1
                 if n_flags == 2:
@@ -1026,8 +1035,11 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
             
             else:
                 flag_faces = False
-
-        list_flags = [flag_cara_1, flag_cara_2, flag_cara_3, flag_cara_4, flag_cara_5, flag_cara_6]
+        
+        # print(n_flags)
+        if n_flags == 1:
+            list_flags = [flag_cara_1, flag_cara_2, flag_cara_3, flag_cara_4, flag_cara_5, flag_cara_6]
+        # print(list_flags)
         
         Delta_L, _ = intersection_CCD(list_flags, list_z, medida_z, Random_th)
 
