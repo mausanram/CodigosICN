@@ -22,24 +22,24 @@ def main():
     pixel_size = 0.0015 # cm
 
     ### ======== Dimensiones originales ============ ### (CHECAR LAS DIMENSIONES DEl RADIO Y DE LOS PLANOS)
-    sizex_pixels = 1058 # px
-    sizey_pixels = 1278 # px (Esta dimensión debe ser mas larga que X)
+    # sizex_pixels = 1058 # px
+    # sizey_pixels = 1278 # px (Esta dimensión debe ser mas larga que X)
     ### ============================================ ###
 
     # ### ======== Dimensiones Nuevas ================ ###
-    # sizex_pixels = 400 # px
-    # sizey_pixels = 600 # px (Esta dimensión debe ser mas larga que X)
+    sizex_pixels = 400 # px
+    sizey_pixels = 600 # px (Esta dimensión debe ser mas larga que X)
     # ### ============================================ ###
 
     ### =============== Valor del radio de la semi-esfera =========== ###
-    Radio = 12     ## cm
-    # Radio = 8     ## cm
+    # Radio = 12     ## cm
+    Radio = 8     ## cm
     ### ============================================================= ###
     
     ### =========== Tamaño de los planos tangentes a la esfera ============ ###
     # Son planos simétricos de tamaño (2 * plane_side x 2 * plane_side)
-    half_plane_size = 1.2  ## cm
-    # half_plane_size = 0.75  ## cm
+    # half_plane_size = 1.2  ## cm
+    half_plane_size = 0.75  ## cm
     ### ==================================================================== ###
 
 
@@ -68,7 +68,7 @@ def main():
     ### Número de muones a simular ### 
     number_thet = 1000     ## Valores de un ángulo Theta.
     n_muons = number_thet  ## Número total de muones que se simularán.
-    nmuons_perbucle = 20000
+    nmuons_perbucle = 30000
 
     niterations = n_muons / nmuons_perbucle
 
