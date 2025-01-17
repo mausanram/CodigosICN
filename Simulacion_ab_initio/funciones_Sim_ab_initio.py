@@ -1036,10 +1036,23 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
             else:
                 flag_faces = False
         
-        # print(n_flags)
+        list_flags = [flag_cara_1, flag_cara_2, flag_cara_3, flag_cara_4, flag_cara_5, flag_cara_6]
+
+        # print(list_flags, Random_th)
         if n_flags == 1:
-            list_flags = [flag_cara_1, flag_cara_2, flag_cara_3, flag_cara_4, flag_cara_5, flag_cara_6]
-        # print(list_flags)
+            print(list_flags)
+            print("x1: ", np.around(x_1, limit_around))
+            print("y1: ", np.around(y_1, limit_around))
+            print("x2: ", np.around(x_2, limit_around))
+            print("y2: ", np.around(y_2, limit_around))
+            print("y3: ", np.around(y_3, limit_around))
+            print("z3: ", np.around(z_3, limit_around + 1))
+            print("y4: ", np.around(y_4, limit_around))
+            print("z4: ", np.around(z_4, limit_around + 1))
+            print("x5: ", np.around(x_5, limit_around))
+            print("z5: ", np.around(z_5, limit_around + 1))
+            print("x6: ", np.around(x_6, limit_around))
+            print("z6: ", np.around(z_6, limit_around + 1))
         
         Delta_L, _ = intersection_CCD(list_flags, list_z, medida_z, Random_th)
 
