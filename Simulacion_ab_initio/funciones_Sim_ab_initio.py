@@ -396,9 +396,9 @@ def LandV(lx, lpar):
 
     EC = 0.577	# Euler's constant
 
-    DeltaAv = K*rho*L*(z**2)*ZA*(1.0/(beta**2))*(np.log(2*me*(gamma**2)*(p**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch)
-
     xi = (K)*rho*ZA*L*(z/beta)**2		# Xi variable 
+    DeltaAv = xi * (np.log(2*me*(gamma**2)*(p**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch)
+    # xi = DeltaAv ## Prueba
 
     Lambda = (Delta-xi*(np.log(xi)-loge+1-EC))/xi # Lambda parameter
 
@@ -410,10 +410,10 @@ def LandV(lx, lpar):
     sigma2 = (xi**2)*(1-beta2/2)/kappa		# Standard deviation for relativistic particles
 
     if kappa<=0.01:
-        phi = TMath.Landau(Lambda, lambdamp, 0.3)
+        phi = TMath.Landau(Lambda, lambdamp, 1.0)
         return phi/xi
 
-    elif 0.01<kappa and kappa<10:
+    elif kappa>0.01 and kappa<10:
         vav = TMath.Vavilov(Delta-Deltamp, kappa, beta2)
         return vav
 
