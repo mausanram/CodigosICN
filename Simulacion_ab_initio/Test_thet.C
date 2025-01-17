@@ -9,7 +9,11 @@ void Test_thet(){
 
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_1.4x1.4_RADIO_12_1.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_20000_PLANES_2.4x2.4_RADIO_12_CCDSIZE_1058x1278_SIGMA_LV_1_.root");
+
+
+// =============== Archivos mas nuevos y que si funciona el ajuste ======================== //
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_20000_PLANES_2.4x2.4_RADIO_12_CCDSIZE_1058x1278_SIGMA_LV_1_.root");
+TFile *file = new TFile("Sim_ab_initio_NMUONS_30000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1_.root");
 
 
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
@@ -45,13 +49,13 @@ func1->SetParameter(0, 5000);
 // TF1 *func2 = new TF1("func2", "[0]*((3.042279/1)*sin(x)*(cos(x))^3+(0.25404/(1*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0.01, 85*TMath::Pi()/180);
 // TF1 *func2 = new TF1("func2", "[0]*((3.042279/1)*sin(x)*(cos(x))^3+(2*(0.1389825 + 0.1150575)/(1*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0.01, 85*TMath::Pi()/180);
 
-double Ah = 3.042279;
-double Al = 0.1389825;
-double Ac = 0.1150575;
+// double Ah = 3.042279;
+// double Al = 0.1389825;
+// double Ac = 0.1150575;
 
-// double Ah = 0.54;
-// double Al = 0.06525;
-// double Ac = 0.0435;
+double Ah = 0.54;
+double Al = 0.06525;
+double Ac = 0.0435;
 
 // double Ah = 0.585;
 // double Al = 0.0706875;
