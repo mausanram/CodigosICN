@@ -5,7 +5,7 @@ import numpy as np
 import numpy.ma as ma
 import pandas as pd 
 import skimage as sk
-import scipy.ndimage as ndimage
+import scipy.ndimage as nd
 import random
 import time
 
@@ -925,7 +925,7 @@ def all_cluster(dataCal, label_img, nlabels_img, prop):
 
     for event in np.arange(1, nlabels_img):
         mask = np.invert(label_img == event)
-        loc = ndimage.find_objects(label_img == event)[0]
+        loc = nd.find_objects(label_img == event)[0]
         
         data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
                                             mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
@@ -933,8 +933,5 @@ def all_cluster(dataCal, label_img, nlabels_img, prop):
         ## Aquí se calcula la carga total del cluster
         charge = data_maskEvent.sum()
         list_charge.append(charge)
-
-        # if DeltaEL_range_min <= DeltaEL <= DeltaEL_range_max:
-        # list_Muon_labels.append(event)
 
     return list_charge
