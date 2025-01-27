@@ -4,9 +4,10 @@
 #ifndef B02SteppingAction_h
 #define B02SteppingAction_h 1
 
-#include "G4UserSteppingAction.hh"
 #include "B02DetectorConstruction.hh"
 #include "B02EventAction.hh"
+
+#include "G4UserSteppingAction.hh"
 #include "G4Step.hh"
 
 

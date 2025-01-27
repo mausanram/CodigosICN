@@ -23,8 +23,10 @@ B02EventAction::B02EventAction()
 {
   // length distribution of muons 
   fLength = 0.0;
+
   // energy deposited by muons that will decay
   fEnergy = 0.0;
+
   // set printing per each event
   G4RunManager::GetRunManager()->SetPrintProgress(1); 
 }
@@ -34,7 +36,7 @@ B02EventAction::B02EventAction()
 void B02EventAction::BeginOfEventAction(const G4Event* aEvent)
 {
 
-  fLength = 0.0;
+  fLength = 0.0; // mm
   fEnergy = 0.0;
   
   if(fBarCollID==-1) {
@@ -74,7 +76,8 @@ void B02EventAction::EndOfEventAction(const G4Event* aEvent)
   auto analysisManager = G4AnalysisManager::Instance();
  
  // accumulated length by muons.
-  //G4cout << "TotalLength " << fLength/cm << G4endl;
+ 
+  // G4cout << "TotalLength " << fLength/cm << G4endl;
   //G4cout << "TotalEnergyMuonDecay " << fEnergy/MeV << G4endl;
   analysisManager->FillH1(4, fLength/cm);
   analysisManager->FillH1(5, fEnergy/MeV);
@@ -93,10 +96,10 @@ void B02EventAction::EndOfEventAction(const G4Event* aEvent)
   //
   // periodic printing
   //
-  if (event_id < 100 || event_id%100 == 0) {
+  if (event_id < 1000 || event_id%100 == 0) {
     G4cout << ">>> Evento " << aEvent->GetEventID() << G4endl;
-    G4cout << "    " << n_trajectories 
-	   << " trajectories stored in this event." << G4endl;
+    // G4cout << "TotalLength " << fLength/mm << G4endl;
+    // G4cout << "    " << n_trajectories << " trajectories stored in this event." << G4endl;
   }
   
   G4HCofThisEvent* HCE = aEvent->GetHCofThisEvent();

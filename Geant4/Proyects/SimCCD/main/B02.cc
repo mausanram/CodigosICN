@@ -3,8 +3,6 @@
 //      GEANT 4 - B02 
 // --------------------------------------------------------------
 
-#include "G4RunManager.hh"
-#include "G4UImanager.hh"
 #include "B02DetectorConstruction.hh"
 #include "B02PhysicsList.hh"
 #include "B02PrimaryGeneratorAction.hh"
@@ -12,11 +10,16 @@
 #include "B02EventAction.hh"
 #include "B02SteppingAction.hh"
 #include "B02SteppingVerbose.hh"
+#include "B02ActionInitialization.hh"
+
+#include "G4RunManager.hh"
+#include "G4UImanager.hh"
 #include "Randomize.hh"
 #include "G4UIExecutive.hh"
 #include "G4VisExecutive.hh"
 #include "G4SteppingVerbose.hh"
-#include "B02ActionInitialization.hh"
+
+
 int main(int argc,char** argv)
 {
  

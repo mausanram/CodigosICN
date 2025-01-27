@@ -14,10 +14,10 @@
 /generator/SmithActivation true 
 
 /analysis/setFileName muons_file
-/analysis/ntuple/setFileName 0 ../ROOTanalysis/root_files/muons_100K_vacuum_file
-/analysis/ntuple/setFileName 1 ../ROOTanalysis/root_files/muons_100K_vacuum_file
+/analysis/ntuple/setFileName 0 ../ROOTanalysis/root_files/muons_1M_vacuum_file
+/analysis/ntuple/setFileName 1 ../ROOTanalysis/root_files/muons_1M_vacuum_file
 
-/run/beamOn 10000
+/run/beamOn 1000000
 
 
 

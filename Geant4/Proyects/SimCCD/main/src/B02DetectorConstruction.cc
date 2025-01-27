@@ -95,7 +95,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
     Steel->AddElement(elNi, 0.10);  // 10% Nickel
     Steel->AddElement(elC,  0.02);  // 2% Carbon
     
-  fWorldLength = 0.1*m;
+  fWorldLength = 10*cm;
   fRockLength = 0.80*fWorldLength;
   fRock2Length = 0.50*fWorldLength;
   fBarDiameter = 0.3*fRock2Length; 
@@ -114,35 +114,27 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   // =========================================== //
   
   // =============== Constructor of CCD (non active volume) ===================== //
-
-  //G4double XLength = 0.01917; // m
-  //G4double YLength = 0.01587; // m
-  //G4double ZLength = 0.00725; // m
+  // G4double XLength = 1.917; // cm
+  // G4double YLength = 1.587; // cm
+  // G4double ZLength = 0.0725; // cm
   
-  G4double XLength = 0.006; // m
-  G4double YLength = 0.009; // m
-  G4double ZLength = 0.000725*1.; // m
-  
+  G4double XLength = 0.6; // cm
+  G4double YLength = 0.9; // cm
+  G4double ZLength = 0.0725*1.; // cm
+  // ============================================================================ //
   
   //Sibox = new G4Box("ccd", HalfWorldLength, HalfWorldLength, HalfWorldLength);
-  G4Box *Sibox = new G4Box("CCD", 0.5*XLength*m, 0.5*YLength*m, 0.5*ZLength*m);
-  G4LogicalVolume *SiLogic = new G4LogicalVolume(Sibox, Si, "CCD", 0, 0, 0);
+  Sibox = new G4Box("CCD", 0.5*XLength*cm, 0.5*YLength*cm, 0.5*ZLength*cm);
+  SiLogic = new G4LogicalVolume(Sibox, Si, "CCD", 0, 0, 0);
   new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), SiLogic, "CCD", logicWorld, false, 0,true);
+
+  fSiLogic = SiLogic;
   
   // ======================================================== //
 
-  // =================== Sensitive detectors ================= //
-  /*G4SDManager* SDman = G4SDManager::GetSDMpointer();
-  G4String barSDname = "B02/BarSD";
-  B02BarSD* aBarSD = new B02BarSD( barSDname );
-  SDman->AddNewDetector( aBarSD );
-  SetSensitiveDetector("ActiveLAr", aBarSD, true);
-  G4VisAttributes* BarVisAtt   = new G4VisAttributes (G4Colour(0.1,0.2,0.8));
-  BarVisAtt->SetForceAuxEdgeVisible( true );
-  LogicLAr->SetVisAttributes(BarVisAtt);*/
-	
+  // =================== Sensitive detectors ================= //	
   G4SDManager* SDman = G4SDManager::GetSDMpointer();
-  G4String barSDname = "CCD/BarSD";
+  G4String barSDname = "CCD/SD";
   B02BarSD* aBarSD = new B02BarSD( barSDname );
   SDman->AddNewDetector( aBarSD );
   SetSensitiveDetector("CCD", aBarSD, true);
@@ -191,12 +183,12 @@ void B02DetectorConstruction::DefineMaterials()
 
 void B02DetectorConstruction::SetHigh(G4double val)
 {
-  if (!SolidLAr) {
+  if (!Sibox) {
       G4cerr << "Detector has not yet been constructed." << G4endl;
       return;
   }
-  zhigh = val;
-  SolidLAr-> SetZHalfLength(0.5*zhigh);
+  // zhigh = val;
+  // SolidLAr-> SetZHalfLength(0.5*zhigh);
   // tell G4RunManager that we change the geometry
   G4RunManager::GetRunManager()->GeometryHasBeenModified();
 }

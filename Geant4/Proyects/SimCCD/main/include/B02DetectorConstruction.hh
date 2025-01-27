@@ -3,18 +3,19 @@
 #ifndef B02DetectorConstruction_h
 #define B02DetectorConstruction_h 1
 
+#include "B02DetectorMessenger.hh"
+#include "B02SteppingAction.hh"
+#include "B02BarSD.hh"
+#include "B02DetectorConstruction.hh"
+
 #include "globals.hh"
 #include "G4VUserDetectorConstruction.hh"
-#include "B02DetectorMessenger.hh"
 //Required explicitly since G4 version 10.0
 #include "G4SystemOfUnits.hh"
 #include "G4PhysicalConstants.hh"
 #include "tls.hh"
-#include "B02DetectorConstruction.hh"
 #include "G4GenericMessenger.hh"
-#include "B02BarSD.hh"
 #include "G4SDManager.hh"
-#include "B02SteppingAction.hh"
 
 class G4Box;
 class G4Tubs;
@@ -51,7 +52,7 @@ class B02DetectorConstruction : public G4VUserDetectorConstruction
     G4double GetZHalfLength() 
     { return zhigh;}
     
-    G4LogicalVolume *GetScoringVolume() const { return fLogicLAr; }
+    G4LogicalVolume *GetScoringVolume() const { return fSiLogic; }
 
     
 
@@ -67,8 +68,8 @@ class B02DetectorConstruction : public G4VUserDetectorConstruction
     G4VPhysicalVolume* physiWorld;    // pointer to the physical envelope
 
     //active cylinder                 // pointer to the solid Cylinder
-    G4Tubs*            SolidLAr;     // pointer to the solid Cylinder
-    G4LogicalVolume*   LogicLAr;     // pointer to the logical Cylinder
+    G4Box*             Sibox;     // pointer to the solid Cylinder
+    G4LogicalVolume*   SiLogic;     // pointer to the logical Cylinder
     G4VPhysicalVolume* PhysiLAr;     // pointer to the physical Cylinder 
 
 
@@ -103,7 +104,8 @@ class B02DetectorConstruction : public G4VUserDetectorConstruction
     //connect with stepping action clss 
     B02DetectorConstruction* fB02DetectorConstruction;
     
-    G4LogicalVolume *fLogicLAr;
+    // G4LogicalVolume *fLogicLAr;
+    G4LogicalVolume *fSiLogic;
      
 };
 

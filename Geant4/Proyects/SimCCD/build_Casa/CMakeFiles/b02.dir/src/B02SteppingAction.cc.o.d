@@ -2,8 +2,8 @@ CMakeFiles/b02.dir/src/B02SteppingAction.cc.o: \
  /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/main/src/B02SteppingAction.cc \
  /usr/include/stdc-predef.h \
  /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4UserSteppingAction.hh \
  /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
+ /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/globals.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4ios.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Types.hh \
@@ -236,27 +236,17 @@ CMakeFiles/b02.dir/src/B02SteppingAction.cc.o: \
  /usr/include/c++/11/bits/parse_numbers.h \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VUserDetectorConstruction.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/globals.hh \
- /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4UImessenger.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4UIdirectory.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4UIcommand.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4ApplicationState.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4ThreeVector.hh \
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/globals.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/ThreeVector.h \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Utility/defs.h \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/ThreeVector.icc \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4UIparameter.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4SystemOfUnits.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4PhysicalConstants.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/tls.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4GenericMessenger.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4AnyMethod.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4AnyType.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4UImessenger.hh \
+ /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
  /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VSensitiveDetector.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4CollectionNameVector.hh \
@@ -278,6 +268,8 @@ CMakeFiles/b02.dir/src/B02SteppingAction.cc.o: \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationInterfaces.icc \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationX.h \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationX.icc \
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationY.h \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationY.icc \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationZ.h \
@@ -525,19 +517,27 @@ CMakeFiles/b02.dir/src/B02SteppingAction.cc.o: \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4EmSaturation.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4ChemTimeStepModel.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Track.hh \
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4SystemOfUnits.hh \
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VUserDetectorConstruction.hh \
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4PhysicalConstants.hh \
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/tls.hh \
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4GenericMessenger.hh \
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4AnyMethod.hh \
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4AnyType.hh \
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4UImessenger.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4SDManager.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4HCtable.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4SDStructure.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VSensitiveDetector.hh \
- /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
  /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4UserEventAction.hh \
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4UserSteppingAction.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Step.hh \
+ /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
+ /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VTouchable.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4LogicalVolume.hh \
- /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VUserTrackInformation.hh \
- /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4RunManager.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Event.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/evtdefs.hh \

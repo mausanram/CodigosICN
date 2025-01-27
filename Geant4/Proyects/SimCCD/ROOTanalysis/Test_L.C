@@ -1,56 +1,42 @@
 void Test_L(){
-//TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_50000_PLANES_1x1_RADIO_5_CCDSIZE_400x600_.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1x1_RADIO_5_CCDSIZE_400x600_SIGMA_LV_1_.root");
-TFile *file = new TFile("../build/Sim_NMUONS_100000.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_2x2_RADIO_12_CCDSIZE_400x600_.root");
-
-// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_1.root");
-// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_0.root");
+TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 
 
-int NB = 160;
-// int NB = 120;
+int NB = 250;
 double tlow = 0;
-
-double thi = 1;
-// double thi = 30;
-TH1F *L = new TH1F("L", "", NB, tlow, thi);
+double thi = 0.4;
+TH1F *L = new TH1F("L", "Distance Distribution (CCD size: 0.9x0.6x0.0725 cm)", NB, tlow, thi);
 L->GetXaxis()->SetTitle("Distance (cm)");
+//L->SetStats(0);
 
 
 TH1F *Lcut = new TH1F("Lcut", "", NB, tlow, thi);
 
 // Fill histograms //
-tree->Draw("WevtBar>>L");
-//tree->Draw("l>>Lcut", "l>0 & thet>22*TMath::Pi()/180");
-// tree->Draw("l>>Lcut", "l>0");
+tree->Draw("LengthMuLAr>>L", "LengthMuLAr > 0");
 
-// Define fuctions //
-// TF1 *func1 = new TF1("func1", "[0]*sin(x)*(cos(x))^2", 0, 90);
-// func1->SetParameter(0, 5000);
 
-// TF1 *func2 = new TF1("func2", "[0]*sin(x)*(cos(x))^3+[1]*(sin(x))^2*(cos(x))^2", 0, 90);
-// func2->SetParameter(0, 2000);
-// func2->SetParameter(1, 1000);
+//TLine *line = new TLine(0.0725,0,0.0725,30000);
+TLine *line = new TLine(0.0725,0,0.0725,14000);
+line->SetLineStyle(2);
 
-// Fit functions //
-// theta_all->Fit("func1", "R");
-// theta_in->Fit("func2", "R");
 
 // Create Canvas //
 TCanvas *canv = new TCanvas("canv","", 2*700, 600);
-canv->Divide(2,1);
+//canv->Divide(2,1);
 canv->cd(1);
 L->Draw();
+line->Draw("same");
 // Lcut->Draw("same");
-// func1->Draw("same");
 
-canv->cd(2);
-Lcut->Draw();
+TLegend *leg = new TLegend(0.5, 0.7, 0.8, 0.8);
+leg->AddEntry(L, "Distance distribution", "lep");
+leg->AddEntry(line, "CCD Thickness: 0.0725 cm", "l");
+leg->Draw();
+
+//canv->cd(2);
+//Lcut->Draw();
 // func2->Draw("same");
 canv->Print("Dis_L.pdf");
 
