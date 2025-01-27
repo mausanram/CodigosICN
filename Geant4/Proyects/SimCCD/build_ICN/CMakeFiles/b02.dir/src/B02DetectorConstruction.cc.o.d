@@ -2,6 +2,7 @@ CMakeFiles/b02.dir/src/B02DetectorConstruction.cc.o: \
  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02DetectorConstruction.cc \
  /usr/include/stdc-predef.h \
  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
+ /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ios.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Types.hh \
@@ -234,37 +235,22 @@ CMakeFiles/b02.dir/src/B02DetectorConstruction.cc.o: \
  /usr/include/c++/11/bits/parse_numbers.h \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
- /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIdirectory.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcommand.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ApplicationState.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ThreeVector.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/ThreeVector.h \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Utility/defs.h \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/ThreeVector.icc \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIparameter.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UItokenNum.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
+ /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
- /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCofThisEvent.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Allocator.hh \
- /usr/include/c++/11/cstddef \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AllocatorPool.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHitsCollection.hh \
+ /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicalVolume.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/geomdefs.hh \
@@ -278,6 +264,8 @@ CMakeFiles/b02.dir/src/B02DetectorConstruction.cc.o: \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationInterfaces.icc \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.h \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.icc \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationY.h \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationY.icc \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationZ.h \
@@ -299,6 +287,9 @@ CMakeFiles/b02.dir/src/B02DetectorConstruction.cc.o: \
  /usr/include/c++/11/bits/this_thread_sleep.h \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicalVolume.icc \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepPoint.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Allocator.hh \
+ /usr/include/c++/11/cstddef \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AllocatorPool.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SteppingControl.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepStatus.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TouchableHandle.hh \
@@ -385,6 +376,12 @@ CMakeFiles/b02.dir/src/B02DetectorConstruction.cc.o: \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserTrackInformation.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsModelCatalog.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.icc \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
+ /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCofThisEvent.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHitsCollection.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHit.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VReadOutGeometry.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SensitiveVolumeList.hh \
@@ -529,15 +526,18 @@ CMakeFiles/b02.dir/src/B02DetectorConstruction.cc.o: \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmFluoDirectory.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmSaturation.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDManager.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCtable.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDStructure.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
- /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
- /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Material.hh \

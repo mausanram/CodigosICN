@@ -54,12 +54,23 @@ tree1->Draw("edep>>edep1");
 tree2->Draw("edep>>edep2"); // 
 tree3->Draw("edep>>edep3"); 
 
+
+
+// ================ //
+double cont = edep->Integral();
+double cont0 = edep0->Integral();
+double cont1 = edep1->Integral();
+double cont2 = edep2->Integral();
+double cont3 = edep3->Integral();
+//double cont4 = edep->Integral();
+
+
 // ========== Scale histograms =========== //
-/*edep->Scale(4.5);
-edep0->Scale(9.1);
-edep1->Scale(6.95);
-edep2->Scale(0.86);
-edep3->Scale(6.);*/
+edep->Scale(1/cont);
+edep0->Scale(1/cont0);
+edep1->Scale(1/cont1);
+edep2->Scale(1/cont2);
+edep3->Scale(1/cont3);
 // ======================================= //
 
 

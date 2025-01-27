@@ -2,6 +2,9 @@ void Test_L(){
 TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 
+TFile *file0 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_100000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
+TTree *tree0 = (TTree*) file0->Get("tree");
+
 
 int NB = 250;
 double tlow = 0;
@@ -10,23 +13,31 @@ TH1F *L = new TH1F("L", "Distance Distribution (CCD size: 0.9x0.6x0.0725 cm)", N
 L->GetXaxis()->SetTitle("Distance (cm)");
 //L->SetStats(0);
 
+TH1F *LPP = new TH1F("LPP", "Distance Distribution (CCD size: 0.9x0.6x0.0725 cm)", NB, tlow, thi);
+LPP->GetXaxis()->SetTitle("Distance (cm)");
+LPP->SetLineStyle(1);
+LPP->SetLineColor(2);
+
 
 TH1F *Lcut = new TH1F("Lcut", "", NB, tlow, thi);
 
 // Fill histograms //
 tree->Draw("LengthMuLAr>>L", "LengthMuLAr > 0");
+tree0->Draw("l>>LPP", "l>0");
 
 
 //TLine *line = new TLine(0.0725,0,0.0725,30000);
 TLine *line = new TLine(0.0725,0,0.0725,14000);
 line->SetLineStyle(2);
 
+LPP->Scale(9.9);
 
 // Create Canvas //
 TCanvas *canv = new TCanvas("canv","", 2*700, 600);
 //canv->Divide(2,1);
 canv->cd(1);
 L->Draw();
+LPP->Draw("he0 same");
 line->Draw("same");
 // Lcut->Draw("same");
 

@@ -654,20 +654,20 @@ CMakeFiles/b02.dir/src/B02RunAction.cc.o: \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/rundefs.hh \
  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
+ /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
+ /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
+ /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
- /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDManager.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCtable.hh \
  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDStructure.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
- /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
- /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
- /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh
+ /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh

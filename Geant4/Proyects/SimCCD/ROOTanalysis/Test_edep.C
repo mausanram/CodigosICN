@@ -20,7 +20,7 @@ TTree *tree3 = (TTree*) file3->Get("tree");
 
 
 int NB = 90;
-double tlow = 0.08;
+double tlow = 0;
 double thi = 1;
 
 TH1F *edep = new TH1F("edep", "Energy Spectrum", NB, tlow, thi);
@@ -51,48 +51,64 @@ edep3->SetStats(0);
 edep3->SetLineStyle(1);
 edep3->SetLineColor(4);
 
+TH1F *edep4 = new TH1F("edep4", "Simulation no Birks scale", NB, tlow, thi);
+edep4->SetStats(0);
+edep4->SetLineStyle(1);
+edep4->SetLineColor(1);
+
 // ============= Fill histograms =========== //
-tree->Draw("WevtBar>>edep"); // GEANT4 INFO (BIRKS)
-tree->Draw(" EevtBar>>edep1"); // GEANT4 INFO (NO BIRKS)
+tree->Draw("WevtBar>>edep", "WevtBar>0"); // GEANT4 INFO (BIRKS)
+tree->Draw(" EevtBar>>edep1", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 //tree->Draw("Ehitbar>>edep_cut", "thet>22*TMath::Pi()/180 & edep>0");
 // ========================================= //
 
-tree0->Draw("edep>>edep0"); // EXPERIMENTAL INFO
-tree2->Draw("edep>>edep2"); // EXPERIMENTAL INFO CONNIE
-tree3->Draw("edep/1000>>edep3"); // SIM_AB_INITIO INFO
+tree0->Draw("edep>>edep0", "edep>0"); // EXPERIMENTAL INFO
+tree2->Draw("edep>>edep2", "edep>0"); // EXPERIMENTAL INFO CONNIE
+tree3->Draw("edep/1000>>edep3", "edep>0"); // SIM_AB_INITIO INFO
+
+tree->Draw("EevtBar*0.77>>edep4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
+
 
 // ========== Scale histograms =========== //
 //edep->Scale(0.65, "");
-edep->Scale(4.4);
+edep->Scale(1);
 //edep->SetLineColor(2);
 
 edep0->Scale(89.);
 //edep0->SetLineColor(4);
 
-edep1->Scale(6.95);
+edep1->Scale(1);
 //edep1->SetLineColor(1);
 
 edep2->Scale(0.86);
 //edep2->SetLineColor(7);
 
-edep3->Scale(58.5);
+edep3->Scale(10.);
+
+edep4->Scale(1.);
 // ======================================= //
 
+double cont = edep->Integral();
+double cont1 = edep1->Integral();
+
+cout<< "Int Verde" << cont << endl;
+cout<< "Int Rojo" << cont1 << endl;
 
 // ============ Create Canvas ============== //
 TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
 canv->Divide(1,1);
 canv->cd(1);
 edep->Draw("h"); 		// edepG4 with birks
-edep0->Draw("he0 same"); 	// ICN data 
+//edep0->Draw("he0 same"); 	// ICN data 
 edep1->Draw("he0 same"); 	// edepG4 no Birks
 //edep2->Draw("he0 same"); 	// CONNIE data
 edep3->Draw("he0 same"); 	// edepPP
+edep4->Draw("he0 same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");
 leg->AddEntry(edep1, "SimG4-NO Birks", "LEP");
-leg->AddEntry(edep0, "All Clusters (ICN-NSAMP324)", "LEP");
+//leg->AddEntry(edep0, "All Clusters (ICN-NSAMP324)", "LEP");
 //leg->AddEntry(edep2, "Datos CONNIE-NSAMP400", "LEP");
 leg->AddEntry(edep3, "Sim-PP", "LEP");
 leg->Draw();

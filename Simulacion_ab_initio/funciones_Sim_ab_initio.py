@@ -398,19 +398,21 @@ def LandV(lx, lpar):
 
     xi = (K)*rho*ZA*L*(z/beta)**2		# Xi variable 
     DeltaAv = xi * (np.log(2*me*(gamma**2)*(p**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch)
-    # xi = DeltaAv ## Prueba
+    # Lambda = (Delta-xi*(np.log(xi)-loge+1-EC))/xi # Lambda parameter
+    Lambda = (Delta - DeltaAv)/xi - beta**2 - np.log(xi/I) - 1 + EC # Lambda parameter
 
-    Lambda = (Delta-xi*(np.log(xi)-loge+1-EC))/xi # Lambda parameter
-
-    Deltamp = xi*(np.log(xi/np.exp(loge))+0.198-d)		# Most probable energy loss
+    Deltamp = xi*(np.log(xi/np.exp(loge))+0.198-d)		# Most probable energy loss (Leo)
     lambdamp = (Deltamp-xi*(np.log(xi)-loge+1-EC))/xi 
+
+    # Deltamp = xi * (np.log((2 * me**2 * beta**2 * gamma**2)/I) + np.log(xi/I) + 0.2 - beta**2 - d)		# Most probable energy loss from PDG
+    # lambdamp = (1/xi) * (Deltamp - xi*(np.log(xi)-loge+1-EC))
 
     kappa = xi/WM		# Kappa ratio
     beta2 = beta**2
     sigma2 = (xi**2)*(1-beta2/2)/kappa		# Standard deviation for relativistic particles
 
     if kappa<=0.01:
-        phi = TMath.Landau(Lambda, lambdamp, 0.5)
+        phi = TMath.Landau(Lambda, lambdamp, 1.0)
         return phi/xi
 
     elif kappa>0.01 and kappa<10:
