@@ -365,7 +365,7 @@ def LandV(lx, lpar):
     c = TMath.C()	# Speed of light
     me = 0.510998928	#  Electron mass in MeV/c^2
     M = 105.65839	# Muon mass in MeV/c^2
-    I = 0.000173		# Mean excitation energy (for Si)
+    I = 0.000173		# Mean excitation energy in MeV (for Si)
     bg = p/M
     beta = bg/np.sqrt(1+bg**2)	# Beta factor
     gamma = 1/np.sqrt(1-beta**2)	# Gamma factor
@@ -377,7 +377,9 @@ def LandV(lx, lpar):
     X0 = 0.2014		
     X1 = 2.87		
     C = -4.44		
-    # // double d0 = 0.0;		//
+    d0 = 0.14;	# For Si 
+    # d0 = 0 # Like Bryan
+
     X = np.log10(bg)
     # d;	// Variable for the Density effect
     
@@ -386,26 +388,27 @@ def LandV(lx, lpar):
     elif X0<=X and X<X1:
         d = 2 * np.log(10.0) * X - C + a * ((X1-X)**k)
     elif X<X0:
-        # d = d0*(pow(10,(2*(X-X0))));
-        d = 0
+        d = d0 * 10**(2*(X-X0))
 
-    # WM = 2 * me * ((beta*gamma)**2)/(1+(2*me*gamma/M)+(me/M)**2)   #Maximum energy tranfer
-    WM = (2 * me * (beta*gamma)**2)/(1+(2*me/M)*np.sqrt(1 + (beta*gamma)**2) + (me/M)**2)   #Maximum energy tranfer
+    WM = 2 * me * ((beta*gamma)**2)/(1+(2*me*gamma/M)+(me/M)**2)   #Maximum energy tranfer (Bryan)
+    # WM = (2 * me * (beta*gamma)**2)/(1+(2*me/M)*np.sqrt(1 + (beta*gamma)**2) + (me/M)**2)   #Maximum energy tranfer
 
-    loge = np.log((1-beta**2)*(I**2)/(2*M*(beta**2))) + (beta**2) # log epsilon variable
+    loge = np.log((1-beta**2)*(I**2)/(2*me*(beta**2))) + (beta**2) # log epsilon variable
 
     EC = 0.577	# Euler's constant
 
     xi = (K)*rho*ZA*L*(z/beta)**2		# Xi variable 
     DeltaAv = xi * (np.log(2*me*(gamma**2)*(p**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch)
-    # Lambda = (Delta-xi*(np.log(xi)-loge+1-EC))/xi # Lambda parameter
-    Lambda = (Delta - DeltaAv)/xi - beta**2 - np.log(xi/I) - 1 + EC # Lambda parameter
 
-    Deltamp = xi*(np.log(xi/np.exp(loge))+0.198-d)		# Most probable energy loss (Leo)
+    Lambda = (Delta-xi*(np.log(xi)-loge+1-EC))/xi # Lambda parameter
+    # Lambda = (Delta - DeltaAv)/xi - beta**2 - np.log(xi/I) - 1 + EC # Lambda parameter (PDG?)
+
+    # Deltamp = xi*(np.log(xi/np.exp(loge))+0.198-d)		# Most probable energy loss (Leo)
+    Deltamp = xi*(np.log(xi) - loge + 0.198 - d)		# Most probable energy loss (Leo)
     lambdamp = (Deltamp-xi*(np.log(xi)-loge+1-EC))/xi 
 
-    # Deltamp = xi * (np.log((2 * me**2 * beta**2 * gamma**2)/I) + np.log(xi/I) + 0.2 - beta**2 - d)		# Most probable energy loss from PDG
-    # lambdamp = (1/xi) * (Deltamp - xi*(np.log(xi)-loge+1-EC))
+    # Deltamp = xi * (np.log((2 * me * beta**2 * gamma**2)/I) + np.log(xi/I) + 0.2 - beta**2 - d)		# Most probable energy loss from PDG
+    # lambdamp = (Deltamp-xi*(np.log(xi)-loge+1-EC))/xi
 
     kappa = xi/WM		# Kappa ratio
     beta2 = beta**2
@@ -415,7 +418,8 @@ def LandV(lx, lpar):
         phi = TMath.Landau(Lambda, lambdamp, 1.0)
         return phi/xi
 
-    elif kappa>0.01 and kappa<10:
+    # elif kappa>0.01 and kappa<10:
+    elif 0.01<kappa and kappa<10:
         vav = TMath.Vavilov(Delta-Deltamp, kappa, beta2)
         return vav
 
@@ -1979,7 +1983,6 @@ def muon_generator_BARRA(number_thet, Radio, medida_x, medida_y, medida_z, mapeo
                         'Delta_L(cm)' : list_delta_L, 'Energy_Landau(KeV)' : list_energy_Landau} 
 
     return dict_muons, nmuons_in_CCD 
-
 
 def dimension_x_barr(long_x):
     step = 0.001
