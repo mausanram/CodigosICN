@@ -16,7 +16,7 @@ void Test_edep(){
 
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_DELTAPDG_.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_DELTALEO_.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_LIKEBRYAN_.root");
+TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_100000_PLANES_150x150_RADIO_450.root");
 
 
 TTree *tree = (TTree*) file->Get("tree");
@@ -27,7 +27,7 @@ TTree *tree = (TTree*) file->Get("tree");
 int NB = 90;
 double tlow = 0;
 // double thi = 620;
-double thi = 1000;
+double thi = 10;
 TH1F *edep = new TH1F("edep", "", NB, tlow, thi);
 edep->GetXaxis()->SetTitle("Energy (KeV)");
 
