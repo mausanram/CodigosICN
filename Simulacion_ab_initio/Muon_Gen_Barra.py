@@ -1,3 +1,4 @@
+print('Se están importando todas las paqueterías')
 import numpy as np
 import mpmath as mp
 import random as rand
@@ -43,7 +44,7 @@ def main():
     mapeo_z = dimension_z_barr(medida_z)
 
     ### Número de muones a simular ### 
-    number_thet = 100      ## Valores de un ángulo Theta.
+    number_thet = 100000      ## Valores de un ángulo Theta.
 
     n_muons = number_thet  ## Número total de muones que se simularán.
 
@@ -73,7 +74,7 @@ def main():
     Phi_Deg_pri = array('f', [-9999])
     Energy_pri = array('f', [-9999])
 
-    file_root_name = 'Sim_ab_initio_Barra_NMUONS_' + str(number_thet)  + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio)  + '_0.root'
+    file_root_name = 'Sim_ab_initio_Barra_NMUONS_' + str(number_thet)  + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio)  + '.root'
     file = TFile.Open(file_root_name, "RECREATE")
     tree = TTree('tree', 'tree')
 

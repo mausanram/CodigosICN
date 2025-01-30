@@ -370,7 +370,7 @@ def LandV(lx, lpar):
     beta = bg/np.sqrt(1+bg**2)	# Beta factor
     gamma = 1/np.sqrt(1-beta**2)	# Gamma factor
     pi = TMath.Pi()
-    rho = 2.33	# Density of material (for Si)
+    rho = 2.33	# Density of material in gr/cm^3 (for Si)
 
     a = 0.1492	# Parameters (taken from W.R. Leo for SI)
     k = 3.25		
@@ -393,7 +393,8 @@ def LandV(lx, lpar):
     WM = 2 * me * ((beta*gamma)**2)/(1+(2*me*gamma/M)+(me/M)**2)   #Maximum energy tranfer (Bryan)
     # WM = (2 * me * (beta*gamma)**2)/(1+(2*me/M)*np.sqrt(1 + (beta*gamma)**2) + (me/M)**2)   #Maximum energy tranfer
 
-    loge = np.log((1-beta**2)*(I**2)/(2*me*(beta**2))) + (beta**2) # log epsilon variable
+    loge = np.log((1-beta**2)*(I**2)/(2*me*(beta**2))) + (beta**2) # log epsilon variable (with electron mass)
+    # loge = np.log((1-beta**2)*(I**2)/(2*M*(beta**2))) + (beta**2) # log epsilon variable (with muon mass)
 
     EC = 0.577	# Euler's constant
 
@@ -1784,6 +1785,93 @@ def pixelizacion(alpha, beta, h, edep, theta, L):
     return
 
 #### ======================== FUNCIONES PARA LA BARRA CENTELLADORA ============================== #### 
+def LandV_Barr(lx, lpar):
+    Delta = lx[0]	# Energy loss in absorber
+    L = lpar[0]		# Thickness of absorber (Distance crossed by the particle)
+    p = lpar[1]		# Momentum (in MeV/c)
+
+    K = 0.1535	# K coefficient = 2*pi*N*r^2*m*c^2 (in MeV g^-1 cm^2)
+
+    z = -1;		# Charge number of incident particle
+    ZA = 0.54141 # Atomic number over Atomic mass of absorber (for PVT in this case)
+    c = TMath.C()	# Speed of light
+    me = 0.510998928	#  Electron mass in MeV/c^2
+    M = 105.65839	# Muon mass in MeV/c^2
+    I = 64.7/1000000; # Mean excitation energy in MeV (for PVT)
+
+    bg = p/M
+    beta = bg/np.sqrt(1+bg**2)	# Beta factor
+    gamma = 1/np.sqrt(1-beta**2)	# Gamma factor
+    pi = TMath.Pi()
+    rho = 1.032 # Density of material in gr/cm^3(for PVT)
+
+    a = 0.1610		# Parameters (taken from PDG for PVT)
+    k = 3.2393			
+    X0 = 0.1464
+    X1 = 2.4855
+    C = 3.1997
+    d0 = 0.0	
+
+    X = np.log10(bg)
+    # d;	// Variable for the Density effect
+    
+    if X>=X1:
+        d = 2 * np.log(10.0) * X - C
+    elif X0<=X and X<X1:
+        d = 2 * np.log(10.0) * X - C + a * ((X1-X)**k)
+    elif X<X0:
+        d = d0 * 10**(2*(X-X0))
+
+    WM = 2 * me * ((beta*gamma)**2)/(1+(2*me*gamma/M)+(me/M)**2)   #Maximum energy tranfer (from PDG)
+    # WM = (2 * me * (beta*gamma)**2)/(1+(2*me/M)*np.sqrt(1 + (beta*gamma)**2) + (me/M)**2)   #Maximum energy tranfer
+
+    loge = np.log((1-beta**2)*(I**2)/(2*me*(beta**2))) + (beta**2) # log epsilon variable (with electron mass)
+    # loge = np.log((1-beta**2)*(I**2)/(2*M*(beta**2))) + (beta**2) # log epsilon variable (with muon mass)
+
+    EC = 0.577	# Euler's constant
+
+    xi = (K)*rho*ZA*L*(z/beta)**2		# Xi variable 
+    DeltaAv = xi * (np.log(2*me*(gamma**2)*(beta**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch of PDG)
+    # DeltaAv = xi * (np.log(2*me*(gamma**2)*(p**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch)
+
+    Lambda = (Delta-xi*(np.log(xi)-loge+1-EC))/xi # Lambda parameter
+    # Lambda = (Delta - DeltaAv)/xi - beta**2 - np.log(xi/I) - 1 + EC # Lambda parameter (PDG?)
+
+    # Deltamp = xi*(np.log(xi/np.exp(loge))+0.198-d)		# Most probable energy loss (Leo)
+    Deltamp = xi*(np.log(xi) - loge + 0.198 - d)		# Most probable energy loss (Leo)
+    lambdamp = (Deltamp-xi*(np.log(xi)-loge+1-EC))/xi 
+
+    # Deltamp = xi * (np.log((2 * me * beta**2 * gamma**2)/I) + np.log(xi/I) + 0.2 - beta**2 - d)		# Most probable energy loss from PDG
+    # lambdamp = (Deltamp-xi*(np.log(xi)-loge+1-EC))/xi
+
+    kappa = xi/WM		# Kappa ratio
+    beta2 = beta**2
+    sigma2 = (xi**2)*(1-beta2/2)/kappa		# Standard deviation for relativistic particles
+
+    if kappa<=0.01:
+        phi = TMath.Landau(Lambda, lambdamp, 1.0)
+        return phi/xi
+
+    # elif kappa>0.01 and kappa<10:
+    elif 0.01<kappa and kappa<10:
+        vav = TMath.Vavilov(Delta-Deltamp, kappa, beta2)
+        return vav
+
+    else:
+        gauss = TMath.Gaus(Delta, DeltaAv, np.sqrt(sigma2))
+        return gauss
+
+def random_LV_Barr(s, p):
+    gRandom.SetSeed(0) ## Cambia la semilla aleatoria para el GetRandom
+    f = TF1("f", LandV_Barr, 0, 100, 2)
+    # f = TF1("", LandV, 0, 10, 2)
+    # f.SetParameter(0, np.double(s))
+    # f.SetParameter(1, np.double(p))
+    f.SetParameters(s, p)
+
+    Edep = f.GetRandom()
+    return Edep * 1000    #### Energía en KeV
+
 def muon_generator_BARRA(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, mapeo_y, mapeo_z, half_plane_size):
     list_thet_in_CCD = []
     list_phi_in_CCD = []
@@ -1809,9 +1897,12 @@ def muon_generator_BARRA(number_thet, Radio, medida_x, medida_y, medida_z, mapeo
         # print(Random_th)
         # print(Random_phi)
         # print(Random_energy)
-        ### Momento del muon ###
-        # momentum = np.sqrt(Random_energy[0]**2 - m_mu**2)
-        momentum = Random_energy
+
+        ### ==================== Momento del muon ======================= ###
+        m_mu = 105.7    ## MeV/c^2
+        En_tot = Random_energy + m_mu  
+        momentum = np.sqrt(En_tot**2 - m_mu**2)
+        ### ============================================================= ###
 
         Vec = coord_cartesian(Random_th, Random_phi)
         Norma = norma_vec(Vec)
@@ -1881,7 +1972,7 @@ def muon_generator_BARRA(number_thet, Radio, medida_x, medida_y, medida_z, mapeo
 
         list_z = [z_3, z_4, z_5, z_6]
         n_flags = 0
-        limit_around = 4
+        limit_around = 3
         
         flag_faces = True
         while flag_faces:
@@ -1933,8 +2024,8 @@ def muon_generator_BARRA(number_thet, Radio, medida_x, medida_y, medida_z, mapeo
         
         Delta_L, _ = intersection_CCD(list_flags, list_z, medida_z, Random_th)
 
-        # if Delta_L < 0:
-        #     print(Delta_L)
+        if Delta_L < 0:
+            print(Delta_L)
 
         # Fin = datetime.datetime.now()
         # print('Tiempo de cálculo para Delta L: ', Fin-In)
@@ -1943,9 +2034,12 @@ def muon_generator_BARRA(number_thet, Radio, medida_x, medida_y, medida_z, mapeo
             # print(list_flags)
             # print(list_z)
             nmuons_in_CCD =  nmuons_in_CCD + 1
-            # Random_energy_Landau = random_LV(s = Delta_L[0], p = momentum) # En KeV
+            # print("Momentum: ", momentum, ", Distance: ", Delta_L)
+            Random_energy_Landau = random_LV_Barr(s = Delta_L, p = momentum) # En KeV
+
+
             # list_nmuons.append(n_muon)
-            # list_energy_Landau.append(Random_energy_Landau)
+            list_energy_Landau.append(Random_energy_Landau)
             list_thet_in_CCD.append(Random_th)
             list_phi_in_CCD.append(Random_phi)
             list_energy_pri_in_CCD.append(Random_energy)
@@ -1965,11 +2059,11 @@ def muon_generator_BARRA(number_thet, Radio, medida_x, medida_y, medida_z, mapeo
 
         else:
             # print('DeltaL negativo')
-            # Random_energy_Landau = 0 # En KeV
+            Random_energy_Landau = 0 # En KeV
             Delta_L = 0
 
             # list_nmuons.append(n_muon)
-            # list_energy_Landau.append(Random_energy_Landau)
+            list_energy_Landau.append(Random_energy_Landau)
             list_thet_in_CCD.append(Random_th)
             list_phi_in_CCD.append(Random_phi)
             list_energy_pri_in_CCD.append(Random_energy)
@@ -2026,5 +2120,6 @@ def dimension_z_barr(long_z):
             break
 
     return list_long_z
+
 #### ============================================================================================ ####
 
