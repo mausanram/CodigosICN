@@ -399,7 +399,8 @@ def LandV(lx, lpar):
     EC = 0.577	# Euler's constant
 
     xi = (K)*rho*ZA*L*(z/beta)**2		# Xi variable 
-    DeltaAv = xi * (np.log(2*me*(gamma**2)*(p**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch)
+    DeltaAv = xi * (np.log(2*me*(gamma**2)*(beta**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch from PDG)
+    # DeltaAv = xi * (np.log(2*me*(gamma**2)*(p**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch from Leo)
 
     Lambda = (Delta-xi*(np.log(xi)-loge+1-EC))/xi # Lambda parameter
     # Lambda = (Delta - DeltaAv)/xi - beta**2 - np.log(xi/I) - 1 + EC # Lambda parameter (PDG?)
@@ -419,13 +420,11 @@ def LandV(lx, lpar):
         phi = TMath.Landau(Lambda, lambdamp, 1.0)
         return phi/xi
 
-    # elif kappa>0.01 and kappa<10:
     elif 0.01<kappa and kappa<10:
         vav = TMath.Vavilov(Delta-Deltamp, kappa, beta2)
         return vav
 
     else:
-        # gauss = exp(((Delta-DeltaAv)**2)/(2*sigma2));
         gauss = TMath.Gaus(Delta, DeltaAv, np.sqrt(sigma2))
         return gauss
 
