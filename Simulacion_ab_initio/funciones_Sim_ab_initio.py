@@ -390,17 +390,25 @@ def LandV(lx, lpar):
     elif X<X0:
         d = d0 * 10**(2*(X-X0))
 
-    WM = 2 * me * ((beta*gamma)**2)/(1+(2*me*gamma/M)+(me/M)**2)   #Maximum energy tranfer (Bryan)
+    WM = 2 * me * ((beta*gamma)**2)/(1+(2*me*gamma/M)+(me/M)**2)   #Maximum energy tranfer (Bryan from PDG)
     # WM = (2 * me * (beta*gamma)**2)/(1+(2*me/M)*np.sqrt(1 + (beta*gamma)**2) + (me/M)**2)   #Maximum energy tranfer
 
-    loge = np.log((1-beta**2)*(I**2)/(2*me*(beta**2))) + (beta**2) # log epsilon variable (with electron mass)
+    loge = np.log((1-beta**2)*(I**2)/(2*me*(beta**2))) + (beta**2) # log epsilon variable (with electron mass like Bryan)
     # loge = np.log((1-beta**2)*(I**2)/(2*M*(beta**2))) + (beta**2) # log epsilon variable (with muon mass)
 
     EC = 0.577	# Euler's constant
 
-    xi = (K)*rho*ZA*L*(z/beta)**2		# Xi variable 
-    DeltaAv = xi * (np.log(2*me*(gamma**2)*(beta**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch from PDG)
+    ##### ============== Like Bryan =================== ###
+    K = 0.307075 # K coefficient = 4*pi*N*r^2*m*c^2 (in MeV mol^-1 cm^2)
+    xi = (K/2)*rho*ZA*L*(z/beta)**2		# Xi variable 
+    DeltaAv = xi * ((1/2) * np.log((2*me*(gamma**2)*(beta**2)*WM)/(I**2))-(beta**2)-(d/2)) # Mean energy loss (Bethe-Bloch from PDG)
+    # =================================================== ###
+
+    ##### ===================== With Leo version ===============0 ###
+    # xi = (K)*rho*ZA*L*(z/beta)**2		# Xi variable 
+    # DeltaAv = xi * (np.log((2*me*(gamma**2)*(beta**2)*WM)/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch from PDG)
     # DeltaAv = xi * (np.log(2*me*(gamma**2)*(p**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch from Leo)
+    ### ========================================================= ###
 
     Lambda = (Delta-xi*(np.log(xi)-loge+1-EC))/xi # Lambda parameter
     # Lambda = (Delta - DeltaAv)/xi - beta**2 - np.log(xi/I) - 1 + EC # Lambda parameter (PDG?)
