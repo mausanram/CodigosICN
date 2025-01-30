@@ -44,7 +44,7 @@ def main():
     mapeo_z = dimension_z_barr(medida_z)
 
     ### Número de muones a simular ### 
-    number_thet = 1000000      ## Valores de un ángulo Theta.
+    number_thet = 1000      ## Valores de un ángulo Theta.
 
     n_muons = number_thet  ## Número total de muones que se simularán.
 
@@ -94,7 +94,7 @@ def main():
         Phi_Rad[0] = dict_muons['Phi(Rad)'][i]
         Energy_array[0] =  dict_muons['Energy-SD(MeV)'][i] 
         DeltaL_array[0] = dict_muons['Delta_L(cm)'][i]
-        # Energy_Landau_array[0] = dict_muons['Energy_Landau(KeV)'][i]
+        Energy_Landau_array[0] = dict_muons['Energy_Landau(KeV)'][i]
         # print(Energy_Landau_array[0])
         # th_deg = dict_muons['Theta(Deg)'][0]
         tree.Fill()
