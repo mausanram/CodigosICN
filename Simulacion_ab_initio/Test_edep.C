@@ -29,9 +29,10 @@ TTree *tree = (TTree*) file->Get("tree");
 int NB = 90;
 double tlow = 0;
 double thi = 1; // PAra la CCD
-// double thi = 60// PAra la barra
+// double thi = 60; // PAra la barra
 TH1F *edep = new TH1F("edep", "", NB, tlow, thi);
 edep->GetXaxis()->SetTitle("Energy (MeV)");
+// edep->SetGrid(1);
 
 
 TH1F *edep_cut = new TH1F("edep_cut", "", NB, tlow, thi);
@@ -65,7 +66,7 @@ edep->Draw();
 // func1->Draw("same");
 
 canv->cd(2);
-edep_cut->Draw();
+edep_cut->Draw("G");
 // edep0->Draw("same");
 // func2->Draw("same");
 canv->Print("Dis_edep.pdf");

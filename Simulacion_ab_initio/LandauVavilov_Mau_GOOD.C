@@ -4,7 +4,7 @@
 // Hare are needed 2 parameters: the distance traveled by the particle inside the bar and its momentum.
 
 // #include <iostream> 
-// #include <random>
+#include <random>
 // #include <ctime>
 // #include <chrono>
 
@@ -21,27 +21,31 @@ double LV (double *lx, double *lpar) {
 	double L = lpar[0];		// Thickness of absorber (Distance crossed by the particle)
 
 	double p = lpar[1];		// Momentum (in MeV/c)
-	double K = 0.1535;	// K coefficient = 4*pi*N*r^2*m*c^2 (in MeV mol^-1 cm^2)
 	int z = -1;		// Charge number of incident particle
 	double ZA = 0.498487;	// Atomic number over Atomic mass of absorber (for Si)
 	double c = TMath::C();	// Speed of light
 	double me = 0.510998928;	// Electron mass in MeV/c^2
 	double M = 105.65839;	// Muon mass in MeV/c^2
 	double I = 0.000173;		// Mean excitation energy (for Si)
+
 	double bg = p/M;
 	double beta = bg/sqrt(1+(pow(bg,2)));	// Beta factor
 	double gamma = 1/sqrt(1-(pow(beta,2)));	// Gamma factor
 	double pi = TMath::Pi();
-	double rho = 2.33;	// Density of material (for Si)
+	double rho = 2.33;	// Density of material (for Si) gcm^-3
 
 	double d;	// Variable for the Density effect
+
+	double K = 0.1535;	// K coefficient = 2*pi*N*r^2*m*c^2 (in MeV mol^-1 cm^2)
+	// double K = 0.307075;	// K coefficient = 4*pi*N*r^2*m*c^2 (in MeV mol^-1 cm^2)
+
 
 	double a = 0.1492;	// Parameters (taken from W.R. Leo for SI)
 	double k = 3.25;		//
 	double X0 = 0.2014;		//
 	double X1 = 2.87;		//
 	double C = -4.44;		//
-	// double d0 = 0.0;		//
+	double d0 = 0.14;		//
 	double X = log10(bg);
 
 	if (X>=X1) {
@@ -51,24 +55,28 @@ double LV (double *lx, double *lpar) {
 		d = 2*log(10.0)*X-C+a*(pow((X1-X),k));
 		}
 	else if (X<X0) {
-		// d = d0*(pow(10,(2*(X-X0))));
-		d = 0;
+		d = d0*(pow(10,(2*(X-X0))));
+		// d = 0;
 		}
 
-	double WM = 2*me*(pow((beta*gamma),2))/(1+(2*me/M)*(sqrt(1 + pow(beta*gamma, 2)))+pow((me/M),2));   // Maximum energy tranfer
+	// double WM = 2*me*(pow((beta*gamma),2))/(1+(2*me/M)*(sqrt(1 + pow(beta*gamma, 2)))+pow((me/M),2));   // Maximum energy tranfer
+	double WM = 2*me*(pow((beta*gamma),2))/(1+(2*me*gamma/M) + pow((me/M),2));   // Maximum energy tranfer
 
-	double loge = log((1-(pow(beta,2)))*(pow(I,2))/(2*M*(pow(beta,2))))+(pow(beta,2)); // log epsilon variable
+	// double loge = log((1-(pow(beta,2)))*(pow(I,2))/(2*M*(pow(beta,2))))+(pow(beta,2)); // log epsilon variable
+	double loge = log((1-(pow(beta,2)))*(pow(I,2))/(2*me*(pow(beta,2))))+(pow(beta,2)); // log epsilon variable
 
 	double EC = 0.577;	// Euler's constant
 
-	double DeltaAv = K*rho*L*(pow(z,2))*ZA*(1.0/(pow(beta,2)))*(log(2*me*(pow(gamma,2))*(pow(p,2))*WM/(pow(I,2)))-(pow(beta,2))-(d));// Mean energy loss (Bethe-Bloch)
+	double DeltaAv = K*rho*L*(pow(z,2))*ZA*(1.0/(pow(beta,2)))*(log(2*me*(pow(gamma,2))*(pow(beta,2))*WM/(pow(I,2)))-(2 * pow(beta,2))-(d));// Mean energy loss (Bethe-Bloch)
+	// double DeltaAv = K*rho*L*(pow(z,2))*ZA*(1.0/(pow(beta,2)))*((1/2)* log(2*me*(pow(gamma,2))*(pow(beta,2))*WM/(pow(I,2)))-(pow(beta,2))-(d/2.0));// Mean energy loss (Bethe-Bloch)
 
 	double xi = (K)*rho*ZA*L*pow((z/beta),2);		// Xi variable 
+	// double xi = (K/2)*rho*ZA*L*pow((z/beta),2);		// Xi variable 
 
 	double lambda = (Delta-xi*(log(xi)-loge+1-EC))/xi;	// Lambda parameter
 
-  	double Deltamp = xi*(log(xi/exp(loge))+0.198-d);		// Most probable energy loss
-  	double lambdamp = (Deltamp-xi*(log(xi)-loge+1-EC))/xi;
+  	double Deltamp = xi * (log(xi) - loge + 0.198-d);		// Most probable energy loss
+  	double lambdamp = (Deltamp - xi*(log(xi)-loge+1-EC))/xi;
 
 	double kappa = xi/WM;		// Kappa ratio
 	double beta2 = pow(beta,2);
@@ -80,12 +88,20 @@ double LV (double *lx, double *lpar) {
 	//printf(Deltamp);
 	// cout << "Most Probably Energy in KeV " << Deltamp * 1000 << endl;
 	//td::cout << Deltamp * 1000 << std::endl;
+	// std::cout << "DMP "<<  Deltamp * 1000 << std::endl;
+	// std::cout << "MP "<<  lambdamp << std::endl;
+	std::cout << "Kappa: "<<  kappa << std::endl;
 
 	if (kappa<=0.01) {
-		double phi = TMath::Landau(lambda, lambdamp, 1);
+		// std::cout << "MP "<<  lambdamp << std::endl;
+		// double phi = TMath::Landau(lambda, lambdamp, 1);
+		double phi = TMath::Landau(lambda, Deltamp, 1);
+		// double phi = TMath::Landau(100, 0.2, 1);
 		return phi/xi;
+		// return phi;
 		}
 	else if (0.01<kappa && kappa<10) {
+		std::cout << "2"<< std::endl;
 		double vav = TMath::Vavilov(Delta-Deltamp, kappa, beta2);
 		return vav;
 		}
@@ -109,11 +125,11 @@ void LandauVavilov_Mau_GOOD() {
 
 	// cout << p endl;
 
-	cout << "Introduce el momento del muon: ";	// ---------------------------------------- //
+	cout << "Introduce el momento del muon (en MeV): ";	// ---------------------------------------- //
 	double p;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
    	std::cin >> p;					// ---------------------------------------- //
 
-	cout << "Introduce la distancia que recorrió: ";	// ---------------------------------------- //
+	cout << "Introduce la distancia que recorrió (en cm): ";	// ---------------------------------------- //
 	double s;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
    	std::cin >> s;					// ---------------------------------------- //
 
@@ -123,8 +139,11 @@ void LandauVavilov_Mau_GOOD() {
 	cnv->SetGrid();
 
 	// TLatex lat;
+	double nbins = 100;
+	double hlow = 0;
+	double hhi = 1;
 
-	TF1 *f = new TF1("f", LV, 0, 0.1, 2);
+	TF1 *f = new TF1("f", LV, 0, 1, 2);
 	// f->SetNpx(100);
 
 
@@ -137,6 +156,11 @@ void LandauVavilov_Mau_GOOD() {
 	f->SetTitle("Landau-Vavilov distribution (0.0725cm of Si);Energy (MeV);Probability");
 	f->Draw();
 
+	TCanvas *cnv2 = new TCanvas("cnv2", "", 900, 700);
+	cnv2->SetGrid();
+	TH1F *hist = new TH1F("hist", "", nbins, hlow, hhi);
+	hist->FillRandom("f", 100000);
+	hist->Draw();
 	// double  If = f->Integral(0,2.0);
 
 	// double loE= 0.0;
@@ -151,6 +175,7 @@ void LandauVavilov_Mau_GOOD() {
 	Edep = f->GetRandom(); 
 	// Edep = f->GetRandom(0, 0.7); 
 	std::cout << "Edep = "<< Edep * 1000 << " KeV" << std::endl;
+	std::cout << "Landau "<< TMath::Landau(0.2, 4, 1) << std::endl;
 	// char buff[100];
 
 	// sprintf(buff,"%f",Edep);
