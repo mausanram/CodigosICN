@@ -18,6 +18,8 @@ void Test_edep(){
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_DELTALEO_.root");
 TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_LIKEBRYAN_.root");
 
+// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_150x150_RADIO_450.root");
+
 
 TTree *tree = (TTree*) file->Get("tree");
 
@@ -26,10 +28,10 @@ TTree *tree = (TTree*) file->Get("tree");
 
 int NB = 90;
 double tlow = 0;
-double thi = 1000; // PAra la CCD
-// double thi = 100000;// PAra la barra
+double thi = 1; // PAra la CCD
+// double thi = 60// PAra la barra
 TH1F *edep = new TH1F("edep", "", NB, tlow, thi);
-edep->GetXaxis()->SetTitle("Energy (KeV)");
+edep->GetXaxis()->SetTitle("Energy (MeV)");
 
 
 TH1F *edep_cut = new TH1F("edep_cut", "", NB, tlow, thi);
@@ -37,8 +39,8 @@ TH1F *edep_cut = new TH1F("edep_cut", "", NB, tlow, thi);
 // TH1F *edep0 = new TH1F("edep0", "", NB, tlow, thi);
 
 // Fill histograms //
-tree->Draw("edep>>edep", "l>0");
-tree->Draw("edep>>edep_cut", "thet>22*TMath::Pi()/180 & edep>0");
+tree->Draw("edep/1000>>edep", "l>0");
+tree->Draw("edep/1000>>edep_cut", "thet>22*TMath::Pi()/180 & edep>0");
 
 // tree0->Draw("edep>>edep0");
 

@@ -366,6 +366,7 @@ def LandV(lx, lpar):
     me = 0.510998928	#  Electron mass in MeV/c^2
     M = 105.65839	# Muon mass in MeV/c^2
     I = 0.000173		# Mean excitation energy in MeV (for Si)
+    
     bg = p/M
     beta = bg/np.sqrt(1+bg**2)	# Beta factor
     gamma = 1/np.sqrt(1-beta**2)	# Gamma factor
@@ -399,15 +400,15 @@ def LandV(lx, lpar):
     EC = 0.577	# Euler's constant
 
     ##### ============== Like Bryan =================== ###
-    K = 0.307075 # K coefficient = 4*pi*N*r^2*m*c^2 (in MeV mol^-1 cm^2)
-    xi = (K/2)*rho*ZA*L*(z/beta)**2		# Xi variable 
-    DeltaAv = xi * ((1/2) * np.log((2*me*(gamma**2)*(beta**2)*WM)/(I**2))-(beta**2)-(d/2)) # Mean energy loss (Bethe-Bloch from PDG)
+    # K = 0.307075 # K coefficient = 4*pi*N*r^2*m*c^2 (in MeV mol^-1 cm^2)
+    # xi = (K/2)*rho*ZA*L*(z/beta)**2		# Xi variable 
+    # DeltaAv = xi * ((1/2) * np.log((2*me*(gamma**2)*(beta**2)*WM)/(I**2))-(beta**2)-(d/2)) # Mean energy loss (Bethe-Bloch from PDG)
     # =================================================== ###
 
     ##### ===================== With Leo version ===============0 ###
-    # xi = (K)*rho*ZA*L*(z/beta)**2		# Xi variable 
-    # DeltaAv = xi * (np.log((2*me*(gamma**2)*(beta**2)*WM)/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch from PDG)
-    # DeltaAv = xi * (np.log(2*me*(gamma**2)*(p**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch from Leo)
+    xi = (K)*rho*ZA*L*(z/beta)**2		# Xi variable 
+    DeltaAv = xi * (np.log((2*me*(gamma**2)*(beta**2)*WM)/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch from PDG)
+    DeltaAv = xi * (np.log(2*me*(gamma**2)*(p**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch from Leo)
     ### ========================================================= ###
 
     Lambda = (Delta-xi*(np.log(xi)-loge+1-EC))/xi # Lambda parameter
@@ -438,7 +439,7 @@ def LandV(lx, lpar):
 
 def random_LV(s, p):
     gRandom.SetSeed(0) ## Cambia la semilla aleatoria para el GetRandom
-    f = TF1("", LandV, 0, 1, 2)
+    f = TF1("", LandV, 0, 10, 2)
     # f = TF1("", LandV, 0, 10, 2)
     # f.SetParameter(0, np.double(s))
     # f.SetParameter(1, np.double(p))

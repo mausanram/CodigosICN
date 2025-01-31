@@ -1,7 +1,7 @@
 void Test_edep(){
 
-//TFile *file = new TFile("./root_files/muons_100K_vacuum_file.root");
-TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
+TFile *file = new TFile("./root_files/muons_10K_vacuum_file.root");
+// TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
 
@@ -102,8 +102,8 @@ edep->Draw("h"); 		// edepG4 with birks
 //edep0->Draw("he0 same"); 	// ICN data 
 edep1->Draw("he0 same"); 	// edepG4 no Birks
 //edep2->Draw("he0 same"); 	// CONNIE data
-edep3->Draw("he0 same"); 	// edepPP
-edep4->Draw("he0 same");
+// edep3->Draw("he0 same"); 	// edepPP
+// edep4->Draw("he0 same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");

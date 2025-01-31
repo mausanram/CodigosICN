@@ -639,4 +639,5 @@ CMakeFiles/b02.dir/src/B02PhysicsList.cc.o: \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VRestDiscreteProcess.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4ParticleChangeForDecay.hh \
  /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4DecayProcessType.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4RadioactiveDecayPhysics.hh
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4RadioactiveDecayPhysics.hh \
+ /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4HadronPhysicsFTFP_BERT.hh

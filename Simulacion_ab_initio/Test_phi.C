@@ -7,7 +7,7 @@ void Test_phi(){
 // =============== Archivos mas nuevos y que si funciona el ajuste ======================== //
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_20000_PLANES_2.4x2.4_RADIO_12_CCDSIZE_1058x1278_SIGMA_LV_1_.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_30000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1_.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1_.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1_.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_0.3_.root");
 
 
@@ -17,6 +17,7 @@ TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1.5x1.5_RADIO_8_CCDS
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_100000_PLANES_150x150_RADIO_450_0.root");
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_1.root");
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_0.root");
+TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_150x150_RADIO_450.root");
 TTree *tree = (TTree*) file->Get("tree");
 
 
