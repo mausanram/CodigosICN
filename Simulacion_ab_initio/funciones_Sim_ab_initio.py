@@ -386,8 +386,10 @@ def LandV(lx, lpar):
     
     if X>=X1:
         d = 2 * np.log(10.0) * X - C
+
     elif X0<=X and X<X1:
         d = 2 * np.log(10.0) * X - C + a * ((X1-X)**k)
+        
     elif X<X0:
         d = d0 * 10**(2*(X-X0))
 

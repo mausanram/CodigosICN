@@ -18,50 +18,50 @@
 
 double LV (double *lx, double *lpar) {
 	double Delta = lx[0];	// Energy loss in absorber
-	double L = lpar[0];		// Thickness of absorber (Distance crossed by the particle)
+	double L = lpar[0];	// Thickness of absorber (Distance crossed by the particle)
 
-	double p = lpar[1];		// Momentum (in MeV/c)
+	double p = lpar[1];	// Momentum (in MeV/c)
 	double K = 0.307075;	// K coefficient = 4*pi*N*r^2*m*c^2 (in MeV mol^-1 cm^2)
 	int z = -1;		// Charge number of incident particle
-	double ZA = 0.498487;	// Atomic number over Atomic mass of absorber (for Si)
+	double ZA = 0.54141;	// Atomic number over Atomic mass of absorber (for PVT in this case)
 	double c = TMath::C();	// Speed of light
 	double me = 0.510998928;	// Electron mass in MeV/c^2
-	double M = 105.65839;	// Muon mass in MeV/c^2
-	double I = 0.000173;		// Mean excitation energy (for Si)
+	double M = 105.65839;		// Muon mass in MeV/c^2
+	double I = 64.7/1000000;	// Mean excitation energy (for PVT)
+
 	double bg = p/M;
 	double beta = bg/sqrt(1+(pow(bg,2)));	// Beta factor
-	double gamma = 1/sqrt(1-(pow(beta,2)));	// Gamma factor
+	double gamma = 1/sqrt(1-(pow(beta, 2)));	// Gamma factor
 	double pi = TMath::Pi();
-	double rho = 2.33;	// Density of material (for Si)
+	double rho = 1.032;                   // Density of material (for PVT)
 
-	double d;	// Variable for the Density effect
-
-	double a = 0.1492;	// Parameters (taken from W.R. Leo for SI)
-	double k = 3.25;		//
-	double X0 = 0.2014;		//
-	double X1 = 2.87;		//
-	double C = -4.44;		//
-	// double d0 = 0.0;		//
+	double d;               // Density effect
+	double a = 0.1610;			// Parameters (taken from PDG for PVT)
+	double k = 3.2393;			//
+	double X0 = 0.1464;			//
+	double X1 = 2.4855;			//
+	double C = 3.1997;			//
+	double d0 = 0.0;				//
 	double X = log10(bg);
 
 	if (X>=X1) {
-		d = 2*log(10.0)*X-C;
-		}
+			d = 2*log(10.0)*X-C;
+			}
 	else if (X0<=X && X<X1) {
 		d = 2*log(10.0)*X-C+a*(pow((X1-X),k));
 		}
 	else if (X<X0) {
-		// d = d0*(pow(10,(2*(X-X0))));
-		d = 0;
+		// d = d0*(10**(2*(X-X0)));
+		d = d0;
 		}
 
-	double WM = 2*me*(pow((beta*gamma),2))/(1+(2*me*gamma/M)+pow((me/M),2));   // Maximum energy tranfer
+	double WM = 2*me*(pow((bg),2))/(1+(2*me*gamma/M)+pow((me/M),2));   // Maximum energy tranfer
 
-	double loge = log((1-(pow(beta,2)))*(pow(I,2))/(2*M*(pow(beta,2))))+(pow(beta,2)); // log epsilon variable
+	double loge = log((1-(pow(beta,2)))*(pow(I,2))/(2*me*(pow(beta,2))))+(pow(beta,2)); // log epsilon variable
 
 	double EC = 0.577;	// Euler's constant
 
-	double DeltaAv = K*rho*L*(pow(z,2))*ZA*(1.0/(pow(beta,2)))*((1.0/2.0)*log(2*me*(pow(beta,2))*(pow(gamma,2))*WM/(pow(I,2)))-(pow(beta,2))-(d/2.0));// Mean energy loss (Bethe-Bloch)
+	double DeltaAv = K*rho*L*(pow(z,2))*ZA*(1.0/(pow(beta,2)))*((1.0/2.0)*log((2*me*(pow(bg,2))*WM)/(pow(I,2)))-(pow(beta,2))-(d/2.0));// Mean energy loss (Bethe-Bloch)
 
 	double xi = (K/2)*rho*ZA*L*pow((z/beta),2);		// Xi variable 
 
@@ -75,14 +75,15 @@ double LV (double *lx, double *lpar) {
 
 	double sigma2 = (pow(xi,2))*(1-beta2/2)/kappa;		// Standard deviation for relativistic particles
 
-	//  cout << lambda << " " << Delta <<"  "<< phi/csi << endl;
+	 cout << "LambdaMP: " << lambdamp << " , Deltamp: " << Deltamp << ", DeltaAv: " << DeltaAv << endl;
 
 	//printf(Deltamp);
 	// cout << "Most Probably Energy in KeV " << Deltamp * 1000 << endl;
 	//td::cout << Deltamp * 1000 << std::endl;
 
 	if (kappa<=0.01) {
-		double phi = TMath::Landau(lambda, lambdamp, 1.0);
+		// double phi = TMath::Landau(lambda, lambdamp, 1.0);
+		double phi = TMath::Landau(lambda, Deltamp, 1.0);
 		return phi/xi;
 		}
 	else if (0.01<kappa && kappa<10) {
@@ -99,13 +100,13 @@ double LV (double *lx, double *lpar) {
 void LandauVavilov_Mau() {
 	gRandom->SetSeed(0);	// Cambia la semilla aleatoria para el GetRandom 
 
-	// double s = 0.0725;	// Distance of CCD (in cm)
-	// double p = 600; // Momentum parameter (in MeV)
+	double s = 10;	// Distance of Bar (in cm)
+	double p = 1000; // Momentum parameter (in MeV)
 	
 	// double En_Smith;
 	// char En_Smith_char[100] =  getenv("EN_SMITH");
-	float p = atof(getenv("EN_SMITH"));	// Momentum parameter (in MeV)
-	float s = atof(getenv("DELTA_L")); // Distance of CCD (in cm)
+	// float p = atof(getenv("EN_SMITH"));	// Momentum parameter (in MeV)
+	// float s = atof(getenv("DELTA_L")); // Distance of CCD (in cm)
 
 	// cout << p endl;
 
@@ -119,21 +120,21 @@ void LandauVavilov_Mau() {
 
 
 
-	// TCanvas *cnv = new TCanvas("cnv", "", 900, 700);
-	// cnv->SetGrid();
+	TCanvas *cnv = new TCanvas("cnv", "", 900, 700);
+	cnv->SetGrid();
 
 	// TLatex lat;
 
-	TF1 *f = new TF1("f", LV, 0, 10, 2);
+	TF1 *f = new TF1("f", LV, 0, 40, 2);
 	// f->SetNpx(100);
 
 
 	f->SetParameter(0, s);
 	f->SetParameter(1, p);
 	// f->SetRange(0, 0.7);
-	//f->SetTitle("Landau-Vavilov distribution (for 0.0725cm of Si);#font[12]{Energy} (MeV);Probability");
-	// f->SetTitle("Landau-Vavilov distribution (0.0725cm of Si);Energy (MeV);Probability");
-	// f->Draw();
+	f->SetTitle("Landau-Vavilov distribution (for 0.0725cm of Si);#font[12]{Energy} (MeV);Probability");
+	f->SetTitle("Landau-Vavilov distribution (0.0725cm of Si);Energy (MeV);Probability");
+	f->Draw();
 
 	// double  If = f->Integral(0,2.0);
 

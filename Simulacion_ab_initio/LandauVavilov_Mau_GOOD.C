@@ -21,7 +21,7 @@ double LV (double *lx, double *lpar) {
 	double L = lpar[0];		// Thickness of absorber (Distance crossed by the particle)
 
 	double p = lpar[1];		// Momentum (in MeV/c)
-	int z = -1;		// Charge number of incident particle
+	int z = 1;		// Charge number of incident particle
 	double ZA = 0.498487;	// Atomic number over Atomic mass of absorber (for Si)
 	double c = TMath::C();	// Speed of light
 	double me = 0.510998928;	// Electron mass in MeV/c^2
@@ -41,10 +41,10 @@ double LV (double *lx, double *lpar) {
 
 
 	double a = 0.1492;	// Parameters (taken from W.R. Leo for SI)
-	double k = 3.25;		//
+	double k = 3.2546;		//
 	double X0 = 0.2014;		//
-	double X1 = 2.87;		//
-	double C = -4.44;		//
+	double X1 = 2.8715;		//
+	double C = 4.44;		//
 	double d0 = 0.14;		//
 	double X = log10(bg);
 
@@ -52,6 +52,7 @@ double LV (double *lx, double *lpar) {
 		d = 2*log(10.0)*X-C;
 		}
 	else if (X0<=X && X<X1) {
+		cout<<"Entro aquí" << endl;
 		d = 2*log(10.0)*X-C+a*(pow((X1-X),k));
 		}
 	else if (X<X0) {
@@ -67,11 +68,35 @@ double LV (double *lx, double *lpar) {
 
 	double EC = 0.577;	// Euler's constant
 
-	double DeltaAv = K*rho*L*(pow(z,2))*ZA*(1.0/(pow(beta,2)))*(log(2*me*(pow(gamma,2))*(pow(beta,2))*WM/(pow(I,2)))-(2 * pow(beta,2))-(d));// Mean energy loss (Bethe-Bloch)
+	double DeltaAv = K*rho*L*(pow(z,2))*ZA*(1.0/(pow(beta,2)))*(log((2*me*(pow(gamma,2))*(pow(beta,2)))*WM/(pow(I,2)))-(2 * pow(beta,2))-(d));// Mean energy loss (Bethe-Bloch)
 	// double DeltaAv = K*rho*L*(pow(z,2))*ZA*(1.0/(pow(beta,2)))*((1/2)* log(2*me*(pow(gamma,2))*(pow(beta,2))*WM/(pow(I,2)))-(pow(beta,2))-(d/2.0));// Mean energy loss (Bethe-Bloch)
 
 	double xi = (K)*rho*ZA*L*pow((z/beta),2);		// Xi variable 
+
+
+	// ===================================================== //
+
+	double Log_1 = log((2 * me * pow(bg,2))/(I));
+	double Log_2 = log((xi)/(I));
+	double SumLogs = Log_1 + Log_2;
+	double SumLogsj = Log_1 + Log_2 + 0.2;
+	double SumLogsjbet = Log_1 + Log_2 + 0.2 - (pow(beta,2));
+	double SumTerms = Log_1 + Log_2 + 0.2 - (pow(beta,2)) - d;
+	double MostP = xi * (Log_1 + Log_2 + 0.2 - pow(beta,2) - d);
+
+	cout << "Csi Value " << xi << " MeV" << endl;
+	cout << "1st Log: " << Log_1 << endl;
+	cout << "2nd Log: " << Log_2 << endl;
+	cout << "density corr: " << d << endl;
+	cout << "beta^2: " << pow(beta,2) << endl;
+	// cout << "SumLogs: " << SumLogs << endl;
+	// cout << "SumLogsj: " << SumLogsj << endl;
+	cout << "SumLogsjbet: " << SumLogsjbet << "\n " <<endl;
+	// cout << "SumT: " << SumTerms << endl;
+	// cout << "MostP: " << MostP << endl;
 	// double xi = (K/2)*rho*ZA*L*pow((z/beta),2);		// Xi variable 
+
+	// ==================================================== //
 
 	double lambda = (Delta-xi*(log(xi)-loge+1-EC))/xi;	// Lambda parameter
 
@@ -90,12 +115,13 @@ double LV (double *lx, double *lpar) {
 	//td::cout << Deltamp * 1000 << std::endl;
 	// std::cout << "DMP "<<  Deltamp * 1000 << std::endl;
 	// std::cout << "MP "<<  lambdamp << std::endl;
-	std::cout << "Kappa: "<<  kappa << std::endl;
+	// std::cout << "Kappa: "<<  kappa << std::endl;
+	// cout << "LambdaMP: " << lambdamp << " , Deltamp: " << Deltamp << ", DeltaAv: " << DeltaAv << endl;
 
 	if (kappa<=0.01) {
 		// std::cout << "MP "<<  lambdamp << std::endl;
-		// double phi = TMath::Landau(lambda, lambdamp, 1);
-		double phi = TMath::Landau(lambda, Deltamp, 1);
+		double phi = TMath::Landau(lambda, lambdamp, 1);
+		// double phi = TMath::Landau(lambda, Deltamp, 1);
 		// double phi = TMath::Landau(100, 0.2, 1);
 		return phi/xi;
 		// return phi;
@@ -115,8 +141,8 @@ double LV (double *lx, double *lpar) {
 void LandauVavilov_Mau_GOOD() {
 	gRandom->SetSeed(0);	// Cambia la semilla aleatoria para el GetRandom 
 
-	// double s = 0.0725;	// Distance of CCD (in cm)
-	// double p = 600; // Momentum parameter (in MeV)
+	double s = 0.0725;	// Distance of CCD (in cm)
+	double p = 5000; // Momentum parameter (in MeV)
 	
 	// double En_Smith;
 	// char En_Smith_char[100] =  getenv("EN_SMITH");
@@ -125,13 +151,13 @@ void LandauVavilov_Mau_GOOD() {
 
 	// cout << p endl;
 
-	cout << "Introduce el momento del muon (en MeV): ";	// ---------------------------------------- //
-	double p;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
-   	std::cin >> p;					// ---------------------------------------- //
+	// cout << "Introduce el momento del muon (en MeV): ";	// ---------------------------------------- //
+	// double p;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
+   	// std::cin >> p;					// ---------------------------------------- //
 
-	cout << "Introduce la distancia que recorrió (en cm): ";	// ---------------------------------------- //
-	double s;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
-   	std::cin >> s;					// ---------------------------------------- //
+	// cout << "Introduce la distancia que recorrió (en cm): ";	// ---------------------------------------- //
+	// double s;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
+   	// std::cin >> s;					// ---------------------------------------- //
 
 
 
@@ -139,7 +165,7 @@ void LandauVavilov_Mau_GOOD() {
 	cnv->SetGrid();
 
 	// TLatex lat;
-	double nbins = 100;
+	double nbins = 150;
 	double hlow = 0;
 	double hhi = 1;
 
