@@ -52,7 +52,7 @@ double LV (double *lx, double *lpar) {
 		d = 2*log(10.0)*X-C;
 		}
 	else if (X0<=X && X<X1) {
-		cout<<"Entro aquí" << endl;
+		// cout<<"Entro aquí" << endl;
 		d = 2*log(10.0)*X-C+a*(pow((X1-X),k));
 		}
 	else if (X<X0) {
@@ -84,14 +84,14 @@ double LV (double *lx, double *lpar) {
 	double SumTerms = Log_1 + Log_2 + 0.2 - (pow(beta,2)) - d;
 	double MostP = xi * (Log_1 + Log_2 + 0.2 - pow(beta,2) - d);
 
-	cout << "Csi Value " << xi << " MeV" << endl;
-	cout << "1st Log: " << Log_1 << endl;
-	cout << "2nd Log: " << Log_2 << endl;
-	cout << "density corr: " << d << endl;
-	cout << "beta^2: " << pow(beta,2) << endl;
+	// cout << "Csi Value " << xi << " MeV" << endl;
+	// cout << "1st Log: " << Log_1 << endl;
+	// cout << "2nd Log: " << Log_2 << endl;
+	// cout << "density corr: " << d << endl;
+	// cout << "beta^2: " << pow(beta,2) << endl;
 	// cout << "SumLogs: " << SumLogs << endl;
 	// cout << "SumLogsj: " << SumLogsj << endl;
-	cout << "SumLogsjbet: " << SumLogsjbet << "\n " <<endl;
+	// cout << "SumLogsjbet: " << SumLogsjbet << "\n " <<endl;
 	// cout << "SumT: " << SumTerms << endl;
 	// cout << "MostP: " << MostP << endl;
 	// double xi = (K/2)*rho*ZA*L*pow((z/beta),2);		// Xi variable 
@@ -119,10 +119,9 @@ double LV (double *lx, double *lpar) {
 	// cout << "LambdaMP: " << lambdamp << " , Deltamp: " << Deltamp << ", DeltaAv: " << DeltaAv << endl;
 
 	if (kappa<=0.01) {
-		// std::cout << "MP "<<  lambdamp << std::endl;
-		double phi = TMath::Landau(lambda, lambdamp, 1);
-		// double phi = TMath::Landau(lambda, Deltamp, 1);
-		// double phi = TMath::Landau(100, 0.2, 1);
+		// std::cout << "lambMP "<<  lambdamp << std::endl;
+		// std::cout << "DeltaMP "<<  Deltamp << std::endl;
+		double phi = TMath::Landau(lambda, lambdamp, 1.0);
 		return phi/xi;
 		// return phi;
 		}
@@ -141,8 +140,8 @@ double LV (double *lx, double *lpar) {
 void LandauVavilov_Mau_GOOD() {
 	gRandom->SetSeed(0);	// Cambia la semilla aleatoria para el GetRandom 
 
-	double s = 0.0725;	// Distance of CCD (in cm)
-	double p = 5000; // Momentum parameter (in MeV)
+	// double s = 0.0725;	// Distance of CCD (in cm)
+	// double p = 5000; // Momentum parameter (in MeV)
 	
 	// double En_Smith;
 	// char En_Smith_char[100] =  getenv("EN_SMITH");
@@ -151,13 +150,13 @@ void LandauVavilov_Mau_GOOD() {
 
 	// cout << p endl;
 
-	// cout << "Introduce el momento del muon (en MeV): ";	// ---------------------------------------- //
-	// double p;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
-   	// std::cin >> p;					// ---------------------------------------- //
+	cout << "Introduce el momento del muon (en MeV): ";	// ---------------------------------------- //
+	double p;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
+   	std::cin >> p;					// ---------------------------------------- //
 
-	// cout << "Introduce la distancia que recorrió (en cm): ";	// ---------------------------------------- //
-	// double s;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
-   	// std::cin >> s;					// ---------------------------------------- //
+	cout << "Introduce la distancia que recorrió (en cm): ";	// ---------------------------------------- //
+	double s;						// Esta sección es para pedir que se ingrese el momento de los muones a mano 
+   	std::cin >> s;					// ---------------------------------------- //
 
 
 

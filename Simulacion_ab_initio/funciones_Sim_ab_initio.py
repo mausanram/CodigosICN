@@ -373,17 +373,15 @@ def LandV(lx, lpar):
     pi = TMath.Pi()
     rho = 2.33	# Density of material in gr/cm^3 (for Si)
 
-    a = 0.1492	# Parameters (taken from W.R. Leo for SI)
-    k = 3.25		
+    a = 0.1492	# Parameters (taken from reference of PDF for SI)
+    k = 3.2546		
     X0 = 0.2014		
-    X1 = 2.87		
-    C = -4.44		
+    X1 = 2.8715		
+    C = 4.4351		
     d0 = 0.14;	# For Si 
     # d0 = 0 # Like Bryan
 
-    X = np.log10(bg)
-    # d;	// Variable for the Density effect
-    
+    X = np.log10(bg)    
     if X>=X1:
         d = 2 * np.log(10.0) * X - C
 
@@ -401,27 +399,20 @@ def LandV(lx, lpar):
 
     EC = 0.577	# Euler's constant
 
-    ##### ============== Like Bryan =================== ###
-    # K = 0.307075 # K coefficient = 4*pi*N*r^2*m*c^2 (in MeV mol^-1 cm^2)
-    # xi = (K/2)*rho*ZA*L*(z/beta)**2		# Xi variable 
-    # DeltaAv = xi * ((1/2) * np.log((2*me*(gamma**2)*(beta**2)*WM)/(I**2))-(beta**2)-(d/2)) # Mean energy loss (Bethe-Bloch from PDG)
-    # =================================================== ###
-
     ##### ===================== With Leo version ===============0 ###
     xi = (K)*rho*ZA*L*(z/beta)**2		# Xi variable 
-    DeltaAv = xi * (np.log((2*me*(gamma**2)*(beta**2)*WM)/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch from PDG)
-    DeltaAv = xi * (np.log(2*me*(gamma**2)*(p**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch from Leo)
+    DeltaAv = xi * (np.log((2*me*(bg**2)*WM)/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch from PDG)
+    # DeltaAv = xi * (np.log(2*me*(gamma**2)*(p**2)*WM/(I**2))-(2*beta**2)-(d)) # Mean energy loss (Bethe-Bloch from Leo)
     ### ========================================================= ###
 
     Lambda = (Delta-xi*(np.log(xi)-loge+1-EC))/xi # Lambda parameter
-    # Lambda = (Delta - DeltaAv)/xi - beta**2 - np.log(xi/I) - 1 + EC # Lambda parameter (PDG?)
 
     # Deltamp = xi*(np.log(xi/np.exp(loge))+0.198-d)		# Most probable energy loss (Leo)
-    Deltamp = xi*(np.log(xi) - loge + 0.198 - d)		# Most probable energy loss (Leo)
-    lambdamp = (Deltamp-xi*(np.log(xi)-loge+1-EC))/xi 
+    # Deltamp = xi*(np.log(xi) - loge + 0.198 - d)		# Most probable energy loss (Leo)
+    # lambdamp = (Deltamp-xi*(np.log(xi)-loge+1-EC))/xi 
 
-    # Deltamp = xi * (np.log((2 * me * beta**2 * gamma**2)/I) + np.log(xi/I) + 0.2 - beta**2 - d)		# Most probable energy loss from PDG
-    # lambdamp = (Deltamp-xi*(np.log(xi)-loge+1-EC))/xi
+    Deltamp = xi * (np.log((2 * me * beta**2 * gamma**2)/I) + np.log(xi/I) + 0.2 - beta**2 - d)		# Most probable energy loss from PDG
+    lambdamp = (Deltamp-xi*(np.log(xi)-loge+1-EC))/xi
 
     kappa = xi/WM		# Kappa ratio
     beta2 = beta**2
