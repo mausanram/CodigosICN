@@ -26,7 +26,7 @@ TTree *tree = (TTree*) file->Get("tree");
 // TFile *file0 = new TFile("Edep_allclusters_NSAMP324_MeV.root");
 // TTree *tree0 = (TTree*) file->Get("tree");
 
-int NB = 90;
+int NB = 120;
 double tlow = 0;
 double thi = 1; // PAra la CCD
 // double thi = 60; // PAra la barra

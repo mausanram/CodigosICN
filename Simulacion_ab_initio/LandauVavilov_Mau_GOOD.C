@@ -126,7 +126,7 @@ double LV (double *lx, double *lpar) {
 		// return phi;
 		}
 	else if (0.01<kappa && kappa<10) {
-		std::cout << "2"<< std::endl;
+		// std::cout << "2"<< std::endl;
 		double vav = TMath::Vavilov(Delta-Deltamp, kappa, beta2);
 		return vav;
 		}
