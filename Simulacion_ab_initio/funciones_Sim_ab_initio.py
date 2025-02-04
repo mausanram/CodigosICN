@@ -314,7 +314,7 @@ def Smith_Dull(lx , lpar): ### Modelo de Smith-Duller
 
     # # if units == 0:
     a = 2.5         ## MeV cm^2/g
-    m_mu = 105.7    ## MeV/c^2 
+    m_mu = 105.64    ## MeV/c^2 
     m_pi = 139.6    ## MeV/c^2
 
     # elif units == 1:
@@ -330,8 +330,10 @@ def Smith_Dull(lx , lpar): ### Modelo de Smith-Duller
     ### ---------------------- Parámetros ---------------------- ###
     E_pi = (1 / r) * (E_mu + a * y_0 * ((1/TMath.Cos(theta)) - 0.1))
     B_mu = (b_mu * m_mu * y_0)/(tau_mu_0 * rho_0 * c)
+    # B_mu = (b_mu * m_mu * y_0 * c)/(tau_mu_0 * rho_0)
     P_mu = ((0.1 * TMath.Cos(theta)) * (1 - (a * (y_0 *(1/TMath.Cos(theta)) - 100))/( r * E_pi)) ) ** ((B_mu)/((r * E_pi + 100 * a) * TMath.Cos(theta)))
     j_pi = (m_pi * y_0)/(c * tau_0 * rho_0)
+    # j_pi = (m_pi * y_0 * c)/(tau_0 * rho_0)
 
     ## Intensidad diferencial
     # C_1 = E_pi ** (-k) * P_mu * lambda_pi * b * j_pi
@@ -345,7 +347,7 @@ def Smith_Dull(lx , lpar): ### Modelo de Smith-Duller
 
 def random_SD(theta):
     gRandom.SetSeed(0) ## Cambia la semilla aleatoria para el GetRandom
-    f = TF1("", Smith_Dull, 0, 10 ** 5,1)
+    f = TF1("", Smith_Dull, 1, 10**5,1)
     # f = TF1("", LandV, 0, 10, 2)
     f.SetParameter(0, theta)
     Enpri = f.GetRandom()

@@ -68,7 +68,7 @@ def main():
     ### Número de muones a simular ### 
     number_thet = 1000     ## Valores de un ángulo Theta.
     n_muons = number_thet  ## Número total de muones que se simularán.
-    nmuons_perbucle = 300000
+    nmuons_perbucle = 1000
 
     niterations = n_muons / nmuons_perbucle
 
@@ -82,6 +82,12 @@ def main():
                                                 half_plane_size=half_plane_size)
 
     list_nmuons = np.arange(0, len(dict_muons['Theta(Rad)']))
+
+    print("Long list thet: ", len(dict_muons['Theta(Rad)']))
+    print("Long list phi: ", len(dict_muons['Phi(Rad)']))
+    print("Long list SD: ", len(dict_muons['Energy-SD(MeV)']))
+    print("Long list L: ", len(dict_muons['Delta_L(cm)']))
+    print("Long list Edep: ", len(dict_muons['Energy_Landau(KeV)']))
 
     #### TTree file in CCD ###
     N_Muons = array('f', [-9999])

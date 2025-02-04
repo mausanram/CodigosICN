@@ -16,9 +16,11 @@ void Test_edep(){
 
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_DELTAPDG_.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_DELTALEO_.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_300000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_300000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
 
-// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_150x150_RADIO_450.root");
+
+TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_150x150_RADIO_450.root");
 
 
 TTree *tree = (TTree*) file->Get("tree");
@@ -28,8 +30,8 @@ TTree *tree = (TTree*) file->Get("tree");
 
 int NB = 120;
 double tlow = 0;
-double thi = 1; // PAra la CCD
-// double thi = 60; // PAra la barra
+// double thi = 1; // PAra la CCD
+double thi = 60; // PAra la barra
 TH1F *edep = new TH1F("edep", "", NB, tlow, thi);
 edep->GetXaxis()->SetTitle("Energy (MeV)");
 // edep->SetGrid(1);
