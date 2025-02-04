@@ -17,7 +17,7 @@ void Test_L(){
 
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_1.root");
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_0.root");
-TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_150x150_RADIO_450.root");
+TFile *file = new TFile("Sim_ab_initio_NMUONS_300000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
 TTree *tree = (TTree*) file->Get("tree");
 
 
@@ -25,8 +25,8 @@ int NB = 160;
 // int NB = 120;
 double tlow = 0;
 
-// double thi = 0.4;
-double thi = 30;
+double thi = 0.4;
+// double thi = 30;
 
 TH1F *L = new TH1F("L", "", NB, tlow, thi);
 L->GetXaxis()->SetTitle("Distance (cm)");
