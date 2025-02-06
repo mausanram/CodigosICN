@@ -38,7 +38,7 @@ double Smith_Dull(double *lx , double *lpar){
 
     //# return (C_1 * np.sin(theta)) / (C_2 + C_3)
     double En_k = (C_1 ) / (C_2 + C_3);
-    return En_k;
+    return En_k * 1000000000000;
     }
 /// ============================================================= ///
 
@@ -50,7 +50,9 @@ void Test_energy(){
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_3.0x3.0_RADIO_12_0.root");
 
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_300000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
-TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_150x150_RADIO_450.root");
+// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_150x150_RADIO_450.root");
+// TFile *file = new TFile("MuonGen_NMUONS_10000_pyth.root");
+TFile *file = new TFile("MuonGen_NMUONS_100000_.root");
 TTree *tree = (TTree*) file->Get("tree");
 
 
@@ -70,39 +72,15 @@ for (int i = 0; i<NB;i++){
 xbins[NB] = thi;
 
 
-TH1F *energy_all = new TH1F("energy_all", "", NB, xbins);
-TH1F *energy_in = new TH1F("energy_in", "", NB, xbins);
-// TH1F *energy_in = new TH1F("energy_in", "", NB, tlow, thi);
-
 TH1F *thet_0_6 = new TH1F("thet_0_6", "", NB, xbins);
 TH1F *thet_43_47= new TH1F("thet_43_47", "", NB, xbins);
 TH1F *thet_73_77 = new TH1F("thet_73_77", "", NB, xbins);
 
 // Fill histograms //
-// tree->Draw("epri>>energy_all", "thet>3*TMath::Pi()/180 && thet<4*TMath::Pi()/180");
-// tree->Draw("epri>>energy_in", "l>0");
-tree->Draw("epri>>thet_0_6", "thet>0 && thet<3*TMath::Pi()/180");
-tree->Draw("epri>>thet_43_47", "thet>44*TMath::Pi()/180 && thet<46*TMath::Pi()/180");
-tree->Draw("epri>>thet_73_77", "thet>74*TMath::Pi()/180 && thet<76*TMath::Pi()/180");
+tree->Draw("epri>>thet_0_6", "thet>-1 && thet<(6*TMath::Pi()/180)");
+tree->Draw("epri>>thet_43_47", "thet>43*TMath::Pi()/180 && thet<47*TMath::Pi()/180");
+tree->Draw("epri>>thet_73_77", "thet>73*TMath::Pi()/180 && thet<77*TMath::Pi()/180");
 
-
-// Define fuctions //
-// double thet = 0;
-// double thet = 45;
-double thet = 75;
-
-TF1 *Smith = new TF1("Smith", Smith_Dull, 1, pow(10,5), 1);
-Smith->SetParameter(0, thet);
-// TF1 *func1 = new TF1("func1", "[0]*sin(x)*(cos(x))^2", 0, 90);
-// func1->SetParameter(0, 5000);
-
-// TF1 *func2 = new TF1("func2", "[0]*sin(x)*(cos(x))^3+[1]*(sin(x))^2*(cos(x))^2", 0, 90);
-// func2->SetParameter(0, 2000);
-// func2->SetParameter(1, 1000);
-
-// Fit functions //
-// theta_all->Fit("func1", "R");
-// theta_in->Fit("func2", "R");
 
 double t0 = 0; // Degrees
 double t45 = 45;
@@ -124,7 +102,9 @@ double max75= Smith75->GetMaximum();
 Smith75->SetLineColor(8);
 
 double maxh0 = thet_0_6->GetMaximum();
-thet_0_6->Scale((max0/maxh0));
+// thet_0_6->Scale((max0/maxh0));
+// thet_0_6->Scale(0.0000000001);
+
 double maxh45 = thet_43_47->GetMaximum();
 thet_43_47->Scale(max45/maxh45);
 double maxh75 = thet_73_77->GetMaximum();
@@ -138,8 +118,8 @@ TCanvas *canv = new TCanvas("canv","", 2*700, 600);
 // canv->Divide(2,1);
 
 canv->cd(1);
-thet_0_6->Draw("h0");
-Smith0->Draw("L same");
+Smith0->Draw("L");
+thet_0_6->Draw("h0 same");
 
 // thet_43_47->Draw("h0");
 // Smith45->Draw("L same");
@@ -150,9 +130,6 @@ Smith0->Draw("L same");
 // Smith0->Draw();
 // Smith45->Draw("same");
 // Smith75->Draw("same");
-
-// thet_43_47->Draw("same");
-// thet_43_47->Draw("same");
 
 gPad->SetLogy(1);
 gPad->SetLogx(1);

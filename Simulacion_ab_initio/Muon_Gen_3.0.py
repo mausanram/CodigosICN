@@ -66,28 +66,21 @@ def main():
     print(mapeo_z[-1], mapeo_z[0])
 
     ### Número de muones a simular ### 
-    number_thet = 1000     ## Valores de un ángulo Theta.
-    n_muons = number_thet  ## Número total de muones que se simularán.
-    nmuons_perbucle = 1000
+    n_muons = 1000000
 
-    niterations = n_muons / nmuons_perbucle
+    # niterations = n_muons / nmuons_perbucle
 
-    print('Se simularán ' + str(n_muons) + ' muones y se guardarán en objetos TTree de ' + str(nmuons_perbucle) + ' elementos.')
+    # print('Se simularán ' + str(n_muons) + ' muones y se guardarán en objetos TTree de ' + str(nmuons_perbucle) + ' elementos.')
+    print('Se simularán ' + str(n_muons))
 
     # for iteration in np.arange(0, niterations):
     ## Se simulan los muones, se genera un diccionario con la información de cada evento (Theta, Phi, Energía) ##
-    dict_muons, nmuons_in_CCD  = muon_generator_3(number_thet=nmuons_perbucle, Radio=Radio,  
+    dict_muons, nmuons_in_CCD  = muon_generator_3(number_thet=n_muons, Radio=Radio,  
                                                 medida_x=medida_x, medida_y=medida_y, medida_z=medida_z, 
                                                 mapeo_x=mapeo_x, mapeo_y=mapeo_y, mapeo_z=mapeo_z, 
                                                 half_plane_size=half_plane_size)
 
     list_nmuons = np.arange(0, len(dict_muons['Theta(Rad)']))
-
-    print("Long list thet: ", len(dict_muons['Theta(Rad)']))
-    print("Long list phi: ", len(dict_muons['Phi(Rad)']))
-    print("Long list SD: ", len(dict_muons['Energy-SD(MeV)']))
-    print("Long list L: ", len(dict_muons['Delta_L(cm)']))
-    print("Long list Edep: ", len(dict_muons['Energy_Landau(KeV)']))
 
     #### TTree file in CCD ###
     N_Muons = array('f', [-9999])
@@ -101,7 +94,7 @@ def main():
     # file_direction = '/home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD/10k/'
     # file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_' + str(int(iteration)) + '.root'
     # file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(int(half_plane_size * 2)) +'x' + str(int(half_plane_size * 2)) + '_RADIO_' + str(Radio) + '_CCDSIZE_' + str(int(sizex_pixels))+ 'x' + str(int(sizey_pixels))+'_.root'
-    file_root_name = 'Sim_ab_initio_NMUONS_' + str(nmuons_perbucle) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_CCDSIZE_' + str(int(sizex_pixels))+ 'x' + str(int(sizey_pixels))+ '_SIGMA_LV_1.0' + '_.root'
+    file_root_name = 'Sim_ab_initio_NMUONS_' + str(n_muons) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_CCDSIZE_' + str(int(sizex_pixels))+ 'x' + str(int(sizey_pixels))+ '_SIGMA_LV_1.0' + '_.root'
 
     file = TFile.Open(file_root_name, "RECREATE")
     tree = TTree('tree', 'tree')
@@ -113,22 +106,26 @@ def main():
     tree.Branch('l', DeltaL_array, 'l/F')
     tree.Branch('edep', Energy_Landau_array, 'edep/F')
 
-    for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
+    for i in np.arange(0, len(dict_muons['Delta_L(cm)'])):
         N_Muons[0] = list_nmuons[i]
-        # N_Muons[0] = dict_muons['NMuon'][i]
         Thet_Rad[0] = dict_muons['Theta(Rad)'][i]
-        # print(Thet_Deg[0])
-        #print(f'Ei={i} Energy_Landau={dict_muons_in_CCD}') 
         Phi_Rad[0] = dict_muons['Phi(Rad)'][i]
         Energy_array[0] =  dict_muons['Energy-SD(MeV)'][i] 
         DeltaL_array[0] = dict_muons['Delta_L(cm)'][i]
         Energy_Landau_array[0] = dict_muons['Energy_Landau(KeV)'][i]
-        # print(Energy_Landau_array[0])
-        # th_deg = dict_muons['Theta(Deg)'][0]
+
+        # print(Thet_Rad[0], Phi_Rad[0], Energy_array[0], Energy_Landau_array[0])
+
         tree.Fill()
 
     tree.Write()
     file.Close()
+
+    print("\nLong list thet: ", len(dict_muons['Theta(Rad)']))
+    print("Long list phi: ", len(dict_muons['Phi(Rad)']))
+    print("Long list SD: ", len(dict_muons['Energy-SD(MeV)']))
+    print("Long list L: ", len(dict_muons['Delta_L(cm)']))
+    print("Long list Edep: ", len(dict_muons['Energy_Landau(KeV)']))
 
     del tree, N_Muons,Thet_Rad, Phi_Rad, Energy_array, DeltaL_array, Energy_Landau_array, dict_muons, list_nmuons
 
@@ -142,17 +139,6 @@ def main():
     print('Muones que impactaron en la CCD: ', nmuons_in_CCD)
     print('TTree primary file saved in ' + file_root_name)
     # print('All TTree muons in CCd file saved in /home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD')
-
-    # fig, axs = plt.subplots(figsize=[7,5])
-    # # axs.plot(Theta, 70 * Theta_true)
-    # axs.hist(np.array(dict_muons['Theta(Rad)']), bins = 110)
-    # fig.suptitle(r'Distribución angular $\theta$', y = 0.95, size = 20)
-    # plt.show()
-
-    # fig, axs = plt.subplots(figsize=[7,5])
-    # axs.hist(np.array(dict_muons['Energy(MeV)']), bins = 110)
-    # fig.suptitle(r'Distribución de la Energía', y = 0.95, size = 20)
-    # plt.show()
 
 if __name__ == "__main__":
     exitcode = main()

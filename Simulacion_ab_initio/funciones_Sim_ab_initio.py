@@ -413,7 +413,7 @@ def LandV(lx, lpar):
     # Deltamp = xi*(np.log(xi) - loge + 0.198 - d)		# Most probable energy loss (Leo)
     # lambdamp = (Deltamp-xi*(np.log(xi)-loge+1-EC))/xi 
 
-    Deltamp = xi * (np.log((2 * me * beta**2 * gamma**2)/I) + np.log(xi/I) + 0.2 - beta**2 - d)		# Most probable energy loss from PDG
+    Deltamp = xi * (np.log((2 * me * (bg**2))/I) + np.log(xi/I) + 0.2 - beta**2 - d)		# Most probable energy loss from PDG
     lambdamp = (Deltamp-xi*(np.log(xi)-loge+1-EC))/xi
 
     kappa = xi/WM		# Kappa ratio
@@ -425,7 +425,8 @@ def LandV(lx, lpar):
         return phi/xi
 
     elif 0.01<kappa and kappa<10:
-        vav = TMath.Vavilov(Delta-Deltamp, kappa, beta2)
+        # vav = TMath.Vavilov(Delta-Deltamp, kappa, beta2)
+        vav = TMath.Vavilov(Lambda - lambdamp, kappa, beta2)
         return vav
 
     else:
@@ -434,7 +435,7 @@ def LandV(lx, lpar):
 
 def random_LV(s, p):
     gRandom.SetSeed(0) ## Cambia la semilla aleatoria para el GetRandom
-    f = TF1("", LandV, 0, 10, 2)
+    f = TF1("", LandV, 0, 4, 2)
     # f = TF1("", LandV, 0, 10, 2)
     # f.SetParameter(0, np.double(s))
     # f.SetParameter(1, np.double(p))
@@ -444,83 +445,43 @@ def random_LV(s, p):
     return Edep * 1000    #### Energía en KeV
 ### ================================================================================= ###
 
-def muon_generator_1(Radio, long_a, long_b, number_thet, number_points_per_angle, Theta, 
-                                  Theta_true, Phi, Energy):
-    list_rand_thet = []
-    list_rand_phi = []
+def muon_generator_1(number_thet):
+    list_thet_in_CCD = []
+    list_phi_in_CCD = []
+    list_energy_pri_in_CCD = []
 
-    list_rand_thet_deg = []
-    list_rand_phi_deg = []
+    nmuons_in_CCD = 0
+    n_negative_long = 0
+    muon_in_bucle = 0
 
-    # list_delta_L = []
-    list_random_energy = []
+    m_mu = 105.7    ## MeV/c^2
 
     for i in np.arange(0,number_thet):
-        Random_th = rand.choices(Theta, Theta_true) ## Escoje un ángulo segun la distribución de Theta_true
-        Random_phi = rand.choice(Phi)   ## Lo mismo pero con phi
+        gRandom.SetSeed(0)
+        try:
+            ### ================== Seleccion aleatoria de theta, phi y en_pri(Smith-Duller) =============== ###
+            Random_th = random_thet() ## Escoje un ángulo segun la distribución de Theta_true en radianes
+            Random_phi = rand.random()*(2 * np.pi) ## Escoje un ángulo phi uniforme en radianes
+            Random_energy = random_SD(Random_th) ## Escoje una energía cinética segun la distribución de Smith-Duller en MeV
+            ### =========================================================================================== ###
 
-        Random_th_deg = np.degrees(Random_th[0])
-        Random_phi_deg = np.degrees(Random_phi)
-        # print(Random_th[0])
+            list_thet_in_CCD.append(Random_th)
+            list_phi_in_CCD.append(Random_phi)
+            list_energy_pri_in_CCD.append(Random_energy)
 
-        list_dis_Energy = []
-        # for energy in Energy:
-            # dis_Energy = dis_energy(energy, Random_th[0])
-            # list_dis_Energy.append(dis_Energy)
+            muon_in_bucle += 1
 
-        # Vec = coord_cartesian(Random_th, Random_phi)
-        # Norma = norma_vec(Vec)
-        # print(type(Vec[0]))
-        # Point = [Radio * Vec[0], Radio * Vec[1], Radio * Vec[2]]  ## Genera un punto sobre la esfera.
-        # # norma = np.sqrt(Point[0] ** 2 + Point[1] ** 2 + Point[2] ** 2)
-        # # print('Vector sobre la esfera: ', Point)
-        # # print('Norma del Vector:', norma)
-        # # Points.append(Point)
+            print('Muon simulado ' + str(muon_in_bucle) + '/' + str(number_thet), end = '                  \r')
 
-        # # normal_Vec = (-1 * Vec[0] / Norma, -1 * Vec[1] / Norma, -1 * Vec[2] / Norma)     ## Es un vector normal unitario apuntando 
-        #                                                                                     ##  hacia el centro de coordenadas
-        # # normal_Norma_Vec = norma_vec(normal_Vec)
-        # # print('Norma del vector anti-normal a la esfera:', normal_Norma_Vec)
-        # # print(len(normal_Vec))
-        # # Vectors.append(normal_Vec)
-
-        # vec_thet = [np.cos(Random_th) * np.cos(Random_phi), np.cos(Random_th) * np.sin(Random_phi), np.sin(Random_th)]
-        # vec_phi = [-np.sin(Random_phi), np.cos(Random_phi), 0]
-        # print('Vector Unitario Theta: ', vec_thet)
-        # print('Vector Unitario Theta: ', vec_phi)
-
-        for i in np.arange(0,number_points_per_angle):
-            # random_a = rand.choice(long_a)  ## Selecciona un valor uniforme para el parámetro a
-            # random_b = rand.choice(long_b)  ##      ''      ''      ''      ''          ''    b
-
-            # # list_random_a.append(random_a)
-            # # list_random_b.append(random_b)
-
-            # P_vector = [random_a * vec_thet[0] + random_b * vec_phi[0], 
-            #             random_a * vec_thet[1] + random_b * vec_phi[1], 
-            #             random_a * vec_thet[2] + random_b * vec_phi[2]]
-            
-            # list_P_vector.append(P_vector)
-
-            # random_plane_point = [Point[0] + P_vector[0], Point[1] + P_vector[1], Point[2] + P_vector[2]]
-            # random_plane_point = [-1 * (Point[0] + P_vector[0]), -1 * (Point[1] + P_vector[1]), -1 * (Point[2] + P_vector[2])]
-
-            # print(random_plane_point)
-            # list_random_point.append(random_plane_point)
-
-            list_rand_thet.append(Random_th[0]) 
-            list_rand_phi.append(Random_phi) ## En radianes
-
-            list_rand_thet_deg.append(Random_th_deg)
-            list_rand_phi_deg.append(Random_phi_deg) ## En grados
-
-            Random_energy = rand.choices(Energy, list_dis_Energy)
-            list_random_energy.append(Random_energy[0])
+        except:
+            print('Hubo un fallo')
+            continue
 
 
-    dict_muons =  {'Theta(Rad)': list_rand_thet, 'Theta(Deg)': list_rand_thet_deg, 
-                   'Phi(Rad)' : list_rand_phi, 'Phi(Deg)' : list_rand_phi_deg, 
-                   'Energy(MeV)' : list_random_energy} 
+
+    # n_muons_in_CCD = len(list_delta_L)
+    dict_muons =  {'Theta(Rad)': list_thet_in_CCD, 'Phi(Rad)' : list_phi_in_CCD, 
+                   'Energy-SD(MeV)' : list_energy_pri_in_CCD} 
 
     return dict_muons
 
@@ -899,6 +860,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
     n_negative_long = 0
     muon_in_bucle = 0
 
+    max_long = np.sqrt((medida_x * 2)**2 + (medida_y * 2)**2 + (medida_z * 2)**2)
     m_mu = 105.7    ## MeV/c^2
 
     for i in np.arange(0,number_thet):
@@ -1063,14 +1025,22 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
             print("z5: ", np.around(z_5, limit_around + 1))
             print("x6: ", np.around(x_6, limit_around))
             print("z6: ", np.around(z_6, limit_around + 1))
+
         
-        Delta_L, _ = intersection_CCD(list_flags, list_z, medida_z, Random_th)
+        try:
+            Delta_L, _ = intersection_CCD(list_flags, list_z, medida_z, Random_th)
+
+        except:
+            print('Hubo un error con el cálculo de L')
+            print(Delta_L)
+            # continue
+            break
 
         #print(Delta_L)
         # Fin = datetime.datetime.now()
         # print('Tiempo de cálculo para Delta L: ', Fin-In)
 
-        if Delta_L > 0:
+        if 0 < Delta_L and Delta_L < max_long:
             # print(list_flags)
             nmuons_in_CCD =  nmuons_in_CCD + 1
             # print('Delta L: ', Delta_L)
@@ -1078,8 +1048,15 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
             # print('Momentum: ', momentum)
 
             ### ================== Calculo de la energía de Landau ================ ###
-            Random_energy_Landau = random_LV(s=Delta_L, p = momentum)
-            # print('Energy Landau: ', Random_energy_Landau)
+            try:
+                Random_energy_Landau = random_LV(s=Delta_L, p = momentum)
+                # print('Energy Landau: ', Random_energy_Landau)
+
+            except: 
+                print('Hubo en error con el ćalculo de Landau')
+                print(Random_energy_Landau)
+                break
+                # contnue
             ### =================================================================== ###
 
             # list_nmuons.append(n_muon)
