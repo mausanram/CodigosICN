@@ -44,7 +44,7 @@ def main():
     mapeo_z = dimension_z_barr(medida_z)
 
     ### Número de muones a simular ### 
-    number_thet = 1000000      ## Valores de un ángulo Theta.
+    number_thet = 100000      ## Valores de un ángulo Theta.
 
     n_muons = number_thet  ## Número total de muones que se simularán.
 
@@ -63,16 +63,12 @@ def main():
     #### TTree file in CCD ###
     N_Muons = array('f', [-9999])
     Thet_Rad = array('f', [-9999])
-    Thet_Deg = array('f', [-9999])
     Phi_Rad = array('f', [-9999])
-    Phi_Deg = array('f', [-9999])
     Energy_array = array('f', [-9999])
     DeltaL_array = array('f', [-9999])
     Energy_Landau_array = array('f', [-9999])
+    Kappa_array = array('f', [-9999])
 
-    Thet_Deg_pri = array('f', [-9999])
-    Phi_Deg_pri = array('f', [-9999])
-    Energy_pri = array('f', [-9999])
 
     file_root_name = 'Sim_ab_initio_Barra_NMUONS_' + str(number_thet)  + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio)  + '.root'
     file = TFile.Open(file_root_name, "RECREATE")
@@ -84,22 +80,23 @@ def main():
     tree.Branch('epri', Energy_array, 'epri/F')
     tree.Branch('l', DeltaL_array, 'l/F')
     tree.Branch('edep', Energy_Landau_array, 'edep/F')
+    tree.Branch('kappa', Kappa_array, 'kappa/F')
+
 
     for i in np.arange(0, len(dict_muons['Theta(Rad)'])):
         N_Muons[0] = list_nmuons[i]
-        # N_Muons[0] = dict_muons['NMuon'][i]
         Thet_Rad[0] = dict_muons['Theta(Rad)'][i]
-        # print(Thet_Deg[0])
-        #print(f'Ei={i} Energy_Landau={dict_muons_in_CCD}') 
         Phi_Rad[0] = dict_muons['Phi(Rad)'][i]
         Energy_array[0] =  dict_muons['Energy-SD(MeV)'][i] 
         DeltaL_array[0] = dict_muons['Delta_L(cm)'][i]
         Energy_Landau_array[0] = dict_muons['Energy_Landau(KeV)'][i]
-        # print(Energy_Landau_array[0])
-        # th_deg = dict_muons['Theta(Deg)'][0]
+        Kappa_array[0] = dict_muons['kappa'][i]
+
+
         tree.Fill()
 
     tree.Write()
+    file.Close()
 
     # Fin = datetime.datetime.now()
     # print('Tiempo de cálculo para hacer el tree_ROOT: ', Fin-In, end='\n\n')
@@ -112,16 +109,6 @@ def main():
     # print('TTree primary file saved in ' + file_root_name_1)
     print('TTree muons in CCd file saved in ' + file_root_name)
 
-    # fig, axs = plt.subplots(figsize=[7,5])
-    # # axs.plot(Theta, 70 * Theta_true)
-    # axs.hist(np.array(dict_muons['Theta(Rad)']), bins = 110)
-    # fig.suptitle(r'Distribución angular $\theta$', y = 0.95, size = 20)
-    # plt.show()
-
-    # fig, axs = plt.subplots(figsize=[7,5])
-    # axs.hist(np.array(dict_muons['Energy(MeV)']), bins = 110)
-    # fig.suptitle(r'Distribución de la Energía', y = 0.95, size = 20)
-    # plt.show()
 
 if __name__ == "__main__":
     exitcode = main()
