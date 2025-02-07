@@ -66,7 +66,7 @@ def main():
     print(mapeo_z[-1], mapeo_z[0])
 
     ### Número de muones a simular ### 
-    n_muons = 1000000
+    n_muons = 200000
 
     # niterations = n_muons / nmuons_perbucle
 
@@ -89,6 +89,7 @@ def main():
     Energy_array = array('f', [-9999])
     DeltaL_array = array('f', [-9999])
     Energy_Landau_array = array('f', [-9999])
+    Kappa_array = array('f', [-9999])
 
     # file_root_name = '/home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD/Sim_ab_initio_NMUONS_' + str(number_thet) + '_PLANES_' + str(half_plane_size * 2) +'x' + str(half_plane_size * 2) + '_RADIO_' + str(Radio) + '_' + str(iteration) + '.root'
     # file_direction = '/home/bruce/Documents/Programas/Simulacion_ab_initio/treesROOT_CCD/10k/'
@@ -105,6 +106,14 @@ def main():
     tree.Branch('epri', Energy_array, 'epri/F')
     tree.Branch('l', DeltaL_array, 'l/F')
     tree.Branch('edep', Energy_Landau_array, 'edep/F')
+    tree.Branch('kappa', Kappa_array, 'kappa/F')
+
+    print("\nLong list thet: ", len(dict_muons['Theta(Rad)']))
+    print("Long list phi: ", len(dict_muons['Phi(Rad)']))
+    print("Long list SD: ", len(dict_muons['Energy-SD(MeV)']))
+    print("Long list L: ", len(dict_muons['Delta_L(cm)']))
+    print("Long list Edep: ", len(dict_muons['Energy_Landau(KeV)']))
+    print("Long list Edep: ", len(dict_muons['kappa']))
 
     for i in np.arange(0, len(dict_muons['Delta_L(cm)'])):
         N_Muons[0] = list_nmuons[i]
@@ -113,6 +122,7 @@ def main():
         Energy_array[0] =  dict_muons['Energy-SD(MeV)'][i] 
         DeltaL_array[0] = dict_muons['Delta_L(cm)'][i]
         Energy_Landau_array[0] = dict_muons['Energy_Landau(KeV)'][i]
+        Kappa_array[0] = dict_muons['kappa'][i]
 
         # print(Thet_Rad[0], Phi_Rad[0], Energy_array[0], Energy_Landau_array[0])
 
@@ -120,12 +130,6 @@ def main():
 
     tree.Write()
     file.Close()
-
-    print("\nLong list thet: ", len(dict_muons['Theta(Rad)']))
-    print("Long list phi: ", len(dict_muons['Phi(Rad)']))
-    print("Long list SD: ", len(dict_muons['Energy-SD(MeV)']))
-    print("Long list L: ", len(dict_muons['Delta_L(cm)']))
-    print("Long list Edep: ", len(dict_muons['Energy_Landau(KeV)']))
 
     del tree, N_Muons,Thet_Rad, Phi_Rad, Energy_array, DeltaL_array, Energy_Landau_array, dict_muons, list_nmuons
 

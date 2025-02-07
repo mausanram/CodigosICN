@@ -181,12 +181,14 @@ void LandauVavilov_Mau_GOOD() {
 	f->SetTitle("Landau-Vavilov distribution (0.0725cm of Si);Energy (MeV);Probability");
 	f->Draw();
 
+
 	TCanvas *cnv2 = new TCanvas("cnv2", "", 900, 700);
 	cnv2->SetGrid();
 	TH1F *hist = new TH1F("hist", "", nbins, hlow, hhi);
 	hist->FillRandom("f", 100000);
 	hist->Draw();
 	// double  If = f->Integral(0,2.0);
+	double Maximum = hist->GetMaximum();
 
 	// double loE= 0.0;
 	// double hiE= 0.7;
@@ -200,6 +202,9 @@ void LandauVavilov_Mau_GOOD() {
 	Edep = f->GetRandom(); 
 	// Edep = f->GetRandom(0, 0.7); 
 	std::cout << "Edep = "<< Edep * 1000 << " KeV" << std::endl;
+	std::cout << "Maximum = "<< Maximum * 1000 << " KeV" << std::endl;
+
+
 	std::cout << "Landau "<< TMath::Landau(0.2, 4, 1) << std::endl;
 	// char buff[100];
 

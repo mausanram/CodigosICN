@@ -1,25 +1,4 @@
 void Test_thet(){
-//TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
-// TFile *file0 = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_0.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_50000_PLANES_1x1_RADIO_5_CCDSIZE_400x600_.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1x1_RADIO_5_CCDSIZE_400x600_SIGMA_LV_1_.root");
-
-
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_1.4x1.4_RADIO_12_1.root");
-
-
-// =============== Archivos mas nuevos y que si funciona el ajuste ======================== //
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_20000_PLANES_2.4x2.4_RADIO_12_CCDSIZE_1058x1278_SIGMA_LV_1_.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_30000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1_.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1_.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_0.3_.root");
-
-
-
-
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
 TFile *file = new TFile("MuonGen_NMUONS_10000_pyth.root");
 // TFile *file = new TFile("./treesROOT_Barra/Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_0.root");

@@ -442,7 +442,28 @@ def random_LV(s, p):
     f.SetParameters(s, p)
 
     Edep = f.GetRandom()
-    return Edep * 1000    #### Energía en KeV
+
+
+    ## =============== Cálculo de kappa ================= ##
+    K = 0.1535	# K coefficient = 2*pi*N*r^2*m*c^2 (in MeV g^-1 cm^2)
+
+    z = -1;		# Charge number of incident particle
+    ZA = 0.498487	# Atomic number over Atomic mass of absorber (for Si)
+    c = TMath.C()	# Speed of light
+    me = 0.510998928	#  Electron mass in MeV/c^2
+    M = 105.65839	# Muon mass in MeV/c^2
+    I = 0.000173		# Mean excitation energy in MeV (for Si)
+    bg = p/M
+    beta = bg/np.sqrt(1+bg**2)	# Beta factor
+    gamma = 1/np.sqrt(1-beta**2)	# Gamma factor
+    pi = TMath.Pi()
+    rho = 2.33	# Density of material in gr/cm^3 (for Si)
+
+    xi = (K)*rho*ZA* s *(z/beta)**2		# Xi variable
+    WM = 2 * me * ((bg)**2)/(1+(2*me*gamma/M)+(me/M)**2)   #Maximum energy tranfer (Bryan from PDG)
+    kappa = xi/WM		# Kappa ratio
+
+    return Edep * 1000, kappa    #### Energía en KeV
 ### ================================================================================= ###
 
 def muon_generator_1(number_thet):
@@ -855,6 +876,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
     list_nmuons = []
     list_delta_L = []
     list_energy_Landau = []
+    list_kappa = []
 
     nmuons_in_CCD = 0
     n_negative_long = 0
@@ -1049,12 +1071,12 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
 
             ### ================== Calculo de la energía de Landau ================ ###
             try:
-                Random_energy_Landau = random_LV(s=Delta_L, p = momentum)
+                Random_energy_Landau, kappa = random_LV(s=Delta_L, p = momentum)
                 # print('Energy Landau: ', Random_energy_Landau)
 
             except: 
                 print('Hubo en error con el ćalculo de Landau')
-                print(Random_energy_Landau)
+                print(Random_energy_Landau, kappa)
                 break
                 # contnue
             ### =================================================================== ###
@@ -1065,6 +1087,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
             list_phi_in_CCD.append(Random_phi)
             list_energy_pri_in_CCD.append(Random_energy)
             list_delta_L.append(Delta_L)
+            list_kappa.append(kappa)
             
             muon_in_bucle += 1
 
@@ -1077,6 +1100,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
         else:
             Random_energy_Landau = 0 # En KeV
             Delta_L = 0
+            kappa = -10
 
             # list_nmuons.append(n_muon)
             list_energy_Landau.append(Random_energy_Landau)
@@ -1084,6 +1108,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
             list_phi_in_CCD.append(Random_phi)
             list_energy_pri_in_CCD.append(Random_energy)
             list_delta_L.append(Delta_L)
+            list_kappa.append(kappa)
 
             muon_in_bucle += 1
 
@@ -1094,7 +1119,7 @@ def muon_generator_3(number_thet, Radio, medida_x, medida_y, medida_z, mapeo_x, 
     # n_muons_in_CCD = len(list_delta_L)
     dict_muons =  {'NMuon': list_nmuons, 'Theta(Rad)': list_thet_in_CCD, 'Phi(Rad)' : list_phi_in_CCD, 
                    'Energy-SD(MeV)' : list_energy_pri_in_CCD, 'Delta_L(cm)' : list_delta_L, 
-                   'Energy_Landau(KeV)' : list_energy_Landau} 
+                   'Energy_Landau(KeV)' : list_energy_Landau, 'kappa' : list_kappa} 
 
     return dict_muons, nmuons_in_CCD 
 

@@ -9,13 +9,13 @@ TFile *file0 = new TFile("Edep_allclusters_NSAMP324_MeV.root"); // INFO ALL_CLUS
 //TFile *file0 = new TFile("Edep_NSAMP324_KeV.root");	// INFO MUONS ONLY
 TTree *tree0 = (TTree*) file0->Get("tree");
 
-TFile *file1 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_100000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
+TFile *file1 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
 TTree *tree1 = (TTree*) file1->Get("tree");
 
 TFile *file2 = new TFile("Edep_CONNIE_NSAMP400_MeV.root");
 TTree *tree2 = (TTree*) file2->Get("tree");
 
-TFile *file3 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_100000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
+TFile *file3 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
 TTree *tree3 = (TTree*) file3->Get("tree");
 
 
@@ -74,16 +74,16 @@ tree->Draw("EevtBar*0.77>>edep4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 edep->Scale(1);
 //edep->SetLineColor(2);
 
-edep0->Scale(89.);
+edep0->Scale(1.);
 //edep0->SetLineColor(4);
 
-edep1->Scale(1);
+edep1->Scale(1.0);
 //edep1->SetLineColor(1);
 
 edep2->Scale(0.86);
 //edep2->SetLineColor(7);
 
-edep3->Scale(10.);
+edep3->Scale(0.09);
 
 edep4->Scale(1.);
 // ======================================= //
@@ -98,11 +98,12 @@ cout<< "Int Rojo" << cont1 << endl;
 TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
 canv->Divide(1,1);
 canv->cd(1);
+// canv->Grid();
 edep->Draw("h"); 		// edepG4 with birks
-//edep0->Draw("he0 same"); 	// ICN data 
+// edep0->Draw("he0 same"); 	// ICN data 
 edep1->Draw("he0 same"); 	// edepG4 no Birks
-//edep2->Draw("he0 same"); 	// CONNIE data
-// edep3->Draw("he0 same"); 	// edepPP
+// edep2->Draw("he0 same"); 	// CONNIE data
+edep3->Draw("he0 same"); 	// edepPP
 // edep4->Draw("he0 same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
@@ -117,6 +118,6 @@ leg->Draw();
 //canv->cd(2);
 //edep_cut->Draw();
 // func2->Draw("same");
-canv->Print("Dis_edep_GEANT-PP-EXP.pdf");
+canv->Print("Dis_edep_GEANT-PP.pdf");
 
 }
