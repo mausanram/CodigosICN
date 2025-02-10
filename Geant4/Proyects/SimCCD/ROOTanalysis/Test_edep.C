@@ -1,6 +1,6 @@
 void Test_edep(){
 
-TFile *file = new TFile("./root_files/muons_10K_vacuum_file.root");
+TFile *file = new TFile("./root_files/muons_2M_vacuum_file_1.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
@@ -19,7 +19,7 @@ TFile *file3 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_
 TTree *tree3 = (TTree*) file3->Get("tree");
 
 
-int NB = 90;
+int NB = 200;
 double tlow = 0;
 double thi = 1;
 
@@ -53,8 +53,20 @@ edep3->SetLineColor(4);
 
 TH1F *edep4 = new TH1F("edep4", "Simulation no Birks scale", NB, tlow, thi);
 edep4->SetStats(0);
-edep4->SetLineStyle(1);
+edep4->SetLineStyle(2);
 edep4->SetLineColor(1);
+
+// === Template for fit ==
+int NBmu = 200;
+double maxEd = 700.;
+double muonsbw = maxEd/NBmu;
+
+TH1F *muons = new TH1F("muons","",NBmu,0,maxEd);
+muons->GetXaxis()->SetTitle("Energy (MeV)");
+muons->GetYaxis()->SetTitle("events");
+
+// TH1F *muons = new TH1F("muons", "Simulation no Birks", NBmu, 0, maxEd);
+tree->Draw(" EevtBar>>muons", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 
 // ============= Fill histograms =========== //
 tree->Draw("WevtBar>>edep", "WevtBar>0"); // GEANT4 INFO (BIRKS)
@@ -69,50 +81,85 @@ tree3->Draw("edep/1000>>edep3", "edep>0"); // SIM_AB_INITIO INFO
 tree->Draw("EevtBar*0.77>>edep4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 
 
+double cont = edep->Integral();
+double cont0 = edep0->Integral();
+double cont1 = edep1->Integral();
+double cont3 = edep3->Integral();
+double cont4 = edep4->Integral();
+
 // ========== Scale histograms =========== //
 //edep->Scale(0.65, "");
 edep->Scale(1);
 //edep->SetLineColor(2);
 
-edep0->Scale(1.);
+edep0->Scale(30);
 //edep0->SetLineColor(4);
 
-edep1->Scale(1.0);
+edep3->Scale(cont1/cont3);
 //edep1->SetLineColor(1);
 
 edep2->Scale(0.86);
 //edep2->SetLineColor(7);
 
-edep3->Scale(0.09);
+// edep1->Scale(cont3/cont1);
 
 edep4->Scale(1.);
 // ======================================= //
 
-double cont = edep->Integral();
-double cont1 = edep1->Integral();
 
-cout<< "Int Verde" << cont << endl;
-cout<< "Int Rojo" << cont1 << endl;
 
 // ============ Create Canvas ============== //
 TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
 canv->Divide(1,1);
 canv->cd(1);
 // canv->Grid();
-edep->Draw("h"); 		// edepG4 with birks
-// edep0->Draw("he0 same"); 	// ICN data 
-edep1->Draw("he0 same"); 	// edepG4 no Birks
+// edep->Draw("hist"); 		// edepG4 with birks
+edep4->Draw("hist");
+edep0->Draw("hist same"); 	// ICN data 
+edep1->Draw("hist same"); 	// edepG4 no Birks
 // edep2->Draw("he0 same"); 	// CONNIE data
-edep3->Draw("he0 same"); 	// edepPP
-// edep4->Draw("he0 same");
+edep3->Draw("hist same"); 	// edepPP
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
-leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");
-leg->AddEntry(edep1, "SimG4-NO Birks", "LEP");
+// leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");
+leg->AddEntry(edep1, "Sim-GEANT4", "LEP");
 //leg->AddEntry(edep0, "All Clusters (ICN-NSAMP324)", "LEP");
 //leg->AddEntry(edep2, "Datos CONNIE-NSAMP400", "LEP");
 leg->AddEntry(edep3, "Sim-PP", "LEP");
+leg->AddEntry(edep4, "Sim-GEANT4 (0.77)", "LEP");
 leg->Draw();
+
+
+
+TFile *fout = new TFile("ccdhisto.root", "recreate");
+edep0->Write();
+fout->Close();
+
+
+//----------------------------
+//-- muons template data file 
+//----------------------------
+  
+  ofstream myfile;
+  myfile.open ("muons.dat");
+  for (int i=0;i<NBmu; i++) 
+  myfile << muons->GetBinContent(i+1)/(muons->Integral(1,NBmu)*muonsbw) << "\n";
+  myfile.close();
+
+  cout << "Integral muons: " << muons->Integral() << " entries." << endl;
+  cout << "Integral muons (+ovflw): " << muons->Integral(0,NBmu+1) << " entries." << endl;
+
+  //- Find muon peak
+  int peakBin = 50;
+  for (int i=50;i<NBmu;i++){
+   if (muons->GetBinContent(i+1) > muons->GetBinContent(peakBin))
+     peakBin = i+1;
+  } //for i
+  printf("Peak: %d  \n", peakBin);
+  printf("Peak: %3.3f MeV \n", peakBin*maxEd/NBmu);
+  double Epeak = peakBin*maxEd/NBmu;
+
+
 
 
 //canv->cd(2);
