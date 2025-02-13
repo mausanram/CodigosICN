@@ -21,7 +21,7 @@ TTree *tree3 = (TTree*) file3->Get("tree");
 
 int NB = 200;
 double tlow = 0;
-double thi = 1;
+double thi = 1000;
 
 TH1F *edep = new TH1F("edep", "Energy Spectrum", NB, tlow, thi);
 edep->GetXaxis()->SetTitle("Energy (MeV)");
@@ -70,15 +70,15 @@ tree->Draw(" EevtBar>>muons", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 
 // ============= Fill histograms =========== //
 tree->Draw("WevtBar>>edep", "WevtBar>0"); // GEANT4 INFO (BIRKS)
-tree->Draw(" EevtBar>>edep1", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
+tree->Draw(" EevtBar*1000>>edep1", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 //tree->Draw("Ehitbar>>edep_cut", "thet>22*TMath::Pi()/180 & edep>0");
 // ========================================= //
 
 tree0->Draw("edep>>edep0", "edep>0"); // EXPERIMENTAL INFO
 tree2->Draw("edep>>edep2", "edep>0"); // EXPERIMENTAL INFO CONNIE
-tree3->Draw("edep/1000>>edep3", "edep>0"); // SIM_AB_INITIO INFO
+tree3->Draw("edep>>edep3", "edep>0"); // SIM_AB_INITIO INFO
 
-tree->Draw("EevtBar*0.77>>edep4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
+tree->Draw("EevtBar*0.77*1000>>edep4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 
 
 double cont = edep->Integral();
@@ -103,7 +103,6 @@ edep2->Scale(0.86);
 
 // edep1->Scale(cont3/cont1);
 
-edep4->Scale(1.);
 // ======================================= //
 
 
