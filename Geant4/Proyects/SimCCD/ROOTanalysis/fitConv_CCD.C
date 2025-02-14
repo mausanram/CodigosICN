@@ -271,8 +271,8 @@ void fitConv_CCD() {
 	double prob = TMath::Prob(chi2,ndf);
 
 	// Calculate I_0
-	double I0sim  = 70;
-	double nmusim = 308015;// muones sin que entran en CCD;
+	double I0sim  = 101.2;
+	double nmusim = 308015;// muones sim que entran en CCD;
 	double Tsim   = 472.3; //sec
 	double T      = 6.0; //sec
 	double eff    = 1.0; // suposición OK

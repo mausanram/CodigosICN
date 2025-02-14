@@ -1,21 +1,21 @@
 void Test_edep(){
 
-TFile *file = new TFile("./root_files/muons_2M_vacuum_file_1.root");
+TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
 
 TFile *file0 = new TFile("Edep_allclusters_NSAMP324_MeV.root"); // INFO ALL_CLUSTERS
-//TFile *file0 = new TFile("Edep_NSAMP324_KeV.root");	// INFO MUONS ONLY
+// TFile *file0 = new TFile("Edep_NSAMP324_KeV.root");	// INFO MUONS ONLY
 TTree *tree0 = (TTree*) file0->Get("tree");
 
-TFile *file1 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
+TFile *file1 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
 TTree *tree1 = (TTree*) file1->Get("tree");
 
 TFile *file2 = new TFile("Edep_CONNIE_NSAMP400_MeV.root");
 TTree *tree2 = (TTree*) file2->Get("tree");
 
-TFile *file3 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
+TFile *file3 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
 TTree *tree3 = (TTree*) file3->Get("tree");
 
 
@@ -74,11 +74,12 @@ tree->Draw(" EevtBar*1000>>edep1", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 //tree->Draw("Ehitbar>>edep_cut", "thet>22*TMath::Pi()/180 & edep>0");
 // ========================================= //
 
-tree0->Draw("edep>>edep0", "edep>0"); // EXPERIMENTAL INFO
+tree0->Draw("edep*1000>>edep0", "edep>0"); // EXPERIMENTAL INFO
+// tree0->Draw("edep>>edep0", "edep>0"); // EXPERIMENTAL INFO
 tree2->Draw("edep>>edep2", "edep>0"); // EXPERIMENTAL INFO CONNIE
-tree3->Draw("edep>>edep3", "edep>0"); // SIM_AB_INITIO INFO
+tree3->Draw("edep*1000>>edep3", "edep>0"); // SIM_AB_INITIO INFO
 
-tree->Draw("EevtBar*0.77*1000>>edep4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
+tree->Draw("EevtBar*0.8*1000>>edep4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 
 
 double cont = edep->Integral();
@@ -93,6 +94,7 @@ edep->Scale(1);
 //edep->SetLineColor(2);
 
 edep0->Scale(30);
+// edep0->Scale(50);
 //edep0->SetLineColor(4);
 
 edep3->Scale(cont1/cont3);
@@ -122,7 +124,7 @@ edep3->Draw("hist same"); 	// edepPP
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 // leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");
 leg->AddEntry(edep1, "Sim-GEANT4", "LEP");
-//leg->AddEntry(edep0, "All Clusters (ICN-NSAMP324)", "LEP");
+leg->AddEntry(edep0, "All Clusters (ICN-NSAMP324)", "LEP");
 //leg->AddEntry(edep2, "Datos CONNIE-NSAMP400", "LEP");
 leg->AddEntry(edep3, "Sim-PP", "LEP");
 leg->AddEntry(edep4, "Sim-GEANT4 (0.77)", "LEP");

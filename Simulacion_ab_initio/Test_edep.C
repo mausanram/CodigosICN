@@ -4,7 +4,7 @@ void Test_edep(){
     // TFile *file = new TFile("Sim_ab_initio_NMUONS_300000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
     // TFile *file = new TFile("Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
 
-    TFile *file = new TFile("Sim_ab_initio_NMUONS_200000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
+    TFile *file = new TFile("Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
     // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_150x150_RADIO_450.root");
 
 
@@ -15,7 +15,7 @@ void Test_edep(){
 
     int NB = 120;
     double tlow = 0;
-    double thi = 1000; // PAra la CCD
+    double thi = 1; // PAra la CCD
     TH1F *edep = new TH1F("edep", "", NB, tlow, thi);
     edep->GetXaxis()->SetTitle("Energy (MeV)");
     // edep->SetGrid(1);
@@ -52,7 +52,7 @@ void Test_edep(){
     // func1->Draw("same");
 
     canv->cd(2);
-    edep_cut->Draw("G");
+    edep_cut->Draw();
     // edep0->Draw("same");
     // func2->Draw("same");
     canv->Print("Dis_edep.pdf");

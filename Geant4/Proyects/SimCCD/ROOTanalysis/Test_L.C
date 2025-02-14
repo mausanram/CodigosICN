@@ -1,8 +1,8 @@
 void Test_L(){
-TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
+TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 
-TFile *file0 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_100000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
+TFile *file0 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
 TTree *tree0 = (TTree*) file0->Get("tree");
 
 
@@ -30,14 +30,14 @@ tree0->Draw("l>>LPP", "l>0");
 TLine *line = new TLine(0.0725,0,0.0725,14000);
 line->SetLineStyle(2);
 
-LPP->Scale(9.9);
+LPP->Scale(1.0);
 
 // Create Canvas //
 TCanvas *canv = new TCanvas("canv","", 2*700, 600);
 //canv->Divide(2,1);
 canv->cd(1);
 L->Draw();
-LPP->Draw("he0 same");
+LPP->Draw("hist same");
 line->Draw("same");
 // Lcut->Draw("same");
 

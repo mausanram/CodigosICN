@@ -378,7 +378,7 @@ void Muon_Gen_1(){
 
     auto start = chrono::high_resolution_clock::now();
 
-    int number_thet = 200000;
+    int number_thet = 2000000;
 
     double Radio = 8; //cm
     double half_plane_size = 0.75; // cm 
@@ -418,7 +418,7 @@ void Muon_Gen_1(){
 
     // Sim_ab_initio_NMUONS_200000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root
 
-    TFile *file = TFile::Open("Sim_ab_initio_NMUONS_200000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root", "recreate");
+    TFile *file = TFile::Open("Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root", "recreate");
     TTree *tree = new TTree("tree", "tree");
 
     double Rand_thet;

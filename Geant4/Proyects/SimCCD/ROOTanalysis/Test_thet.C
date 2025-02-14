@@ -5,7 +5,7 @@ void Test_thet(){
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_50000_PLANES_1x1_RADIO_5_CCDSIZE_400x600_.root");
 //TFile *file = new TFile("../build/Sim_NMUONS_100000.root");
-TFile *file = new TFile("./root_files/muons_100K_vacuum_file.root");
+TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
 
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
 // TFile *file = new TFile("./treesROOT_Barra/Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_0.root");

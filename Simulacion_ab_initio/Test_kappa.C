@@ -1,5 +1,5 @@
 void Test_kappa(){
-    TFile *file = new TFile("Sim_ab_initio_NMUONS_200000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
+    TFile *file = new TFile("Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
     // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_150x150_RADIO_450.root");
 
 
@@ -10,12 +10,12 @@ void Test_kappa(){
 
     int NB = 120;
     double tlow = 0;
-    double thi = 1000; // PAra la CCD
+    double thi = 1; // PAra la CCD
 
     TH1F *edep_Landau = new TH1F("edep_Landau", "", NB, tlow, thi);
     edep_Landau->GetXaxis()->SetTitle("Energy (MeV)");
 
-    TH1F *edep_Vav = new TH1F("edep_Vav", "", NB, tlow, thi);
+    TH1F *edep_Vav = new TH1F("edep_Vav", "", NB, tlow, thi + 1);
     edep_Vav->GetXaxis()->SetTitle("Energy (MeV)");
     // edep->SetGrid(1);
 

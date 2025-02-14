@@ -2,7 +2,7 @@ void Test_phi(){
 //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_3.0x3.0_RADIO_12_.root");
-TFile *file = new TFile("../build/Sim_NMUONS_100000.root");
+TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
 
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_500000_PLANES_150x150_RADIO_100(1).root");
@@ -24,7 +24,7 @@ TH1F *theta_in = new TH1F("phi_in", "", NB, tlow, thi);
 
 // Fill histograms //
 tree->Draw("phiPri>>phi_all");
-//tree->Draw("phiPri>>phi_in", "l>0");
+tree->Draw("phiPri>>phi_in", " LengthMuLAr >0");
 // tree->Draw("phi>>theta_incut", "thet>22");
 
 // Define fuctions //
@@ -67,8 +67,10 @@ theta_all->Draw();
 //func1->Draw("same");
 
 canv->cd(2);
-//theta_in->Draw();
-//func2->Draw("same"); 
+theta_in->Draw();
+func2->Draw("same"); 
+
+
 canv->Print("Dis_phi.pdf");
 
 }
