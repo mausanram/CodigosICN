@@ -9,13 +9,13 @@ TFile *file0 = new TFile("Edep_allclusters_NSAMP324_MeV.root"); // INFO ALL_CLUS
 // TFile *file0 = new TFile("Edep_NSAMP324_KeV.root");	// INFO MUONS ONLY
 TTree *tree0 = (TTree*) file0->Get("tree");
 
-TFile *file1 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
+TFile *file1 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_100000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
 TTree *tree1 = (TTree*) file1->Get("tree");
 
 TFile *file2 = new TFile("Edep_CONNIE_NSAMP400_MeV.root");
 TTree *tree2 = (TTree*) file2->Get("tree");
 
-TFile *file3 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
+TFile *file3 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_100000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
 TTree *tree3 = (TTree*) file3->Get("tree");
 
 
@@ -59,10 +59,11 @@ edep4->SetLineColor(1);
 // === Template for fit ==
 int NBmu = 200;
 double maxEd = 700.;
+
 double muonsbw = maxEd/NBmu;
 
 TH1F *muons = new TH1F("muons","",NBmu,0,maxEd);
-muons->GetXaxis()->SetTitle("Energy (MeV)");
+muons->GetXaxis()->SetTitle("Energy (KeV)");
 muons->GetYaxis()->SetTitle("events");
 
 // TH1F *muons = new TH1F("muons", "Simulation no Birks", NBmu, 0, maxEd);
@@ -81,6 +82,8 @@ tree3->Draw("edep*1000>>edep3", "edep>0"); // SIM_AB_INITIO INFO
 
 tree->Draw("EevtBar*0.8*1000>>edep4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 
+tree0->Draw("EevtBar*1000>>muons", "edep>0");
+// tree0->Draw("edep>>muons", "edep>0");
 
 double cont = edep->Integral();
 double cont0 = edep0->Integral();
@@ -88,12 +91,14 @@ double cont1 = edep1->Integral();
 double cont3 = edep3->Integral();
 double cont4 = edep4->Integral();
 
+cout << "Integral }gean4: " <<  cont1 <<endl;
+
 // ========== Scale histograms =========== //
 //edep->Scale(0.65, "");
 edep->Scale(1);
 //edep->SetLineColor(2);
 
-edep0->Scale(30);
+edep0->Scale(1.5);
 // edep0->Scale(50);
 //edep0->SetLineColor(4);
 
@@ -115,9 +120,9 @@ canv->Divide(1,1);
 canv->cd(1);
 // canv->Grid();
 // edep->Draw("hist"); 		// edepG4 with birks
-edep4->Draw("hist");
-edep0->Draw("hist same"); 	// ICN data 
-edep1->Draw("hist same"); 	// edepG4 no Birks
+// edep4->Draw("hist");
+// edep0->Draw("hist same"); 	// ICN data 
+edep1->Draw("hist "); 	// edepG4 no Birks
 // edep2->Draw("he0 same"); 	// CONNIE data
 edep3->Draw("hist same"); 	// edepPP
 

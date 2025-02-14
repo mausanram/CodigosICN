@@ -3,11 +3,13 @@
 
 CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/B02.cc \
   /usr/include/stdc-predef.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RunManager.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Event.hh \
-  /usr/include/c++/11/set \
-  /usr/include/c++/11/bits/stl_tree.h \
-  /usr/include/c++/11/bits/stl_algobase.h \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ios.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Types.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GlobalConfig.hh \
+  /usr/include/c++/11/complex \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
   /usr/include/features.h \
@@ -20,54 +22,8 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h \
   /usr/include/c++/11/pstl/pstl_config.h \
-  /usr/include/c++/11/bits/functexcept.h \
-  /usr/include/c++/11/bits/exception_defines.h \
   /usr/include/c++/11/bits/cpp_type_traits.h \
   /usr/include/c++/11/ext/type_traits.h \
-  /usr/include/c++/11/ext/numeric_traits.h \
-  /usr/include/c++/11/bits/stl_pair.h \
-  /usr/include/c++/11/bits/move.h \
-  /usr/include/c++/11/type_traits \
-  /usr/include/c++/11/bits/stl_iterator_base_types.h \
-  /usr/include/c++/11/bits/stl_iterator_base_funcs.h \
-  /usr/include/c++/11/bits/concept_check.h \
-  /usr/include/c++/11/debug/assertions.h \
-  /usr/include/c++/11/bits/stl_iterator.h \
-  /usr/include/c++/11/bits/ptr_traits.h \
-  /usr/include/c++/11/debug/debug.h \
-  /usr/include/c++/11/bits/predefined_ops.h \
-  /usr/include/c++/11/bits/allocator.h \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/c++allocator.h \
-  /usr/include/c++/11/ext/new_allocator.h \
-  /usr/include/c++/11/new \
-  /usr/include/c++/11/bits/exception.h \
-  /usr/include/c++/11/bits/memoryfwd.h \
-  /usr/include/c++/11/bits/stl_function.h \
-  /usr/include/c++/11/backward/binders.h \
-  /usr/include/c++/11/ext/alloc_traits.h \
-  /usr/include/c++/11/bits/alloc_traits.h \
-  /usr/include/c++/11/bits/stl_construct.h \
-  /usr/include/c++/11/ext/aligned_buffer.h \
-  /usr/include/c++/11/bits/node_handle.h \
-  /usr/include/c++/11/bits/stl_set.h \
-  /usr/include/c++/11/initializer_list \
-  /usr/include/c++/11/bits/stl_multiset.h \
-  /usr/include/c++/11/bits/range_access.h \
-  /usr/include/c++/11/bits/erase_if.h \
-  /usr/include/c++/11/map \
-  /usr/include/c++/11/bits/stl_map.h \
-  /usr/include/c++/11/tuple \
-  /usr/include/c++/11/utility \
-  /usr/include/c++/11/bits/stl_relops.h \
-  /usr/include/c++/11/array \
-  /usr/include/c++/11/bits/uses_allocator.h \
-  /usr/include/c++/11/bits/invoke.h \
-  /usr/include/c++/11/bits/stl_multimap.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ios.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Types.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GlobalConfig.hh \
-  /usr/include/c++/11/complex \
   /usr/include/c++/11/cmath \
   /usr/include/math.h \
   /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -118,6 +74,21 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /usr/include/alloca.h \
   /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
   /usr/include/c++/11/bits/specfun.h \
+  /usr/include/c++/11/bits/stl_algobase.h \
+  /usr/include/c++/11/bits/functexcept.h \
+  /usr/include/c++/11/bits/exception_defines.h \
+  /usr/include/c++/11/ext/numeric_traits.h \
+  /usr/include/c++/11/bits/stl_pair.h \
+  /usr/include/c++/11/bits/move.h \
+  /usr/include/c++/11/type_traits \
+  /usr/include/c++/11/bits/stl_iterator_base_types.h \
+  /usr/include/c++/11/bits/stl_iterator_base_funcs.h \
+  /usr/include/c++/11/bits/concept_check.h \
+  /usr/include/c++/11/debug/assertions.h \
+  /usr/include/c++/11/bits/stl_iterator.h \
+  /usr/include/c++/11/bits/ptr_traits.h \
+  /usr/include/c++/11/debug/debug.h \
+  /usr/include/c++/11/bits/predefined_ops.h \
   /usr/include/c++/11/limits \
   /usr/include/c++/11/tr1/gamma.tcc \
   /usr/include/c++/11/tr1/special_function_util.h \
@@ -136,6 +107,7 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /usr/include/c++/11/ios \
   /usr/include/c++/11/iosfwd \
   /usr/include/c++/11/bits/stringfwd.h \
+  /usr/include/c++/11/bits/memoryfwd.h \
   /usr/include/c++/11/bits/postypes.h \
   /usr/include/c++/11/cwchar \
   /usr/include/wchar.h \
@@ -147,10 +119,12 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
   /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
   /usr/include/c++/11/exception \
+  /usr/include/c++/11/bits/exception.h \
   /usr/include/c++/11/bits/exception_ptr.h \
   /usr/include/c++/11/bits/cxxabi_init_exception.h \
   /usr/include/c++/11/typeinfo \
   /usr/include/c++/11/bits/hash_bytes.h \
+  /usr/include/c++/11/new \
   /usr/include/c++/11/bits/nested_exception.h \
   /usr/include/c++/11/bits/char_traits.h \
   /usr/include/c++/11/cstdint \
@@ -185,9 +159,19 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
   /usr/include/c++/11/bits/locale_classes.h \
   /usr/include/c++/11/string \
+  /usr/include/c++/11/bits/allocator.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/c++allocator.h \
+  /usr/include/c++/11/ext/new_allocator.h \
   /usr/include/c++/11/bits/ostream_insert.h \
   /usr/include/c++/11/bits/cxxabi_forced.h \
+  /usr/include/c++/11/bits/stl_function.h \
+  /usr/include/c++/11/backward/binders.h \
+  /usr/include/c++/11/bits/range_access.h \
+  /usr/include/c++/11/initializer_list \
   /usr/include/c++/11/bits/basic_string.h \
+  /usr/include/c++/11/ext/alloc_traits.h \
+  /usr/include/c++/11/bits/alloc_traits.h \
+  /usr/include/c++/11/bits/stl_construct.h \
   /usr/include/c++/11/string_view \
   /usr/include/c++/11/bits/functional_hash.h \
   /usr/include/c++/11/bits/string_view.tcc \
@@ -233,6 +217,8 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
   /usr/include/c++/11/iostream \
   /usr/include/c++/11/algorithm \
+  /usr/include/c++/11/utility \
+  /usr/include/c++/11/bits/stl_relops.h \
   /usr/include/c++/11/bits/stl_algo.h \
   /usr/include/c++/11/bits/algorithmfwd.h \
   /usr/include/c++/11/bits/stl_heap.h \
@@ -240,13 +226,20 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /usr/include/c++/11/bits/uniform_int_dist.h \
   /usr/include/c++/11/pstl/glue_algorithm_defs.h \
   /usr/include/c++/11/functional \
+  /usr/include/c++/11/tuple \
+  /usr/include/c++/11/array \
+  /usr/include/c++/11/bits/uses_allocator.h \
+  /usr/include/c++/11/bits/invoke.h \
   /usr/include/c++/11/bits/refwrap.h \
   /usr/include/c++/11/bits/std_function.h \
   /usr/include/c++/11/unordered_map \
+  /usr/include/c++/11/ext/aligned_buffer.h \
   /usr/include/c++/11/bits/hashtable.h \
   /usr/include/c++/11/bits/hashtable_policy.h \
   /usr/include/c++/11/bits/enable_special_members.h \
+  /usr/include/c++/11/bits/node_handle.h \
   /usr/include/c++/11/bits/unordered_map.h \
+  /usr/include/c++/11/bits/erase_if.h \
   /usr/include/c++/11/vector \
   /usr/include/c++/11/bits/stl_uninitialized.h \
   /usr/include/c++/11/bits/stl_vector.h \
@@ -284,75 +277,33 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /usr/include/c++/11/bits/locale_conv.h \
   /usr/include/c++/11/bits/unique_ptr.h \
   /usr/include/c++/11/bits/quoted_string.h \
+  /usr/include/c++/11/map \
+  /usr/include/c++/11/bits/stl_tree.h \
+  /usr/include/c++/11/bits/stl_map.h \
+  /usr/include/c++/11/bits/stl_multimap.h \
   /usr/include/c++/11/mutex \
   /usr/include/c++/11/chrono \
   /usr/include/c++/11/ratio \
   /usr/include/c++/11/bits/parse_numbers.h \
   /usr/include/c++/11/bits/std_mutex.h \
   /usr/include/c++/11/bits/unique_lock.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/evtdefs.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Allocator.hh \
-  /usr/include/c++/11/cstddef \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AllocatorPool.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PrimaryVertex.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PrimaryParticle.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIdirectory.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcommand.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ApplicationState.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ThreeVector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/ThreeVector.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Utility/defs.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/ThreeVector.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/pwdefs.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCofThisEvent.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHitsCollection.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DCofThisEvent.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VDigiCollection.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrajectoryContainer.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VTrajectory.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserEventInformation.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Profiler.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Profiler.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/PTL/Globals.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/PTL/Types.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/PTL/Utility.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EventManager.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StackManager.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserStackingAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ClassificationOfNewTrack.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StackedTrack.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackStack.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartTrackStack.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SubEventTrackStack.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SubEvent.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/trkdefs.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LogicalVolume.hh \
-  /usr/include/c++/11/memory \
-  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
-  /usr/include/c++/11/bits/align.h \
-  /usr/include/c++/11/bit \
-  /usr/include/c++/11/bits/shared_ptr.h \
-  /usr/include/c++/11/bits/shared_ptr_base.h \
-  /usr/include/c++/11/bits/allocated_ptr.h \
-  /usr/include/c++/11/ext/concurrence.h \
-  /usr/include/c++/11/bits/shared_ptr_atomic.h \
-  /usr/include/c++/11/bits/atomic_base.h \
-  /usr/include/c++/11/bits/atomic_lockfree_defines.h \
-  /usr/include/c++/11/backward/auto_ptr.h \
-  /usr/include/c++/11/pstl/glue_memory_defs.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Region.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GeomSplitter.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/geomwdefs.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AutoLock.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Threading.hh \
-  /usr/include/c++/11/condition_variable \
-  /usr/include/c++/11/future \
-  /usr/include/c++/11/atomic \
-  /usr/include/c++/11/bits/atomic_futex.h \
-  /usr/include/c++/11/bits/std_thread.h \
-  /usr/include/c++/11/thread \
-  /usr/include/c++/11/bits/this_thread_sleep.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Region.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIparameter.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UItokenNum.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicalVolume.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/geomdefs.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RotationMatrix.hh \
@@ -365,24 +316,37 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationInterfaces.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationY.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationY.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationZ.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationZ.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/Rotation.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GeomSplitter.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/geomwdefs.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AutoLock.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Threading.hh \
+  /usr/include/c++/11/condition_variable \
+  /usr/include/c++/11/bits/shared_ptr.h \
+  /usr/include/c++/11/bits/shared_ptr_base.h \
+  /usr/include/c++/11/bits/allocated_ptr.h \
+  /usr/include/c++/11/ext/concurrence.h \
+  /usr/include/c++/11/future \
+  /usr/include/c++/11/atomic \
+  /usr/include/c++/11/bits/atomic_base.h \
+  /usr/include/c++/11/bits/atomic_lockfree_defines.h \
+  /usr/include/c++/11/bits/atomic_futex.h \
+  /usr/include/c++/11/bits/std_thread.h \
+  /usr/include/c++/11/thread \
+  /usr/include/c++/11/bits/this_thread_sleep.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicalVolume.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LogicalVolume.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DynamicParticle.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ElectronOccupancy.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Log.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LorentzVector.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleDefinition.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PDefManager.hh \
-  /usr/include/c++/11/stdlib.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleDefinition.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleMomentum.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DynamicParticle.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackStatus.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepPoint.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Allocator.hh \
+  /usr/include/c++/11/cstddef \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AllocatorPool.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SteppingControl.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepStatus.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TouchableHandle.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VTouchable.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TouchableHistory.hh \
@@ -403,10 +367,19 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationLevel.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationHistoryPool.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationHistory.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LogicalVolume.hh \
+  /usr/include/c++/11/memory \
+  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
+  /usr/include/c++/11/bits/align.h \
+  /usr/include/c++/11/bit \
+  /usr/include/c++/11/bits/shared_ptr_atomic.h \
+  /usr/include/c++/11/backward/auto_ptr.h \
+  /usr/include/c++/11/pstl/glue_memory_defs.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Region.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Region.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LogicalVolume.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TouchableHistory.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ReferenceCountedHandle.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserTrackInformation.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsModelCatalog.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Material.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Element.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ElementTable.hh \
@@ -425,6 +398,7 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Log.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsVectorType.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsVector.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MaterialTable.hh \
@@ -432,145 +406,39 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4OrderedTable.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DataVector.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DataVector.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepPoint.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SteppingControl.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepStatus.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepPoint.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackVector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Profiler.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Profiler.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/PTL/Globals.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/PTL/Types.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/PTL/Utility.hh \
+  /usr/include/c++/11/set \
+  /usr/include/c++/11/bits/stl_set.h \
+  /usr/include/c++/11/bits/stl_multiset.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PrimaryTransformer.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleTable.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleTableIterator.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleTable.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackingManager.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SteppingManager.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Navigator.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NormalNavigation.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VNavigation.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSolid.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSolid.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AuxiliaryNavServices.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AuxiliaryNavServices.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NormalNavigation.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VoxelNavigation.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationLogger.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BlockingList.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BlockingList.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelProxy.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelProxy.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelNode.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelNode.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelHeader.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelHeader.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VoxelNavigation.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParameterisedNavigation.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPVParameterisation.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VVolumeMaterialScanner.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParameterisedNavigation.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ReplicaNavigation.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ReplicaNavigation.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RegularNavigation.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VExternalNavigation.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Navigator.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NoProcess.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VProcess.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/Randomize.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/Randomize.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/DualRand.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandomEngine.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandomEngine.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/JamesRandom.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/MixMaxRng.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/MTwistEngine.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RanecuEngine.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RanluxEngine.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/Ranlux64Engine.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RanluxppEngine.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RanshiEngine.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBinomial.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/Random.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/Random.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Utility/memory.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBinomial.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBreitWigner.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandFlat.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Utility/thread_local.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandFlat.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBreitWigner.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandChiSquare.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandChiSquare.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandExponential.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandExponential.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandExpZiggurat.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBit.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBit.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGamma.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGamma.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGauss.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGauss.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGaussQ.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGaussQ.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGaussZiggurat.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGeneral.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGeneral.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandLandau.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandLandau.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoissonQ.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoisson.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoisson.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoissonQ.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandStudentT.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandStudentT.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsTable.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsTable.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VParticleChange.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VParticleChange.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ForceCondition.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GPILSelection.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleChange.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleChange.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessType.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessManager.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessVector.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessVector.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessManager.icc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSteppingVerbose.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/trkgdefs.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackingMessenger.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIdirectory.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcommand.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ApplicationState.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIparameter.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UItokenNum.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserTrackingAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RunManagerKernel.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/rundefs.hh \
-  /usr/include/c++/11/list \
-  /usr/include/c++/11/bits/stl_list.h \
-  /usr/include/c++/11/bits/list.tcc \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImanager.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcommandStatus.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VStateDependent.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/icomsdefs.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/trkdefs.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DynamicParticle.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ElectronOccupancy.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/pwdefs.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LorentzVector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleDefinition.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PDefManager.hh \
+  /usr/include/c++/11/stdlib.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleDefinition.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleMomentum.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DynamicParticle.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackStatus.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserTrackInformation.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsModelCatalog.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCofThisEvent.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHitsCollection.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHit.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VReadOutGeometry.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SensitiveVolumeList.hh \
@@ -645,8 +513,68 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /usr/include/c++/11/bits/regex.tcc \
   /usr/include/c++/11/bits/regex_executor.h \
   /usr/include/c++/11/bits/regex_executor.tcc \
+  /usr/include/c++/11/list \
+  /usr/include/c++/11/bits/stl_list.h \
+  /usr/include/c++/11/bits/list.tcc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VEnergyLossProcess.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VContinuousDiscreteProcess.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VProcess.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/Randomize.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/Randomize.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/DualRand.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandomEngine.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandomEngine.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/JamesRandom.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/MixMaxRng.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/MTwistEngine.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RanecuEngine.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RanluxEngine.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/Ranlux64Engine.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RanluxppEngine.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RanshiEngine.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBinomial.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/Random.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/Random.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Utility/memory.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBinomial.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBreitWigner.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandFlat.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Utility/thread_local.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandFlat.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBreitWigner.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandChiSquare.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandChiSquare.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandExponential.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandExponential.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandExpZiggurat.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBit.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBit.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGamma.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGamma.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGauss.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGauss.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGaussQ.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGaussQ.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGaussZiggurat.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGeneral.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGeneral.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandLandau.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandLandau.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoissonQ.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoisson.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoisson.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoissonQ.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandStudentT.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandStudentT.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsTable.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsTable.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VParticleChange.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VParticleChange.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ForceCondition.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GPILSelection.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleChange.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleChange.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessType.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MaterialCutsCouple.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProductionCuts.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmModelManager.hh \
@@ -666,30 +594,74 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmFluoDirectory.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmSaturation.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDManager.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCtable.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDStructure.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02PhysicsList.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VModularPhysicsList.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicsConstructor.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleTable.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleTableIterator.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleTable.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsListHelper.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsListOrderingParameter.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUPLSplitter.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/rundefs.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserPhysicsList.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProductionCutsTable.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MCCIndexConversionTable.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02PrimaryGeneratorAction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserPrimaryGeneratorAction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GeneralParticleSource.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Event.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/evtdefs.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PrimaryVertex.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PrimaryParticle.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DCofThisEvent.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VDigiCollection.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrajectoryContainer.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VTrajectory.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserEventInformation.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SingleParticleSource.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPrimaryGenerator.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SPSPosDistribution.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Navigator.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NormalNavigation.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VNavigation.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSolid.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSolid.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AuxiliaryNavServices.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AuxiliaryNavServices.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NormalNavigation.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VoxelNavigation.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationLogger.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BlockingList.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BlockingList.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelProxy.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelProxy.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelNode.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelNode.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelHeader.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelHeader.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VoxelNavigation.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParameterisedNavigation.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPVParameterisation.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VVolumeMaterialScanner.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParameterisedNavigation.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ReplicaNavigation.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ReplicaNavigation.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RegularNavigation.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VExternalNavigation.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Navigator.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SPSRandomGenerator.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DataInterpolation.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SPSAngDistribution.hh \
@@ -702,6 +674,39 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingVerbose.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SteppingVerbose.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSteppingVerbose.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/trkgdefs.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02ActionInitialization.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserActionInitialization.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02PrimaryGeneratorAction.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02RunAction.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02ActionInitialization.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RunManager.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EventManager.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StackManager.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserStackingAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ClassificationOfNewTrack.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StackedTrack.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackStack.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartTrackStack.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SubEventTrackStack.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SubEvent.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PrimaryTransformer.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackingManager.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SteppingManager.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NoProcess.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessManager.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessVector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessVector.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessManager.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackingMessenger.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserTrackingAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RunManagerKernel.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImanager.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcommandStatus.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VStateDependent.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/icomsdefs.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/Randomize.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIExecutive.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUIshell.hh \
@@ -842,18 +847,14 @@ CMakeFiles/b02.dir/B02.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImanager.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIsession.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4coutDestination.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIbatch.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02ActionInitialization.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserActionInitialization.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02PrimaryGeneratorAction.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02RunAction.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02ActionInitialization.hh
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIbatch.hh
 
 CMakeFiles/b02.dir/src/B02ActionInitialization.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02ActionInitialization.cc \
   /usr/include/stdc-predef.h \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02ActionInitialization.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserActionInitialization.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ios.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Types.hh \
@@ -1136,36 +1137,21 @@ CMakeFiles/b02.dir/src/B02ActionInitialization.cc.o: /home/labdet/Documents/MauS
   /usr/include/c++/11/bits/parse_numbers.h \
   /usr/include/c++/11/bits/std_mutex.h \
   /usr/include/c++/11/bits/unique_lock.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIdirectory.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcommand.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ApplicationState.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ThreeVector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/ThreeVector.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Utility/defs.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/ThreeVector.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIparameter.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UItokenNum.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCofThisEvent.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Allocator.hh \
-  /usr/include/c++/11/cstddef \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AllocatorPool.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHitsCollection.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicalVolume.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/geomdefs.hh \
@@ -1179,6 +1165,8 @@ CMakeFiles/b02.dir/src/B02ActionInitialization.cc.o: /home/labdet/Documents/MauS
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationInterfaces.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationY.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationY.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationZ.h \
@@ -1203,6 +1191,9 @@ CMakeFiles/b02.dir/src/B02ActionInitialization.cc.o: /home/labdet/Documents/MauS
   /usr/include/c++/11/bits/this_thread_sleep.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicalVolume.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepPoint.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Allocator.hh \
+  /usr/include/c++/11/cstddef \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AllocatorPool.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SteppingControl.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepStatus.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TouchableHandle.hh \
@@ -1291,6 +1282,12 @@ CMakeFiles/b02.dir/src/B02ActionInitialization.cc.o: /home/labdet/Documents/MauS
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserTrackInformation.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsModelCatalog.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCofThisEvent.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHitsCollection.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHit.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VReadOutGeometry.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SensitiveVolumeList.hh \
@@ -1446,15 +1443,18 @@ CMakeFiles/b02.dir/src/B02ActionInitialization.cc.o: /home/labdet/Documents/MauS
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmFluoDirectory.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmSaturation.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDManager.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCtable.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDStructure.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02PrimaryGeneratorAction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserPrimaryGeneratorAction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GeneralParticleSource.hh \
@@ -2442,6 +2442,7 @@ CMakeFiles/b02.dir/src/B02BarSD.cc.o: /home/labdet/Documents/MauSan/Programas/Re
 CMakeFiles/b02.dir/src/B02DetectorConstruction.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02DetectorConstruction.cc \
   /usr/include/stdc-predef.h \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ios.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Types.hh \
@@ -2724,37 +2725,22 @@ CMakeFiles/b02.dir/src/B02DetectorConstruction.cc.o: /home/labdet/Documents/MauS
   /usr/include/c++/11/bits/parse_numbers.h \
   /usr/include/c++/11/bits/std_mutex.h \
   /usr/include/c++/11/bits/unique_lock.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIdirectory.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcommand.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ApplicationState.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ThreeVector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/ThreeVector.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Utility/defs.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/ThreeVector.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIparameter.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UItokenNum.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCofThisEvent.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Allocator.hh \
-  /usr/include/c++/11/cstddef \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AllocatorPool.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHitsCollection.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicalVolume.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/geomdefs.hh \
@@ -2768,6 +2754,8 @@ CMakeFiles/b02.dir/src/B02DetectorConstruction.cc.o: /home/labdet/Documents/MauS
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationInterfaces.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationY.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationY.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationZ.h \
@@ -2792,6 +2780,9 @@ CMakeFiles/b02.dir/src/B02DetectorConstruction.cc.o: /home/labdet/Documents/MauS
   /usr/include/c++/11/bits/this_thread_sleep.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicalVolume.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepPoint.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Allocator.hh \
+  /usr/include/c++/11/cstddef \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AllocatorPool.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SteppingControl.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepStatus.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TouchableHandle.hh \
@@ -2880,6 +2871,12 @@ CMakeFiles/b02.dir/src/B02DetectorConstruction.cc.o: /home/labdet/Documents/MauS
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserTrackInformation.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsModelCatalog.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCofThisEvent.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHitsCollection.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHit.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VReadOutGeometry.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SensitiveVolumeList.hh \
@@ -3035,15 +3032,18 @@ CMakeFiles/b02.dir/src/B02DetectorConstruction.cc.o: /home/labdet/Documents/MauS
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmFluoDirectory.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmSaturation.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDManager.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCtable.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDStructure.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Material.hh \
@@ -3450,26 +3450,12 @@ CMakeFiles/b02.dir/src/B02DetectorMessenger.cc.o: /home/labdet/Documents/MauSan/
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIparameter.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UItokenNum.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCofThisEvent.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Allocator.hh \
-  /usr/include/c++/11/cstddef \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AllocatorPool.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHitsCollection.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicalVolume.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/geomdefs.hh \
@@ -3483,6 +3469,8 @@ CMakeFiles/b02.dir/src/B02DetectorMessenger.cc.o: /home/labdet/Documents/MauSan/
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationInterfaces.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationY.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationY.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationZ.h \
@@ -3507,6 +3495,9 @@ CMakeFiles/b02.dir/src/B02DetectorMessenger.cc.o: /home/labdet/Documents/MauSan/
   /usr/include/c++/11/bits/this_thread_sleep.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicalVolume.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepPoint.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Allocator.hh \
+  /usr/include/c++/11/cstddef \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AllocatorPool.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SteppingControl.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepStatus.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TouchableHandle.hh \
@@ -3595,6 +3586,12 @@ CMakeFiles/b02.dir/src/B02DetectorMessenger.cc.o: /home/labdet/Documents/MauSan/
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserTrackInformation.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsModelCatalog.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCofThisEvent.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHitsCollection.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHit.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VReadOutGeometry.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SensitiveVolumeList.hh \
@@ -3750,15 +3747,18 @@ CMakeFiles/b02.dir/src/B02DetectorMessenger.cc.o: /home/labdet/Documents/MauSan/
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmFluoDirectory.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmSaturation.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDManager.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCtable.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDStructure.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIdirectory.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcmdWithAString.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcmdWithADoubleAndUnit.hh
@@ -5557,18 +5557,13 @@ CMakeFiles/b02.dir/src/B02PrimaryGeneratorAction.cc.o: /home/labdet/Documents/Ma
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UItokenNum.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GeneralParticleSourceData.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepPoint.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SteppingControl.hh \
@@ -5603,6 +5598,10 @@ CMakeFiles/b02.dir/src/B02PrimaryGeneratorAction.cc.o: /home/labdet/Documents/Ma
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserTrackInformation.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsModelCatalog.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHit.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VReadOutGeometry.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SensitiveVolumeList.hh \
@@ -5756,15 +5755,16 @@ CMakeFiles/b02.dir/src/B02PrimaryGeneratorAction.cc.o: /home/labdet/Documents/Ma
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmFluoDirectory.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmSaturation.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDManager.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCtable.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDStructure.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02PrimaryGeneratorMessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Event.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleGun.hh \
@@ -6945,29 +6945,29 @@ CMakeFiles/b02.dir/src/B02RunAction.cc.o: /home/labdet/Documents/MauSan/Programa
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/rundefs.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDManager.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCtable.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDStructure.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh
 
 CMakeFiles/b02.dir/src/B02SteppingAction.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02SteppingAction.cc \
   /usr/include/stdc-predef.h \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ios.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Types.hh \
@@ -7250,28 +7250,18 @@ CMakeFiles/b02.dir/src/B02SteppingAction.cc.o: /home/labdet/Documents/MauSan/Pro
   /usr/include/c++/11/bits/parse_numbers.h \
   /usr/include/c++/11/bits/std_mutex.h \
   /usr/include/c++/11/bits/unique_lock.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIdirectory.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcommand.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ApplicationState.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ThreeVector.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/ThreeVector.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Utility/defs.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/ThreeVector.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIparameter.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UItokenNum.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh \
@@ -7293,6 +7283,8 @@ CMakeFiles/b02.dir/src/B02SteppingAction.cc.o: /home/labdet/Documents/MauSan/Pro
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationInterfaces.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.icc \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationY.h \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationY.icc \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationZ.h \
@@ -7560,19 +7552,27 @@ CMakeFiles/b02.dir/src/B02SteppingAction.cc.o: /home/labdet/Documents/MauSan/Pro
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmFluoDirectory.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmSaturation.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImessenger.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDManager.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCtable.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDStructure.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh \
   /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
+  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VTouchable.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LogicalVolume.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserTrackInformation.hh \
-  /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RunManager.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Event.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/evtdefs.hh \
@@ -11767,37 +11767,11 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4IonTable.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VEmFluctuationModel.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/trkgdefs.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSceneHandler.icc:
-
-/usr/include/c++/11/bits/this_thread_sleep.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessType.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VAnalysisManager.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BMesonZero.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoisson.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGaussZiggurat.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGauss.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGamma.h:
-
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBreitWigner.icc:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBinomial.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RanshiEngine.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VExternalNavigation.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RanluxppEngine.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RanluxEngine.h:
 
@@ -11807,15 +11781,7 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmTableType.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/MTwistEngine.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/icomsdefs.hh:
-
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/JamesRandom.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoisson.icc:
-
-/usr/include/c++/11/bits/nested_exception.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBinomial.icc:
 
@@ -11827,133 +11793,113 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/Randomize.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmProcessSubType.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VEnergyLossProcess.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VCSGface.hh:
+/usr/include/c++/11/list:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnalysisVerbose.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Triton.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelNode.icc:
+/usr/include/c++/11/bits/regex_automaton.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelNode.hh:
+/usr/include/c++/11/bits/regex_error.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleTable.hh:
+/usr/include/c++/11/atomic:
 
-/usr/include/locale.h:
+/usr/include/c++/11/bits/regex_constants.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BlockingList.icc:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VoxelNavigation.icc:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/h2:
+/usr/include/c++/11/bits/stl_stack.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/evtdefs.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPrimaryGenerator.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NormalNavigation.icc:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ToolsSGQtZB.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HadronPhysicsQGSP_BIC_HP.hh:
+/usr/include/c++/11/bits/deque.tcc:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleHPLegendreTable.hh:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qprocessordetection.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSolid.icc:
+/usr/include/c++/11/stack:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TouchableHistory.icc:
+/usr/include/x86_64-linux-gnu/bits/signal_ext.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NormalNavigation.hh:
+/usr/include/x86_64-linux-gnu/bits/types.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SigmabPlus.hh:
+/usr/include/x86_64-linux-gnu/bits/sigthread.h:
 
-/usr/include/c++/11/unordered_map:
+/usr/include/c++/11/chrono:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Pow.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HadronicProcess.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PrimaryTransformer.hh:
+/usr/include/x86_64-linux-gnu/bits/sigstksz.h:
 
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02BarHit.cc:
+/usr/include/c++/11/condition_variable:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepStatus.hh:
+/usr/include/x86_64-linux-gnu/bits/types/stack_t.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NtupleBookingManager.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VRestDiscreteProcess.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VProcess.hh:
+/usr/include/x86_64-linux-gnu/bits/sigaction.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelProxy.icc:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VMarker.icc:
 
-/usr/include/c++/11/locale:
+/usr/include/x86_64-linux-gnu/bits/sigevent-consts.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DataVector.icc:
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02PhysicsList.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBit.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/MTwistEngine.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NeutrinoE.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/icomsdefs.hh:
 
-/usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h:
+/usr/include/x86_64-linux-gnu/bits/fenv.h:
 
-/usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VModel.icc:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4coutDestination.hh:
 
-/usr/include/c++/11/fstream:
+/usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/MixMaxRng.h:
+/usr/include/c++/11/tuple:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleHPVector.hh:
+/usr/include/fenv.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MaterialPropertiesIndex.hh:
+/usr/include/c++/11/bits/uniform_int_dist.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DensityEffectCalculator.hh:
+/usr/include/linux/close_range.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackingManager.hh:
+/usr/include/c++/11/bits/functexcept.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleHPReactionWhiteBoard.hh:
+/usr/include/x86_64-linux-gnu/c++/11/bits/cxxabi_tweaks.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UItokenNum.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Backtrace.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Element.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmSaturation.hh:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qconfig.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SigmabMinus.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHit.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MuonMinus.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCofThisEvent.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MuMultipleScattering.hh:
+
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh:
+
+/usr/include/x86_64-linux-gnu/bits/uio_lim.h:
+
+/usr/include/x86_64-linux-gnu/bits/siginfo-consts.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserTrackInformation.hh:
 
 /usr/include/c++/11/iosfwd:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SteppingVerbose.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationHistory.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationLevelRep.icc:
-
-/usr/include/c++/11/bits/locale_facets.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AuxiliaryNavServices.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationLevel.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandLandau.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/h1d:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Geometry/Normal3D.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ExceptionSeverity.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ASCIITree.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiSigmaZero.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HadronPhysicsFTFP_BERT_HP.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VEnergyLossProcess.hh:
-
-/usr/include/c++/11/bits/enable_special_members.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PVPlacement.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SandiaTable.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AffineTransform.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationZ.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Lambda.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PrimaryParticle.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DynamicParticle.icc:
 
@@ -11969,7 +11915,9 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ViewParameters.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGeneral.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4THitsCollection.hh:
+
+/usr/include/x86_64-linux-gnu/bits/time64.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DynamicParticle.hh:
 
@@ -11977,11 +11925,155 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /usr/include/errno.h:
 
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Point3D.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiKaonZero.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiXibZero.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/Ranlux64Engine.h:
+
+/usr/include/c++/11/complex:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Trap.hh:
+
+/usr/include/c++/11/set:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/PTL/Utility.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Profiler.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VProcess.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DataVector.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBit.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NeutrinoE.hh:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h:
+
+/usr/include/c++/11/fstream:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/MixMaxRng.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleHPVector.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MaterialPropertiesIndex.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DensityEffectCalculator.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Element.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ReferenceCountedHandle.hh:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qtcore-config.h:
+
+/usr/include/c++/11/csignal:
+
+/usr/include/c++/11/pstl/glue_memory_defs.h:
+
+/usr/include/c++/11/backward/auto_ptr.h:
+
+/usr/include/c++/11/bits/regex.h:
+
+/usr/include/c++/11/bit:
+
+/usr/include/c++/11/bits/list.tcc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Plane3D.hh:
+
+/usr/include/c++/11/bits/align.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Utility/memory.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Geometry/Point3D.h:
+
+/usr/include/c++/11/bits/stl_raw_storage_iter.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationHistory.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationLevelRep.icc:
+
+/usr/include/c++/11/bits/locale_facets.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AuxiliaryNavServices.icc:
+
+/usr/include/x86_64-linux-gnu/bits/sigcontext.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiTriton.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationLevel.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Geometry/Normal3D.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ExceptionSeverity.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ASCIITree.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiSigmaZero.hh:
+
+/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/p2d:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HadronPhysicsFTFP_BERT_HP.hh:
+
+/usr/include/c++/11/bits/enable_special_members.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PVPlacement.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SandiaTable.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AffineTransform.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationZ.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Lambda.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/trkdefs.hh:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QtGlobal:
+
+/usr/include/assert.h:
+
+/usr/include/c++/11/bits/allocated_ptr.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HadronInelasticProcess.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PrimaryParticle.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StepStatus.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NtupleBookingManager.hh:
+
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandExponential.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VContinuousDiscreteProcess.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicalVolume.icc:
 
 /usr/include/x86_64-linux-gnu/sys/types.h:
+
+/usr/include/c++/11/bits/atomic_lockfree_defines.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MCCIndexConversionTable.hh:
+
+/usr/include/c++/11/bits/atomic_base.h:
+
+/usr/include/c++/11/ext/concurrence.h:
+
+/usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AutoLock.hh:
+
+/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ReplicaNavigation.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GeomSplitter.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcommand.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationY.h:
 
@@ -11989,25 +12081,25 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/base_histo:
 
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackStatus.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h:
+
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.icc:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BuilderType.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationX.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VTrajectory.hh:
-
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4eIonisation.hh:
 
 /usr/include/x86_64-linux-gnu/bits/fp-logb.h:
 
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VTrajectory.hh:
+
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiNeutrinoTau.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/AxisAngle.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AuxiliaryNavServices.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VModularPhysicsList.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/AxisAngle.h:
 
@@ -12027,103 +12119,33 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/forit:
 
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VReadOutGeometry.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleHPHash.hh:
+
+/usr/include/x86_64-linux-gnu/sys/select.h:
+
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qtcore-config.h:
+/usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h:
 
-/usr/include/c++/11/atomic:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VModel.icc:
 
-/usr/include/c++/11/bits/regex_error.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AutoLock.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ReplicaNavigation.icc:
-
-/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GeomSplitter.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcommand.hh:
-
-/usr/include/c++/11/pstl/glue_memory_defs.h:
-
-/usr/include/c++/11/backward/auto_ptr.h:
-
-/usr/include/c++/11/bits/atomic_lockfree_defines.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MCCIndexConversionTable.hh:
-
-/usr/include/c++/11/bits/atomic_base.h:
-
-/usr/include/c++/11/ext/concurrence.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoissonQ.h:
-
-/usr/include/c++/11/bits/allocated_ptr.h:
-
-/usr/include/assert.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HadronInelasticProcess.hh:
-
-/usr/include/c++/11/bit:
-
-/usr/include/c++/11/bits/align.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Utility/memory.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Geometry/Point3D.h:
-
-/usr/include/c++/11/bits/stl_raw_storage_iter.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/trkdefs.hh:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/QtGlobal:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackStatus.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartTrackStack.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LENDUsedTarget.hh:
-
-/usr/include/c++/11/typeinfo:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Utility/thread_local.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackStack.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MuIonisation.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VVolumeMaterialScanner.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/PTL/Utility.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Profiler.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserEventInformation.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrajectoryContainer.hh:
-
-/usr/include/c++/11/bits/stl_function.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GMocrenFile.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DCofThisEvent.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Geometry/Transform3D.icc:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHitsCollection.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCofThisEvent.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleHPReactionWhiteBoard.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ReferenceCountedHandle.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UItokenNum.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VParticleChange.hh:
+
+/usr/include/c++/11/bits/unique_lock.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackingManager.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/ThreeVector.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessVector.icc:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationLevelRep.hh:
 
@@ -12131,23 +12153,13 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ThreeVector.hh:
 
-/usr/include/c++/11/bits/stl_stack.h:
+/usr/include/c++/11/bits/this_thread_sleep.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPrimaryGenerator.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ToolsSGQtZB.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VEmFluctuationModel.hh:
 
 /usr/include/c++/11/bits/parse_numbers.h:
 
-/usr/include/c++/11/condition_variable:
-
-/usr/include/x86_64-linux-gnu/bits/sigstksz.h:
-
 /usr/include/c++/11/ratio:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackingMessenger.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NtupleBookingManager.icc:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/PTL/Globals.hh:
 
@@ -12155,7 +12167,23 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /usr/include/c++/11/mutex:
 
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/HadronElasticPhysicsHP.hh:
+/usr/include/c++/11/bits/stl_multimap.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SigmacZero.hh:
+
+/usr/include/c++/11/bits/stl_map.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MaterialPropertiesTable.hh:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
+
+/usr/include/c++/11/bits/stl_tree.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationInterfaces.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AllocatorPool.hh:
+
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02PrimaryGeneratorAction.hh:
 
 /usr/include/c++/11/bits/quoted_string.h:
 
@@ -12174,6 +12202,14 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiXiZero.hh:
 
 /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
+
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingVerbose.hh:
+
+/usr/include/c++/11/cxxabi.h:
+
+/usr/include/c++/11/map:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SurfBits.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGauss.icc:
 
@@ -12199,31 +12235,119 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Navigator.hh:
 
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CacheDetails.hh:
+
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Exception.hh:
 
 /usr/include/x86_64-linux-gnu/bits/xopen_lim.h:
 
+/usr/include/asm-generic/errno-base.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VModel.hh:
+
+/usr/include/c++/11/bits/string_view.tcc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGaussQ.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Neutron.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GeometryTolerance.hh:
+
+/usr/include/wchar.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SteppingControl.hh:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmCorrections.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VIntraNuclearTransportModel.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/BoostY.icc:
+
+/usr/include/x86_64-linux-gnu/bits/types/wint_t.h:
+
+/usr/include/signal.h:
+
+/usr/include/x86_64-linux-gnu/bits/wchar.h:
+
 /usr/include/x86_64-linux-gnu/bits/local_lim.h:
 
-/usr/include/x86_64-linux-gnu/bits/posix1_lim.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Transform3D.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/templates.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Paraboloid.icc:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiSigmabZero.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TouchableHandle.hh:
 
-/usr/include/c++/11/tr1/hypergeometric.tcc:
+/usr/include/c++/11/bits/nested_exception.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiHe3.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoisson.icc:
+
+/usr/include/c++/11/cwchar:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VTBaseHnManager.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Decay.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SceneList.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BsMesonZero.hh:
+
+/usr/include/unistd.h:
+
+/usr/include/x86_64-linux-gnu/bits/math-vector.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SigmaZero.hh:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h:
+
+/usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h:
+
+/usr/include/c++/11/tr1/special_function_util.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Geometry/Plane3D.h:
+
+/usr/include/x86_64-linux-gnu/bits/waitstatus.h:
+
+/usr/include/c++/11/bits/stringfwd.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/c++allocator.h:
+
+/usr/include/c++/11/bits/exception_ptr.h:
+
+/usr/include/c++/11/bits/charconv.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LENDUsedTarget.hh:
+
+/usr/include/c++/11/typeinfo:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartTrackStack.hh:
+
+/usr/include/c++/11/istream:
+
+/usr/include/c++/11/sstream:
+
+/usr/include/x86_64-linux-gnu/bits/types/FILE.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandExpZiggurat.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/PTL/Types.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/p1d:
 
 /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02PhysicsList.cc:
 
+/usr/include/c++/11/tr1/hypergeometric.tcc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.hh:
+
+/usr/include/c++/11/bits/localefwd.h:
+
 /usr/include/c++/11/bits/shared_ptr.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParameterisedNavigation.icc:
-
-/usr/include/c++/11/bits/stl_construct.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h:
 
@@ -12231,117 +12355,33 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/error_constants.h:
 
-/usr/include/alloca.h:
+/usr/include/c++/11/bits/std_mutex.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PDefManager.hh:
+/usr/include/c++/11/array:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBit.icc:
+/usr/include/c++/11/tr1/poly_laguerre.tcc:
 
-/usr/include/c++/11/ext/new_allocator.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4KleinNishinaModel.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Navigator.icc:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SingleParticleSource.hh:
 
-/usr/include/c++/11/algorithm:
+/usr/include/c++/11/bits/stl_iterator_base_types.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGamma.icc:
+/usr/include/x86_64-linux-gnu/bits/ss_flags.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleHPHash.hh:
+/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
 
-/usr/include/x86_64-linux-gnu/sys/select.h:
+/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VReadOutGeometry.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ionIonisation.hh:
 
-/usr/include/x86_64-linux-gnu/bits/timex.h:
+/usr/include/c++/11/debug/assertions.h:
 
-/usr/include/x86_64-linux-gnu/bits/endianness.h:
+/usr/include/c++/11/bits/hash_bytes.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoissonQ.icc:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleHPPartial.hh:
 
-/usr/include/x86_64-linux-gnu/bits/endian.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4KaonZeroShort.hh:
-
-/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/Rotation.h:
-
-/usr/include/c++/11/set:
-
-/usr/include/c++/11/bits/localefwd.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Track.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MaterialPropertyVector.hh:
-
-/usr/include/c++/11/bits/shared_ptr_base.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Sphere.icc:
-
-/usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
-
-/usr/include/c++/11/bits/range_access.h:
-
-/usr/include/x86_64-linux-gnu/bits/types.h:
-
-/usr/include/x86_64-linux-gnu/bits/signal_ext.h:
-
-/usr/include/c++/11/tr1/special_function_util.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Geometry/Plane3D.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4He3.hh:
-
-/usr/include/features-time64.h:
-
-/usr/include/c++/11/system_error:
-
-/usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
-
-/usr/include/x86_64-linux-gnu/bits/waitflags.h:
-
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Allocator.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsModelCatalog.hh:
-
-/usr/include/x86_64-linux-gnu/bits/types/FILE.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsTable.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BaseAnalysisManager.hh:
-
-/usr/include/stdlib.h:
-
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/HadronElasticPhysicsHP.cc:
-
-/usr/include/x86_64-linux-gnu/bits/iscanonical.h:
-
-/usr/include/c++/11/ext/string_conversions.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SigmacZero.hh:
-
-/usr/include/c++/11/bits/stl_map.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/error_t.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VisAttributes.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiAlpha.hh:
-
-/usr/include/c++/11/bits/locale_classes.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Backtrace.hh:
-
-/usr/include/signal.h:
-
-/usr/include/c++/11/tr1/bessel_function.tcc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Trap.icc:
+/usr/include/c++/11/bits/move.h:
 
 /usr/include/c++/11/bits/exception.h:
 
@@ -12349,53 +12389,89 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MaterialTable.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh:
+/usr/include/c++/11/bits/stl_pair.h:
 
-/usr/include/c++/11/ios:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VisManager.icc:
 
-/usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
+/usr/include/alloca.h:
 
-/usr/include/c++/11/bits/postypes.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PDefManager.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessManager.icc:
+/usr/include/c++/11/ext/new_allocator.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/MCGIDI_mass.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4FPYNubarValues.hh:
 
-/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
+/usr/include/c++/11/bits/specfun.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ForceCondition.hh:
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
-/usr/include/c++/11/bits/invoke.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProductionCutsTable.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsVectorType.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/Rotation.icc:
 
-/usr/include/c++/11/bits/unordered_map.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/BoostX.icc:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackVector.hh:
+/usr/include/x86_64-linux-gnu/bits/select.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DAWNFILE.hh:
+/usr/include/c++/11/cfenv:
 
-/usr/include/c++/11/bits/stl_multimap.h:
+/usr/include/c++/11/algorithm:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIsession.hh:
+/usr/include/x86_64-linux-gnu/bits/typesizes.h:
 
-/usr/include/x86_64-linux-gnu/sys/ucontext.h:
+/usr/include/x86_64-linux-gnu/bits/timex.h:
 
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02PrimaryGeneratorMessenger.cc:
+/usr/include/x86_64-linux-gnu/bits/endianness.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/Ranlux64Engine.h:
+/usr/include/c++/11/ext/type_traits.h:
 
-/usr/include/c++/11/complex:
+/usr/include/c++/11/pstl/pstl_config.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Trap.hh:
+/usr/include/c++/11/bitset:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelProxy.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDManager.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SteppingControl.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SceneHandlerList.hh:
 
-/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiProton.hh:
 
-/usr/include/wchar.h:
+/usr/include/c++/11/bits/vector.tcc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh:
+
+/usr/include/c++/11/type_traits:
+
+/usr/include/x86_64-linux-gnu/sys/single_threaded.h:
+
+/usr/include/c++/11/cmath:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GPILSelection.hh:
+
+/usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
+
+/usr/include/c++/11/bits/range_access.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SensitiveVolumeList.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicsConstructor.hh:
+
+/usr/include/libintl.h:
+
+/usr/include/x86_64-linux-gnu/bits/long-double.h:
+
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GlobalConfig.hh:
+
+/usr/include/stdlib.h:
+
+/usr/include/c++/11/system_error:
+
+/usr/include/features-time64.h:
+
+/usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SceneTreeItem.hh:
 
@@ -12409,137 +12485,55 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /usr/include/c++/11/iostream:
 
-/usr/include/c++/11/ext/type_traits.h:
+/usr/include/pthread.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGeneral.icc:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericFileManager.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MaterialPropertiesTable.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SPSEneDistribution.hh:
 
-/usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Geometry/Vector3D.h:
 
-/usr/include/c++/11/bits/stl_tree.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/Boost.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ionEffectiveCharge.hh:
+/usr/include/c++/11/limits:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VRML2File.hh:
+/usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelHeader.icc:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4He3.hh:
 
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/B02.cc:
+/usr/include/c++/11/bits/stl_deque.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EtaPrime.hh:
 
-/usr/include/c++/11/tuple:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/Rotation.h:
 
-/usr/include/c++/11/bits/unique_lock.h:
+/usr/include/x86_64-linux-gnu/bits/endian.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VParticleChange.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4KaonZeroShort.hh:
 
-/usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h:
+/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
 
-/usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PrimaryTransformer.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleChange.icc:
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02BarHit.cc:
 
-/usr/include/c++/11/bits/stl_relops.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MaterialPropertyVector.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Log.hh:
+/usr/include/c++/11/bits/shared_ptr_base.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qcompilerdetection.h:
+/usr/include/c++/11/bits/allocator.h:
+
+/usr/include/linux/limits.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Sphere.icc:
 
 /usr/include/strings.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GlobalConfig.hh:
+/usr/include/c++/11/bits/stream_iterator.h:
 
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02EventAction.hh:
+/usr/include/c++/11/bits/cpp_type_traits.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MuBremsstrahlung.hh:
-
-/usr/include/x86_64-linux-gnu/sys/cdefs.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/b2:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4FPYNubarValues.hh:
-
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
-
-/usr/include/c++/11/bits/specfun.h:
-
-/usr/include/stdc-predef.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LossTableManager.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleChangeForLoss.hh:
-
-/usr/include/c++/11/pstl/pstl_config.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SceneHandlerList.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiProton.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BlockingList.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/Random.icc:
-
-/usr/include/c++/11/bits/vector.tcc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserSteppingAction.hh:
-
-/usr/include/c++/11/type_traits:
-
-/usr/include/x86_64-linux-gnu/sys/single_threaded.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleTable.icc:
-
-/usr/include/c++/11/bits/stl_uninitialized.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4THnToolsManager.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AttDef.hh:
-
-/usr/include/c++/11/chrono:
-
-/usr/include/x86_64-linux-gnu/bits/sigthread.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HadronicProcess.hh:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
-
-/usr/include/c++/11/bits/stl_iterator_base_types.h:
-
-/usr/include/c++/11/bits/std_mutex.h:
-
-/usr/include/c++/11/array:
-
-/usr/include/c++/11/tr1/poly_laguerre.tcc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4KleinNishinaModel.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SingleParticleSource.hh:
-
-/usr/include/c++/11/string_view:
-
-/usr/include/x86_64-linux-gnu/bits/signum-generic.h:
-
-/usr/include/c++/11/cstdlib:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Region.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDStructure.hh:
-
-/usr/include/c++/11/tr1/gamma.tcc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MuonPlus.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ViewParameters.icc:
-
-/usr/include/x86_64-linux-gnu/bits/setjmp.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GIDI_target.hh:
-
-/usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VContinuousDiscreteProcess.hh:
+/usr/include/endian.h:
 
 /usr/include/c++/11/bits/stl_iterator_base_funcs.h:
 
@@ -12547,183 +12541,7 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/EmStandardPhysics.hh:
 
-/usr/include/endian.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSolid.hh:
-
-/usr/include/pthread.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Geometry/Vector3D.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/Boost.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationInterfaces.icc:
-
-/usr/include/c++/11/ext/numeric_traits.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LowEGammaNuclearModel.hh:
-
-/usr/include/x86_64-linux-gnu/bits/sigstack.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RayTracerX.hh:
-
-/usr/include/c++/11/bits/functexcept.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VTouchable.hh:
-
-/usr/include/c++/11/streambuf:
-
-/usr/include/c++/11/bits/stl_pair.h:
-
-/usr/include/c++/11/bits/stl_iterator.h:
-
-/usr/include/c++/11/ext/atomicity.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VisManager.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSteppingVerbose.hh:
-
-/usr/include/c++/11/debug/debug.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HadronElastic.hh:
-
-/usr/include/x86_64-linux-gnu/bits/select.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/BoostX.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Exp.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VoxelNavigation.hh:
-
-/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RayleighScattering.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ClassificationOfNewTrack.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/MCGIDI_map.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationHistoryPool.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/TwoVector.icc:
-
-/usr/include/c++/11/ext/aligned_buffer.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CollectionNameVector.hh:
-
-/usr/include/asm-generic/errno.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationLogger.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4OpenGLQt.hh:
-
-/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Event.hh:
-
-/usr/include/c++/11/bits/char_traits.h:
-
-/usr/include/c++/11/bits/concept_check.h:
-
-/usr/include/c++/11/climits:
-
-/usr/include/c++/11/bits/sstream.tcc:
-
-/usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
-
-/usr/include/libintl.h:
-
-/usr/include/x86_64-linux-gnu/bits/long-double.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SPSEneDistribution.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericFileManager.hh:
-
-/usr/include/x86_64-linux-gnu/c++/11/bits/c++allocator.h:
-
-/usr/include/c++/11/bits/exception_ptr.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
-
-/usr/include/c++/11/bits/charconv.h:
-
-/usr/include/linux/limits.h:
-
-/usr/include/c++/11/bits/allocator.h:
-
-/usr/include/c++/11/cmath:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GPILSelection.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandChiSquare.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HyperNucleiProperties.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/geomdefs.hh:
-
-/usr/include/c++/11/bits/cxxabi_forced.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUPLSplitter.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Vector3D.hh:
-
-/usr/include/c++/11/tr1/poly_hermite.tcc:
-
-/usr/include/c++/11/bits/memoryfwd.h:
-
-/usr/include/c++/11/bits/stringfwd.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessVector.hh:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Tokenizer.hh:
-
-/usr/include/c++/11/tr1/beta_function.tcc:
-
-/usr/include/c++/11/bits/stl_multiset.h:
-
-/usr/include/x86_64-linux-gnu/gnu/stubs.h:
-
-/usr/include/x86_64-linux-gnu/bits/fp-fast.h:
-
-/usr/include/c++/11/future:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SPSAngDistribution.hh:
-
-/usr/include/c++/11/bits/node_handle.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Types.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StackedTrack.hh:
-
-/usr/include/c++/11/bits/stl_set.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Point3D.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiKaonZero.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiXibZero.hh:
-
-/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/histo_data:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VisExecutive.hh:
-
-/usr/include/c++/11/cwchar:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VTBaseHnManager.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Decay.hh:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h:
+/usr/include/x86_64-linux-gnu/bits/environments.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Cons.hh:
 
@@ -12733,147 +12551,217 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/LorentzRotation.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EventManager.hh:
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/B02.cc:
 
-/usr/include/c++/11/bits/exception_defines.h:
+/usr/include/c++/11/ext/atomicity.h:
 
-/usr/include/x86_64-linux-gnu/bits/floatn.h:
+/usr/include/c++/11/bits/stl_iterator.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationInterfaces.h:
+/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AllocatorPool.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/globals.hh:
 
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02PrimaryGeneratorAction.hh:
+/usr/include/c++/11/ios:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h:
+
+/usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
+
+/usr/include/c++/11/bits/postypes.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessManager.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/MCGIDI_mass.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ForceCondition.hh:
+
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh:
+
+/usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VTouchable.hh:
+
+/usr/include/c++/11/streambuf:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPVParameterisation.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Geometry/Transform3D.icc:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DCofThisEvent.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MuBremsstrahlung.hh:
+
+/usr/include/x86_64-linux-gnu/sys/cdefs.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/b2:
 
 /usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelHeader.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandStudentT.icc:
-
-/usr/include/x86_64-linux-gnu/bits/timesize.h:
-
-/usr/include/x86_64-linux-gnu/c++/11/bits/gthr-default.h:
-
-/usr/include/x86_64-linux-gnu/c++/11/bits/c++locale.h:
-
-/usr/include/linux/errno.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LorentzVector.hh:
-
-/usr/include/c++/11/bits/predefined_ops.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmDataHandler.hh:
-
-/usr/include/features.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VModelFactory.hh:
-
-/usr/include/x86_64-linux-gnu/bits/typesizes.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandExpZiggurat.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcmdWithAString.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VisExecutive.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/PTL/Types.hh:
-
-/usr/include/limits.h:
-
-/usr/include/c++/11/tr1/riemann_zeta.tcc:
-
-/usr/include/c++/11/sstream:
-
-/usr/include/c++/11/istream:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandExponential.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGaussQ.icc:
-
-/usr/include/c++/11/bits/locale_classes.tcc:
-
-/usr/include/c++/11/bits/cxxabi_init_exception.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GeometryTolerance.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ionIonisation.hh:
-
-/usr/include/c++/11/debug/assertions.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__FILE.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VNavigation.hh:
-
-/usr/include/x86_64-linux-gnu/bits/wchar.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmCorrections.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VIntraNuclearTransportModel.hh:
 
 /usr/include/c++/11/bits/stl_tempbuf.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Tubs.icc:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4THnMessenger.icc:
+/usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h:
 
-/usr/include/c++/11/exception:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationInterfaces.icc:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/LorentzVector.h:
+/usr/include/c++/11/ext/numeric_traits.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationZ.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RayTracerX.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessManager.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmDataHandler.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VModelFactory.hh:
+
+/usr/include/features.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIsession.hh:
+
+/usr/include/x86_64-linux-gnu/sys/ucontext.h:
+
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02PrimaryGeneratorMessenger.cc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VisExecutive.hh:
+
+/usr/include/c++/11/tr1/bessel_function.tcc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Trap.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Tokenizer.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/templates.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiSigmabZero.hh:
+
+/usr/include/c++/11/bits/stl_list.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/windefs.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CrossSectionInelastic.hh:
+
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/HadronElasticPhysicsHP.cc:
+
+/usr/include/x86_64-linux-gnu/bits/iscanonical.h:
+
+/usr/include/c++/11/ext/string_conversions.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Region.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDStructure.hh:
+
+/usr/include/c++/11/tr1/gamma.tcc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MuonPlus.hh:
+
+/usr/include/c++/11/bits/locale_classes.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VisExecutive.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcmdWithAString.hh:
+
+/usr/include/x86_64-linux-gnu/bits/siginfo-arch.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/h2d:
+
+/usr/include/c++/11/bits/regex_automaton.tcc:
 
 /usr/include/c++/11/bits/atomic_futex.h:
 
 /usr/include/c++/11/cstring:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleHPPartial.hh:
+/usr/include/c++/11/bits/char_traits.h:
 
-/usr/include/c++/11/bits/move.h:
+/usr/include/c++/11/bits/concept_check.h:
 
-/usr/include/c++/11/bits/hash_bytes.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NistMaterialBuilder.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VModel.hh:
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh:
 
-/usr/include/c++/11/bits/string_view.tcc:
+/usr/include/asm-generic/errno.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGaussQ.h:
+/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Neutron.hh:
+/usr/include/c++/11/bits/predefined_ops.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Transform3D.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LorentzVector.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Paraboloid.icc:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4OpenGLQt.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TouchableHandle.hh:
+/usr/include/c++/11/bits/unordered_map.h:
 
-/usr/include/asm-generic/errno-base.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsVectorType.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VDigiCollection.hh:
+/usr/include/c++/11/bits/node_handle.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TP1ToolsManager.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Types.hh:
 
-/usr/include/x86_64-linux-gnu/bits/waitstatus.h:
+/usr/include/c++/11/bits/stl_multiset.h:
 
-/usr/include/c++/11/bits/ptr_traits.h:
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
 
-/usr/include/c++/11/bits/erase_if.h:
+/usr/include/x86_64-linux-gnu/bits/fp-fast.h:
 
-/usr/include/stdint.h:
+/usr/include/c++/11/bits/cxxabi_init_exception.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiXicPlus.hh:
+/usr/include/c++/11/bits/locale_classes.tcc:
 
-/usr/include/c++/11/memory:
+/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NoProcess.hh:
+/usr/include/x86_64-linux-gnu/bits/types/error_t.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmFluoDirectory.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VisAttributes.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyType.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiAlpha.hh:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
+
+/usr/include/x86_64-linux-gnu/bits/waitflags.h:
+
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GIDI_target.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ViewParameters.icc:
+
+/usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
+
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Allocator.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsModelCatalog.hh:
+
+/usr/include/locale.h:
+
+/usr/include/c++/11/deque:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandLandau.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleTable.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelNode.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Cache.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SPSAngDistribution.hh:
+
+/usr/include/c++/11/future:
+
+/usr/include/c++/11/bits/regex.tcc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SigmabZero.hh:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/c++locale.h:
+
+/usr/include/linux/errno.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/ThreeVector.h:
 
@@ -12885,9 +12773,15 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VDigi.hh:
 
+/usr/include/x86_64-linux-gnu/bits/posix1_lim.h:
+
 /usr/include/c++/11/bits/shared_ptr_atomic.h:
 
 /usr/include/c++/11/iomanip:
+
+/usr/include/c++/11/unordered_map:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Pow.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4OrderedTable.hh:
 
@@ -12895,33 +12789,43 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/GammaPhysics.hh:
 
+/usr/include/c++/11/locale:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelProxy.icc:
+
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcmdWithADoubleAndUnit.hh:
 
 /usr/include/ctype.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Plane3D.hh:
-
-/usr/include/c++/11/bits/list.tcc:
-
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnalysisManager.hh:
 
-/usr/include/x86_64-linux-gnu/bits/sched.h:
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VNtupleManager.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelHeader.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HepRepFile.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/h1:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/gthr.h:
+
+/usr/include/c++/11/regex:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EnvironmentUtils.hh:
+
+/usr/include/c++/11/bits/invoke.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigstack.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LowEGammaNuclearModel.hh:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
 
 /usr/include/time.h:
 
 /usr/include/c++/11/bits/basic_string.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4JPsi.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserStackingAction.hh:
-
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02SteppingVerbose.cc:
 
 /usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
 
@@ -12936,12 +12840,6 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 /usr/include/c++/11/functional:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/atomic_word.h:
-
-/usr/include/x86_64-linux-gnu/bits/uio_lim.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MuMultipleScattering.hh:
-
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarSD.hh:
 
 /usr/include/c++/11/string:
 
@@ -12965,7 +12863,79 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
 
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandChiSquare.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HyperNucleiProperties.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/geomdefs.hh:
+
+/usr/include/c++/11/bits/cxxabi_forced.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUPLSplitter.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Vector3D.hh:
+
+/usr/include/x86_64-linux-gnu/bits/sched.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VNtupleManager.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelProxy.hh:
+
+/usr/include/c++/11/tr1/poly_hermite.tcc:
+
+/usr/include/c++/11/bits/memoryfwd.h:
+
+/usr/include/c++/11/bits/stl_function.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrajectoryContainer.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HadronPhysicsQGSP_BIC.hh:
+
+/usr/include/x86_64-linux-gnu/bits/floatn.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh:
+
+/usr/include/stdc-predef.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4LossTableManager.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleChangeForLoss.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VoxelNavigation.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Exp.hh:
+
+/usr/include/execinfo.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/histo_data:
+
+/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
+
+/usr/include/x86_64-linux-gnu/bits/signum-generic.h:
+
+/usr/include/c++/11/cstdlib:
+
+/usr/include/c++/11/string_view:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NormalNavigation.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HadronPhysicsQGSP_BIC_HP.hh:
+
 /usr/include/c++/11/cstdio:
+
+/usr/include/c++/11/fenv.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ThreadLocalSingleton.hh:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qflags.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Polyhedra.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ApplicationState.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GraphicsSystemList.hh:
 
 /usr/include/stdio.h:
 
@@ -12975,27 +12945,23 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleDefinition.icc:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VoxelNavigation.icc:
-
-/usr/include/c++/11/bits/regex_constants.h:
-
 /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h:
 
 /usr/include/c++/11/cerrno:
 
+/usr/include/x86_64-linux-gnu/bits/signum-arch.h:
+
 /usr/include/x86_64-linux-gnu/bits/errno.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmModelManager.hh:
+/usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VStateDependent.hh:
+/usr/include/sched.h:
 
 /usr/include/wctype.h:
 
 /usr/include/c++/11/bits/std_function.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandomEngine.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RegularNavigation.hh:
 
 /usr/include/c++/11/bits/algorithmfwd.h:
 
@@ -13005,7 +12971,17 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /usr/include/c++/11/cstddef:
 
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/RotationZ.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/LorentzVector.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandBit.icc:
+
 /usr/include/c++/11/bits/stl_vector.h:
+
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarHit.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/geomwdefs.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AttValue.hh:
 
@@ -13013,21 +12989,13 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NuclearPolarization.hh:
 
-/usr/include/c++/11/bits/uniform_int_dist.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CascadeInterface.hh:
 
-/usr/include/x86_64-linux-gnu/bits/types/wint_t.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/BoostY.icc:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GeomTypes.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RotationMatrix.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Lambdab.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcmdWithABool.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiNeutrinoMu.hh:
-
-/usr/include/c++/11/bits/streambuf_iterator.h:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_inline.h:
 
@@ -13041,11 +13009,11 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SigmaMinus.hh:
 
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ElementTable.hh:
+
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Step.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NistManager.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ElementTable.hh:
 
 /usr/include/c++/11/ostream:
 
@@ -13055,17 +13023,43 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/eqT:
 
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TouchableHistory.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleHPLegendreTable.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSolid.icc:
+
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UnknownParticle.hh:
 
 /usr/include/x86_64-linux-gnu/bits/getopt_core.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tls.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsTable.icc:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Threading.hh:
 
-/usr/include/x86_64-linux-gnu/bits/locale.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DMesonZero.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Normal3D.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4IonisParamElm.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4XibZero.hh:
+
+/usr/include/c++/11/tr1/riemann_zeta.tcc:
+
+/usr/include/limits.h:
+
+/usr/include/c++/11/bits/stl_relops.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Log.hh:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qcompilerdetection.h:
+
+/usr/include/c++/11/debug/debug.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSteppingVerbose.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HadronElastic.hh:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DataVector.hh:
 
@@ -13076,6 +13070,16 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 /usr/include/c++/11/bits/stl_heap.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4THitsMap.hh:
+
+/usr/include/c++/11/tr1/beta_function.tcc:
+
+/usr/include/c++/11/bits/sstream.tcc:
+
+/usr/include/c++/11/climits:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackVector.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DAWNFILE.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h:
 
@@ -13093,15 +13097,7 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /usr/include/c++/11/bits/hashtable_policy.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SubEvent.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PolyconeSide.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandFlat.h:
-
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SPSPosDistribution.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PrimaryVertex.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TouchableHistory.hh:
 
@@ -13113,13 +13109,27 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/LorentzRotation.icc:
 
+/usr/include/c++/11/bits/ptr_traits.h:
+
+/usr/include/stdint.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiXicPlus.hh:
+
+/usr/include/c++/11/bits/erase_if.h:
+
 /usr/include/c++/11/vector:
+
+/usr/include/c++/11/bits/stl_uninitialized.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleTable.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4THnToolsManager.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AttDef.hh:
 
 /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Cons.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPVParameterisation.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4String.hh:
 
@@ -13127,245 +13137,91 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /usr/include/string.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4String.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ApplicationState.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GraphicsSystemList.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/Rotation.icc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProductionCutsTable.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserTrackingAction.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RunManagerKernel.hh:
-
-/usr/include/c++/11/list:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Triton.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GeomTypes.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CascadeInterface.hh:
-
-/usr/include/c++/11/bits/stl_list.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/windefs.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CrossSectionInelastic.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImanager.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VFacet.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcommandStatus.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiLambdab.hh:
-
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorConstruction.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VTree.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh:
-
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02DetectorMessenger.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnyMethod.hh:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
-
-/usr/include/x86_64-linux-gnu/bits/ss_flags.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4coutDestination.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSensitiveDetector.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VHit.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MuonMinus.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VPhysicsConstructor.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SensitiveVolumeList.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/geomwdefs.hh:
-
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02BarHit.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NistMaterialBuilder.hh:
-
-/usr/include/x86_64-linux-gnu/bits/time64.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4THitsCollection.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmSaturation.hh:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qconfig.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SigmabMinus.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Polyhedra.hh:
-
-/usr/include/c++/11/fenv.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qflags.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ThreadLocalSingleton.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Cache.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4CacheDetails.hh:
-
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingVerbose.hh:
-
-/usr/include/c++/11/cxxabi.h:
-
-/usr/include/c++/11/map:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SurfBits.hh:
-
-/usr/include/x86_64-linux-gnu/c++/11/bits/cxxabi_tweaks.h:
-
-/usr/include/execinfo.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SceneList.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BsMesonZero.hh:
-
-/usr/include/unistd.h:
-
-/usr/include/x86_64-linux-gnu/bits/math-vector.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SigmaZero.hh:
-
-/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/p2d:
-
-/usr/include/x86_64-linux-gnu/bits/environments.h:
-
-/usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
-
-/usr/include/linux/close_range.h:
-
-/usr/include/c++/11/cfenv:
-
-/usr/include/fenv.h:
-
-/usr/include/x86_64-linux-gnu/bits/fenv.h:
-
-/usr/include/sched.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h:
-
-/usr/include/c++/11/csignal:
-
-/usr/include/x86_64-linux-gnu/bits/signum-arch.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h:
-
-/usr/include/x86_64-linux-gnu/bits/time.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/h2d:
-
-/usr/include/x86_64-linux-gnu/bits/siginfo-arch.h:
-
-/usr/include/x86_64-linux-gnu/bits/siginfo-consts.h:
-
-/usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h:
-
-/usr/include/x86_64-linux-gnu/bits/sigevent-consts.h:
-
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02PhysicsList.hh:
-
-/usr/include/x86_64-linux-gnu/bits/sigaction.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VMarker.icc:
-
-/usr/include/x86_64-linux-gnu/bits/sigcontext.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiTriton.hh:
-
-/usr/include/x86_64-linux-gnu/bits/types/stack_t.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VRestDiscreteProcess.hh:
-
-/usr/include/c++/11/limits:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EnvironmentUtils.hh:
-
-/usr/include/x86_64-linux-gnu/c++/11/bits/gthr.h:
-
-/usr/include/c++/11/regex:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SDManager.hh:
-
-/usr/include/c++/11/bitset:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HadronPhysicsQGSP_BIC.hh:
-
-/usr/include/c++/11/bits/cpp_type_traits.h:
-
-/usr/include/c++/11/bits/stream_iterator.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SubEventTrackStack.hh:
-
-/usr/include/c++/11/bits/stl_algobase.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/Boost.icc:
-
-/usr/include/c++/11/bits/regex_scanner.tcc:
-
-/usr/include/c++/11/stack:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandLandau.icc:
-
-/usr/include/c++/11/deque:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qprocessordetection.h:
-
-/usr/include/c++/11/bits/stl_deque.h:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EtaPrime.hh:
-
-/usr/include/c++/11/bits/deque.tcc:
-
-/usr/include/c++/11/bits/regex_automaton.h:
-
-/usr/include/c++/11/bits/regex_automaton.tcc:
-
 /usr/include/c++/11/bits/regex_compiler.h:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_base.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4InuclElementaryParticle.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Threading.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4String.icc:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DMesonZero.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGamma.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4IonisParamElm.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGamma.icc:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4XibZero.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGauss.h:
 
-/usr/include/c++/11/bits/regex.h:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RanluxppEngine.h:
 
-/usr/include/c++/11/bits/regex.tcc:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VExternalNavigation.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SigmabZero.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcmdWithABool.hh:
+
+/usr/include/c++/11/bits/streambuf_iterator.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiNeutrinoMu.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandExponential.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGaussQ.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGaussZiggurat.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGeneral.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandGeneral.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandLandau.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/h1d:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoissonQ.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoisson.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandPoissonQ.icc:
+
+/usr/include/x86_64-linux-gnu/bits/timesize.h:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/gthr-default.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandStudentT.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VAnalysisManager.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BMesonZero.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsTable.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BaseAnalysisManager.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsTable.icc:
+
+/usr/include/x86_64-linux-gnu/bits/locale.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Normal3D.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleChange.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessType.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MaterialCutsCouple.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VStateDependent.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmModelManager.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VModularPhysicsList.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AuxiliaryNavServices.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmProcessSubType.hh:
+
+/usr/include/c++/11/bits/stl_construct.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParameterisedNavigation.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VCSGface.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VEmModel.hh:
 
@@ -13387,11 +13243,23 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DNAModelSubType.hh:
 
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EmFluoDirectory.hh:
+
+/usr/include/c++/11/memory:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NoProcess.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SystemOfUnits.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VTree.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserDetectorConstruction.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicalConstants.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericMessenger.hh:
+
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HCtable.hh:
-
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02SteppingAction.hh:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserEventAction.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsListHelper.hh:
 
@@ -13399,13 +13267,13 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Paraboloid.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DMesonMinus.hh:
-
 /usr/include/math.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationHistory.hh:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DMesonMinus.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Para.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationHistory.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsListOrderingParameter.hh:
 
@@ -13428,6 +13296,60 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02PrimaryGeneratorAction.cc:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnalysisManagerState.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Event.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/evtdefs.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/Random.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BlockingList.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PrimaryVertex.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TP1ToolsManager.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VDigiCollection.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GMocrenFile.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserEventInformation.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NormalNavigation.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SigmabPlus.hh:
+
+/usr/include/x86_64-linux-gnu/bits/types/__FILE.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VNavigation.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSolid.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationLogger.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4BlockingList.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/h2:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelNode.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ionEffectiveCharge.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VRML2File.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SmartVoxelHeader.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AnalysisVerbose.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4MuIonisation.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VVolumeMaterialScanner.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RegularNavigation.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Navigator.icc:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PhysicsVector.icc:
 
@@ -13453,9 +13375,99 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/cids:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Visible.icc:
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/trkgdefs.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VSceneHandler.icc:
+
+/usr/include/c++/11/bits/regex_executor.tcc:
+
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02ActionInitialization.hh:
+
+/usr/include/c++/11/bits/streambuf.tcc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericFileManager.icc:
+
+/usr/include/c++/11/cstdint:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserActionInitialization.hh:
+
+/usr/include/c++/11/bits/exception_defines.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4EventManager.hh:
+
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02SteppingVerbose.cc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserStackingAction.hh:
+
+/usr/include/c++/11/exception:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4THnMessenger.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RayleighScattering.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ClassificationOfNewTrack.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/MCGIDI_map.h:
+
+/usr/include/c++/11/bits/stl_set.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4StackedTrack.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Utility/thread_local.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackStack.hh:
+
+/usr/include/c++/11/bits/regex_scanner.tcc:
+
+/usr/include/c++/11/bits/stl_algobase.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/Boost.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SubEventTrackStack.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NavigationHistoryPool.hh:
+
+/usr/include/c++/11/ext/aligned_buffer.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Vector/TwoVector.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiHe3.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PolyconeSide.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandFlat.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4SubEvent.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessManager.hh:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessVector.hh:
+
+/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/HadronElasticPhysicsHP.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ProcessVector.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TrackingMessenger.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4NtupleBookingManager.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserTrackingAction.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UserRunAction.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Visible.icc:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RunManagerKernel.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UImanager.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VFacet.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIcommandStatus.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiLambdab.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VMscModel.hh:
 
@@ -13525,9 +13537,9 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ModelingParameters.icc:
 
-/usr/include/c++/11/bits/uses_allocator.h:
-
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DsMesonPlus.hh:
+
+/usr/include/c++/11/bits/uses_allocator.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4PseudoScene.hh:
 
@@ -13661,18 +13673,6 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIbatch.hh:
 
-/usr/include/c++/11/bits/regex_executor.tcc:
-
-/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/include/B02ActionInitialization.hh:
-
-/usr/include/c++/11/bits/streambuf.tcc:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4GenericFileManager.icc:
-
-/usr/include/c++/11/cstdint:
-
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserActionInitialization.hh:
-
 /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02ActionInitialization.cc:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UnitsTable.hh:
@@ -13759,9 +13759,9 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4THnManager.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Fcn.hh:
-
 /usr/include/c++/11/bits/functional_hash.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Fcn.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4TH2ToolsManager.hh:
 
@@ -13789,9 +13789,9 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4Deuteron.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4IonPhysics.hh:
-
 /usr/include/x86_64-linux-gnu/bits/confname.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4IonPhysics.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/tools/histo/b3:
 
@@ -13943,9 +13943,9 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiXibMinus.hh:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandStudentT.h:
-
 /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/CLHEP/Random/RandStudentT.h:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4AntiOmegabMinus.hh:
 
@@ -14043,9 +14043,9 @@ CMakeFiles/b02.dir/src/PhysListEmStandard.cc.o: /home/labdet/Documents/MauSan/Pr
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/MCGIDI.h:
 
-/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserPrimaryGeneratorAction.hh:
-
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4UIparameter.hh:
+
+/home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VUserPrimaryGeneratorAction.hh:
 
 /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/ptwX.h:
 

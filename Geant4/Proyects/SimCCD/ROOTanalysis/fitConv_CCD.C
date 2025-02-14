@@ -18,7 +18,7 @@ double f(double *x, double *par) {
     double p;
     int    Np    = 200;
     double Emin  = 0;              // Minimum energy
-    double Emax  = 0.7;           // Maximum energy
+    double Emax  = 700;           // Maximum energy
     double dE    = (Emax-Emin)/Np; // Energy interval
     double Ed;                     // Deposited energy
     //-------------------------------------------------------
@@ -69,13 +69,13 @@ void fitConv_CCD() {
    inpf.open("muons.dat");
    double pv;
    int    nbins = 200;
-   double Emax  = 0.7;
+   double Emax  = 700;
    double  dE   = Emax/nbins;
 
 
    // Histograma de energías depositadas Ed
    TH1F *hmuons = new TH1F("hmuons","",nbins,0,Emax);
-   hmuons->GetXaxis()->SetTitle("Energy (MeV)");
+   hmuons->GetXaxis()->SetTitle("Energy (KeV)");
    for (int i=1; i<=nbins; i++) {
        inpf >> pv;    // Reading input-file line
        hmuons->SetBinContent(i,pv);
@@ -104,8 +104,9 @@ void fitConv_CCD() {
    TF1 *f1 = new TF1();
 
    h->SetMaximum((rebinf/10)*8*h->GetMaximum());
+//    h->SetMaximum(20000);
    h->SetTitle("Energy histogram");
-   h->SetXTitle("Energy (MeV)");
+   h->SetXTitle("Energy (KeV)");
    h->GetYaxis()->SetTitleOffset(1.1);
    h->SetYTitle("# Muons");
    h->SetLineColor(3);
@@ -113,22 +114,21 @@ void fitConv_CCD() {
    if (doFit){
 
 	int n = 8;           // Number of parameters
-	double xm = 2500;     // xmin to fit
-	double xM = 40000;    // xmax to fit
+	double xm = 50;     // xmin to fit
+	double xM = 700;    // xmax to fit
 
-	//TF1 *f1 = new TF1("f1", f, xm, xM, n);
+	// TF1 *f1 = new TF1("f1", f, xm, xM, n);
 	f1 = new TF1("f1", f, xm, xM, n);
 
-         
-        //prebeam NO muon selection
-	double p0 = 0.70000e-01;    // Resolution
-	double p1 = 6.50000e+03;    // Muon normalization
-	double p2 = 3.10000e+03;    // Background
+	double p0 = 0.05;    // Resolution
+	double p1 = 260000;    // Muon normalization
+	double p2 = 7000.;    // Background
 	double p3 = 0.00000e+00;    // PE offset
-	double p4 = 0.70000e+02;    // PE scale (linear)
+	double p4 = 1.0;    // No cambio de Unidades // por ahora
 	double p5 = 0.00000e-04;    // PE scale (quadratic)
-	double p6 = 2.55000e+02;    // E0
-	double p7 = 1.70000e+01;    // exponente bkgd
+	double p6 = 200;    // E0
+	double p7 = 80;    // exponente bkgd
+
 
         /*
         //- prebeam WITH muon selection
@@ -145,9 +145,9 @@ void fitConv_CCD() {
 	f1->SetParameter(0, p0);    // Resolution
 	f1->SetParameter(1, p1);    // Normalizing constant
 	f1->SetParameter(2, p2);    // Background
-	f1->FixParameter(3, p3);    // PE offset
-	f1->SetParameter(4, p4);    // PE scale (linear)
-	f1->SetParameter(5, p5);    // PE scale (quadratic)
+	f1->FixParameter(3, p3);    // Energy scale offset
+	f1->FixParameter(4, p4);    // Energy scale (linear)
+	f1->SetParameter(5, p5);    // Energy scale (quadratic)
 	f1->FixParameter(6, p6);    // E0
 	f1->SetParameter(7, p7);    // exponente bkgd
 
@@ -174,16 +174,16 @@ void fitConv_CCD() {
 	double prob = TMath::Prob(chi2,ndf);
 
 	// Calculate I_0
-	double I0sim  = 70;
-	double nmusim = 308015;//393500;
-	double Tsim   = 472.3; //sec
-	double T      = 6.0; //sec
+	double I0sim  = 101.2;
+	double nmusim = 395146;//393500;
+	double Tsim   = 4.1939e7; //sec
+	double T      = 426006; //sec
 	double eff    = 1.0;
 	double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
 	double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
 
 	TF1 *fm = new TF1("fm", f, xm, xM, n);
-	fm->SetParameters(r,nmu,0,a0,a1,a2,e0,eps);
+	fm->SetParameters(r,nmu,0*nbg,a0,a1,a2,e0,eps);
 	fm->SetLineColor(4);
 
 	TF1 *fb = new TF1("fb", f, xm, xM, n);
@@ -193,10 +193,11 @@ void fitConv_CCD() {
         fb->SetLineWidth(1);
 
 	//c1->SetLogy(1);
-	h->SetMaximum(120);
+	h->SetMaximum(2000);
 	h->Draw();
-	fm->Draw("same");
-	fb->Draw("same");
+	h->GetXaxis()->SetRangeUser(0,1000);
+	// fm->Draw("same");
+	// fb->Draw("same");
 
 	lat->SetTextFont(42);
 	lat->SetTextSize(0.034);
@@ -216,7 +217,7 @@ void fitConv_CCD() {
 	l->AddEntry(h, "Data", "lp");
 	l->AddEntry(f1, "Convolution Fit", "lp");
 	l->Draw();
-	h->GetXaxis()->SetRangeUser(0,40000);
+	h->GetXaxis()->SetRangeUser(0,1);
 
 	c1->Print("ConvNonlinear.pdf");
 
@@ -233,18 +234,18 @@ void fitConv_CCD() {
 
 	
         // prebeam no muon selection
-	double p0 = 0.70000e-01;    // Resolution
-	double p1 = 6.50000e+03;    // Muon normalization
-	double p2 = 3.10000e+03;    // Background
+	double p0 = 0.05;    // Resolution
+	double p1 = 260000;    // Muon normalization
+	double p2 = 7000.;    // Background
 	double p3 = 0.00000e+00;    // PE offset
-	double p4 = 0.70000e+02;    // PE scale (linear)
+	double p4 = 1.0;    // No cambio de Unidades // por ahora
 	double p5 = 0.00000e-04;    // PE scale (quadratic)
-	double p6 = 2.55000e+02;    // E0
-	double p7 = 1.70000e+01;    // exponente bkgd
+	double p6 = 200;    // E0
+	double p7 = 80;    // exponente bkgd
 
-	int np = 8;
-	double xm = 0.050;
-	double xM = 0.700;
+	int np = 8; //number of parameters
+	double xm = 50;
+	double xM = 700;
 
 	f1 = new TF1("f1", f, xm, xM, np);
 	f1->SetParameters(p0, p1, p2, p3, p4, p5, p6, p7);
@@ -271,11 +272,20 @@ void fitConv_CCD() {
 	double prob = TMath::Prob(chi2,ndf);
 
 	// Calculate I_0
+	//double I0sim  = 101.2;
+	//double nmusim = 308015;// muones sim que entran en CCD;
+	//double Tsim   = 472.3; //sec
+	//double T      = 6.0; //sec
+	//double eff    = 1.0; // suposición OK
+	//double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
+	//double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
+
+// Calculate I_0
 	double I0sim  = 101.2;
-	double nmusim = 308015;// muones sim que entran en CCD;
-	double Tsim   = 472.3; //sec
-	double T      = 6.0; //sec
-	double eff    = 1.0; // suposición OK
+	double nmusim = 395146;//393500;
+	double Tsim   = 4.193e7; //sec
+	double T      = 426006; //sec
+	double eff    = 1.0;
 	double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
 	double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
 
@@ -285,21 +295,21 @@ void fitConv_CCD() {
 
 	TF1 *fbg = new TF1("fbg", f, xm, xM, np);
 	fbg->SetParameters(p0, 0*p1, p2, p3, p4, p5, p6, p7);
-        fbg->SetLineColor(6);
+	fbg->SetLineColor(6);
 
 
 	c1->cd();
 	//c1->SetLogy(1);
-	h->SetMaximum(120);
+	h->SetMaximum(2000);
 	h->Draw();
-	h->GetXaxis()->SetRangeUser(0,40000);
+	h->GetXaxis()->SetRangeUser(0,1000);
 
 	double xmax = f1->GetMaximumX();
 	cout << xmax << endl;
 
 	f1->Draw("l same");
-        fm->Draw("same");
-        fbg->Draw("same");
+	fm->Draw("same");
+    fbg->Draw("same");
 
 	lat->SetTextFont(42);
 	lat->SetTextSize(0.034);

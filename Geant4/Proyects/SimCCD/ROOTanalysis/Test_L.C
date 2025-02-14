@@ -1,4 +1,5 @@
 void Test_L(){
+// TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
 TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 
@@ -22,8 +23,8 @@ LPP->SetLineColor(2);
 TH1F *Lcut = new TH1F("Lcut", "", NB, tlow, thi);
 
 // Fill histograms //
-tree->Draw("LengthMuLAr>>L", "LengthMuLAr > 0");
-tree0->Draw("l>>LPP", "l>0");
+tree->Draw("LengthMuLAr>>L", "EevtBar > 0");
+tree0->Draw("l>>LPP", "l > 0");
 
 
 //TLine *line = new TLine(0.0725,0,0.0725,30000);

@@ -4,7 +4,7 @@ TFile *file = new TFile("Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE
 TTree *tree = (TTree*) file->Get("tree");
 
 
-int NB = 40;
+int NB = 50;
 double tlow = 0;
 double thi = 2*TMath::Pi() + 0.1;
 TH1F *theta_all = new TH1F("phi_all", "", NB, tlow, thi);
@@ -13,7 +13,7 @@ TH1F *theta_in = new TH1F("phi_in", "", NB, tlow, thi);
 
 // Fill histograms //
 tree->Draw("phi>>phi_all");
-tree->Draw("phi>>phi_in", "l>0");
+tree->Draw("phi>>phi_in", "edep > 0");
 // tree->Draw("phi>>theta_incut", "thet>22");
 
 // Define fuctions //
@@ -56,6 +56,7 @@ theta_all->Draw();
 func1->Draw("same");
 
 canv->cd(2);
+theta_in->SetMinimum(0);
 theta_in->Draw();
 func2->Draw("same");
 canv->Print("Dis_phi.pdf");

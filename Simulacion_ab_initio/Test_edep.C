@@ -4,7 +4,7 @@ void Test_edep(){
     // TFile *file = new TFile("Sim_ab_initio_NMUONS_300000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
     // TFile *file = new TFile("Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
 
-    TFile *file = new TFile("Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
+    TFile *file = new TFile("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
     // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_150x150_RADIO_450.root");
 
 
@@ -26,7 +26,7 @@ void Test_edep(){
     // TH1F *edep0 = new TH1F("edep0", "", NB, tlow, thi);
 
     // Fill histograms //
-    tree->Draw("edep>>edep", "edep>0");
+    tree->Draw("edep>>edep", "edep > 0");
     tree->Draw("edep>>edep_cut", "thet>22*TMath::Pi()/180 & edep>0");
 
     // tree0->Draw("edep>>edep0");
