@@ -82,7 +82,8 @@ tree3->Draw("edep*1000>>edep3", "edep>0"); // SIM_AB_INITIO INFO
 
 tree->Draw("EevtBar*0.8*1000>>edep4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 
-tree0->Draw("EevtBar*1000>>muons", "edep>0");
+
+tree->Draw("EevtBar*1000*0.8>>muons", "EevtBar>0");
 // tree0->Draw("edep>>muons", "edep>0");
 
 double cont = edep->Integral();

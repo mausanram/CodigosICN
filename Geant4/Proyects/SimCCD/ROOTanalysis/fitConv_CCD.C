@@ -1,7 +1,7 @@
 // G4Data from Smith-PlaneModel2 convolution anf fit 
 // NOTE: Fitting values stored in LandauFittingValues file
 
-bool doFit = false;
+bool doFit = true;
 bool doPlot  = !doFit;
 int rebinf = 1;
 
@@ -84,6 +84,7 @@ void fitConv_CCD() {
 
    TCanvas *c0 = new TCanvas("c0", "", 900,700);
    c0->SetGrid();
+//    hmuons->Scale(0.014027296);
    hmuons->Draw();
    c0->Print("hmuons.pdf");
 
@@ -121,13 +122,13 @@ void fitConv_CCD() {
 	f1 = new TF1("f1", f, xm, xM, n);
 
 	double p0 = 0.05;    // Resolution
-	double p1 = 260000;    // Muon normalization
-	double p2 = 7000.;    // Background
+	double p1 = 70000;    // Muon normalization
+	double p2 = 100000.;    // Background
 	double p3 = 0.00000e+00;    // PE offset
 	double p4 = 1.0;    // No cambio de Unidades // por ahora
 	double p5 = 0.00000e-04;    // PE scale (quadratic)
-	double p6 = 200;    // E0
-	double p7 = 80;    // exponente bkgd
+	double p6 = 200.;    // E0
+	double p7 = 200;    // exponente bkgd
 
 
         /*
@@ -174,10 +175,10 @@ void fitConv_CCD() {
 	double prob = TMath::Prob(chi2,ndf);
 
 	// Calculate I_0
-	double I0sim  = 101.2;
-	double nmusim = 395146;//393500;
-	double Tsim   = 4.1939e7; //sec
-	double T      = 426006; //sec
+	double I0sim  = 70;
+	double nmusim = 390114;//393500;
+	double Tsim   = 95378; //sec
+	double T      = 425250; //sec
 	double eff    = 1.0;
 	double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
 	double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
@@ -195,7 +196,7 @@ void fitConv_CCD() {
 	//c1->SetLogy(1);
 	h->SetMaximum(2000);
 	h->Draw();
-	h->GetXaxis()->SetRangeUser(0,1000);
+	// h->GetXaxis()->SetRangeUser(0,1000);
 	// fm->Draw("same");
 	// fb->Draw("same");
 
@@ -235,13 +236,22 @@ void fitConv_CCD() {
 	
         // prebeam no muon selection
 	double p0 = 0.05;    // Resolution
-	double p1 = 260000;    // Muon normalization
-	double p2 = 7000.;    // Background
+	double p1 = 8380;    // Muon normalization
+	double p2 = 100000.;    // Background
 	double p3 = 0.00000e+00;    // PE offset
 	double p4 = 1.0;    // No cambio de Unidades // por ahora
 	double p5 = 0.00000e-04;    // PE scale (quadratic)
 	double p6 = 200;    // E0
-	double p7 = 80;    // exponente bkgd
+	double p7 = 90;    // exponente bkgd
+
+	// double p0 = 0.05;    // Resolution
+	// double p1 = 70000;    // Muon normalization
+	// double p2 = 100000.;    // Background
+	// double p3 = 0.00000e+00;    // PE offset
+	// double p4 = 1.0;    // No cambio de Unidades // por ahora
+	// double p5 = 0.00000e-04;    // PE scale (quadratic)
+	// double p6 = 200;    // E0
+	// double p7 = 200;    // exponente bkgd
 
 	int np = 8; //number of parameters
 	double xm = 50;
@@ -280,11 +290,12 @@ void fitConv_CCD() {
 	//double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
 	//double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
 
-// Calculate I_0
-	double I0sim  = 101.2;
-	double nmusim = 395146;//393500;
-	double Tsim   = 4.193e7; //sec
-	double T      = 426006; //sec
+	// Calculate I_0
+	double I0sim  = 70;
+	double nmusim = 390114;//393500;
+	double Tsim   = 60631783; //sec
+	// double Tsim   = 65972; //sec
+	double T      = 850500; //sec
 	double eff    = 1.0;
 	double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
 	double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
