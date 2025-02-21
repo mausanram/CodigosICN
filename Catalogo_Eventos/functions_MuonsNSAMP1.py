@@ -227,7 +227,7 @@ def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, Bins_fit, make
             #print(pixel_value)
 
         fgaus2.SetParameters(0,10,100, 100, 100) # Establecer parametros iniciales del fit, de manera visual es posible determinarlos como una primera aproximacion
-        h3.Fit(fgaus2)
+        h3.Fit(fgaus2, "R")
 
         canv=TCanvas()
         canv.SetLogy()
@@ -277,7 +277,7 @@ def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, Bins_fit, make
     return dict_popt
 
 def data_calibrated(active_area, extension, offset, list_gain, ratio_keV, unidades):
-    dataP = active_area 
+    dataP = active_area - offset
 
     if unidades == 0:
         data = dataP
@@ -291,7 +291,7 @@ def data_calibrated(active_area, extension, offset, list_gain, ratio_keV, unidad
     return data
 
 def data_calibrated_NSAMP(active_area, extension, offset, gain, ratio_keV, unidades, sigma_ADUs):
-    ## Se aplica el offset ##
+    ## NO se aplica el offset porque ya se le aplicó la mediana del OsCan##
     dataP = active_area ## En ADUs
 
     if unidades == 0:
