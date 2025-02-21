@@ -277,7 +277,7 @@ def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, Bins_fit, make
     return dict_popt
 
 def data_calibrated(active_area, extension, offset, list_gain, ratio_keV, unidades):
-    dataP = active_area - offset
+    dataP = active_area
 
     if unidades == 0:
         data = dataP
