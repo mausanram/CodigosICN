@@ -1,6 +1,6 @@
 void Test_phi(){
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_300000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
+TFile *file = new TFile("Sim_ab_initio_NMUONS_200000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
 TTree *tree = (TTree*) file->Get("tree");
 
 

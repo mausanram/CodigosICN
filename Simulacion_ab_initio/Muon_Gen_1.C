@@ -418,7 +418,7 @@ void Muon_Gen_1(){
 
     // Sim_ab_initio_NMUONS_200000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root
 
-    TFile *file = TFile::Open("Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root", "recreate");
+    TFile *file = TFile::Open("Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_0.root", "recreate");
     TTree *tree = new TTree("tree", "tree");
 
     double Rand_thet;

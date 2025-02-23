@@ -18,6 +18,7 @@ TTree *tree2 = (TTree*) file2->Get("tree");
 TFile *file3 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_100000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
 TTree *tree3 = (TTree*) file3->Get("tree");
 
+TLatex lat;
 
 int NB = 200;
 double tlow = 0;
