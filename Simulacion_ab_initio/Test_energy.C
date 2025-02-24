@@ -45,19 +45,28 @@ double Smith_Dull(double *lx , double *lpar){
 
 
 void Test_energy(){
-//TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_3.0x3.0_RADIO_12_0.root");
 
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_300000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
-// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_150x150_RADIO_450.root");
-// TFile *file = new TFile("MuonGen_NMUONS_10000_pyth.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
-TTree *tree = (TTree*) file->Get("tree");
+    TChain *tree = new TChain("tree");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_0.root");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_1.root");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_2.root");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_3.root");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_4.root");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_5.root");
+    // //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
+// // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
+// // TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_3.0x3.0_RADIO_12_0.root");
+
+// // TFile *file = new TFile("Sim_ab_initio_NMUONS_300000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
+// // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_150x150_RADIO_450.root");
+// // TFile *file = new TFile("MuonGen_NMUONS_10000_pyth.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_0.root");
+// TTree *tree = (TTree*) file->Get("tree");
 
 
 int NB = 100;
-double tlow = 1;
+double tlow = 0.1;
 double thi = pow(10,5);
 double xbins[NB+1];
 double low_bin;
@@ -79,16 +88,33 @@ TH1F *thet_73_77 = new TH1F("thet_73_77", "", NB, xbins);
 
 // Fill histograms //
 tree->Draw("epri>>thet_0_6", "thet>0 && thet<(6*TMath::Pi()/180)");
-tree->Draw("epri>>thet_43_47", "thet>43*TMath::Pi()/180 && thet<47*TMath::Pi()/180");
-tree->Draw("epri>>thet_73_77", "thet>73*TMath::Pi()/180 && thet<77*TMath::Pi()/180");
+tree->Draw("epri>>thet_43_47", "thet>(43*TMath::Pi()/180) && thet<(47*TMath::Pi()/180)");
+tree->Draw("epri>>thet_73_77", "thet>(73*TMath::Pi()/180) && thet<(77*TMath::Pi()/180)");
 
-for (int i = 1; i < NB; i++){
-    double cont = thet_0_6->GetBinContent(i);
-    double w = thet_0_6->GetBinWidth(i);
-    double val  = cont / w;
-    thet_0_6->SetBinContent(i, val);
-}
-thet_0_6->Scale(1200.0);
+double cont = 0;
+double w = 0;
+double val = 0;
+
+// for (int i = 1; i < NB; i++){
+//     cont = thet_0_6->GetBinContent(i);
+//     w = thet_0_6->GetBinWidth(i);
+//     val = cont / w;
+//     thet_0_6->SetBinContent(i, val);
+// }
+
+// for (int i = 1; i < NB; i++){
+//     cont = thet_43_47->GetBinContent(i);
+//     w = thet_43_47->GetBinWidth(i);
+//     val  = cont / w;
+//     thet_43_47->SetBinContent(i, val);
+// }
+
+// for (int i = 1; i < NB; i++){
+//     cont = thet_73_77->GetBinContent(i);
+//     w = thet_73_77->GetBinWidth(i);
+//     val  = cont / w;
+//     thet_73_77->SetBinContent(i, val);
+// }
 
 double t0 = 0; // Degrees
 double t45 = 45;
@@ -111,12 +137,16 @@ Smith75->SetLineColor(8);
 
 double maxh0 = thet_0_6->GetMaximum();
 // thet_0_6->Scale((max0/maxh0));
-// thet_0_6->Scale(0.0000000001);
+thet_0_6->Scale(2.0);
 
 double maxh45 = thet_43_47->GetMaximum();
-thet_43_47->Scale(max45/maxh45);
+// thet_43_47->Scale(max45/maxh45);
+thet_43_47->Scale(10.0);
+
+
 double maxh75 = thet_73_77->GetMaximum();
-thet_73_77->Scale(max75/maxh75);
+// thet_73_77->Scale(max75/maxh75);
+thet_73_77->Scale(2.0);
 
 
 
@@ -129,18 +159,18 @@ canv->cd(1);
 Smith0->Draw("L");
 thet_0_6->Draw("hist same");
 
-// thet_43_47->Draw("h0");
 // Smith45->Draw("L same");
+// thet_43_47->Draw("hist same");
 
-// thet_73_77->Draw("h0");
 // Smith75->Draw("L same");
+// thet_73_77->Draw("hist same");
 
 // Smith0->Draw();
 // Smith45->Draw("same");
 // Smith75->Draw("same");
 
-gPad->SetLogy(1);
-gPad->SetLogx(1);
+// gPad->SetLogy(1);
+// gPad->SetLogx(1);
 // func1->Draw("same");
 
 // canv->cd(2);

@@ -72,10 +72,10 @@ double Smith_Dull_Log(double *lx , double *lpar){
     double c = TMath::C()* 100; //## cm/s
 
     //### ---------------------- Parámetros ---------------------- ###
-    double E_pi = (1.0 / r) * (E_mu + a * y_0 * ((1/TMath::Cos(theta)) - 0.1));
+    double E_pi = (1 / r) * (E_mu + a * y_0 * ((1/TMath::Cos(theta)) - 0.1));
     double B_mu = (b_mu * m_mu * y_0)/(tau_mu_0 * rho_0 * c);
     // double B_mu = (b_mu * m_mu * y_0 * c)/(tau_mu_0 * rho_0);
-    double P_mu = pow((0.1 * TMath::Cos(theta)) * (1.0 - (a * (y_0 *(1/TMath::Cos(theta)) - 100.0))/( r * E_pi)), ((B_mu)/((r * E_pi + 100.0 * a) * TMath::Cos(theta))));
+    double P_mu = pow((0.1 * TMath::Cos(theta)) * (1 - (a * (y_0 *(1/TMath::Cos(theta)) - 100))/( r * E_pi)), ((B_mu)/((r * E_pi + 100 * a) * TMath::Cos(theta))));
     double j_pi = (m_pi * y_0)/(c * tau_0 * rho_0);
     // double j_pi = (m_pi * y_0 * c)/(tau_0 * rho_0);
 
@@ -374,7 +374,7 @@ double Kappa(double Delta_l, double momentum){
 
 /// ============================================================= ///
 
-void Muon_Gen_1(){
+void Muon_Gen_1_CONNIE(){
 
     auto start = chrono::high_resolution_clock::now();
 
@@ -383,13 +383,13 @@ void Muon_Gen_1(){
     double Radio = 8; //cm
     double half_plane_size = 0.75; // cm 
 
-    double sizex_pixels = 400; // cm
-    double sizey_pixels = 600; // cm
+    double sizex_pixels = 420; // cm
+    double sizey_pixels = 1022; // cm
     double pixel_size =  0.0015; //cm
 
     double medida_x = (sizex_pixels * pixel_size) / 2;   //# cm
     double medida_y = (sizey_pixels * pixel_size)  / 2;   //# cm
-    double medida_z = 0.0725 / 2;  //# cm
+    double medida_z = 0.068 / 2;  //# cm
 
     // double list_thet_in_CCD[number_thet];
     // double list_phi_in_CCD[number_thet];
@@ -411,16 +411,14 @@ void Muon_Gen_1(){
     // cout<< "Len epri list: " <<Len_epri << endl;
 
     TF1 *f_thet = new TF1("", dis_thet, 0, TMath::Pi()/2, 0);
-    // TF1 *f_SD = new TF1("", Smith_Dull, 1, pow(10,5), 1);
-    TF1 *f_SD = new TF1("", Smith_Dull_Log, 0.1, 5, 1);
+    TF1 *f_SD = new TF1("", Smith_Dull, 1, pow(10,5), 1);
     TF1 *f_LandVav = new TF1("", LV, 0.001, 10, 2);
 
     int muon_inbucle = 0;
 
     // Sim_ab_initio_NMUONS_200000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root
 
-    // TFile *file = TFile::Open("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_8.root", "recreate");
-    TFile *file = TFile::Open("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_Prueba.root", "recreate");
+    TFile *file = TFile::Open("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_420X1022_C.root", "recreate");
     TTree *tree = new TTree("tree", "tree");
 
     double Rand_thet;
@@ -461,9 +459,7 @@ void Muon_Gen_1(){
 
         f_SD->SetParameter(0, Rand_thet);
         // Rand_epri = pow(10, f_SD->GetRandom()); // MeV
-        Rand_epri = pow(10, f_SD->GetRandom()); // MeV
-
-        // cout<< Rand_epri << endl;
+        Rand_epri = f_SD->GetRandom(); // MeV
 
         // tree->Fill();
         // =============================================================================================== //
@@ -602,15 +598,11 @@ void Muon_Gen_1(){
 
 
         Delta_L = intersection_CCD(list_flags, list_z, medida_z, Rand_thet);
-        Rand_edep = 0;
 
         if ((0 < Delta_L) & (Delta_L < max_long)){
             
             f_LandVav->SetParameters(Delta_L, momentum);
-
-            // cout<< "Voy a calcular Rand_edep"<<endl;
             Rand_edep = f_LandVav->GetRandom();   // MeV
-            // cout<<Rand_edep<<endl;
             kappa = Kappa(Delta_L, momentum);
             MuonID = i;
 

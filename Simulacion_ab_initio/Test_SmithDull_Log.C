@@ -58,12 +58,12 @@ void Test_SmithDull_Log(){
 
 
     double nbins = 100;
-	double hlow = 1;
+	double hlow = 0.1;
 	double hhi = 5;
     // double hhi = pow(10,5);
 
     // ============= Creation of the function ========== ///
-	TF1 *f = new TF1("f", Smith_Dull_Log, 1, 5, 1);
+	TF1 *f = new TF1("f", Smith_Dull_Log, hlow, hhi, 1);
 	f->SetParameter(0,thet);
     // ================================================== //
 

@@ -1,10 +1,22 @@
 void Test_phi(){
+
+TChain *tree = new TChain("tree");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_0.root");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_1.root");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_2.root");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_3.root");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_4.root");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_5.root");
+
+
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_300000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
-TFile *file = new TFile("Sim_ab_initio_NMUONS_200000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
-TTree *tree = (TTree*) file->Get("tree");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_200000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
+// TFile *file = new TFile("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_0.root");
+// TTree *tree = (TTree*) file->Get("tree");
 
 
-int NB = 50;
+int NB = 70;
 double tlow = 0;
 double thi = 2*TMath::Pi() + 0.1;
 TH1F *theta_all = new TH1F("phi_all", "", NB, tlow, thi);
@@ -17,11 +29,16 @@ tree->Draw("phi>>phi_in", "edep > 0");
 // tree->Draw("phi>>theta_incut", "thet>22");
 
 // Define fuctions //
-TF1 *func1 = new TF1("func1", "[0]", 0.01, 2*TMath::Pi() - 0.1);
-// func1->SetParameter(0, 7500);
+TF1 *func1 = new TF1("func1", "[0]", 0.1, 2*TMath::Pi() - 0.1);
+func1->SetParameter(0, 100000);
+
+double Ah = 0.54;
+double Al = 0.06525;
+double Ac = 0.0435;
 
 // ======================================= Funcionde ajuste para la CCD  =============================================== ###
-TF1 *func2 = new TF1("func2", "[0]*((0.8568933/(2 * TMath::Pi())) + (0.078292082/4)*abs(cos(x)) + (0.064814572/4)*abs(sin(x)))", 0.01,2*TMath::Pi() - 0.05); 
+TF1 *func2 = new TF1("func2", Form("[0]*(((%f)/(1 * TMath::Pi())) + ((%f)/2)*abs(cos(x)) + ((%f)/2)*abs(sin(x)))", Ah, Al, Ac), 0.05,2*TMath::Pi() - 0.1); 
+// TF1 *func2 = new TF1("func2", Form("[0]*(((%f)/(1 * TMath::Pi())) + ((%f)/4)*abs(cos(x)) + ((%f)/4)*abs(sin(x)))", Ah, Al, Ac), 0.05,2*TMath::Pi() - 0.1); 
 
 // ======================================= Funcionde ajuste para la barra =============================================== ###
 // TF1 *func2 = new TF1("func2", "[0]*((20/TMath::Pi()) + (5)*abs(cos(x)) + (1/2)*abs(sin(x)))",0.01,2*TMath::Pi() - 0.1);
