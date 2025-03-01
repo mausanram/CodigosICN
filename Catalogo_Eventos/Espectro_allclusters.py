@@ -72,6 +72,7 @@ def main(argObj):
     n_extension_1 = 0
     n_extension_2 = 0
     n_extension_4 = 0
+    n_total_img = 0
     n_total_ext = 0
 
     Inicio = datetime.datetime.now()
@@ -185,6 +186,8 @@ def main(argObj):
                 for index in np.arange(0, len(list_charge)):
                     list_EventCharge_extension_4.append(list_charge[index])
 
+            n_total_ext = n_total_ext + 1
+
         n_total_ext = n_total_ext + 1
         print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
         del hdu_list              
@@ -230,7 +233,9 @@ def main(argObj):
     print('Number of 1ext: ', n_extension_1)
     print('Number of 2ext: ', n_extension_2)
     print('Number of 4ext: ', n_extension_4)
+    print('Number of total img: ', n_total_img)
     print('Number of total ext: ', n_total_ext)
+
     # print(eventos_rectos)
 
     # plt.show() 
