@@ -69,6 +69,11 @@ def main(argObj):
     total_images = len(argObj)
     image_in_bucle = 0
 
+    n_extension_1 = 0
+    n_extension_2 = 0
+    n_extension_4 = 0
+    n_total_ext = 0
+
     Inicio = datetime.datetime.now()
     num_images =  'Imágenes Analizadas: ' +  str(total_images)
     
@@ -166,17 +171,21 @@ def main(argObj):
             list_charge = all_cluster(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, prop=prop)
 
             if extension == 0: 
+                n_extension_1 = n_extension_1 + 1
                 for index in np.arange(0, len(list_charge)):
                     list_EventCharge_extension_1.append(list_charge[index])
 
             if extension == 1: 
+                n_extension_2 = n_extension_2 + 1
                 for index in np.arange(0, len(list_charge)):
                     list_EventCharge_extension_2.append(list_charge[index])
 
             if extension == 3: 
+                n_extension_4 = n_extension_4 + 1
                 for index in np.arange(0, len(list_charge)):
                     list_EventCharge_extension_4.append(list_charge[index])
 
+        n_total_ext = n_total_ext + 1
         print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
         del hdu_list              
 
@@ -194,18 +203,18 @@ def main(argObj):
     print('Tiempo de cálculo: ', Final-Inicio)
 
     if units == 0:
-        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_NSIGMAS_' + str(n_sigmas)  + '_ADUs.pkl'
+        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_400x700_' + '_NSIGMAS_' + str(n_sigmas)  + '_ADUs.pkl'
     elif units == 1:
-        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_NSIGMAS_' + str(n_sigmas)  + '_electrons.pkl'
+        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_400x700_' + '_NSIGMAS_' + str(n_sigmas)  + '_electrons.pkl'
     elif units == 2:
-        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_NSIGMAS_' + str(n_sigmas)  + '_KeV.pkl'
+        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_400x700_' + '_NSIGMAS_' + str(n_sigmas)  + '_KeV.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
 
     print('Dictionary saved in', current_path + '/' + file_name, ' as a binary file. To open use library "pickle". ')
-
+    
     Eventos_Totales = 'Eventos Detectados en Total: ' +  str(total_events)
     # eventos_rectos = 'Muones Detectados: ' + str(num_muons)
     img_err = 'Imágenes con error al cargar: ' + str(nerr_img)
@@ -218,6 +227,10 @@ def main(argObj):
     print(img_err)
     print(ext_err)
     print(Eventos_Totales)
+    print('Number of 1ext: ', n_extension_1)
+    print('Number of 2ext: ', n_extension_2)
+    print('Number of 4ext: ', n_extension_4)
+    print('Number of total ext: ', n_total_ext)
     # print(eventos_rectos)
 
     # plt.show() 
