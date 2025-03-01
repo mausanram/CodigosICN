@@ -4,6 +4,7 @@
 bool doFit = true;
 bool doPlot  = !doFit;
 int rebinf = 1;
+double KeVperbin = 6.666667; // 1000 KeV / 150 bins
 
 //-------------------------------------
 // The convolution function
@@ -18,19 +19,21 @@ double f(double *x, double *par) {
     double p;
     int    Np    = 200;
     double Emin  = 0;              // Minimum energy
-    double Emax  = 700;           // Maximum energy
+    double Emax  = 1000;           // Maximum energy
     double dE    = (Emax-Emin)/Np; // Energy interval
     double Ed;                     // Deposited energy
     //-------------------------------------------------------
     double Ea  = x[0];    // Function variable (E in PE)
     double f   = par[0];  // resolution at E0
-    double Nmu = par[1];  // resolution at E0
-    double Nbg = par[2];  // Background Normalizarion
-    double a0  = par[3];  // MeV->PE, offset (PE)
-    double a1  = par[4];  // MeV->PE linearity, (PE/MeV)
-    double a2  = par[5];  // MeV->PE nonlinearity, (MeV^-1)
-    double E0  = par[6];  // energy for which resol=f
-    double eps = par[7];  // bkgd decay const
+    double Nmu = par[1];  // Muon normalization
+    double Nb1 = par[2];  // Background 1 Normalizarion
+	double Nb2 = par[3];  // Background 2 Normalizarion
+    double a0  = par[4];  // MeV->PE, offset (PE)
+    double a1  = par[5];  // MeV->PE linearity, (PE/MeV)
+    double a2  = par[6];  // MeV->PE nonlinearity, (MeV^-1)
+    double E0  = par[7];  // energy for which resol=f
+    double ep1 = par[8];  // bkgd 1 decay const
+    double ep2 = par[9];  // bkgd 2 decay const
     //-------------------------------------------------------
     // Visible energy in MeV. 
     // Inverse of Ea = a0 + a1*Ev/(1 + a2*Ev)
@@ -42,15 +45,15 @@ double f(double *x, double *par) {
     for (int i=1; i<=Np; i++) {
        inp >> p;         //- Read input-file line
        Ed  = (i-0.5)*dE; //- value at middle of bin
-       sig = f*sqrt(Ed*E0);
-       F += (Nmu*rebinf*p + Nbg*rebinf*(1./eps)*exp(-Ed/eps) )
+       sig = f*sqrt(Ev*E0);
+       F += (Nmu*p + Nb1*(1./ep1)*exp(-Ed/ep1) + Nb2*(1./ep2)*exp(-Ed/ep2) )
            *(1./sqrt(2*pi*(pow(sig,2))))*exp(-(pow((Ev-Ed),2))/(2*(pow(sig,2))))*dE;
     } //for i
     double dEadEv = a1/pow(1 + a2*Ev,2);
     double z      = 1.0*F/dEadEv;  //change units to PE
 
     inp.close();
-    return z;
+    return z * rebinf * KeVperbin;
 }  // function f
 
 //-------------------------------------
@@ -69,7 +72,7 @@ void fitConv_CCD() {
    inpf.open("muons.dat");
    double pv;
    int    nbins = 200;
-   double Emax  = 700;
+   double Emax  = 1000;
    double  dE   = Emax/nbins;
 
 
@@ -96,6 +99,7 @@ void fitConv_CCD() {
    TFile *file = new TFile("ccdhisto.root");
    //TFile *file = new TFile("ccm-data/from-Mayank/beamON_preBeam_bcm_nhits_previousEvent_selectingCosmicMuons.root");
    TH1F *h = (TH1F*) file->FindObjectAny("edep0");
+   cout<< h->GetNbinsX() << endl;
    cout << "Integral Prompt_Energy: " << h->Integral() << " entries (before rebin)." << endl;
    h->Rebin(rebinf); 
    cout << "Integral Prompt_Energy: " << h->Integral() << " entries (after rebin)." << endl;
@@ -104,7 +108,7 @@ void fitConv_CCD() {
 
    TF1 *f1 = new TF1();
 
-   h->SetMaximum((rebinf/10)*8*h->GetMaximum());
+//    h->SetMaximum((rebinf/10)*8*h->GetMaximum());
 //    h->SetMaximum(20000);
    h->SetTitle("Energy histogram");
    h->SetXTitle("Energy (KeV)");
@@ -114,43 +118,36 @@ void fitConv_CCD() {
 
    if (doFit){
 
-	int n = 8;           // Number of parameters
+	int np = 10;           // Number of parameters
 	double xm = 50;     // xmin to fit
 	double xM = 700;    // xmax to fit
 
 	// TF1 *f1 = new TF1("f1", f, xm, xM, n);
-	f1 = new TF1("f1", f, xm, xM, n);
+	f1 = new TF1("f1", f, xm, xM, np);
 
+		// prebeam no muon selection
 	double p0 = 0.05;    // Resolution
-	double p1 = 70000;    // Muon normalization
-	double p2 = 100000.;    // Background
-	double p3 = 0.00000e+00;    // PE offset
-	double p4 = 1.0;    // No cambio de Unidades // por ahora
-	double p5 = 0.00000e-04;    // PE scale (quadratic)
-	double p6 = 200.;    // E0
-	double p7 = 200;    // exponente bkgd
+	double p1 = 4500.;    // Muon normalization
+	double p2 = 7000.;    // Background 1
+	double p3 = 4050.;    // Background 2
+	double p4 = 0.00000e+00;    // PE offset
+	double p5 = 1.0;    // No cambio de Unidades // por ahora
+	double p6 = 0.00000e-04;    // PE scale (quadratic)
+	double p7 = 220;    // E0
+	double p8 = 70;    // exponente bkgd 1
+	double p9 = 650;    // exponente bkgd 2
 
-
-        /*
-        //- prebeam WITH muon selection
-	double p0 = 2.0000e-01;    // Resolution
-	double p1 = 3.20000e+03;    // Muon normalization
-	double p2 = 2.39202e+03;    // Background
-	double p3 = 0.00000e+00;    // PE offset
-	double p4 = 1.72000e+02;    // PE scale (linear)
-	double p5 = 4.80000e-03;    // PE scale (quadratic)
-	double p6 = 2.60000e+02;    // E0
-	double p7 = 0.30000e+01;    // exponente bkgd
-        */
 
 	f1->SetParameter(0, p0);    // Resolution
 	f1->SetParameter(1, p1);    // Normalizing constant
-	f1->SetParameter(2, p2);    // Background
-	f1->FixParameter(3, p3);    // Energy scale offset
-	f1->FixParameter(4, p4);    // Energy scale (linear)
-	f1->SetParameter(5, p5);    // Energy scale (quadratic)
-	f1->FixParameter(6, p6);    // E0
-	f1->SetParameter(7, p7);    // exponente bkgd
+	f1->SetParameter(2, p2);    // Background 1
+	f1->SetParameter(3, p3);    // Background 2
+	f1->FixParameter(4, p4);    // Energy scale offset
+	f1->FixParameter(5, p5);    // Energy scale (linear)
+	f1->FixParameter(6, p6);    // Energy scale (non-linear)
+	f1->FixParameter(7, p7);    // E0
+	f1->SetParameter(8, p8);    // exponente bkgd 1
+	f1->SetParameter(9, p9);    // exponente bkgd 1
 
 	h->Fit("f1","R");   // Fitting in the specified range
 
@@ -158,60 +155,80 @@ void fitConv_CCD() {
 	double er   = f1->GetParError(0);
 	double nmu  = f1->GetParameter(1);
 	double enmu = f1->GetParError(1);
-	double nbg  = f1->GetParameter(2);
-	double enbg = f1->GetParError(2);
-	double a0   = f1->GetParameter(3);
-	double ea0  = f1->GetParError(3);
-	double a1   = f1->GetParameter(4);
-	double ea1  = f1->GetParError(4);
-	double a2   = f1->GetParameter(5);
-	double ea2  = f1->GetParError(5);
-	double e0   = f1->GetParameter(6);
-	double ee0  = f1->GetParError(6);
-	double eps  = f1->GetParameter(7);
-	double eeps = f1->GetParError(7);
+	double nb1  = f1->GetParameter(2);
+	double enb1 = f1->GetParError(2);
+	double nb2  = f1->GetParameter(3);
+	double enb2 = f1->GetParError(3);
+	double a0   = f1->GetParameter(4);
+	double ea0  = f1->GetParError(4);
+	double a1   = f1->GetParameter(5);
+	double ea1  = f1->GetParError(5);
+	double a2   = f1->GetParameter(6);
+	double ea2  = f1->GetParError(6);
+	double e0   = f1->GetParameter(7);
+	double ee0  = f1->GetParError(7);
+	double ep1  = f1->GetParameter(8);
+	double eep1 = f1->GetParError(8);
+	double ep2  = f1->GetParameter(9);
+	double eep2 = f1->GetParError(9);
+
 	double chi2 = f1->GetChisquare();
 	int    ndf  = f1->GetNDF();
 	double prob = TMath::Prob(chi2,ndf);
 
 	// Calculate I_0
-	double I0sim  = 70;
-	double nmusim = 390114;//393500;
-	double Tsim   = 95378; //sec
-	double T      = 425250; //sec
+	double I0sim  = 101.2;
+	double nmusim = 393603; //2000000 simulados en total;
+	double Tsim   = 41946308.72; //sec
+	// double Tsim   = 65972; //sec
+	// double T      = 740250; //sec
+	double T      = 1049400 * 0.44; //sec
 	double eff    = 1.0;
 	double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
 	double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
 
-	TF1 *fm = new TF1("fm", f, xm, xM, n);
-	fm->SetParameters(r,nmu,0*nbg,a0,a1,a2,e0,eps);
+	TF1 *fm = new TF1("fm", f, xm, xM, np);
+	fm->SetParameters(r,nmu,0*nb1, 0*nb2, a0,a1,a2,e0,ep1, ep2);
 	fm->SetLineColor(4);
 
-	TF1 *fb = new TF1("fb", f, xm, xM, n);
-	fb->SetParameters(r,0*nmu,nbg,a0,a1,a2,e0,eps);
-        fb->SetLineColor(13);
-        fb->SetLineStyle(3);
-        fb->SetLineWidth(1);
+	TF1 *fb1 = new TF1("fb1", f, xm, xM, np);
+	fb1->SetParameters(r,0*nmu,nb1, 0*nb2, a0,a1,a2,e0,ep1, ep2);
+	fb1->SetLineColor(12);
+	fb1->SetLineStyle(3);
+	fb1->SetLineWidth(1);
 
-	//c1->SetLogy(1);
-	h->SetMaximum(2000);
-	h->Draw();
+	TF1 *fb2 = new TF1("fb2", f, xm, xM, np);
+	fb2->SetParameters(r,0*nmu,0*nb1, nb2, a0,a1,a2,e0,ep1, ep2);
+	fb2->SetLineColor(15);
+	fb2->SetLineStyle(3);
+	fb2->SetLineWidth(1);
+
+	c1->cd();
+	h->SetMaximum(500);
+	h->SetLineColor(3);
 	// h->GetXaxis()->SetRangeUser(0,1000);
-	// fm->Draw("same");
-	// fb->Draw("same");
+	// h->Draw("hist");
+	f1->Draw("");
+	fb1->Draw("same");
+	fm->Draw("same");
+	fb2->Draw("same");
+	h->Draw("hist same");
 
 	lat->SetTextFont(42);
 	lat->SetTextSize(0.034);
 	lat->DrawLatex(0.15,0.85,Form("I^{CCM}_{0} = (%3.1f #pm %3.1f) m^{-2} s^{-1} sr^{-1}",I0,eI0));
 	lat->DrawLatex(0.15,0.80,Form("N_{#mu} = (%6.0f #pm %4.0f)",nmu,enmu));
 	lat->DrawLatex(0.15,0.76,Form("Resolution f = (%5.3f #pm %5.3f)",r,er));
-	lat->DrawLatex(0.15,0.72,Form("N_{bg} = (%6.0f #pm %4.0f)",nbg,enbg));
-	lat->DrawLatex(0.15,0.68,Form("#epsilon = (%5.3f #pm %5.3f)",eps,eeps));
-	lat->DrawLatex(0.15,0.64,Form("a_{0} = (%5.3f #pm %5.3f) PE",a0,ea0));
-	lat->DrawLatex(0.15,0.60,Form("a_{1} = (%5.3f #pm %5.3f) PE/MeV",a1,ea1));
-	lat->DrawLatex(0.15,0.56,Form("a_{2} = (%6.5f #pm %6.5f) MeV^{-1}",a2,ea2));
-	lat->DrawLatex(0.15,0.51,Form("#chi^{2}/ndf = %4.2f/%d",chi2,ndf));
-	lat->DrawLatex(0.15,0.47,Form("Prob(#chi^{2}) = %6.4f",prob));
+	lat->DrawLatex(0.15,0.72,Form("N_{b1} = (%6.0f #pm %4.0f)",nb1,enb1));
+	lat->DrawLatex(0.15,0.68,Form("#epsilon_1 = (%5.3f #pm %5.3f)",ep1,eep1));
+	lat->DrawLatex(0.15,0.64,Form("N_{b2} = (%6.0f #pm %4.0f)",nb2,enb2));
+	lat->DrawLatex(0.15,0.60,Form("#epsilon_2 = (%5.3f #pm %5.3f)",ep2,eep2));
+	lat->DrawLatex(0.15,0.56,Form("a_{0} = (%5.3f #pm %5.3f) PE",a0,ea0));
+	lat->DrawLatex(0.15,0.52,Form("a_{1} = (%5.3f #pm %5.3f) PE/MeV",a1,ea1));
+	lat->DrawLatex(0.15,0.48,Form("a_{2} = (%6.5f #pm %6.5f) MeV^{-1}",a2,ea2));
+
+	lat->DrawLatex(0.15,0.42,Form("#chi^{2}/ndf = %4.2f/%d",chi2,ndf));
+	lat->DrawLatex(0.15,0.38,Form("Prob(#chi^{2}) = %6.4f",prob));
 
 	TLegend *l = new TLegend(0.6, 0.6, 0.9, 0.75);
 	l->SetTextSize(0.03);
@@ -235,48 +252,48 @@ void fitConv_CCD() {
 
 	
         // prebeam no muon selection
-	double p0 = 0.05;    // Resolution
-	double p1 = 8380;    // Muon normalization
-	double p2 = 100000.;    // Background
-	double p3 = 0.00000e+00;    // PE offset
-	double p4 = 1.0;    // No cambio de Unidades // por ahora
-	double p5 = 0.00000e-04;    // PE scale (quadratic)
-	double p6 = 200;    // E0
-	double p7 = 90;    // exponente bkgd
+	double p0 = 0.033;    // Resolution
+	double p1 = 4285.;    // Muon normalization
+	double p2 = 7876.;    // Background 1
+	double p3 = 5262.;    // Background 2
+	double p4 = 0.00000e+00;    // PE offset
+	double p5 = 1.0;    // No cambio de Unidades // por ahora
+	double p6 = 0.00000e-04;    // PE scale (quadratic)
+	double p7 = 220;    // E0
+	double p8 = 55.456;    // exponente bkgd 1
+	double p9 = 481.387;    // exponente bkgd 2
 
-	// double p0 = 0.05;    // Resolution
-	// double p1 = 70000;    // Muon normalization
-	// double p2 = 100000.;    // Background
-	// double p3 = 0.00000e+00;    // PE offset
-	// double p4 = 1.0;    // No cambio de Unidades // por ahora
-	// double p5 = 0.00000e-04;    // PE scale (quadratic)
-	// double p6 = 200;    // E0
-	// double p7 = 200;    // exponente bkgd
 
-	int np = 8; //number of parameters
+
+	int np = 10; //number of parameters
 	double xm = 50;
 	double xM = 700;
 
 	f1 = new TF1("f1", f, xm, xM, np);
-	f1->SetParameters(p0, p1, p2, p3, p4, p5, p6, p7);
+	f1->SetParameters(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9);
 	f1->SetLineColor(2);
 
 	double r    = f1->GetParameter(0);
 	double er   = f1->GetParError(0);
 	double nmu  = f1->GetParameter(1);
 	double enmu = f1->GetParError(1);
-	double nbg  = f1->GetParameter(2);
-	double enbg = f1->GetParError(2);
-	double a0   = f1->GetParameter(3);
-	double ea0  = f1->GetParError(3);
-	double a1   = f1->GetParameter(4);
-	double ea1  = f1->GetParError(4);
-	double a2   = f1->GetParameter(5);
-	double ea2  = f1->GetParError(5);
-	double e0   = f1->GetParameter(6);
-	double ee0  = f1->GetParError(6);
-	double eps  = f1->GetParameter(7);
-	double eeps = f1->GetParError(7);
+	double nb1  = f1->GetParameter(2);
+	double enb1 = f1->GetParError(2);
+	double nb2  = f1->GetParameter(3);
+	double enb2 = f1->GetParError(3);
+	double a0   = f1->GetParameter(4);
+	double ea0  = f1->GetParError(4);
+	double a1   = f1->GetParameter(5);
+	double ea1  = f1->GetParError(5);
+	double a2   = f1->GetParameter(6);
+	double ea2  = f1->GetParError(6);
+	double e0   = f1->GetParameter(7);
+	double ee0  = f1->GetParError(7);
+	double ep1  = f1->GetParameter(8);
+	double eep1 = f1->GetParError(8);
+	double ep2  = f1->GetParameter(9);
+	double eep2 = f1->GetParError(9);
+
 	double chi2 = f1->GetChisquare();
 	int    ndf  = f1->GetNDF();
 	double prob = TMath::Prob(chi2,ndf);
@@ -291,47 +308,56 @@ void fitConv_CCD() {
 	//double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
 
 	// Calculate I_0
-	double I0sim  = 70;
-	double nmusim = 390114;//393500;
-	double Tsim   = 60631783; //sec
+	double I0sim  = 101.2;
+	double nmusim = 393603; //2000000 simulados en total;
+	double Tsim   = 41946308.72; //sec
 	// double Tsim   = 65972; //sec
-	double T      = 850500; //sec
+	double T      = 740250; //sec
 	double eff    = 1.0;
 	double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
 	double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
 
 	TF1 *fm = new TF1("fm", f, xm, xM, np);
-	fm->SetParameters(p0, p1, 0*p2, p3, p4, p5, p6, p7);
+	fm->SetParameters(p0, p1, 0*p2, 0*p3, p4, p5, p6, p7, p8, p9);
 	fm->SetLineColor(4);
 
-	TF1 *fbg = new TF1("fbg", f, xm, xM, np);
-	fbg->SetParameters(p0, 0*p1, p2, p3, p4, p5, p6, p7);
-	fbg->SetLineColor(6);
+	TF1 *fb1 = new TF1("fb1", f, xm, xM, np);
+	fb1->SetParameters(p0, 0*p1, p2, 0*p3, p4, p5, p6, p7, p8, p9);
+	fb1->SetLineColor(6);
+	fb1->SetLineStyle(2);
+
+	TF1 *fb2 = new TF1("fb2", f, xm, xM, np);
+	fb2->SetParameters(p0, 0*p1, 0*p2, p3, p4, p5, p6, p7, p8, p9);
+	fb2->SetLineColor(7);
+	fb2->SetLineStyle(2);
 
 
 	c1->cd();
 	//c1->SetLogy(1);
-	h->SetMaximum(2000);
+	h->SetMaximum(500);
 	h->Draw();
-	h->GetXaxis()->SetRangeUser(0,1000);
+	// h->GetXaxis()->SetRangeUser(0,700);
 
 	double xmax = f1->GetMaximumX();
 	cout << xmax << endl;
 
 	f1->Draw("l same");
 	fm->Draw("same");
-    fbg->Draw("same");
+    fb1->Draw("same");
+	fb2->Draw("same");
 
 	lat->SetTextFont(42);
 	lat->SetTextSize(0.034);
 	lat->DrawLatex(0.15,0.85,Form("I^{CCM}_{0} = %3.1f m^{-2} s^{-1} sr^{-1}",I0));
 	lat->DrawLatex(0.15,0.80,Form("N_{#mu} = %6.0f ",nmu));
 	lat->DrawLatex(0.15,0.76,Form("Resolution f = %5.3f ",r));
-	lat->DrawLatex(0.15,0.72,Form("N_{bg} = %6.0f ",nbg));
-	lat->DrawLatex(0.15,0.68,Form("#epsilon = %5.2f ",eps));
-	lat->DrawLatex(0.15,0.64,Form("a_{0} = %5.2f PE",a0));
-	lat->DrawLatex(0.15,0.60,Form("a_{1} = %5.2f  PE/MeV",a1));
-	lat->DrawLatex(0.15,0.56,Form("a_{2} = %6.5f  MeV^{-1}",a2));
+	lat->DrawLatex(0.15,0.72,Form("N_{b1} = %6.0f ",nb1));
+	lat->DrawLatex(0.15,0.68,Form("#epsilon_1 = %5.2f ",ep1));
+	lat->DrawLatex(0.15,0.64,Form("N_{b2} = %6.0f ",nb2));
+	lat->DrawLatex(0.15,0.60,Form("#epsilon_2 = %5.2f ",ep2));
+	lat->DrawLatex(0.15,0.56,Form("a_{0} = %5.2f PE",a0));
+	lat->DrawLatex(0.15,0.52,Form("a_{1} = %5.2f  PE/MeV",a1));
+	lat->DrawLatex(0.15,0.48,Form("a_{2} = %6.5f  MeV^{-1}",a2));
 	//lat->DrawLatex(0.15,0.51,Form("#chi^{2}/ndf = %4.2f/%d",chi2,ndf));
 	//lat->DrawLatex(0.15,0.47,Form("Prob(#chi^{2}) = %6.4f",prob));
 
@@ -348,9 +374,9 @@ void fitConv_CCD() {
 
 	// nonlinearity function
 	TF1 *nonlin = new TF1("nonlin","[0]+[1]*x/(1+[2]*x)",0,Emax); 
-        double a0 = f1->GetParameter(3);
-        double a1 = f1->GetParameter(4);
-        double a2 = f1->GetParameter(5);
+        double a0 = f1->GetParameter(4);
+        double a1 = f1->GetParameter(5);
+        double a2 = f1->GetParameter(6);
 	nonlin->SetParameters(a0,a1,a2);
 	nonlin->GetXaxis()->SetTitle("Energy (MeV)");
 	nonlin->GetYaxis()->SetTitleOffset(1.5);

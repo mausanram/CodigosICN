@@ -9,37 +9,39 @@ double dis_thet(double *lx, double *lpar){ //## Distribucion dis_angular
 double Smith_Dull(double *lx , double *lpar){
 
     double E_mu = lx[0];
-    double theta = TMath::Pi() * lpar[0]/180;
+    double theta = lpar[0];
 
     //## ------------- Constantes físicas -------------- ##
-    double k = 8.0 / 3.0;
+    double A = 2 * pow(10, 9);  
+    // double k = 8.0 / 3.0;
+    double k = 2.645;
     double b = 0.771;
-    double lambda_pi = 120;    // g/cm^2
-    double y_0 = 1000;      // g/cm^2
+    double lambda_pi = 120.0;    // g/cm^2
+    double y_0 = 1000.0;      // g/cm^2
     double r = 0.76;
-    double b_mu = 0.8;   
+    double b_mu = 0.8;  
+    double c = TMath::C()* 100.0; //## cm/s 
 
     // # if units == 0:
     double a = 2.5;      //## MeV cm^2/g
-    double m_mu = 105.7;    //## MeV/c^2 
-    double m_pi = 139.6;    //## MeV/c^2
+    double m_mu = 105.7/ pow(c, 2);    //## MeV/c^2 
+    double m_pi = 139.6/ pow(c, 2);    //## MeV/c^2
 
     double tau_mu_0 = 2.2 * pow(10,-6);   //## s
     double tau_0 = 2.6 * pow(10, -8);     //## s
     double rho_0 = 0.00129; //## g/cm^3
-    double c = TMath::C()* 100; //## cm/s
 
     //### ---------------------- Parámetros ---------------------- ###
-    double E_pi = (1 / r) * (E_mu + a * y_0 * ((1/TMath::Cos(theta)) - 0.1));
-    double B_mu = (b_mu * m_mu * y_0)/(tau_mu_0 * rho_0 * c);
+    double E_pi = (1 / r) * (E_mu + a * y_0 * ((1/(TMath::Cos(theta))) - 0.1));
+    double B_mu = (b_mu * m_mu * y_0 * c)/(tau_mu_0 * rho_0);
     // double B_mu = (b_mu * m_mu * y_0 * c)/(tau_mu_0 * rho_0);
-    double P_mu = pow((0.1 * TMath::Cos(theta)) * (1 - (a * (y_0 *(1/TMath::Cos(theta)) - 100))/( r * E_pi)), ((B_mu)/((r * E_pi + 100 * a) * TMath::Cos(theta))));
-    double j_pi = (m_pi * y_0)/(c * tau_0 * rho_0);
+    double P_mu = pow((0.1 * TMath::Cos(theta)) * (1 - (a * (y_0 *(1/(TMath::Cos(theta))) - 100.0))/( r * E_pi)), ((B_mu)/((r * E_pi + 100.0 * a) * TMath::Cos(theta))));
+    double j_pi = (m_pi * y_0 * c)/(tau_0 * rho_0);
     // double j_pi = (m_pi * y_0 * c)/(tau_0 * rho_0);
 
     //## Intensidad diferencial
     //# C_1 = E_pi ** (-k) * P_mu * lambda_pi * b * j_pi
-    double C_1 = pow(E_pi, -k)* P_mu * lambda_pi * b * j_pi;
+    double C_1 = A * pow(E_pi, -k)* P_mu * lambda_pi * b * j_pi;
     double C_2 = E_pi * TMath::Cos(theta);
     double C_3 = b * j_pi;
 
@@ -51,7 +53,7 @@ double Smith_Dull(double *lx , double *lpar){
 double Smith_Dull_Log(double *lx , double *lpar){
 
     double E_mu = pow(10, lx[0]);
-    double theta = TMath::Pi() * lpar[0]/180;
+    double theta = lpar[0];
 
     //## ------------- Constantes físicas -------------- ##
     double k = 8.0 / 3.0;
@@ -225,7 +227,7 @@ double intersection_CCD(bool *flags_CCD, double *list_z, double medida_z, double
     return delta_L ;
 };
 
-double LV (double *lx, double *lpar) {
+double LV(double *lx, double *lpar) {
 	double Delta = lx[0];	// Energy loss in absorber
 	double L = lpar[0];		// Thickness of absorber (Distance crossed by the particle)
 	double p = lpar[1];		// Momentum (in MeV/c)
@@ -256,6 +258,132 @@ double LV (double *lx, double *lpar) {
 	double X1 = 2.8715;		//
 	double C = 4.4351;		//
 	double d0 = 0.14;		//
+	double X = log10(bg);
+
+	if (X>=X1) {
+		d = 2*log(10.0)*X-C;
+		}
+	else if (X0<=X && X<X1) {
+		// cout<<"Entro aquí" << endl;
+		d = 2*log(10.0)*X-C+a*(pow((X1-X),k));
+		}
+	else if (X<X0) {
+		d = d0*(pow(10,(2*(X-X0))));
+		// d = 0;
+		}
+
+	// double WM = 2*me*(pow((beta*gamma),2))/(1+(2*me/M)*(sqrt(1 + pow(beta*gamma, 2)))+pow((me/M),2));   // Maximum energy tranfer
+	double WM = (2*me*pow(bg,2))/(1+(2*me*gamma/M) + pow((me/M),2));   // Maximum energy tranfer
+
+	// double loge = log((1-(pow(beta,2)))*(pow(I,2))/(2*M*(pow(beta,2))))+(pow(beta,2)); // log epsilon variable
+	double loge = log(((1-pow(beta,2))*(pow(I,2)))/(2*me*pow(beta,2)))+(pow(beta,2)); // log epsilon variable
+
+	double EC = 0.577;	// Euler's constant
+
+    double xi = K * rho * ZA * L * pow((1/beta),2);		// Xi variable 
+
+
+	double DeltaAv = xi * (log((2*me*(pow(bg,2)))*WM/(pow(I,2)))-(2 * pow(beta,2))-(d));// Mean energy loss (Bethe-Bloch)
+	// double DeltaAv = K*rho*L*(pow(z,2))*ZA*(1.0/(pow(beta,2)))*((1/2)* log(2*me*(pow(gamma,2))*(pow(beta,2))*WM/(pow(I,2)))-(pow(beta,2))-(d/2.0));// Mean energy loss (Bethe-Bloch)
+
+	// ===================================================== //
+
+	double Log_1 = log((2 * me * pow(bg,2))/(I));
+	double Log_2 = log((xi)/(I));
+	double SumLogs = Log_1 + Log_2;
+	double SumLogsj = Log_1 + Log_2 + 0.2;
+	double SumLogsjbet = Log_1 + Log_2 + 0.2 - (pow(beta,2));
+	double SumTerms = Log_1 + Log_2 + 0.2 - (pow(beta,2)) - d;
+	double MostP = xi * (Log_1 + Log_2 + 0.2 - pow(beta,2) - d);
+
+	// cout << "Csi Value " << xi << " MeV" << endl;
+	// cout << "1st Log: " << Log_1 << endl;
+	// cout << "2nd Log: " << Log_2 << endl;
+	// cout << "density corr: " << d << endl;
+	// cout << "beta^2: " << pow(beta,2) << endl;
+	// cout << "SumLogs: " << SumLogs << endl;
+	// cout << "SumLogsj: " << SumLogsj << endl;
+	// cout << "SumLogsjbet: " << SumLogsjbet << "\n " <<endl;
+	// cout << "SumT: " << SumTerms << endl;
+	// cout << "MostP: " << MostP << endl;
+	// double xi = (K/2)*rho*ZA*L*pow((z/beta),2);		// Xi variable 
+
+	// ==================================================== //
+
+	double lambda = (Delta-xi*(log(xi)-loge+1-EC))/xi;	// Lambda parameter
+
+  	// double Deltamp = xi * (log(xi) - loge + 0.198-d);		// Most probable energy loss
+    double Deltamp = xi * (log((2 * me * pow(bg,2))/I) + log(xi/I) + 0.2 - pow(beta,2) - d);		//# Most probable energy loss from PDG
+  	double lambdamp = (Deltamp - xi*(log(xi)-loge+1-EC))/xi;
+
+	double kappa = xi/WM;		// Kappa ratio
+	double beta2 = pow(beta,2);
+
+	double sigma2 = (pow(xi,2))*(1-beta2/2)/kappa;		// Standard deviation for relativistic particles
+
+	//  cout << lambda << " " << Delta <<"  "<< phi/csi << endl;
+
+	//printf(Deltamp);
+	// cout << "Most Probably Energy in KeV " << Deltamp * 1000 << endl;
+	//td::cout << Deltamp * 1000 << std::endl;
+	// std::cout << "DMP "<<  Deltamp * 1000 << std::endl;
+	// std::cout << "MP "<<  lambdamp << std::endl;
+	// std::cout << "Kappa: "<<  kappa << std::endl;
+	// cout << "LambdaMP: " << lambdamp << " , Deltamp: " << Deltamp << ", DeltaAv: " << DeltaAv << endl;
+
+	if (kappa<=0.01) {
+		// std::cout << "lambMP "<<  lambdamp << std::endl;
+		// std::cout << "DeltaMP "<<  Deltamp << std::endl;
+		double phi = TMath::Landau(lambda, lambdamp, 1.0);
+        // double phi = TMath::Landau(lambda, Deltamp, 1.0);
+		return phi/xi;
+		// return phi;
+		}
+	else if (0.01<kappa && kappa<10) {
+		// std::cout << "2"<< std::endl;
+		double vav = TMath::Vavilov(lambda-lambdamp, kappa, beta2);
+        // double vav = TMath::Vavilov(Delta-Deltamp, kappa, beta2);
+		return vav;
+		}
+	else {
+//		double gauss = exp(((Delta-DeltaAv)**2)/(2*sigma2));
+		double gauss =  TMath::Gaus(Delta, DeltaAv, sqrt(sigma2));
+		return gauss;
+		}
+}
+
+
+double LV_Barra(double *lx, double *lpar) {
+	double Delta = lx[0];	// Energy loss in absorber
+	double L = lpar[0];		// Thickness of absorber (Distance crossed by the particle)
+	double p = lpar[1];		// Momentum (in MeV/c)
+
+
+	double z = 1.0;		// Charge number of incident particle
+	double ZA = 0.54141;	// Atomic number over Atomic mass of absorber (for Si)
+	double c = TMath::C();	// Speed of light
+	double me = 0.510998928;	// Electron mass in MeV/c^2
+	double M = 105.65839;	// Muon mass in MeV/c^2
+	double I = 64.7/1000000;								// Mean excitation energy (for PVT)
+
+	double bg = p/M;
+	double beta = bg/sqrt(1+(pow(bg,2)));	// Beta factor
+	double gamma = 1/sqrt(1-(pow(beta,2)));	// Gamma factor
+	double pi = TMath::Pi();
+	double rho = 1.032; // Density of material (for PVT)
+
+	double d;	// Variable for the Density effect
+
+	double K = 0.1535;	// K coefficient = 2*pi*N*r^2*m*c^2 (in MeV mol^-1 cm^2)
+	// double K = 0.307075;	// K coefficient = 4*pi*N*r^2*m*c^2 (in MeV mol^-1 cm^2)
+
+
+	double a = 0.1610;			// Parameters (taken from PDG for PVT)
+	double k = 3.2393;			//
+	double X0 = 0.1464;			//
+	double X1 = 2.4855;			//
+	double C = 3.1997;			//
+	double d0 = 0.0;
 	double X = log10(bg);
 
 	if (X>=X1) {
@@ -391,6 +519,17 @@ void Muon_Gen_1(){
     double medida_y = (sizey_pixels * pixel_size)  / 2;   //# cm
     double medida_z = 0.0725 / 2;  //# cm
 
+    // ==================== Datos para la barra (Bryan) =============== //
+    // double Radio = 450; //cm
+    // double half_plane_size = 75; // cm 
+
+    // double sizex_pixels = 10; // cm
+    // double sizey_pixels = 100; // cm
+
+    // double medida_x = (sizex_pixels) / 2;   //# cm
+    // double medida_y = (sizey_pixels)  / 2;   //# cm
+    // double medida_z = 10.0 / 2;  //# cm
+
     // double list_thet_in_CCD[number_thet];
     // double list_phi_in_CCD[number_thet];
     // double list_energy_pri_in_CCD[number_thet];
@@ -411,16 +550,20 @@ void Muon_Gen_1(){
     // cout<< "Len epri list: " <<Len_epri << endl;
 
     TF1 *f_thet = new TF1("", dis_thet, 0, TMath::Pi()/2, 0);
+
     // TF1 *f_SD = new TF1("", Smith_Dull, 1, pow(10,5), 1);
     TF1 *f_SD = new TF1("", Smith_Dull_Log, 0.1, 5, 1);
+
     TF1 *f_LandVav = new TF1("", LV, 0.001, 10, 2);
+    // TF1 *f_LandVav = new TF1("", LV_Barra, 1, 100, 2);
 
     int muon_inbucle = 0;
 
     // Sim_ab_initio_NMUONS_200000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root
 
-    // TFile *file = TFile::Open("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_8.root", "recreate");
-    TFile *file = TFile::Open("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_Prueba.root", "recreate");
+    TFile *file = TFile::Open("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_4.root", "recreate");
+    // TFile *file = TFile::Open("Sim_ab_initio_NMUONS_100000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_Prueba.root", "recreate");
+    // TFile *file = TFile::Open("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root", "recreate");
     TTree *tree = new TTree("tree", "tree");
 
     double Rand_thet;
@@ -460,8 +603,8 @@ void Muon_Gen_1(){
         Rand_phi = rand.Rndm() * (2 * TMath::Pi()); // Rad
 
         f_SD->SetParameter(0, Rand_thet);
-        // Rand_epri = pow(10, f_SD->GetRandom()); // MeV
-        Rand_epri = pow(10, f_SD->GetRandom()); // MeV
+        // Rand_epri = f_SD->GetRandom(); // MeV
+        Rand_epri = pow(10, f_SD->GetRandom()); // MeV                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 
         // cout<< Rand_epri << endl;
 
@@ -610,6 +753,7 @@ void Muon_Gen_1(){
 
             // cout<< "Voy a calcular Rand_edep"<<endl;
             Rand_edep = f_LandVav->GetRandom();   // MeV
+            cout<< "Pude calcular Rand_edep"<<endl;
             // cout<<Rand_edep<<endl;
             kappa = Kappa(Delta_L, momentum);
             MuonID = i;

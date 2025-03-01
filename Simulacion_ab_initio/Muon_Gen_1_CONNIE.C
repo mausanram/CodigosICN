@@ -9,37 +9,39 @@ double dis_thet(double *lx, double *lpar){ //## Distribucion dis_angular
 double Smith_Dull(double *lx , double *lpar){
 
     double E_mu = lx[0];
-    double theta = TMath::Pi() * lpar[0]/180;
+    double theta = lpar[0];
 
     //## ------------- Constantes físicas -------------- ##
-    double k = 8.0 / 3.0;
+    double A = 2 * pow(10, 9);  
+    // double k = 8.0 / 3.0;
+    double k = 2.645;
     double b = 0.771;
-    double lambda_pi = 120;    // g/cm^2
-    double y_0 = 1000;      // g/cm^2
+    double lambda_pi = 120.0;    // g/cm^2
+    double y_0 = 1000.0;      // g/cm^2
     double r = 0.76;
-    double b_mu = 0.8;   
+    double b_mu = 0.8;  
+    double c = TMath::C()* 100.0; //## cm/s 
 
     // # if units == 0:
     double a = 2.5;      //## MeV cm^2/g
-    double m_mu = 105.7;    //## MeV/c^2 
-    double m_pi = 139.6;    //## MeV/c^2
+    double m_mu = 105.7/ pow(c, 2);    //## MeV/c^2 
+    double m_pi = 139.6/ pow(c, 2);    //## MeV/c^2
 
     double tau_mu_0 = 2.2 * pow(10,-6);   //## s
     double tau_0 = 2.6 * pow(10, -8);     //## s
     double rho_0 = 0.00129; //## g/cm^3
-    double c = TMath::C()* 100; //## cm/s
 
     //### ---------------------- Parámetros ---------------------- ###
-    double E_pi = (1 / r) * (E_mu + a * y_0 * ((1/TMath::Cos(theta)) - 0.1));
-    double B_mu = (b_mu * m_mu * y_0)/(tau_mu_0 * rho_0 * c);
+    double E_pi = (1 / r) * (E_mu + a * y_0 * ((1/(TMath::Cos(theta))) - 0.1));
+    double B_mu = (b_mu * m_mu * y_0 * c)/(tau_mu_0 * rho_0);
     // double B_mu = (b_mu * m_mu * y_0 * c)/(tau_mu_0 * rho_0);
-    double P_mu = pow((0.1 * TMath::Cos(theta)) * (1 - (a * (y_0 *(1/TMath::Cos(theta)) - 100))/( r * E_pi)), ((B_mu)/((r * E_pi + 100 * a) * TMath::Cos(theta))));
-    double j_pi = (m_pi * y_0)/(c * tau_0 * rho_0);
+    double P_mu = pow((0.1 * TMath::Cos(theta)) * (1 - (a * (y_0 *(1/(TMath::Cos(theta))) - 100.0))/( r * E_pi)), ((B_mu)/((r * E_pi + 100.0 * a) * TMath::Cos(theta))));
+    double j_pi = (m_pi * y_0 * c)/(tau_0 * rho_0);
     // double j_pi = (m_pi * y_0 * c)/(tau_0 * rho_0);
 
     //## Intensidad diferencial
     //# C_1 = E_pi ** (-k) * P_mu * lambda_pi * b * j_pi
-    double C_1 = pow(E_pi, -k)* P_mu * lambda_pi * b * j_pi;
+    double C_1 = A * pow(E_pi, -k)* P_mu * lambda_pi * b * j_pi;
     double C_2 = E_pi * TMath::Cos(theta);
     double C_3 = b * j_pi;
 
@@ -51,7 +53,7 @@ double Smith_Dull(double *lx , double *lpar){
 double Smith_Dull_Log(double *lx , double *lpar){
 
     double E_mu = pow(10, lx[0]);
-    double theta = TMath::Pi() * lpar[0]/180;
+    double theta = lpar[0];
 
     //## ------------- Constantes físicas -------------- ##
     double k = 8.0 / 3.0;
@@ -72,10 +74,10 @@ double Smith_Dull_Log(double *lx , double *lpar){
     double c = TMath::C()* 100; //## cm/s
 
     //### ---------------------- Parámetros ---------------------- ###
-    double E_pi = (1 / r) * (E_mu + a * y_0 * ((1/TMath::Cos(theta)) - 0.1));
+    double E_pi = (1.0 / r) * (E_mu + a * y_0 * ((1/TMath::Cos(theta)) - 0.1));
     double B_mu = (b_mu * m_mu * y_0)/(tau_mu_0 * rho_0 * c);
     // double B_mu = (b_mu * m_mu * y_0 * c)/(tau_mu_0 * rho_0);
-    double P_mu = pow((0.1 * TMath::Cos(theta)) * (1 - (a * (y_0 *(1/TMath::Cos(theta)) - 100))/( r * E_pi)), ((B_mu)/((r * E_pi + 100 * a) * TMath::Cos(theta))));
+    double P_mu = pow((0.1 * TMath::Cos(theta)) * (1.0 - (a * (y_0 *(1/TMath::Cos(theta)) - 100.0))/( r * E_pi)), ((B_mu)/((r * E_pi + 100.0 * a) * TMath::Cos(theta))));
     double j_pi = (m_pi * y_0)/(c * tau_0 * rho_0);
     // double j_pi = (m_pi * y_0 * c)/(tau_0 * rho_0);
 
@@ -381,10 +383,10 @@ void Muon_Gen_1_CONNIE(){
     int number_thet = 1000000;
 
     double Radio = 8; //cm
-    double half_plane_size = 0.75; // cm 
+    double half_plane_size = 0.9; // cm 
 
-    double sizex_pixels = 420; // cm
-    double sizey_pixels = 1022; // cm
+    double sizex_pixels = 420; // px
+    double sizey_pixels = 1022; // px
     double pixel_size =  0.0015; //cm
 
     double medida_x = (sizex_pixels * pixel_size) / 2;   //# cm
@@ -411,14 +413,17 @@ void Muon_Gen_1_CONNIE(){
     // cout<< "Len epri list: " <<Len_epri << endl;
 
     TF1 *f_thet = new TF1("", dis_thet, 0, TMath::Pi()/2, 0);
-    TF1 *f_SD = new TF1("", Smith_Dull, 1, pow(10,5), 1);
+
+    // TF1 *f_SD = new TF1("", Smith_Dull, 1, pow(10,5), 1);
+    TF1 *f_SD = new TF1("", Smith_Dull_Log, 0.1, 5, 1);
+
     TF1 *f_LandVav = new TF1("", LV, 0.001, 10, 2);
 
     int muon_inbucle = 0;
 
     // Sim_ab_initio_NMUONS_200000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root
 
-    TFile *file = TFile::Open("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_420X1022_C.root", "recreate");
+    TFile *file = TFile::Open("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.8_RADIO_8_CCDSIZE_420X1022_C_1.root", "recreate");
     TTree *tree = new TTree("tree", "tree");
 
     double Rand_thet;
@@ -458,8 +463,8 @@ void Muon_Gen_1_CONNIE(){
         Rand_phi = rand.Rndm() * (2 * TMath::Pi()); // Rad
 
         f_SD->SetParameter(0, Rand_thet);
-        // Rand_epri = pow(10, f_SD->GetRandom()); // MeV
-        Rand_epri = f_SD->GetRandom(); // MeV
+        Rand_epri = pow(10, f_SD->GetRandom()); // MeV
+        // Rand_epri = f_SD->GetRandom(); // MeV
 
         // tree->Fill();
         // =============================================================================================== //
@@ -602,7 +607,10 @@ void Muon_Gen_1_CONNIE(){
         if ((0 < Delta_L) & (Delta_L < max_long)){
             
             f_LandVav->SetParameters(Delta_L, momentum);
+
             Rand_edep = f_LandVav->GetRandom();   // MeV
+            cout<< "Pude calcular Rand_edep"<<endl;
+
             kappa = Kappa(Delta_L, momentum);
             MuonID = i;
 
