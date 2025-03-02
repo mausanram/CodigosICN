@@ -188,7 +188,7 @@ def main(argObj):
 
             n_total_ext = n_total_ext + 1
 
-        n_total_ext = n_total_ext + 1
+        n_total_img = n_total_img + 1
         print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
         del hdu_list              
 
