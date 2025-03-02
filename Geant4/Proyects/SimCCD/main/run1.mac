@@ -14,8 +14,8 @@
 /generator/SmithActivation true 
 
 /analysis/setFileName muons_file
-/analysis/ntuple/setFileName 0 ../ROOTanalysis/root_files/muons_2M_vacuum_file
-/analysis/ntuple/setFileName 1 ../ROOTanalysis/root_files/muons_2M_vacuum_file
+/analysis/ntuple/setFileName 0 ../ROOTanalysis/root_files/muons_2M_vacuum_400x639_file
+/analysis/ntuple/setFileName 1 ../ROOTanalysis/root_files/muons_2M_vacuum_400x639_file
 
 /run/beamOn 2000000
 

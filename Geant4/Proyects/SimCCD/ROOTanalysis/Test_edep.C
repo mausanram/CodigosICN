@@ -1,19 +1,19 @@
 void Test_edep(){
 
-TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
+TFile *f_geant = new TFile("./root_files/muons_2M_vacuum_file.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
-TTree *tree = (TTree*) file->Get("B02Evts");
+TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
 
-// TFile *file0 = new TFile("../../../../Simulacion_ab_initio/Edep_allclusters_NSAMP324_MeV.root"); // INFO ALL_CLUSTERS
-TFile *file0 = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_MeV.root");	// INFO MUONS ONLY
-TTree *tree0 = (TTree*) file0->Get("tree");
+TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700_MeV.root"); // INFO ALL_CLUSTERS
+// TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700__MeV.root");	// INFO MUONS ONLY
+TTree *tree_icn = (TTree*) f_icn->Get("tree");
 
-TFile *file1 = new TFile("/home/bruce/Documents/Programas/Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_0.root");
-TTree *tree1 = (TTree*) file1->Get("tree");
+TFile *f_pp = new TFile("/home/bruce/Documents/Programas/Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_0.root");
+TTree *tree_pp = (TTree*) f_pp->Get("tree");
 
-TFile *file2 = new TFile("Edep_CONNIE_NSAMP400_MeV.root");
-TTree *tree2 = (TTree*) file2->Get("tree");
+TFile *f_conn = new TFile("Edep_CONNIE_NSAMP400_MeV.root");
+TTree *tree_conn = (TTree*) f_conn->Get("tree");
 
 TFile *file3 = new TFile("/home/bruce/Documents/Programas/Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_0.root");
 TTree *tree3 = (TTree*) file3->Get("tree");
@@ -24,38 +24,38 @@ int NB = 150;
 double tlow = 0;
 double thi = 1000;
 
-TH1F *edep = new TH1F("edep", "Energy Spectrum", NB, tlow, thi);
-edep->GetXaxis()->SetTitle("Energy (MeV)");
-edep->SetLineStyle(1);
-edep->SetLineColor(3);
-edep->SetStats(0);
+TH1F *edep_geant_birks = new TH1F("edep_G4_Birks", "Energy Spectrum", NB, tlow, thi);
+edep_geant_birks->GetXaxis()->SetTitle("Energy (MeV)");
+edep_geant_birks->SetLineStyle(1);
+edep_geant_birks->SetLineColor(3);
+edep_geant_birks->SetStats(0);
 
 //TH1F *edep0 = new TH1F("edep0", "Lab. Det. ", NB, tlow, thi);
-TH1F *edep0 = new TH1F("edep0", "Energy Spectrum (Sim. PP - All Clusters (ICN))", NB, tlow, thi);
-edep0->GetXaxis()->SetTitle("Energy (MeV)");
-edep0->SetLineStyle(1);
-edep0->SetLineColor(1);
-edep0->SetStats(0);
+TH1F *edep_icn = new TH1F("edep_icn", "Energy Spectrum (Sim. PP - All Clusters (ICN))", NB, tlow, thi);
+edep_icn->GetXaxis()->SetTitle("Energy (MeV)");
+edep_icn->SetLineStyle(1);
+edep_icn->SetLineColor(1);
+edep_icn->SetStats(0);
 
-TH1F *edep1 = new TH1F("edep1", "Simulation no Birks", NB, tlow, thi);
-edep1->SetStats(0);
-edep1->SetLineStyle(1);
-edep1->SetLineColor(2);
+TH1F *edep_g4 = new TH1F("edep_g4", "Simulation no Birks", NB, tlow, thi);
+edep_g4->SetStats(0);
+edep_g4->SetLineStyle(1);
+edep_g4->SetLineColor(2);
 
-TH1F *edep2 = new TH1F("edep2", "CONNIE 2021-2022", NB, tlow, thi);
-edep2->SetStats(0);
-edep2->SetLineStyle(2);
-edep2->SetLineColor(1);
+TH1F *edep_conn = new TH1F("edep_conn", "CONNIE 2021-2022", NB, tlow, thi);
+edep_conn->SetStats(0);
+edep_conn->SetLineStyle(2);
+edep_conn->SetLineColor(1);
 
-TH1F *edep3 = new TH1F("edep3", "Simulation PP", NB, tlow, thi);
-edep3->SetStats(0);
-edep3->SetLineStyle(1);
-edep3->SetLineColor(4);
+TH1F *edep_pp = new TH1F("edep_pp", "Simulation PP", NB, tlow, thi);
+edep_pp->SetStats(0);
+edep_pp->SetLineStyle(1);
+edep_pp->SetLineColor(4);
 
-TH1F *edep4 = new TH1F("edep4", "Simulation no Birks scale", NB, tlow, thi);
-edep4->SetStats(0);
-edep4->SetLineStyle(2);
-edep4->SetLineColor(1);
+TH1F *edep_geant_scale = new TH1F("edep_geant_scale", "Simulation GEANT4 scale", NB, tlow, thi);
+edep_geant_scale->SetStats(0);
+edep_geant_scale->SetLineStyle(2);
+edep_geant_scale->SetLineColor(1);
 
 // === Template for fit ==
 int NBmu = 200;
@@ -67,51 +67,51 @@ TH1F *muons = new TH1F("muons","",NBmu,0,maxEd);
 muons->GetXaxis()->SetTitle("Energy (KeV)");
 muons->GetYaxis()->SetTitle("events");
 
-// TH1F *muons = new TH1F("muons", "Simulation no Birks", NBmu, 0, maxEd);
-tree->Draw(" EevtBar>>muons", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
-
-// ============= Fill histograms =========== //
-tree->Draw("WevtBar>>edep", "WevtBar>0"); // GEANT4 INFO (BIRKS)
-tree->Draw(" EevtBar*1000>>edep1", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
+// ============= GEANT4 histograms =========== //
+// tree->Draw("WevtBar>>edep", "WevtBar>0"); // GEANT4 INFO (BIRKS)
+tree_geant->Draw(" EevtBar*1000>>edep_g4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 //tree->Draw("Ehitbar>>edep_cut", "thet>22*TMath::Pi()/180 & edep>0");
-// ========================================= //
+tree_geant->Draw("EevtBar*0.92*1000>>edep_geant_scale", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 
-tree0->Draw("edep*1000>>edep0", "edep>0"); // EXPERIMENTAL INFO in KeV
+
+// ============= EXPERIMENTAL histograms =========== //
+tree_icn->Draw("edep*1000>>edep_icn", "edep>0"); // EXPERIMENTAL INFO in KeV
 // tree0->Draw("edep>>edep0", "edep>0"); // EXPERIMENTAL INFO
-tree2->Draw("edep>>edep2", "edep>0"); // EXPERIMENTAL INFO CONNIE
+tree_conn->Draw("edep>>edep_conn", "edep>0"); // EXPERIMENTAL INFO CONNIE
 
-tree3->Draw("edep*1000>>edep3", "edep>0"); // SIM_AB_INITIO INFO
+// ============= SIM AB INITIO histograms =========== //
+tree_pp->Draw("edep*1000>>edep_pp", "edep>0"); // SIM_AB_INITIO INFO
 
-tree->Draw("EevtBar*0.92*1000>>edep4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 
-
-tree->Draw("EevtBar*1000*0.92>>muons", "EevtBar>0");
+tree_geant->Draw("EevtBar*1000*0.92>>muons", "EevtBar>0");
 // tree0->Draw("edep>>muons", "edep>0");
 
-double cont = edep->Integral();
-double cont0 = edep0->Integral();
-double cont1 = edep1->Integral();
-double cont3 = edep3->Integral();
-double cont4 = edep4->Integral();
+double cont_g4 = edep_g4->Integral();
+double cont_g4scale = edep_geant_scale->Integral();
+double cont_icn = edep_icn->Integral();
+double cont_conn = edep_conn->Integral();
+double cont_pp = edep_pp->Integral();
 
-cout << "Integral gean4: " <<  cont1 <<endl;
+double cont_muons = muons->Integral();
+
+cout << "Integral gean4: " << cont_g4 <<endl;
+cout << "Integral muons: " << cont_muons <<endl;
 
 // ========== Scale histograms =========== //
 //edep->Scale(0.65, "");
-edep->Scale(1);
+edep_pp->Scale(1);
 //edep->SetLineColor(2);
 
 // edep0->Scale(63.);
 // edep0->Scale(50);
 //edep0->SetLineColor(4);
 
-edep3->Scale(cont1/cont3);
+edep_g4->Scale(cont_pp/cont_g4);
 //edep1->SetLineColor(1);
 
-edep2->Scale(0.86);
-//edep2->SetLineColor(7);
+edep_geant_scale->Scale(0.4);
 
-// edep1->Scale(cont3/cont1);
+edep_icn->Scale(13.0);
 
 // ======================================= //
 
@@ -121,54 +121,26 @@ edep2->Scale(0.86);
 TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
 canv->Divide(1,1);
 canv->cd(1);
-// canv->Grid();
-// edep->Draw("hist"); 		// edepG4 with birks
-edep3->Draw("hist"); 	// edepPP
-edep1->Draw("hist same"); 	// edepG4 no Birks
-// edep2->Draw("he0 same"); 	// CONNIE data
-edep0->Draw("hist same"); 	// ICN data 
-edep4->Draw("hist same");
+edep_g4->Draw("hist"); 	// edepG4 no Birks
+edep_pp->Draw("hist same"); 	// edepPP
+// edep_conn->Draw("he0 same"); 	// CONNIE data
+edep_icn->Draw("hist same"); 	// ICN data 
+edep_geant_scale->Draw("hist same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 // leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");
-leg->AddEntry(edep1, "Sim-GEANT4", "LEP");
-leg->AddEntry(edep0, "All Clusters (ICN-NSAMP324)", "LEP");
+leg->AddEntry(edep_g4, "Sim-GEANT4", "LEP");
+leg->AddEntry(edep_icn, "All Clusters (ICN-NSAMP324)", "LEP");
 //leg->AddEntry(edep2, "Datos CONNIE-NSAMP400", "LEP");
-leg->AddEntry(edep3, "Sim-PP", "LEP");
-leg->AddEntry(edep4, "Sim-GEANT4 (0.9)", "LEP");
+leg->AddEntry(edep_pp, "Sim-PP", "LEP");
+leg->AddEntry(edep_geant_scale, "Sim-GEANT4 (0.92)", "LEP");
 leg->Draw();
 
 
 
 TFile *fout = new TFile("ccdhisto.root", "recreate");
-edep0->Write();
+edep_icn->Write();
 fout->Close();
-
-
-//----------------------------
-//-- muons template data file 
-//----------------------------
-  
-  ofstream myfile;
-  myfile.open ("muons.dat");
-  for (int i=0;i<NBmu; i++) 
-  myfile << muons->GetBinContent(i+1)/(muons->Integral(1,NBmu)*muonsbw) << "\n";
-  myfile.close();
-
-  cout << "Integral muons: " << muons->Integral() << " entries." << endl;
-  cout << "Integral muons (+ovflw): " << muons->Integral(0,NBmu+1) << " entries." << endl;
-
-  //- Find muon peak
-  int peakBin = 50;
-  for (int i=50;i<NBmu;i++){
-   if (muons->GetBinContent(i+1) > muons->GetBinContent(peakBin))
-     peakBin = i+1;
-  } //for i
-  printf("Peak: %d  \n", peakBin);
-  printf("Peak: %3.3f MeV \n", peakBin*maxEd/NBmu);
-  double Epeak = peakBin*maxEd/NBmu;
-
-
 
 
 //canv->cd(2);

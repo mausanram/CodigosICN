@@ -119,7 +119,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   // G4double ZLength = 0.0725; // cm
   
   G4double XLength = 0.6; // cm
-  G4double YLength = 0.9; // cm
+  G4double YLength = 0.9595; // cm
   G4double ZLength = 0.0725*1.; // cm
   // ============================================================================ //
   

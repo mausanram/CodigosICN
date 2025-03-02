@@ -98,7 +98,7 @@ void fitConv_CCD() {
    //TFile *file = new TFile("ccm-data/bcm_t_nh_pe.root");
    TFile *file = new TFile("ccdhisto.root");
    //TFile *file = new TFile("ccm-data/from-Mayank/beamON_preBeam_bcm_nhits_previousEvent_selectingCosmicMuons.root");
-   TH1F *h = (TH1F*) file->FindObjectAny("edep0");
+   TH1F *h = (TH1F*) file->FindObjectAny("edep_icn");
    cout<< h->GetNbinsX() << endl;
    cout << "Integral Prompt_Energy: " << h->Integral() << " entries (before rebin)." << endl;
    h->Rebin(rebinf); 
@@ -176,13 +176,23 @@ void fitConv_CCD() {
 	int    ndf  = f1->GetNDF();
 	double prob = TMath::Prob(chi2,ndf);
 
-	// Calculate I_0
+	// // Calculate I_0
+	// double I0sim  = 101.2;
+	// double nmusim = 393603; //2000000 simulados en total;
+	// double Tsim   = 41946308.72; //sec
+	// // double Tsim   = 65972; //sec
+	// // double T      = 740250; //sec
+	// double T      = 1049400 * 0.44; //sec
+	// double eff    = 1.0;
+	// double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
+	// double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
+
 	double I0sim  = 101.2;
-	double nmusim = 393603; //2000000 simulados en total;
-	double Tsim   = 41946308.72; //sec
-	// double Tsim   = 65972; //sec
+	double nmusim = 393393; //2000000 simulados en total;
+	// double Tsim   = 41946308.72; //sec
+	double Tsim   = 23590469.45; //sec
 	// double T      = 740250; //sec
-	double T      = 1049400 * 0.44; //sec
+	double T      = 209520000 * 0.00209; //sec
 	double eff    = 1.0;
 	double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
 	double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
@@ -204,7 +214,7 @@ void fitConv_CCD() {
 	fb2->SetLineWidth(1);
 
 	c1->cd();
-	h->SetMaximum(500);
+	h->SetMaximum(600);
 	h->SetLineColor(3);
 	// h->GetXaxis()->SetRangeUser(0,1000);
 	// h->Draw("hist");
@@ -252,16 +262,16 @@ void fitConv_CCD() {
 
 	
         // prebeam no muon selection
-	double p0 = 0.033;    // Resolution
-	double p1 = 4285.;    // Muon normalization
-	double p2 = 7876.;    // Background 1
-	double p3 = 5262.;    // Background 2
+	double p0 = 0.029;    // Resolution
+	double p1 = 7998.;    // Muon normalization
+	double p2 = 15036.;    // Background 1
+	double p3 = 12287.;    // Background 2
 	double p4 = 0.00000e+00;    // PE offset
 	double p5 = 1.0;    // No cambio de Unidades // por ahora
 	double p6 = 0.00000e-04;    // PE scale (quadratic)
-	double p7 = 220;    // E0
-	double p8 = 55.456;    // exponente bkgd 1
-	double p9 = 481.387;    // exponente bkgd 2
+	double p7 = 230;    // E0
+	double p8 = 58.533;    // exponente bkgd 1
+	double p9 = 452.959;    // exponente bkgd 2
 
 
 
@@ -309,10 +319,11 @@ void fitConv_CCD() {
 
 	// Calculate I_0
 	double I0sim  = 101.2;
-	double nmusim = 393603; //2000000 simulados en total;
-	double Tsim   = 41946308.72; //sec
-	// double Tsim   = 65972; //sec
-	double T      = 740250; //sec
+	double nmusim = 393393; //2000000 simulados en total;
+	// double Tsim   = 41946308.72; //sec
+	double Tsim   = 23590469.45; //sec
+	// double T      = 740250; //sec
+	double T      = 104760000 * 0.1; //sec
 	double eff    = 1.0;
 	double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
 	double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
@@ -334,7 +345,8 @@ void fitConv_CCD() {
 
 	c1->cd();
 	//c1->SetLogy(1);
-	h->SetMaximum(500);
+	h->SetMaximum(600);
+	// h->SetMinimum(0);
 	h->Draw();
 	// h->GetXaxis()->SetRangeUser(0,700);
 
