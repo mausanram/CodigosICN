@@ -1,6 +1,6 @@
 void histo_muons(){
 
-TFile *f_geant = new TFile("./root_files/muons_2M_vacuum_file.root");
+TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_400x525_file.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
@@ -14,8 +14,8 @@ TTree *tree_conn = (TTree*) f_conn->Get("tree");
 TLatex lat;
 
 int NB = 150;
-double tlow = 0;
-double thi = 1000;
+double tlow = 0.;
+double thi = 1000.;
 
 TH1F *edep_icn = new TH1F("edep_icn", "Energy Spectrum (Sim. PP - All Clusters (ICN))", NB, tlow, thi);
 edep_icn->GetXaxis()->SetTitle("Energy (MeV)");
@@ -56,7 +56,7 @@ tree_geant->Draw("EevtBar*0.92*1000>>edep_geant_scale", "EevtBar>0"); // GEANT4 
 
 
 // ============= EXPERIMENTAL histograms =========== //
-tree_icn->Draw("edep*1000>>edep_icn", "edep>0"); // EXPERIMENTAL INFO in KeV
+tree_icn->Draw("edep*1000.>>edep_icn", "edep>0"); // EXPERIMENTAL INFO in KeV
 // tree0->Draw("edep>>edep0", "edep>0"); // EXPERIMENTAL INFO
 tree_conn->Draw("edep>>edep_conn", "edep>0"); // EXPERIMENTAL INFO CONNIE
 

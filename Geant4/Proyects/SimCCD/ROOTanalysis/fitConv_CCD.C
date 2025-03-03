@@ -98,23 +98,41 @@ void fitConv_CCD() {
    //TFile *file = new TFile("ccm-data/bcm_t_nh_pe.root");
    TFile *file = new TFile("ccdhisto.root");
    //TFile *file = new TFile("ccm-data/from-Mayank/beamON_preBeam_bcm_nhits_previousEvent_selectingCosmicMuons.root");
-   TH1F *h = (TH1F*) file->FindObjectAny("edep_icn");
-   cout<< h->GetNbinsX() << endl;
-   cout << "Integral Prompt_Energy: " << h->Integral() << " entries (before rebin)." << endl;
-   h->Rebin(rebinf); 
-   cout << "Integral Prompt_Energy: " << h->Integral() << " entries (after rebin)." << endl;
+   TH1F *hex = (TH1F*) file->FindObjectAny("edep_icn");
+   cout<< hex->GetNbinsX() << endl;
+   cout << "Integral Prompt_Energy: " << hex->Integral() << " entries (before rebin)." << endl;
+   hex->Rebin(rebinf); 
+   cout << "Integral Prompt_Energy: " << hex->Integral() << " entries (after rebin)." << endl;
    TLatex *lat = new TLatex();
    lat->SetNDC();
 
    TF1 *f1 = new TF1();
 
-//    h->SetMaximum((rebinf/10)*8*h->GetMaximum());
-//    h->SetMaximum(20000);
-   h->SetTitle("Energy histogram");
-   h->SetXTitle("Energy (KeV)");
-   h->GetYaxis()->SetTitleOffset(1.1);
-   h->SetYTitle("# Muons");
-   h->SetLineColor(3);
+//    hex->SetMaximum((rebinf/10)*8*hex->GetMaximum());
+//    hex->SetMaximum(20000);
+   hex->SetTitle("Energy histogram");
+   hex->SetXTitle("Energy (KeV)");
+   hex->GetYaxis()->SetTitleOffset(1.1);
+   hex->SetYTitle("# Muons");
+   hex->SetLineColor(3);
+
+
+   TCanvas *ct = new TCanvas("ct","test", 900,700);
+   ct->cd();
+   hex->GetXaxis()->SetLimits(0,1000);
+   //hex->GetXaxis()->SetRangeUser(0,1000);
+   hex->Draw("hist");
+
+   // Data and Sim times 
+   double I0sim  = 101.2;
+   double nmusim = 173128; //1000000 simulados en total;
+   double Tsim   = 20969196.25; //sec 1M / 0.04758 s^-1
+//    double T      = 870750; //sec 387 * 2250 s EXT1
+//    double T      = 875250; //sec 389 * 2250 s EXT2
+   double T      = 1746000; //sec 776 * 2250 s
+   double eff = 1.0;
+
+
 
    if (doFit){
 
@@ -149,7 +167,7 @@ void fitConv_CCD() {
 	f1->SetParameter(8, p8);    // exponente bkgd 1
 	f1->SetParameter(9, p9);    // exponente bkgd 1
 
-	h->Fit("f1","R");   // Fitting in the specified range
+	hex->Fit("f1","R");   // Fitting in the specified range
 
 	double r    = f1->GetParameter(0);
 	double er   = f1->GetParError(0);
@@ -177,23 +195,6 @@ void fitConv_CCD() {
 	double prob = TMath::Prob(chi2,ndf);
 
 	// // Calculate I_0
-	// double I0sim  = 101.2;
-	// double nmusim = 393603; //2000000 simulados en total;
-	// double Tsim   = 41946308.72; //sec
-	// // double Tsim   = 65972; //sec
-	// // double T      = 740250; //sec
-	// double T      = 1049400 * 0.44; //sec
-	// double eff    = 1.0;
-	// double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
-	// double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
-
-	double I0sim  = 101.2;
-	double nmusim = 393393; //2000000 simulados en total;
-	// double Tsim   = 41946308.72; //sec
-	double Tsim   = 23590469.45; //sec
-	// double T      = 740250; //sec
-	double T      = 209520000 * 0.00209; //sec
-	double eff    = 1.0;
 	double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
 	double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
 
@@ -214,15 +215,15 @@ void fitConv_CCD() {
 	fb2->SetLineWidth(1);
 
 	c1->cd();
-	h->SetMaximum(600);
-	h->SetLineColor(3);
+	hex->SetMaximum(600);
+	hex->SetLineColor(3);
 	// h->GetXaxis()->SetRangeUser(0,1000);
 	// h->Draw("hist");
 	f1->Draw("");
 	fb1->Draw("same");
 	fm->Draw("same");
 	fb2->Draw("same");
-	h->Draw("hist same");
+	hex->Draw("hist same");
 
 	lat->SetTextFont(42);
 	lat->SetTextSize(0.034);
@@ -242,10 +243,10 @@ void fitConv_CCD() {
 
 	TLegend *l = new TLegend(0.6, 0.6, 0.9, 0.75);
 	l->SetTextSize(0.03);
-	l->AddEntry(h, "Data", "lp");
+	l->AddEntry(hex, "Data", "lp");
 	l->AddEntry(f1, "Convolution Fit", "lp");
 	l->Draw();
-	h->GetXaxis()->SetRangeUser(0,1);
+	hex->GetXaxis()->SetRangeUser(0,1);
 
 	c1->Print("ConvNonlinear.pdf");
 
@@ -269,7 +270,7 @@ void fitConv_CCD() {
 	double p4 = 0.00000e+00;    // PE offset
 	double p5 = 1.0;    // No cambio de Unidades // por ahora
 	double p6 = 0.00000e-04;    // PE scale (quadratic)
-	double p7 = 230;    // E0
+	double p7 = 220;    // E0
 	double p8 = 58.533;    // exponente bkgd 1
 	double p9 = 452.959;    // exponente bkgd 2
 
@@ -309,24 +310,9 @@ void fitConv_CCD() {
 	double prob = TMath::Prob(chi2,ndf);
 
 	// Calculate I_0
-	//double I0sim  = 101.2;
-	//double nmusim = 308015;// muones sim que entran en CCD;
-	//double Tsim   = 472.3; //sec
-	//double T      = 6.0; //sec
-	//double eff    = 1.0; // suposición OK
-	//double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
-	//double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
-
-	// Calculate I_0
-	double I0sim  = 101.2;
-	double nmusim = 393393; //2000000 simulados en total;
-	// double Tsim   = 41946308.72; //sec
-	double Tsim   = 23590469.45; //sec
-	// double T      = 740250; //sec
-	double T      = 104760000 * 0.1; //sec
-	double eff    = 1.0;
 	double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
 	double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
+
 
 	TF1 *fm = new TF1("fm", f, xm, xM, np);
 	fm->SetParameters(p0, p1, 0*p2, 0*p3, p4, p5, p6, p7, p8, p9);
@@ -345,9 +331,9 @@ void fitConv_CCD() {
 
 	c1->cd();
 	//c1->SetLogy(1);
-	h->SetMaximum(600);
+	hex->SetMaximum(600*rebinf);
 	// h->SetMinimum(0);
-	h->Draw();
+	hex->Draw();
 	// h->GetXaxis()->SetRangeUser(0,700);
 
 	double xmax = f1->GetMaximumX();
@@ -376,7 +362,7 @@ void fitConv_CCD() {
 
 	TLegend *l = new TLegend(0.6, 0.6, 0.9, 0.75);
 	l->SetTextSize(0.03);
-	l->AddEntry(h, "Data", "lp");
+	l->AddEntry(hex, "Data", "lp");
 	l->AddEntry(f1, "Convolution model", "lp");
 	l->Draw();
 

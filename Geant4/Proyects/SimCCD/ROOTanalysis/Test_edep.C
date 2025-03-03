@@ -1,6 +1,7 @@
 void Test_edep(){
 
-TFile *f_geant = new TFile("./root_files/muons_2M_vacuum_file.root");
+// TFile *f_geant = new TFile("./root_files/muons_2M_vacuum_file.root");
+TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_400x525_file.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
@@ -9,14 +10,14 @@ TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700
 // TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700__MeV.root");	// INFO MUONS ONLY
 TTree *tree_icn = (TTree*) f_icn->Get("tree");
 
-TFile *f_pp = new TFile("/home/bruce/Documents/Programas/Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_0.root");
+TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X525_C_0.root");
 TTree *tree_pp = (TTree*) f_pp->Get("tree");
 
 TFile *f_conn = new TFile("Edep_CONNIE_NSAMP400_MeV.root");
 TTree *tree_conn = (TTree*) f_conn->Get("tree");
 
-TFile *file3 = new TFile("/home/bruce/Documents/Programas/Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_0.root");
-TTree *tree3 = (TTree*) file3->Get("tree");
+// TFile *file3 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X525_C_0.root");
+// TTree *tree3 = (TTree*) file3->Get("tree");
 
 TLatex lat;
 
@@ -135,12 +136,6 @@ leg->AddEntry(edep_icn, "All Clusters (ICN-NSAMP324)", "LEP");
 leg->AddEntry(edep_pp, "Sim-PP", "LEP");
 leg->AddEntry(edep_geant_scale, "Sim-GEANT4 (0.92)", "LEP");
 leg->Draw();
-
-
-
-TFile *fout = new TFile("ccdhisto.root", "recreate");
-edep_icn->Write();
-fout->Close();
 
 
 //canv->cd(2);
