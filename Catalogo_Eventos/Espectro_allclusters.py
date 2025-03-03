@@ -94,11 +94,11 @@ def main(argObj):
             # extension = 1
             # Elip = list_Elip[extension]
             # Solidit = list_Solidit[extension]
-
+            
             try :
                 # print('Voy a obtener el OsCan y el active area')
-                data = hdu_list[extension].data[:,:550]
-                oScan = hdu_list[extension].data[:,550:]
+                data = hdu_list[extension].data[:,:639]
+                oScan = hdu_list[extension].data[:,639:]
 
                 oscan_x = oScan.shape[1]
                 oscan_y = oScan.shape[0]

@@ -512,7 +512,7 @@ void Muon_Gen_1(){
     double half_plane_size = 0.75; // cm 
 
     double sizex_pixels = 400; // px
-    double sizey_pixels = 639; // px
+    double sizey_pixels = 525; // px
     double pixel_size =  0.0015; //cm
 
     double medida_x = (sizex_pixels * pixel_size) / 2;   //# cm
@@ -561,7 +561,7 @@ void Muon_Gen_1(){
 
     // Sim_ab_initio_NMUONS_200000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root
 
-    TFile *file = TFile::Open("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X639_C_0.root", "recreate");
+    TFile *file = TFile::Open("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X525_C_0.root", "recreate");
     // TFile *file = TFile::Open("Sim_ab_initio_NMUONS_100000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_Prueba.root", "recreate");
     // TFile *file = TFile::Open("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root", "recreate");
     TTree *tree = new TTree("tree", "tree");
