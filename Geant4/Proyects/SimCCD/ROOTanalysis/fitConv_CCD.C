@@ -1,9 +1,9 @@
 // G4Data from Smith-PlaneModel2 convolution anf fit 
 // NOTE: Fitting values stored in LandauFittingValues file
 
-bool doFit = true;
+bool doFit = false;
 bool doPlot  = !doFit;
-int rebinf = 1;
+int rebinf = 3;
 double KeVperbin = 6.666667; // 1000 KeV / 150 bins
 
 //-------------------------------------
