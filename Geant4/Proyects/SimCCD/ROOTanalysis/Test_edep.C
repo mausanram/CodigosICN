@@ -1,7 +1,7 @@
 void Test_edep(){
 
 // TFile *f_geant = new TFile("./root_files/muons_2M_vacuum_file.root");
-TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_400x525_file.root");
+TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_300x529_file.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");

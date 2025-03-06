@@ -114,12 +114,19 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   // =========================================== //
   
   // =============== Constructor of CCD (non active volume) ===================== //
+
+  G4double pixel_size = 0.0015; // cm
+
   // G4double XLength = 1.917; // cm
   // G4double YLength = 1.587; // cm
   // G4double ZLength = 0.0725; // cm
   
-  G4double XLength = 0.6; // cm
-  G4double YLength = 0.7875; // cm
+  // G4double XLength = 0.6; // cm
+  // G4double YLength = 0.7875; // cm
+  // G4double ZLength = 0.0725*1.; // cm
+
+  G4double XLength = 300 * pixel_size; // cm
+  G4double YLength = 529 * pixel_size; // cm (Debe ser la dimensión con mayor tamaño)
   G4double ZLength = 0.0725*1.; // cm
   // ============================================================================ //
   

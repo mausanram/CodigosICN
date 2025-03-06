@@ -3,7 +3,7 @@
 
 bool doFit = false;
 bool doPlot  = !doFit;
-int rebinf = 3;
+int rebinf = 1;
 double KeVperbin = 6.666667; // 1000 KeV / 150 bins
 
 //-------------------------------------
@@ -123,13 +123,22 @@ void fitConv_CCD() {
    //hex->GetXaxis()->SetRangeUser(0,1000);
    hex->Draw("hist");
 
+//    // Data and Sim times 
+//    double I0sim  = 101.2;
+//    double nmusim = 173128; //1000000 simulados en total;
+//    double Tsim   = 20969196.25; //sec 1M / 0.047689 s^-1
+// //    double T      = 870750; //sec 387 * 2250 s EXT1
+// //    double T      = 875250; //sec 389 * 2250 s EXT2
+//    double T      = 1746000; //sec 776 * 2250 s
+//    double eff = 1.0;
+
    // Data and Sim times 
-   double I0sim  = 101.2;
-   double nmusim = 173128; //1000000 simulados en total;
-   double Tsim   = 20969196.25; //sec 1M / 0.04758 s^-1
+   double I0sim  = 108.01;
+   double nmusim = 102823; //1000000 simulados en total;
+   double Tsim   = 19176449.56; //sec 1M /  0.047689376 s^-1
 //    double T      = 870750; //sec 387 * 2250 s EXT1
 //    double T      = 875250; //sec 389 * 2250 s EXT2
-   double T      = 1746000; //sec 776 * 2250 s
+   double T      = 984670.02; //sec 776 * 2250 s
    double eff = 1.0;
 
 
@@ -262,17 +271,29 @@ void fitConv_CCD() {
   if (doPlot) {
 
 	
-        // prebeam no muon selection
+    //     // prebeam no muon selection
+	// double p0 = 0.029;    // Resolution
+	// double p1 = 7998.;    // Muon normalization
+	// double p2 = 15036.;    // Background 1
+	// double p3 = 12287.;    // Background 2
+	// double p4 = 0.00000e+00;    // PE offset
+	// double p5 = 1.0;    // No cambio de Unidades // por ahora
+	// double p6 = 0.00000e-04;    // PE scale (quadratic)
+	// double p7 = 220;    // E0
+	// double p8 = 58.533;    // exponente bkgd 1
+	// double p9 = 452.959;    // exponente bkgd 2
+
+	// prebeam no muon selection
 	double p0 = 0.029;    // Resolution
-	double p1 = 7998.;    // Muon normalization
-	double p2 = 15036.;    // Background 1
-	double p3 = 12287.;    // Background 2
+	double p1 = 5823.;    // Muon normalization
+	double p2 = 10161.;    // Background 1
+	double p3 = 7798.;    // Background 2
 	double p4 = 0.00000e+00;    // PE offset
 	double p5 = 1.0;    // No cambio de Unidades // por ahora
 	double p6 = 0.00000e-04;    // PE scale (quadratic)
 	double p7 = 220;    // E0
-	double p8 = 58.533;    // exponente bkgd 1
-	double p9 = 452.959;    // exponente bkgd 2
+	double p8 = 60.423;    // exponente bkgd 1
+	double p9 = 399.245;    // exponente bkgd 2
 
 
 

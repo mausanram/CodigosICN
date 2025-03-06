@@ -1,11 +1,13 @@
 void histo_muons(){
 
-TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_400x525_file.root");
+// TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_400x525_file.root");
+TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_300x529_file.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
 
-TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700_MeV.root"); // INFO ALL_CLUSTERS
+// TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700_MeV.root"); // INFO ALL_CLUSTERS
+TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_300x529_EXPOSURE_4504_MeV.root"); // INFO ALL_CLUSTERS
 TTree *tree_icn = (TTree*) f_icn->Get("tree");
 
 TFile *f_conn = new TFile("Edep_CONNIE_NSAMP400_MeV.root");
@@ -64,8 +66,9 @@ double cont_g4 = edep_g4->Integral();
 double cont_g4scale = edep_geant_scale->Integral();
 double cont_icn = edep_icn->Integral();
 double cont_conn = edep_conn->Integral();
+double cont_muons = muons->Integral();
 
-cout << "Integral gean4: " << cont_g4 <<endl;
+cout << "Integral muons: " << cont_muons <<endl;
 
 // ============ Create Canvas ============== //
 // TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
