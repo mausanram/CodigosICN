@@ -21,7 +21,7 @@ TTree *tree_conn = (TTree*) f_conn->Get("tree");
 
 TLatex lat;
 
-int NB = 150;
+int NB = 75;
 double tlow = 0;
 double thi = 1000;
 
@@ -39,7 +39,7 @@ edep_icn->SetLineColor(1);
 edep_icn->SetStats(0);
 
 TH1F *edep_g4 = new TH1F("edep_g4", "Simulation no Birks", NB, tlow, thi);
-edep_g4->SetStats(0);
+// edep_g4->SetStats(0);
 edep_g4->SetLineStyle(1);
 edep_g4->SetLineColor(2);
 
@@ -123,10 +123,10 @@ TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
 canv->Divide(1,1);
 canv->cd(1);
 edep_g4->Draw("hist"); 	// edepG4 no Birks
-edep_pp->Draw("hist same"); 	// edepPP
-// edep_conn->Draw("he0 same"); 	// CONNIE data
-edep_icn->Draw("hist same"); 	// ICN data 
-edep_geant_scale->Draw("hist same");
+// edep_pp->Draw("hist same"); 	// edepPP
+// // edep_conn->Draw("he0 same"); 	// CONNIE data
+// edep_icn->Draw("hist same"); 	// ICN data 
+// edep_geant_scale->Draw("hist same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 // leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");

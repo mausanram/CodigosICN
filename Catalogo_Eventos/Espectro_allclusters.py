@@ -97,8 +97,8 @@ def main(argObj):
             
             try :
                 # print('Voy a obtener el OsCan y el active area')
-                data = hdu_list[extension].data[:300,10:539]
-                oScan = hdu_list[extension].data[:300,539:]
+                data = hdu_list[extension].data[:250,10:539]
+                oScan = hdu_list[extension].data[:250,539:]
 
                 oscan_x = oScan.shape[1]
                 oscan_y = oScan.shape[0]
@@ -206,11 +206,11 @@ def main(argObj):
     print('Tiempo de cálculo: ', Final-Inicio)
 
     if units == 0:
-        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_300x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_ADUs.pkl'
+        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_ADUs.pkl'
     elif units == 1:
-        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_300x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_electrons.pkl'
+        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_electrons.pkl'
     elif units == 2:
-        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_300x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_KeV.pkl'
+        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_KeV.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
@@ -234,6 +234,7 @@ def main(argObj):
     print('Number of 2ext: ', n_extension_2)
     print('Number of 4ext: ', n_extension_4)
     print('Number of total img: ', n_total_img)
+    print('Number of total ext 1+2: ', n_extension_1 + n_extension_2)
     print('Number of total ext: ', n_total_ext)
 
     # print(eventos_rectos)

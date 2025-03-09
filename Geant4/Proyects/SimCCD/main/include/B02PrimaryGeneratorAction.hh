@@ -38,9 +38,9 @@ class B02PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     B02PrimaryGeneratorMessenger* gunMessenger; //messenger of this class
     G4String                         rndmFlag;	   //flag for a rndm impact point
     
-    double R = 8.;
-    double px = 1.5;
-    double py = 1.5; 
+    double R = 70.;
+    double px = 18.;
+    double py = 18.; 
     bool doSmith;
     //G4double energy = 10*MeV;
    

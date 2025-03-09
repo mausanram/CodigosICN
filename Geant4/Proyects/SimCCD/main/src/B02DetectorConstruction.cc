@@ -109,10 +109,43 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
     //     << " mm" << G4endl;
   solidWorld= new G4Box("World",HalfWorldLength,HalfWorldLength,HalfWorldLength);
   //logicWorld= new G4LogicalVolume( solidWorld, Vacuum, "World", 0, 0, 0);
-  logicWorld= new G4LogicalVolume( solidWorld, Vacuum, "World");
+  logicWorld= new G4LogicalVolume( solidWorld, Air, "World");
   physiWorld = new G4PVPlacement(0,G4ThreeVector(0., 0., 0.), logicWorld, "World", 0, false, 0, true);   
   // =========================================== //
   
+
+  // ================= Shielding ====================== //
+
+  G4VisAttributes blue(G4Colour::Blue());
+  G4VisAttributes cgray(G4Colour::Gray());
+  G4VisAttributes green(G4Colour::Green());
+  G4VisAttributes red(G4Colour::Red());
+  G4VisAttributes yellow(G4Colour::Yellow());
+
+  G4double size_box = 10;
+  G4double diag = sqrt(3 * size_box*size_box);
+
+  G4double xbox_length = size_box; // cm
+  G4double ybox_length = size_box; // cm
+  G4double zbox_length = size_box; // cm
+  // G4double distance_front = 11.43; // cm
+  auto box_st = new G4Box("box_st", xbox_length*1.0*cm, ybox_length*1.0*cm, zbox_length*1.0*cm);
+  auto box_stLV = new G4LogicalVolume(box_st, Steel, "box_stLV");
+  //new G4PVPlacement(0, G4ThreeVector(0*cm, boxside/2-wth/2, 0*cm), yfLV1, "yf1", logicWorld, false, 0, fCheckOverlaps);
+  new G4PVPlacement(0, G4ThreeVector(0*cm, 0*cm, 0*cm), box_stLV, "box_st", logicWorld, false, 0, true);
+
+  xbox_length = size_box - 2.54/2; // cm
+  ybox_length = size_box - 2.54/2; // cm
+  zbox_length = size_box - 2.54/2; // cm
+  // G4double distance_front = 11.43; // cm
+  auto vacuum_st = new G4Box("vacuum_st", xbox_length*1.0*cm, ybox_length*1.0*cm, zbox_length*1.0*cm);
+  auto vacuum_stLV = new G4LogicalVolume(vacuum_st, Vacuum, "vacuum_stLV");
+  //new G4PVPlacement(0, G4ThreeVector(0*cm, boxside/2-wth/2, 0*cm), yfLV1, "yf1", logicWorld, false, 0, fCheckOverlaps);
+  new G4PVPlacement(0, G4ThreeVector(0*cm, 0*cm, 0*cm), vacuum_stLV, "vacuum_stLV", box_stLV, false, 0, true);
+
+  box_stLV->SetVisAttributes(blue);
+  vacuum_stLV->SetVisAttributes(yellow);
+
   // =============== Constructor of CCD (non active volume) ===================== //
 
   G4double pixel_size = 0.0015; // cm
@@ -133,10 +166,10 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   //Sibox = new G4Box("ccd", HalfWorldLength, HalfWorldLength, HalfWorldLength);
   Sibox = new G4Box("CCD", 0.5*XLength*cm, 0.5*YLength*cm, 0.5*ZLength*cm);
   SiLogic = new G4LogicalVolume(Sibox, Si, "CCD", 0, 0, 0);
-  new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), SiLogic, "CCD", logicWorld, false, 0,true);
+  new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), SiLogic, "CCD", vacuum_stLV, false, 0,true);
 
   fSiLogic = SiLogic;
-  
+
   // ======================================================== //
 
   // =================== Sensitive detectors ================= //	

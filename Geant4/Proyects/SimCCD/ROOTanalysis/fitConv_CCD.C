@@ -1,7 +1,7 @@
 // G4Data from Smith-PlaneModel2 convolution anf fit 
 // NOTE: Fitting values stored in LandauFittingValues file
 
-bool doFit = false;
+bool doFit = true;
 bool doPlot  = !doFit;
 int rebinf = 1;
 double KeVperbin = 6.666667; // 1000 KeV / 150 bins
@@ -123,23 +123,18 @@ void fitConv_CCD() {
    //hex->GetXaxis()->SetRangeUser(0,1000);
    hex->Draw("hist");
 
-//    // Data and Sim times 
-//    double I0sim  = 101.2;
-//    double nmusim = 173128; //1000000 simulados en total;
-//    double Tsim   = 20969196.25; //sec 1M / 0.047689 s^-1
-// //    double T      = 870750; //sec 387 * 2250 s EXT1
-// //    double T      = 875250; //sec 389 * 2250 s EXT2
-//    double T      = 1746000; //sec 776 * 2250 s
-//    double eff = 1.0;
 
-   // Data and Sim times 
-   double I0sim  = 108.01;
-   double nmusim = 102823; //1000000 simulados en total;
-   double Tsim   = 19176449.56; //sec 1M /  0.047689376 s^-1
+   // Data and Sim times (300x529 px)
+   double I0sim  = 101.2;
+   double nmusim = 133572; //1000000 simulados en total;
+   double Tsim   = 20969064.34; //sec 1M /  0.047689376 s^-1
 //    double T      = 870750; //sec 387 * 2250 s EXT1
 //    double T      = 875250; //sec 389 * 2250 s EXT2
    double T      = 984670.02; //sec 776 * 2250 s
    double eff = 1.0;
+
+	// Data and Sim times 250x529 px)
+	
 
 
 
