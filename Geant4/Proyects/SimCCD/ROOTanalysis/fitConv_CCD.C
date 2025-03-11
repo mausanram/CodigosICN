@@ -128,9 +128,7 @@ void fitConv_CCD() {
    double I0sim  = 101.2;
    double nmusim = 133572; //1000000 simulados en total;
    double Tsim   = 20969064.34; //sec 1M /  0.047689376 s^-1
-//    double T      = 870750; //sec 387 * 2250 s EXT1
-//    double T      = 875250; //sec 389 * 2250 s EXT2
-   double T      = 984670.02; //sec 776 * 2250 s
+   double T      = 984670.02; //sec 766 * 1285.47 s
    double eff = 1.0;
 
 	// Data and Sim times 250x529 px)
