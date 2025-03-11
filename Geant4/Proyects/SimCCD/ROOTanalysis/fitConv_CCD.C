@@ -125,18 +125,18 @@ void fitConv_CCD() {
 
 
    // Data and Sim times (300x529 px)
-//    double I0sim  = 101.2;
-//    double nmusim = 133572; //1000000 simulados en total;
-//    double Tsim   = 20969064.34; //sec 1M /  0.047689376 s^-1
-//    double T      = 984670.02; //sec 766 * 1285.47 s
-//    double eff = 1.0;
+   double I0sim  = 101.2;
+   double nmusim = 133011; //1000000 simulados en total;
+   double Tsim   = 20969064.34; //sec 1M /  0.047689376 s^-1
+   double T      = 984670.02; //sec 766 * 1285.47 s
+   double eff = 1.0;
 
 	// Data and Sim times 250x529 px)
- 	double I0sim  = 101.2;
-   	double nmusim = 113512; //1000000 simulados en total;
-   	double Tsim   = 20969064.34; //sec 1M /  0.047689376 s^-1
-   	double T      = 825914; //sec 766 * 1285.47 s
-   	double eff = 1.0;
+ 	// double I0sim  = 101.2;
+   	// double nmusim = 113512; //1000000 simulados en total;
+   	// double Tsim   = 20969064.34; //sec 1M /  0.047689376 s^-1
+   	// double T      = 825914; //sec 766 * 1285.47 s
+   	// double eff = 1.0;
 
 
 
@@ -280,28 +280,29 @@ void fitConv_CCD() {
 	// double p8 = 58.533;    // exponente bkgd 1
 	// double p9 = 452.959;    // exponente bkgd 2
 
-	// prebeam no muon selection
-	// double p0 = 0.029;    // Resolution
-	// double p1 = 5823.;    // Muon normalization
-	// double p2 = 10161.;    // Background 1
-	// double p3 = 7798.;    // Background 2
-	// double p4 = 0.00000e+00;    // PE offset
-	// double p5 = 1.0;    // No cambio de Unidades // por ahora
-	// double p6 = 0.00000e-04;    // PE scale (quadratic)
-	// double p7 = 220;    // E0
-	// double p8 = 60.423;    // exponente bkgd 1
-	// double p9 = 399.245;    // exponente bkgd 2
-
+	// ========== CCD size: 529x300 ============== //
 	double p0 = 0.031;    // Resolution
-	double p1 = 4330.;    // Muon normalization
-	double p2 = 8075.;    // Background 1
-	double p3 = 6178.;    // Background 2
+	double p1 = 5710.;    // Muon normalization
+	double p2 = 10177.;    // Background 1
+	double p3 = 7823.;    // Background 2
 	double p4 = 0.00000e+00;    // PE offset
 	double p5 = 1.0;    // No cambio de Unidades // por ahora
 	double p6 = 0.00000e-04;    // PE scale (quadratic)
 	double p7 = 220;    // E0
-	double p8 = 56.113;    // exponente bkgd 1
-	double p9 = 332.344;    // exponente bkgd 2
+	double p8 = 61.118;    // exponente bkgd 1
+	double p9 = 390.377;    // exponente bkgd 2
+
+	// ========== CCD size: 529x250 ============== //
+	// double p0 = 0.031;    // Resolution
+	// double p1 = 4330.;    // Muon normalization
+	// double p2 = 8075.;    // Background 1
+	// double p3 = 6178.;    // Background 2
+	// double p4 = 0.00000e+00;    // PE offset
+	// double p5 = 1.0;    // No cambio de Unidades // por ahora
+	// double p6 = 0.00000e-04;    // PE scale (quadratic)
+	// double p7 = 220;    // E0
+	// double p8 = 56.113;    // exponente bkgd 1
+	// double p9 = 332.344;    // exponente bkgd 2
 
 
 
@@ -395,9 +396,9 @@ void fitConv_CCD() {
 	l->AddEntry(f1, "Convolution model", "lp");
 	l->Draw();
 
-	c1->Print("ConvNonlinear.pdf");
+	// c1->Print("ConvNonlinear.pdf");
 	// c1->Print("ConvNonlinear_250x529.pdf");
-	// c1->Print("ConvNonlinear_300x529.pdf");
+	c1->Print("ConvNonlinear_300x529.pdf");
 
  } // ifdoPlot
 
