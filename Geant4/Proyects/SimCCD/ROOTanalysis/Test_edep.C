@@ -1,12 +1,13 @@
 void Test_edep(){
 
 // TFile *f_geant = new TFile("./root_files/muons_2M_vacuum_file.root");
-TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_300x529_file_3.root");
+TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
 
-TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700_MeV.root"); // INFO ALL_CLUSTERS
+// TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700_MeV.root"); // INFO ALL_CLUSTERS
+TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_250x529_EXPOSURE_4504_MeV.root"); // INFO ALL_CLUSTERS
 // TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700__MeV.root");	// INFO MUONS ONLY
 TTree *tree_icn = (TTree*) f_icn->Get("tree");
 
@@ -21,7 +22,7 @@ TTree *tree_conn = (TTree*) f_conn->Get("tree");
 
 TLatex lat;
 
-int NB = 75;
+int NB = 150;
 double tlow = 0;
 double thi = 1000;
 
@@ -125,8 +126,8 @@ canv->cd(1);
 edep_g4->Draw("hist"); 	// edepG4 no Birks
 // edep_pp->Draw("hist same"); 	// edepPP
 // // edep_conn->Draw("he0 same"); 	// CONNIE data
-// edep_icn->Draw("hist same"); 	// ICN data 
-// edep_geant_scale->Draw("hist same");
+edep_icn->Draw("hist same"); 	// ICN data 
+edep_geant_scale->Draw("hist same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 // leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");
