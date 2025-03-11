@@ -1,6 +1,7 @@
 double Parametros_muons(){
 
     // ==== Datos de la CCD y simulación === //
+    // double Nv = 250;    // px
     double Nv = 250;    // px
     double Nh = 529;    // px
     double px_size = 1.5 * pow(10, -5); // m
@@ -15,6 +16,9 @@ double Parametros_muons(){
     // ==================================== //
 
     // ==== Número de extensiones === //
+    // double Next1 = 388;
+    // double Next2 = 378;
+
     double Next1 = 385;
     double Next2 = 386;
     double Next_total = Next1 + Next2;
@@ -48,7 +52,7 @@ double Parametros_muons(){
     cout << "Ah: " << Ah << " m^2" << endl;
     cout << "dN/dt: " << dN_dt << " seg^-1" << endl;
     cout << "dNmuons: " << dNmuons <<  " muons" <<endl;
-    cout << "Tmuons: " << Totmuons << " muons " << endl;
+    cout << "Nmuons: " << Totmuons << " muons " << endl;
 
     return 0;
 

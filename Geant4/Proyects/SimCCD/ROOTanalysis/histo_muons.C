@@ -1,15 +1,15 @@
 void histo_muons(){
 
 // TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_400x525_file.root");
-// TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file.root");
-TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_300x529_file.root");
+TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file.root");
+// TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_300x529_file.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
 
 // TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700_MeV.root"); // INFO ALL_CLUSTERS
-TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_300x529_EXPOSURE_4504_MeV.root"); // INFO ALL_CLUSTERS
-// TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_250x529_EXPOSURE_4504_MeV.root"); // INFO ALL_CLUSTERS
+// TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_300x529_EXPOSURE_4504_MeV.root"); // INFO ALL_CLUSTERS
+TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_250x529_EXPOSURE_4504_MeV.root"); // INFO ALL_CLUSTERS
 TTree *tree_icn = (TTree*) f_icn->Get("tree");
 
 TFile *f_conn = new TFile("Edep_CONNIE_NSAMP400_MeV.root");

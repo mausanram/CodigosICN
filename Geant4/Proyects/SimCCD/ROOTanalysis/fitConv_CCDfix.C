@@ -59,7 +59,7 @@ double f(double *x, double *par) {
 //-------------------------------------
 // Fit convolution function
 //-------------------------------------
-void fitConv_CCD() {
+void fitConv_CCDfix() {
 
   //------------- Style --------------
   //gROOT->SetStyle("Plain");
@@ -85,14 +85,11 @@ void fitConv_CCD() {
    } //for i
    cout << "Integral hmuons: " << hmuons->Integral(1,nbins,"width") << "." << endl;
 
-   TCanvas *c0 = new TCanvas("c0", "", 900,700);
+   TCanvas *c0 = new TCanvas("c0", "c0", 900,700);
    c0->SetGrid();
 //    hmuons->Scale(0.014027296);
    hmuons->Draw();
    c0->Print("hmuons.pdf");
-
-   TCanvas *c1 = new TCanvas("c1", "", 900,700);
-   c1->SetGrid();
 
    //--CCD histogram
    //TFile *file = new TFile("ccm-data/bcm_t_nh_pe.root");
@@ -101,26 +98,32 @@ void fitConv_CCD() {
    TH1F *hex = (TH1F*) file->FindObjectAny("edep_icn");
    cout<< hex->GetNbinsX() << endl;
    cout << "Integral Prompt_Energy: " << hex->Integral() << " entries (before rebin)." << endl;
-   hex->Rebin(rebinf); 
+//    hex->Rebin(rebinf); 
    cout << "Integral Prompt_Energy: " << hex->Integral() << " entries (after rebin)." << endl;
    TLatex *lat = new TLatex();
-   lat->SetNDC();
+//    lat->SetNDC();
+
+   TCanvas *cx = new TCanvas("cx","testx", 900,700);
+   cx->SetGrid();
+   cx->cd();
+   hex->GetXaxis()->SetRangeUser(0,1000);
+   hex->SetMaximum(600);
+   hex->Draw("hist");
 
    TF1 *f1 = new TF1();
 
-//    hex->SetMaximum((rebinf/10)*8*hex->GetMaximum());
-//    hex->SetMaximum(20000);
-   hex->SetTitle("Energy histogram");
-   hex->SetXTitle("Energy (KeV)");
-   hex->GetYaxis()->SetTitleOffset(1.1);
-   hex->SetYTitle("# Muons");
-   hex->SetLineColor(3);
+//    hex->SetTitle("Energy histogram");
+//    hex->SetXTitle("Energy (KeV)");
+// //    hex->GetYaxis()->SetTitleOffset(1.1);
+//    hex->SetYTitle("# Muons");
+//    hex->SetLineColor(3);
 
 
    TCanvas *ct = new TCanvas("ct","test", 900,700);
+   ct->SetGrid();
    ct->cd();
-   hex->GetXaxis()->SetLimits(0,1000);
-   //hex->GetXaxis()->SetRangeUser(0,1000);
+   hex->GetXaxis()->SetRangeUser(0,1000);
+   hex->SetMaximum(100);
    hex->Draw("hist");
 
 
@@ -138,7 +141,8 @@ void fitConv_CCD() {
    	double T      = 825914; //s
    	double eff = 1.0;
 
-
+	TCanvas *c1 = new TCanvas("c1", "", 900,700);
+	c1->SetGrid();
 
    if (doFit){
 
@@ -173,7 +177,9 @@ void fitConv_CCD() {
 	f1->SetParameter(8, p8);    // exponente bkgd 1
 	f1->SetParameter(9, p9);    // exponente bkgd 1
 
-	hex->Fit("f1","R");   // Fitting in the specified range
+	// hex->Draw("hist");
+	hex->Fit("f1", "r");   // Fitting in the specified range
+	// hex->Draw("hist same");
 
 	double r    = f1->GetParameter(0);
 	double er   = f1->GetParError(0);
@@ -222,18 +228,18 @@ void fitConv_CCD() {
 
 	c1->cd();
 	hex->SetMaximum(600);
-	hex->SetLineColor(3);
+	// hex->SetLineColor(3);
+	// hex->Draw();
 	// h->GetXaxis()->SetRangeUser(0,1000);
-	// h->Draw("hist");
-	f1->Draw("");
-	fb1->Draw("same");
-	fm->Draw("same");
-	fb2->Draw("same");
-	hex->Draw("hist same");
+	// f1->Draw("");
+	// fb1->Draw("same");
+	// fm->Draw("same");
+	// fb2->Draw("same");
+	// hex->Draw("hist same");
 
 	lat->SetTextFont(42);
 	lat->SetTextSize(0.034);
-	lat->DrawLatex(0.15,0.85,Form("I^{CCM}_{0} = (%3.1f #pm %3.1f) m^{-2} s^{-1} sr^{-1}",I0,eI0));
+	lat->DrawLatex(0.15,0.85,Form("I^{CCD}_{0} = (%3.1f #pm %3.1f) m^{-2} s^{-1} sr^{-1}",I0,eI0));
 	lat->DrawLatex(0.15,0.80,Form("N_{#mu} = (%6.0f #pm %4.0f)",nmu,enmu));
 	lat->DrawLatex(0.15,0.76,Form("Resolution f = (%5.3f #pm %5.3f)",r,er));
 	lat->DrawLatex(0.15,0.72,Form("N_{b1} = (%6.0f #pm %4.0f)",nb1,enb1));
@@ -260,180 +266,5 @@ void fitConv_CCD() {
 	cout << "Integral fitConv = " << funcInt << " muons" << endl;
 
  } //if doFit
-
-
-//-------------------------------------
-// Plot convolution function
-//-------------------------------------
-  if (doPlot) {
-
-	
-    //     // prebeam no muon selection
-	// double p0 = 0.029;    // Resolution
-	// double p1 = 7998.;    // Muon normalization
-	// double p2 = 15036.;    // Background 1
-	// double p3 = 12287.;    // Background 2
-	// double p4 = 0.00000e+00;    // PE offset
-	// double p5 = 1.0;    // No cambio de Unidades // por ahora
-	// double p6 = 0.00000e-04;    // PE scale (quadratic)
-	// double p7 = 220;    // E0
-	// double p8 = 58.533;    // exponente bkgd 1
-	// double p9 = 452.959;    // exponente bkgd 2
-
-	// ========== CCD size: 529x300 ============== //
-	// double p0 = 0.031;    // Resolution
-	// double p1 = 5710.;    // Muon normalization
-	// double p2 = 10177.;    // Background 1
-	// double p3 = 7823.;    // Background 2
-	// double p4 = 0.00000e+00;    // PE offset
-	// double p5 = 1.0;    // No cambio de Unidades // por ahora
-	// double p6 = 0.00000e-04;    // PE scale (quadratic)
-	// double p7 = 220;    // E0
-	// double p8 = 61.118;    // exponente bkgd 1
-	// double p9 = 390.377;    // exponente bkgd 2
-
-	// ========== CCD size: 529x250 ============== //
-	double p0 = 0.031;    // Resolution
-	double p1 = 4330.;    // Muon normalization
-	double p2 = 8075.;    // Background 1
-	double p3 = 6178.;    // Background 2
-	double p4 = 0.00000e+00;    // PE offset
-	double p5 = 1.0;    // No cambio de Unidades // por ahora
-	double p6 = 0.00000e-04;    // PE scale (quadratic)
-	double p7 = 220;    // E0
-	double p8 = 56.113;    // exponente bkgd 1
-	double p9 = 332.344;    // exponente bkgd 2
-
-
-
-	int np = 10; //number of parameters
-	double xm = 50;
-	double xM = 700;
-
-	f1 = new TF1("f1", f, xm, xM, np);
-	f1->SetParameters(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9);
-	f1->SetLineColor(2);
-
-	double r    = f1->GetParameter(0);
-	double er   = f1->GetParError(0);
-	double nmu  = f1->GetParameter(1);
-	double enmu = f1->GetParError(1);
-	double nb1  = f1->GetParameter(2);
-	double enb1 = f1->GetParError(2);
-	double nb2  = f1->GetParameter(3);
-	double enb2 = f1->GetParError(3);
-	double a0   = f1->GetParameter(4);
-	double ea0  = f1->GetParError(4);
-	double a1   = f1->GetParameter(5);
-	double ea1  = f1->GetParError(5);
-	double a2   = f1->GetParameter(6);
-	double ea2  = f1->GetParError(6);
-	double e0   = f1->GetParameter(7);
-	double ee0  = f1->GetParError(7);
-	double ep1  = f1->GetParameter(8);
-	double eep1 = f1->GetParError(8);
-	double ep2  = f1->GetParameter(9);
-	double eep2 = f1->GetParError(9);
-
-	double chi2 = f1->GetChisquare();
-	int    ndf  = f1->GetNDF();
-	double prob = TMath::Prob(chi2,ndf);
-
-	// Calculate I_0
-	double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
-	double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
-
-
-	TF1 *fm = new TF1("fm", f, xm, xM, np);
-	fm->SetParameters(p0, p1, 0*p2, 0*p3, p4, p5, p6, p7, p8, p9);
-	fm->SetLineColor(4);
-
-	TF1 *fb1 = new TF1("fb1", f, xm, xM, np);
-	fb1->SetParameters(p0, 0*p1, p2, 0*p3, p4, p5, p6, p7, p8, p9);
-	fb1->SetLineColor(6);
-	fb1->SetLineStyle(2);
-
-	TF1 *fb2 = new TF1("fb2", f, xm, xM, np);
-	fb2->SetParameters(p0, 0*p1, 0*p2, p3, p4, p5, p6, p7, p8, p9);
-	fb2->SetLineColor(7);
-	fb2->SetLineStyle(2);
-
-
-	c1->cd();
-	//c1->SetLogy(1);
-	hex->SetMaximum(600*rebinf);
-	// h->SetMinimum(0);
-	hex->Draw();
-	// h->GetXaxis()->SetRangeUser(0,700);
-
-	double xmax = f1->GetMaximumX();
-	cout << xmax << endl;
-
-	f1->Draw("l same");
-	fm->Draw("same");
-    fb1->Draw("same");
-	fb2->Draw("same");
-
-	lat->SetTextFont(42);
-	lat->SetTextSize(0.034);
-	lat->DrawLatex(0.15,0.85,Form("I^{CCD}_{0} = %3.1f m^{-2} s^{-1} sr^{-1}",I0));
-	lat->DrawLatex(0.15,0.80,Form("N_{#mu} = %6.0f ",nmu));
-	lat->DrawLatex(0.15,0.76,Form("Resolution f = %5.3f ",r));
-	lat->DrawLatex(0.15,0.72,Form("N_{b1} = %6.0f ",nb1));
-	lat->DrawLatex(0.15,0.68,Form("#epsilon_1 = %5.2f ",ep1));
-	lat->DrawLatex(0.15,0.64,Form("N_{b2} = %6.0f ",nb2));
-	lat->DrawLatex(0.15,0.60,Form("#epsilon_2 = %5.2f ",ep2));
-	lat->DrawLatex(0.15,0.56,Form("a_{0} = %5.2f PE",a0));
-	lat->DrawLatex(0.15,0.52,Form("a_{1} = %5.2f  PE/MeV",a1));
-	lat->DrawLatex(0.15,0.48,Form("a_{2} = %6.5f  MeV^{-1}",a2));
-	//lat->DrawLatex(0.15,0.51,Form("#chi^{2}/ndf = %4.2f/%d",chi2,ndf));
-	//lat->DrawLatex(0.15,0.47,Form("Prob(#chi^{2}) = %6.4f",prob));
-
-
-	TLegend *l = new TLegend(0.6, 0.6, 0.9, 0.75);
-	l->SetTextSize(0.03);
-	l->AddEntry(hex, "Data", "lp");
-	l->AddEntry(f1, "Convolution model", "lp");
-	l->Draw();
-
-	// c1->Print("ConvNonlinear.pdf");
-	c1->Print("ConvNonlinear_250x529.pdf");
-	// c1->Print("ConvNonlinear_300x529.pdf");
-
- } // ifdoPlot
-
-	// nonlinearity function
-	TF1 *nonlin = new TF1("nonlin","[0]+[1]*x/(1+[2]*x)",0,Emax); 
-        double a0 = f1->GetParameter(4);
-        double a1 = f1->GetParameter(5);
-        double a2 = f1->GetParameter(6);
-	nonlin->SetParameters(a0,a1,a2);
-	nonlin->GetXaxis()->SetTitle("Energy (MeV)");
-	nonlin->GetYaxis()->SetTitleOffset(1.5);
-	nonlin->GetYaxis()->SetTitle("Energy (PE)");
-	// linear part
-	TF1 *lin = new TF1("lin","[0]+[1]*x",0,Emax); 
-	lin->SetParameters(a0,a1);
-	lin->GetXaxis()->SetTitle("Energy (MeV)");
-	lin->GetYaxis()->SetTitle("Energy (PE)");
-
-	TCanvas *canv2 = new TCanvas("canv2","",400,300);
-	canv2->cd();
-	nonlin->Draw("");
-	lin->SetLineColor(1);
-	lin->Draw("same");
-        double xx = 255.5;
-        double yy = nonlin->Eval(xx);
-        TLine *l0 = new TLine(0,0,Emax,0); l0->Draw("same");
-        TLine *lh = new TLine(0,yy,xx,yy); lh->Draw("same");
-        TLine *lv = new TLine(xx,0,xx,yy); lv->Draw("same");
-        lat->SetTextFont(42);
-        lat->SetTextSize(0.035);
-        lat->DrawLatex(0.6,0.50,"E_{PE} = a_{0} + #frac{a_{1} E_{vis}}{1 + a_{2} E_{vis}}");
-        lat->DrawLatex(0.6,0.40,Form("a_{0} = %3.1f PE",a0));
-        lat->DrawLatex(0.6,0.35,Form("a_{1} = %3.1f PE/MeV",a1));
-        lat->DrawLatex(0.6,0.30,Form("a_{2} = %3.1e MeV^{-1}",a2));
-	canv2->Print("MeVtoPE_fitConv.pdf");
-
 
 } // fitConv
