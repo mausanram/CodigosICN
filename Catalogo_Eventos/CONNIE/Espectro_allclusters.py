@@ -41,8 +41,8 @@ DeltaEL_range = 85
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 #### ==== LOS DATOS DE CONNIE YA ESTÁN CALIBRADOS EN ELECTRONES Y SE CARGAN LOS DATOS ASÍ ==== ###
-units = 2
-n_sigmas = 4
+units = 1
+n_sigmas = 5
 numero_bins = 500
 
 def main(argObj):
@@ -74,7 +74,7 @@ def main(argObj):
 
         try :
             # print('Voy a obtener el OsCan y el active area')
-            dataCal = hdu_list[extension].data[:,:] # En electrones
+            dataCal = hdu_list[extension].data[:700,:] # En electrones
             header = hdu_list[extension].header
             # oScan = hdu_list[extension].data[:,550:]
 
@@ -85,7 +85,7 @@ def main(argObj):
 
         sigma_eletrons = header['RD_NOISE']     # Se lee la sigma del header de cada extensión 
         fondo_value = n_sigmas * sigma_eletrons
-        print(fondo_value)
+        # print(fondo_value)
 
         label_img, n_events = sk.measure.label(dataCal > fondo_value, connectivity=2, return_num=True)
         prop = sk.measure.regionprops(label_img, dataCal)
@@ -124,7 +124,7 @@ def main(argObj):
         file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + '_ADUs.pkl'
 
     elif units == 1:
-        file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + '_electrons.pkl'
+        file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + 'SIZE_700x420_electrons.pkl'
 
     elif units == 2:
         file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + '_KeV.pkl'

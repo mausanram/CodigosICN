@@ -101,7 +101,7 @@ void fitConv_CCDfix() {
 //    hex->Rebin(rebinf); 
    cout << "Integral Prompt_Energy: " << hex->Integral() << " entries (after rebin)." << endl;
    TLatex *lat = new TLatex();
-//    lat->SetNDC();
+   lat->SetNDC();
 
    TCanvas *cx = new TCanvas("cx","testx", 900,700);
    cx->SetGrid();
@@ -123,7 +123,7 @@ void fitConv_CCDfix() {
    ct->SetGrid();
    ct->cd();
    hex->GetXaxis()->SetRangeUser(0,1000);
-   hex->SetMaximum(100);
+   hex->SetMaximum(300);
    hex->Draw("hist");
 
 
@@ -145,8 +145,8 @@ void fitConv_CCDfix() {
 	c1->SetGrid();
 
    if (doFit){
-
-	int np = 10;           // Number of parameters
+		cout<<"Hola"<<endl;
+		int np = 10;           // Number of parameters
 	double xm = 50;     // xmin to fit
 	double xM = 700;    // xmax to fit
 
@@ -178,7 +178,7 @@ void fitConv_CCDfix() {
 	f1->SetParameter(9, p9);    // exponente bkgd 1
 
 	// hex->Draw("hist");
-	hex->Fit("f1", "r");   // Fitting in the specified range
+	hex->Fit("f1", "R");   // Fitting in the specified range
 	// hex->Draw("hist same");
 
 	double r    = f1->GetParameter(0);
@@ -228,14 +228,14 @@ void fitConv_CCDfix() {
 
 	c1->cd();
 	hex->SetMaximum(600);
-	// hex->SetLineColor(3);
-	// hex->Draw();
+	hex->SetLineColor(3);
+	hex->Draw();
 	// h->GetXaxis()->SetRangeUser(0,1000);
-	// f1->Draw("");
-	// fb1->Draw("same");
-	// fm->Draw("same");
-	// fb2->Draw("same");
-	// hex->Draw("hist same");
+	f1->Draw("");
+	fb1->Draw("same");
+	fm->Draw("same");
+	fb2->Draw("same");
+	hex->Draw("hist same");
 
 	lat->SetTextFont(42);
 	lat->SetTextSize(0.034);
@@ -258,7 +258,7 @@ void fitConv_CCDfix() {
 	l->AddEntry(hex, "Data", "lp");
 	l->AddEntry(f1, "Convolution Fit", "lp");
 	l->Draw();
-	hex->GetXaxis()->SetRangeUser(0,1);
+	// hex->GetXaxis()->SetRangeUser(0,1);
 
 	c1->Print("ConvNonlinear.pdf");
 

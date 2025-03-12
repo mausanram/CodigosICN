@@ -98,7 +98,8 @@ void fitConv_CCD() {
    //TFile *file = new TFile("ccm-data/bcm_t_nh_pe.root");
    TFile *file = new TFile("ccdhisto.root");
    //TFile *file = new TFile("ccm-data/from-Mayank/beamON_preBeam_bcm_nhits_previousEvent_selectingCosmicMuons.root");
-   TH1F *hex = (TH1F*) file->FindObjectAny("edep_icn");
+//    TH1F *hex = (TH1F*) file->FindObjectAny("edep_icn");
+   TH1F *hex = (TH1F*) file->FindObjectAny("edep_conn");
    cout<< hex->GetNbinsX() << endl;
    cout << "Integral Prompt_Energy: " << hex->Integral() << " entries (before rebin)." << endl;
    hex->Rebin(rebinf); 
@@ -115,6 +116,7 @@ void fitConv_CCD() {
    hex->GetYaxis()->SetTitleOffset(1.1);
    hex->SetYTitle("# Muons");
    hex->SetLineColor(3);
+   hex->SetLineWidth(2);
 
 
    TCanvas *ct = new TCanvas("ct","test", 900,700);
@@ -133,9 +135,9 @@ void fitConv_CCD() {
 
 	// Data and Sim times 250x529 px)
  	double I0sim  = 101.2;
-   	double nmusim = 113512; //1000000 simulados en total;
-   	double Tsim   = 20969064.34; //sec 1M /  0.047689376 s^-1
-   	double T      = 825914; //s
+   	double nmusim = 268880; //1000000 simulados en total;
+   	double Tsim   = 16325357.85184; //sec 1M /  0.0612544 s^-1
+   	double T      = 2434014; //s
    	double eff = 1.0;
 
 
@@ -150,16 +152,28 @@ void fitConv_CCD() {
 	f1 = new TF1("f1", f, xm, xM, np);
 
 		// prebeam no muon selection
-	double p0 = 0.05;    // Resolution
-	double p1 = 4500.;    // Muon normalization
-	double p2 = 7000.;    // Background 1
-	double p3 = 4050.;    // Background 2
+	// double p0 = 0.05;    // Resolution
+	// double p1 = 4500.;    // Muon normalization
+	// double p2 = 7000.;    // Background 1
+	// double p3 = 4050.;    // Background 2
+	// double p4 = 0.00000e+00;    // PE offset
+	// double p5 = 1.0;    // No cambio de Unidades // por ahora
+	// double p6 = 0.00000e-04;    // PE scale (quadratic)
+	// double p7 = 220;    // E0
+	// double p8 = 70;    // exponente bkgd 1
+	// double p9 = 650;    // exponente bkgd 2
+
+	// ===== Parámetros para CONNIE ==== //
+	double p0 = 0.031;    // Resolution
+	double p1 = 20000.;    // Muon normalization
+	double p2 = 2075.;    // Background 1
+	double p3 = 3178.;    // Background 2
 	double p4 = 0.00000e+00;    // PE offset
 	double p5 = 1.0;    // No cambio de Unidades // por ahora
 	double p6 = 0.00000e-04;    // PE scale (quadratic)
 	double p7 = 220;    // E0
-	double p8 = 70;    // exponente bkgd 1
-	double p9 = 650;    // exponente bkgd 2
+	double p8 = 56.113;    // exponente bkgd 1
+	double p9 = 332.344;    // exponente bkgd 2
 
 
 	f1->SetParameter(0, p0);    // Resolution
@@ -210,26 +224,26 @@ void fitConv_CCD() {
 
 	TF1 *fb1 = new TF1("fb1", f, xm, xM, np);
 	fb1->SetParameters(r,0*nmu,nb1, 0*nb2, a0,a1,a2,e0,ep1, ep2);
-	fb1->SetLineColor(12);
+	fb1->SetLineColor(6);
 	fb1->SetLineStyle(3);
-	fb1->SetLineWidth(1);
+	// fb1->SetLineWidth(1);
 
 	TF1 *fb2 = new TF1("fb2", f, xm, xM, np);
 	fb2->SetParameters(r,0*nmu,0*nb1, nb2, a0,a1,a2,e0,ep1, ep2);
-	fb2->SetLineColor(15);
+	fb2->SetLineColor(7);
 	fb2->SetLineStyle(3);
-	fb2->SetLineWidth(1);
+	// fb2->SetLineWidth(1);
 
 	c1->cd();
-	hex->SetMaximum(600);
-	hex->SetLineColor(3);
-	// h->GetXaxis()->SetRangeUser(0,1000);
+	hex->SetMaximum(800);
+	// hex->SetLineColor(3);
+	// f1->GetXaxis()->SetRangeUser(0,1000);
 	// h->Draw("hist");
-	f1->Draw("");
+	hex->Draw("hist");
+	f1->Draw("same");
 	fb1->Draw("same");
 	fm->Draw("same");
 	fb2->Draw("same");
-	hex->Draw("hist same");
 
 	lat->SetTextFont(42);
 	lat->SetTextSize(0.034);
@@ -252,9 +266,9 @@ void fitConv_CCD() {
 	l->AddEntry(hex, "Data", "lp");
 	l->AddEntry(f1, "Convolution Fit", "lp");
 	l->Draw();
-	hex->GetXaxis()->SetRangeUser(0,1);
+	// hex->GetXaxis()->SetRangeUser(0,1);
 
-	c1->Print("ConvNonlinear.pdf");
+	c1->Print("ConvNonlinear_CONNIE_420x1022.pdf");
 
         double funcInt = f1->Integral(xm,xM);
 	cout << "Integral fitConv = " << funcInt << " muons" << endl;
@@ -292,11 +306,23 @@ void fitConv_CCD() {
 	// double p8 = 61.118;    // exponente bkgd 1
 	// double p9 = 390.377;    // exponente bkgd 2
 
-	// ========== CCD size: 529x250 ============== //
+	// // ========== CCD size: 529x250 ============== //
+	// double p0 = 0.031;    // Resolution
+	// double p1 = 4330.;    // Muon normalization
+	// double p2 = 8075.;    // Background 1
+	// double p3 = 6178.;    // Background 2
+	// double p4 = 0.00000e+00;    // PE offset
+	// double p5 = 1.0;    // No cambio de Unidades // por ahora
+	// double p6 = 0.00000e-04;    // PE scale (quadratic)
+	// double p7 = 220;    // E0
+	// double p8 = 56.113;    // exponente bkgd 1
+	// double p9 = 332.344;    // exponente bkgd 2
+
+	// ========== CONNIE size: 420x1022 ============== //
 	double p0 = 0.031;    // Resolution
-	double p1 = 4330.;    // Muon normalization
-	double p2 = 8075.;    // Background 1
-	double p3 = 6178.;    // Background 2
+	double p1 = 15500.;    // Muon normalization
+	double p2 = 2075.;    // Background 1
+	double p3 = 3178.;    // Background 2
 	double p4 = 0.00000e+00;    // PE offset
 	double p5 = 1.0;    // No cambio de Unidades // por ahora
 	double p6 = 0.00000e-04;    // PE scale (quadratic)
@@ -361,7 +387,7 @@ void fitConv_CCD() {
 
 	c1->cd();
 	//c1->SetLogy(1);
-	hex->SetMaximum(600*rebinf);
+	hex->SetMaximum(800*rebinf);
 	// h->SetMinimum(0);
 	hex->Draw();
 	// h->GetXaxis()->SetRangeUser(0,700);
@@ -396,9 +422,7 @@ void fitConv_CCD() {
 	l->AddEntry(f1, "Convolution model", "lp");
 	l->Draw();
 
-	// c1->Print("ConvNonlinear.pdf");
-	c1->Print("ConvNonlinear_250x529.pdf");
-	// c1->Print("ConvNonlinear_300x529.pdf");
+	c1->Print("ConvNonlinear_CONNIE_420x1022.pdf");
 
  } // ifdoPlot
 
