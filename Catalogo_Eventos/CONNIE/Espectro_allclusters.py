@@ -74,7 +74,7 @@ def main(argObj):
 
         try :
             # print('Voy a obtener el OsCan y el active area')
-            dataCal = hdu_list[extension].data[:700,:] # En electrones
+            dataCal = hdu_list[extension].data[:600,:] # En electrones
             header = hdu_list[extension].header
             # oScan = hdu_list[extension].data[:,550:]
 
@@ -124,7 +124,7 @@ def main(argObj):
         file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + '_ADUs.pkl'
 
     elif units == 1:
-        file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + 'SIZE_700x420_electrons.pkl'
+        file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + 'SIZE_600x420_electrons.pkl'
 
     elif units == 2:
         file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + '_KeV.pkl'
