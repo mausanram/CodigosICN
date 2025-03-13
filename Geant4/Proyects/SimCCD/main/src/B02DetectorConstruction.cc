@@ -173,8 +173,12 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   // G4double YLength = 1022 * pixel_size; // cm (Debe ser la dimensión con mayor tamaño)
   // G4double ZLength = 0.068; // cm
 
+  // G4double XLength = 420 * pixel_size; // cm
+  // G4double YLength = 700 * pixel_size; // cm (Debe ser la dimensión con mayor tamaño)
+  // G4double ZLength = 0.068; // cm
+
   G4double XLength = 420 * pixel_size; // cm
-  G4double YLength = 700 * pixel_size; // cm (Debe ser la dimensión con mayor tamaño)
+  G4double YLength = 600 * pixel_size; // cm (Debe ser la dimensión con mayor tamaño)
   G4double ZLength = 0.068; // cm
 
   
