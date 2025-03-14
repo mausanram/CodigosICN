@@ -40,7 +40,7 @@ ratio_keV = 0.0036
 DeltaEL_range = 85
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
-#### ==== LOS DATOS DE CONNIE YA ESTÁN CALIBRADOS EN ELECTRONES Y SE CARGAN LOS DATOS ASÍ ==== ###
+#### ==== LOS DATOS DE CONNIE YA ESTÁN CALIBRADOS EN ELECTRONES ==== ###
 units = 1
 n_sigmas = 5
 numero_bins = 500
@@ -55,6 +55,7 @@ def main(argObj):
 
     Inicio = datetime.datetime.now()
     num_images =  'Imágenes Analizadas: ' +  str(total_images)
+    num_img_used = 0
     
     print('Hora de inicio del cálculo: ', Inicio)
 
@@ -74,7 +75,8 @@ def main(argObj):
 
         try :
             # print('Voy a obtener el OsCan y el active area')
-            dataCal = hdu_list[extension].data[:600,:] # En electrones
+            # dataCal = hdu_list[extension].data[:600,:] # En electrones
+            dataCal = hdu_list[extension].data[:,:] # En electrones
             header = hdu_list[extension].header
             # oScan = hdu_list[extension].data[:,550:]
 
@@ -106,6 +108,7 @@ def main(argObj):
             list_EventCharge_extension_1.append(list_charge[index])
 
         print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
+        num_img_used = num_img_used + 1
         del hdu_list              
 
     num_clusters = len(list_EventCharge_extension_1)
@@ -124,7 +127,8 @@ def main(argObj):
         file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + '_ADUs.pkl'
 
     elif units == 1:
-        file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + 'SIZE_600x420_electrons.pkl'
+        # file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + 'SIZE_600x420_electrons.pkl'
+        file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + 'SIZE_1022x420_electrons.pkl'
 
     elif units == 2:
         file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + '_KeV.pkl'
@@ -135,22 +139,9 @@ def main(argObj):
 
     Eventos_Totales = 'Eventos Detectados en Total: ' +  str(total_events)
     print(Eventos_Totales)
+    print('Imagenes utilizadas: ', num_img_used, '/', num_images)
 
     print('Dictionary saved in', current_path + '/' + file_name, ' as a binary file. To open use library "pickle". ')
-
-    # eventos_rectos = 'Muones Detectados: ' + str(num_muons)
-    # img_err = 'Imágenes con error al cargar: ' + str(nerr_img)
-    # ext_err = 'Error en fit de extension: ' + str(nerr_ext)
-    # relacion = total_events / num_muons
-    
-    # eventos_circulares = 'Muones Circulares Detectados: ' + str(len(list_EventosCirc))
-    # print('Número de elementos de la lista "list_EventCharge_AllExtensions": ', len(list_EventCharge_AllExtensions))
-    # print('elementos de la lista "list_EventCharge_AllExtensions":', list_EventCharge_AllExtensions)
-    # print(img_err)
-    # print(ext_err)
-    # print(eventos_rectos)
-
-    # plt.show() 
 
 
 if __name__ == "__main__":

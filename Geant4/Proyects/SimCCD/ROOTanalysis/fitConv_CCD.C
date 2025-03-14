@@ -133,12 +133,27 @@ void fitConv_CCD() {
 //    double T      = 984670.02; //sec 766 * 1285.47 s
 //    double eff = 1.0;
 
-	// Data and Sim times 250x529 px)
- 	double I0sim  = 101.2;
-   	double nmusim = 268880; //1000000 simulados en total;
-   	double Tsim   = 16325357.85184; //sec 1M /  0.0612544 s^-1
-   	double T      = 2434014; //s
-   	double eff = 1.0;
+	// // Data and Sim times 250x529 px)
+ 	// double I0sim  = 101.2;
+   	// double nmusim = 268880; //1000000 simulados en total;
+   	// double Tsim   = 16325357.85184; //sec 1M /  0.0612544 s^-1
+   	// double T      = 2434014; //s
+   	// double eff = 1.0;
+
+	// // Data and Sim CONNIE 420x1022 px)
+	// double I0sim  = 101.2;
+	// double nmusim = 268880; //1000000 simulados en total;
+	// double Tsim   = 16325369.93; //sec 1M /  0.061254354 s^-1
+	// double T      = 2434014; //s
+	// double eff = 1.0;
+
+	// Data and Sim CONNIE 420x700 px)
+	double I0sim  = 101.2;
+	double nmusim = 185579; //1000000 simulados en total;
+	double Tsim   = 16325357.9; //sec 1M /  0.061254354 s^-1
+	// double T      = 1654349.759; //s
+	double T      = 1067132; //s
+	double eff = 1.0;
 
 
 
