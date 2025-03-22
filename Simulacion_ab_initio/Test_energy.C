@@ -106,8 +106,7 @@ void Test_energy(){
 
 
 // tree->Add("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
-tree->Add("Sim_ab_initio_NMUONS_100000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_Prueba.root");
-
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.root");
 
     // //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
 // // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
@@ -121,7 +120,8 @@ tree->Add("Sim_ab_initio_NMUONS_100000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_Prue
 
 cout<<TMath::C() * 100 <<endl;
 
-int NB = 100;
+// int NB = 100;
+int NB = 70;
 double tlow = 1;
 double thi = 1 * pow(10,5);
 double xbins[NB+1];
@@ -146,14 +146,14 @@ TH1F *thet_73_77 = new TH1F("thet_73_77", "", NB, xbins);
 // TH1F *thet_73_77 = new TH1F("thet_73_77", "", NB, tlow, thi);
 
 thet_0_6->SetLineColor(1);
-thet_43_47->SetLineColor(2);
-thet_73_77->SetLineColor(3);
+thet_43_47->SetLineColor(1);
+thet_73_77->SetLineColor(1);
 
 
 // Fill histograms //
-tree->Draw("epri>>thet_0_6", "thet>0 && thet<(5*TMath::Pi()/180)");
-tree->Draw("epri>>thet_43_47", "thet>(44.5*TMath::Pi()/180) && thet<(45.5*TMath::Pi()/180)");
-tree->Draw("epri>>thet_73_77", "thet>(74*TMath::Pi()/180) && thet<(76*TMath::Pi()/180)");
+tree->Draw("epri>>thet_0_6", "thet>0 && thet<(5*TMath::Pi()/180) && edep > 0");
+tree->Draw("epri>>thet_43_47", "thet>(44*TMath::Pi()/180) && thet<(46*TMath::Pi()/180) && edep > 0");
+tree->Draw("epri>>thet_73_77", "thet>(74*TMath::Pi()/180) && thet<(76*TMath::Pi()/180) && edep > 0");
 
 double cont = 0;
 double w = 0;
@@ -184,8 +184,10 @@ double t0 = 0; // Degrees
 double t45 = 45;
 double t75 = 75;
 
-TF1 *Smith0 = new TF1("Smith0", Smith_Dull, tlow, thi, 1);
+// TF1 *Smith0 = new TF1("Distribuciones de Smith-Duller", Smith_Dull, tlow, thi, 1);
+TF1 *Smith0 = new TF1("Distribuciones de Smith-Duller", Smith_Dull, tlow, thi, 1);
 Smith0->SetParameter(0, t0);
+Smith0->GetXaxis()->SetTitle("Energ#acute{i}a(MeV)");
 double max0= Smith0->GetMaximum();
 Smith0->SetLineColor(1);
 
@@ -201,23 +203,26 @@ Smith75->SetLineColor(3);
 
 double maxh0 = thet_0_6->GetMaximum();
 // thet_0_6->Scale((max0/maxh0));
-thet_0_6->Scale(0.00000000035);
+// thet_0_6->Scale(0.00000000004);
+thet_0_6->Scale(0.00000000022);
 
 double maxh45 = thet_43_47->GetMaximum();
 // thet_43_47->Scale(max45/maxh45);
-thet_43_47->Scale(0.00000000008);
+// thet_43_47->Scale(0.000000000009);
+thet_43_47->Scale(0.000000000028);
 
 
 double maxh75 = thet_73_77->GetMaximum();
 // thet_73_77->Scale(max75/maxh75);
-thet_73_77->Scale(0.000000000008);
+// thet_73_77->Scale(0.0000000000011);
+thet_73_77->Scale(0.000000000011);
 
 
 
 
 // Create Canvas //
 TCanvas *canv = new TCanvas("canv","", 2*700, 600);
-// canv->Divide(2,1);
+canv->Divide(2,1);
 
 canv->cd(1);
 Smith0->Draw("L");
@@ -228,6 +233,18 @@ thet_43_47->Draw("hist same");
 
 Smith75->Draw("L same");
 thet_73_77->Draw("hist same");
+
+
+TLegend *leg = new TLegend(0.7, 0.8, 0.9, 0.9);
+// leg->SetTextAlign(11);
+// leg->SetHeader("", "C");
+leg->SetFillStyle(0);
+leg->AddEntry(Smith0, "Curva te#acute{o}rica de #theta = 0", "l");
+leg->AddEntry(Smith45, "Curva te#acute{o}rica para #theta = #frac{#pi}{4}", "l");
+leg->AddEntry(Smith75, "Curva te#acute{o}rica para #theta = #frac{5#pi}{12}", "l");
+leg->AddEntry(thet_0_6, "Datos Simulados", "f");
+leg->Draw();
+
 
 // Smith0->Draw();
 // Smith45->Draw("same");

@@ -227,7 +227,7 @@ double intersection_CCD(bool *flags_CCD, double *list_z, double medida_z, double
     return delta_L ;
 };
 
-double LV (double *lx, double *lpar) {
+double LV(double *lx, double *lpar) {
 	double Delta = lx[0];	// Energy loss in absorber
 	double L = lpar[0];		// Thickness of absorber (Distance crossed by the particle)
 	double p = lpar[1];		// Momentum (in MeV/c)
@@ -382,8 +382,8 @@ void Muon_Gen_1_CONNIE(){
 
     int number_thet = 1000000;
 
-    double Radio = 8; //cm
-    double half_plane_size = 0.9; // cm 
+    double Radio = 7; //cm
+    double half_plane_size = 0.85; // cm 
 
     double sizex_pixels = 420; // px
     double sizey_pixels = 1022; // px
@@ -423,7 +423,7 @@ void Muon_Gen_1_CONNIE(){
 
     // Sim_ab_initio_NMUONS_200000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root
 
-    TFile *file = TFile::Open("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.8_RADIO_8_CCDSIZE_420X1022_C_1.root", "recreate");
+    TFile *file = TFile::Open("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root", "recreate");
     TTree *tree = new TTree("tree", "tree");
 
     double Rand_thet;

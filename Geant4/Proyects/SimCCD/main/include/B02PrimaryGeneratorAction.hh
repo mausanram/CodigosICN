@@ -43,15 +43,15 @@ class B02PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     // double px = 18.;
     // double py = 18.; 
 
-    // ==== Dimensiones para CCD de 300x529 (ICN) ==== //
-    // double R = 8.; // cm
-    // double px = 1.5; // cm
-    // double py = 1.5; // cm
+    // ==== Dimensiones para CCD de 250x529 (ICN) ==== //
+    double R = 8.; // cm
+    double px = 1.5; // cm
+    double py = 1.5; // cm
 
     // ==== Dimensiones para CONNIE (1022x420) ==== //
-    double R = 7.; // cm
-    double px = 1.7; // cm
-    double py = 1.7; // cm
+    // double R = 7.; // cm
+    // double px = 1.7; // cm
+    // double py = 1.7; // cm
 
     bool doSmith;
     //G4double energy = 10*MeV;

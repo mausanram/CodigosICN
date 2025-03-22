@@ -1,7 +1,7 @@
 void Test_edep(){
 
 // TFile *f_geant = new TFile("./root_files/muons_2M_vacuum_file.root");
-TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file.root");
+TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file_m.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
@@ -11,7 +11,7 @@ TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_250x529
 // TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700__MeV.root");	// INFO MUONS ONLY
 TTree *tree_icn = (TTree*) f_icn->Get("tree");
 
-TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X525_C_0.root");
+TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_0.3_C_0.root");
 TTree *tree_pp = (TTree*) f_pp->Get("tree");
 
 TFile *f_conn = new TFile("Edep_CONNIE_NSAMP400_MeV.root");
@@ -101,14 +101,14 @@ cout << "Integral muons: " << cont_muons <<endl;
 
 // ========== Scale histograms =========== //
 //edep->Scale(0.65, "");
-edep_pp->Scale(1);
+edep_pp->Scale(cont_g4/cont_pp);
 //edep->SetLineColor(2);
 
 // edep0->Scale(63.);
 // edep0->Scale(50);
 //edep0->SetLineColor(4);
 
-edep_g4->Scale(cont_pp/cont_g4);
+edep_g4->Scale(1);
 //edep1->SetLineColor(1);
 
 edep_geant_scale->Scale(0.4);
@@ -124,10 +124,10 @@ TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
 canv->Divide(1,1);
 canv->cd(1);
 edep_g4->Draw("hist"); 	// edepG4 no Birks
-// edep_pp->Draw("hist same"); 	// edepPP
+edep_pp->Draw("hist same"); 	// edepPP
 // // edep_conn->Draw("he0 same"); 	// CONNIE data
-edep_icn->Draw("hist same"); 	// ICN data 
-edep_geant_scale->Draw("hist same");
+// edep_icn->Draw("hist same"); 	// ICN data 
+// edep_geant_scale->Draw("hist same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 // leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");

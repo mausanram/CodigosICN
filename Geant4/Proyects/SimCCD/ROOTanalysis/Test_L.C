@@ -1,9 +1,9 @@
 void Test_L(){
 // TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
-TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
+TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 
-TFile *file0 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
+TFile *file0 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.root");
 TTree *tree0 = (TTree*) file0->Get("tree");
 
 

@@ -144,15 +144,15 @@ void fitConv_CCD() {
 	// double I0sim  = 101.2;
 	// double nmusim = 268880; //1000000 simulados en total;
 	// double Tsim   = 16325369.93; //sec 1M /  0.061254354 s^-1
-	// double T      = 2434014; //s
+	// double T      = 2434014 * 1; //s
 	// double eff = 1.0;
 
 	// Data and Sim CONNIE 420x700 px)
 	double I0sim  = 101.2;
 	double nmusim = 185579; //1000000 simulados en total;
 	double Tsim   = 16325357.9; //sec 1M /  0.061254354 s^-1
-	// double T      = 1654349.759; //s
-	double T      = 1067132; //s
+	double T      = 1654349.759; //s
+	// double T      = 1067132; //s
 	double eff = 1.0;
 
 
@@ -179,7 +179,8 @@ void fitConv_CCD() {
 	// double p9 = 650;    // exponente bkgd 2
 
 	// ===== Parámetros para CONNIE ==== //
-	double p0 = 0.031;    // Resolution
+	// double p0 = 0.031;    // Resolution
+	double p0 = 0.01;    // Resolution
 	double p1 = 20000.;    // Muon normalization
 	double p2 = 2075.;    // Background 1
 	double p3 = 3178.;    // Background 2
@@ -191,7 +192,7 @@ void fitConv_CCD() {
 	double p9 = 332.344;    // exponente bkgd 2
 
 
-	f1->SetParameter(0, p0);    // Resolution
+	f1->FixParameter(0, p0);    // Resolution
 	f1->SetParameter(1, p1);    // Normalizing constant
 	f1->SetParameter(2, p2);    // Background 1
 	f1->SetParameter(3, p3);    // Background 2
@@ -281,10 +282,9 @@ void fitConv_CCD() {
 	l->AddEntry(hex, "Data", "lp");
 	l->AddEntry(f1, "Convolution Fit", "lp");
 	l->Draw();
-	// hex->GetXaxis()->SetRangeUser(0,1);
 
+	// c1->Print("ConvNonlinear_CONNIE_420x1022.pdf");
 	c1->Print("ConvNonlinear_CONNIE_420x1022.pdf");
-
         double funcInt = f1->Integral(xm,xM);
 	cout << "Integral fitConv = " << funcInt << " muons" << endl;
 

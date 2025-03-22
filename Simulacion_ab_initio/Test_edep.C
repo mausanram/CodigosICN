@@ -9,7 +9,9 @@ void Test_edep(){
     // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_5.root");
     // tree->Add("Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_0.root");
 
-    tree->Add("Sim_ab_initio_NMUONS_100000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_Prueba.root");
+    // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.root");
+    tree->Add("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root");
+
 
     
 
@@ -30,8 +32,9 @@ void Test_edep(){
     int NB = 120;
     double tlow = 0;
     double thi = 1; // PAra la CCD
-    TH1F *edep = new TH1F("edep", "", NB, tlow, thi);
-    edep->GetXaxis()->SetTitle("Energy (MeV)");
+    TH1F *edep = new TH1F("edep", "Distribuci#acute{o}n de Energ#acute{i}as Depositadas", NB, tlow, thi);
+    edep->GetXaxis()->SetTitle("Energ#acute{i}a (MeV)");
+    edep->SetStats(0);
     // edep->SetGrid(1);
 
 
@@ -64,6 +67,14 @@ void Test_edep(){
     edep->Draw();
     // edep_cut->Draw("same");
     // func1->Draw("same");
+
+    TLegend *leg = new TLegend(0.7, 0.8, 0.9, 0.9);
+    // leg->SetTextAlign(11);
+    leg->SetFillStyle(0);
+    leg->AddEntry(edep, "Datos Simulados", "l");
+    leg->Draw();
+
+
 
     canv->cd(2);
     edep_cut->Draw();

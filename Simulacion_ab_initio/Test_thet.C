@@ -8,7 +8,8 @@ TChain *tree = new TChain("tree");
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_4.root");
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_5.root");
 
-tree->Add("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
+// tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.root");
+tree->Add("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root");
 
 // TTree *tree0 = (TTree*) file0->Get("tree");
 // TTree *tree = (TTree*) file->Get("tree");
@@ -47,18 +48,27 @@ func1->SetParameter(0, 5000);
 // double Al = 0.1389825;
 // double Ac = 0.1150575;
 
-double Ah = 0.54;
-double Al = 0.06525;
-double Ac = 0.0435;
+// double Ah = 0.54;
+// double Al = 0.06525;
+// double Ac = 0.0435;
 
 // double Ah = 0.585;
 // double Al = 0.0706875;
 // double Ac = 0.0435;
 
-// TF1 *func2 = new TF1("func2", Form("[0]*((%f)*sin(x)*(cos(x))^3+(2*(%f + %f)/(1*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", Ah, Al, Ac), 0.01, 85*TMath::Pi()/180);
+// double Ah = 0.2975625;
+// double Al = 0.05752875;
+// double Ac = 0.0271875;
+
+// === CONNIE === //
+double Ah = 0.96579;
+double Al = 0.104244;
+double Ac = 0.04284;
+
+TF1 *func2 = new TF1("func2", Form("[0]*((%f)*sin(x)*(cos(x))^3+(2*(%f + %f)/(1*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", Ah, Al, Ac), 0.01, 85*TMath::Pi()/180);
 
 // ====================== Funcion para la barra ========================  //
-TF1 *func2 = new TF1("func2", "[0]*((10)*sin(x)*(cos(x))^3+(22/(TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
+// TF1 *func2 = new TF1("func2", "[0]*((10)*sin(x)*(cos(x))^3+(22/(TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
 // TF1 *func2 = new TF1("func2", "[0]*((10)*sin(x)*(cos(x))^3+(22/4)*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
 // TF1 *func2 = new TF1("func2", "[0]*((1.25)*sin(x)*(cos(x))^3+(11/(TMath::Pi()))*(sin(x))^2*(cos(x))^2)", 0, 90*TMath::Pi()/180);
 
@@ -105,9 +115,9 @@ leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 leg->SetHeader("", "C");
 leg->SetFillStyle(0);
-leg->AddEntry(func1, "A_{1} [(0.54)sin#theta cos^{3}#theta", "l");
+leg->AddEntry(func1, "A_{1} [(0.2975625)sin#theta cos^{3}#theta", "l");
 leg->AddEntry((TObject*)0, "", "");
-leg->AddEntry((TObject*)0, "+ #left(#frac{0.2175}{#pi}#right)sin^{2}#theta cos^{2}#theta]", " ");
+leg->AddEntry((TObject*)0, "+ #left(#frac{0.1694325}{#pi}#right)sin^{2}#theta cos^{2}#theta]", " ");
 leg->AddEntry((TObject*)0, "", "");
 leg->AddEntry(theta_all, "Datos Simulados", "f");
 leg->Draw();
