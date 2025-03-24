@@ -104,9 +104,8 @@ void Test_energy(){
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_4.root");
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_5.root");
 
-
-// tree->Add("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
-tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.root");
+tree->Add("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root");
+// tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.root");
 
     // //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
 // // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
@@ -151,6 +150,10 @@ thet_73_77->SetLineColor(1);
 
 
 // Fill histograms //
+// tree->Draw("epri>>thet_0_6", "thet>0 && thet<(5*TMath::Pi()/180)");
+// tree->Draw("epri>>thet_43_47", "thet>(44*TMath::Pi()/180) && thet<(46*TMath::Pi()/180)");
+// tree->Draw("epri>>thet_73_77", "thet>(74*TMath::Pi()/180) && thet<(76*TMath::Pi()/180)");
+
 tree->Draw("epri>>thet_0_6", "thet>0 && thet<(5*TMath::Pi()/180) && edep > 0");
 tree->Draw("epri>>thet_43_47", "thet>(44*TMath::Pi()/180) && thet<(46*TMath::Pi()/180) && edep > 0");
 tree->Draw("epri>>thet_73_77", "thet>(74*TMath::Pi()/180) && thet<(76*TMath::Pi()/180) && edep > 0");
@@ -204,18 +207,27 @@ Smith75->SetLineColor(3);
 double maxh0 = thet_0_6->GetMaximum();
 // thet_0_6->Scale((max0/maxh0));
 // thet_0_6->Scale(0.00000000004);
-thet_0_6->Scale(0.00000000022);
+// thet_0_6->Scale(0.00000000022);
+
+// thet_0_6->Scale(0.000000000029);
+thet_0_6->Scale(0.000000000085);
 
 double maxh45 = thet_43_47->GetMaximum();
 // thet_43_47->Scale(max45/maxh45);
 // thet_43_47->Scale(0.000000000009);
-thet_43_47->Scale(0.000000000028);
+// thet_43_47->Scale(0.000000000028);
+
+// thet_43_47->Scale(0.0000000000028);
+thet_43_47->Scale(0.000000000011);
 
 
 double maxh75 = thet_73_77->GetMaximum();
 // thet_73_77->Scale(max75/maxh75);
 // thet_73_77->Scale(0.0000000000011);
-thet_73_77->Scale(0.000000000011);
+// thet_73_77->Scale(0.000000000011);
+
+// thet_73_77->Scale(0.00000000000075);
+thet_73_77->Scale(0.0000000000055);
 
 
 

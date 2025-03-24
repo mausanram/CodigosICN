@@ -111,13 +111,25 @@ canv->cd(2);
 theta_in->Draw();
 func2->Draw("same");
 
+// leg = new TLegend(0.7, 0.8, 0.9, 0.9);
+// // leg->SetTextAlign(11);
+// leg->SetHeader("", "C");
+// leg->SetFillStyle(0);
+// leg->AddEntry(func1, "A_{1} [(0.2975625)sin#theta cos^{3}#theta", "l");
+// leg->AddEntry((TObject*)0, "", "");
+// leg->AddEntry((TObject*)0, "+ #left(#frac{0.1694325}{#pi}#right)sin^{2}#theta cos^{2}#theta]", " ");
+// leg->AddEntry((TObject*)0, "", "");
+// leg->AddEntry(theta_all, "Datos Simulados", "f");
+// leg->Draw();
+
+// ==== CONNIE ===   ///
 leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 leg->SetHeader("", "C");
 leg->SetFillStyle(0);
-leg->AddEntry(func1, "A_{1} [(0.2975625)sin#theta cos^{3}#theta", "l");
+leg->AddEntry(func1, "A_{1} [(0.96579)sin#theta cos^{3}#theta", "l");
 leg->AddEntry((TObject*)0, "", "");
-leg->AddEntry((TObject*)0, "+ #left(#frac{0.1694325}{#pi}#right)sin^{2}#theta cos^{2}#theta]", " ");
+leg->AddEntry((TObject*)0, "+ #left(#frac{0.294168}{#pi}#right)sin^{2}#theta cos^{2}#theta]", " ");
 leg->AddEntry((TObject*)0, "", "");
 leg->AddEntry(theta_all, "Datos Simulados", "f");
 leg->Draw();

@@ -39,10 +39,11 @@ edep_icn->SetLineStyle(1);
 edep_icn->SetLineColor(1);
 edep_icn->SetStats(0);
 
-TH1F *edep_g4 = new TH1F("edep_g4", "Simulation no Birks", NB, tlow, thi);
-// edep_g4->SetStats(0);
+TH1F *edep_g4 = new TH1F("edep_g4", "Distribuci#acute{o}n de Energ#acute{i}a Depositada", NB, tlow, thi);
+edep_g4->SetStats(0);
 edep_g4->SetLineStyle(1);
 edep_g4->SetLineColor(2);
+edep_g4->GetXaxis()->SetTitle("Energ#acute{i}a (KeV)");
 
 TH1F *edep_conn = new TH1F("edep_conn", "CONNIE 2021-2022", NB, tlow, thi);
 edep_conn->SetStats(0);
@@ -131,11 +132,11 @@ edep_pp->Draw("hist same"); 	// edepPP
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 // leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");
-leg->AddEntry(edep_g4, "Sim-GEANT4", "LEP");
-leg->AddEntry(edep_icn, "All Clusters (ICN-NSAMP324)", "LEP");
+leg->AddEntry(edep_g4, "Sim-GEANT4", "LP");
+// leg->AddEntry(edep_icn, "All Clusters (ICN-NSAMP324)", "LEP");
 //leg->AddEntry(edep2, "Datos CONNIE-NSAMP400", "LEP");
-leg->AddEntry(edep_pp, "Sim-PP", "LEP");
-leg->AddEntry(edep_geant_scale, "Sim-GEANT4 (0.92)", "LEP");
+leg->AddEntry(edep_pp, "Sim-PP(sig: 0.3) ", "LEP");
+// leg->AddEntry(edep_geant_scale, "Sim-GEANT4 (0.92)", "LEP");
 leg->Draw();
 
 
