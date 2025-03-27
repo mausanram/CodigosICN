@@ -76,9 +76,9 @@ B02PhysicsList::B02PhysicsList()
   RegisterPhysics( new HadronElasticPhysicsHP(verb) );   // Off
   
   // Hadron Inelastic Physics
-  RegisterPhysics( new G4HadronPhysicsFTFP_BERT(verb));
+  // RegisterPhysics( new G4HadronPhysicsFTFP_BERT(verb));
   // RegisterPhysics( new G4HadronPhysicsFTFP_BERT_HP(verb));
-  // RegisterPhysics( new G4HadronPhysicsQGSP_BIC_HP(verb));   // Off
+  RegisterPhysics( new G4HadronPhysicsQGSP_BIC_HP(verb));   // Off
   ////RegisterPhysics( new G4HadronInelasticQBBC(verb));        
   ////RegisterPhysics( new G4HadronPhysicsINCLXX(verb));
   

@@ -111,7 +111,7 @@ TTree *tree = (TTree*) file->Get("B02Evts");
 
 // int NB = 100;
 int NB = 70;
-double tlow = 0.1;
+double tlow = 1;
 double thi = 1 * pow(10,5);
 double xbins[NB+1];
 double low_bin;
@@ -143,9 +143,9 @@ thet_73_77->SetLineColor(1);
 // tree->Draw("EevtPri>>thet_0_6", "thetaPri>0 && thetaPri<(5*TMath::Pi()/180) && EevtBar > 0");
 // tree->Draw("EevtPri>>thet_43_47", "thetaPri>(44*TMath::Pi()/180) && thetaPri<(46*TMath::Pi()/180) && EevtBar > 0");
 // tree->Draw("EevtPri>>thet_73_77", "thetaPri>(74*TMath::Pi()/180) && thetaPri<(76*TMath::Pi()/180) && EevtBar > 0");
-tree->Draw("EevtPri>>thet_0_6", "thetaPri>0 && thetaPri<(5*TMath::Pi()/180)");
-tree->Draw("EevtPri>>thet_43_47", "thetaPri>(44*TMath::Pi()/180) && thetaPri<(46*TMath::Pi()/180)");
-tree->Draw("EevtPri>>thet_73_77", "thetaPri>(74*TMath::Pi()/180) && thetaPri<(76*TMath::Pi()/180)");
+tree->Draw("EevtPri*1000>>thet_0_6", "thetaPri>0 && thetaPri<(5*TMath::Pi()/180)");
+tree->Draw("EevtPri*1000>>thet_43_47", "thetaPri>(44*TMath::Pi()/180) && thetaPri<(46*TMath::Pi()/180)");
+tree->Draw("EevtPri*1000>>thet_73_77", "thetaPri>(74*TMath::Pi()/180) && thetaPri<(76*TMath::Pi()/180)");
 
 double cont = 0;
 double w = 0;
@@ -158,19 +158,19 @@ for (int i = 1; i < NB; i++){
     thet_0_6->SetBinContent(i, val);
 }
 
-// for (int i = 1; i < NB; i++){
-//     cont = thet_43_47->GetBinContent(i);
-//     w = thet_43_47->GetBinWidth(i);
-//     val  = cont / w;
-//     thet_43_47->SetBinContent(i, val);
-// }
+for (int i = 1; i < NB; i++){
+    cont = thet_43_47->GetBinContent(i);
+    w = thet_43_47->GetBinWidth(i);
+    val  = cont / w;
+    thet_43_47->SetBinContent(i, val);
+}
 
-// for (int i = 1; i < NB; i++){
-//     cont = thet_73_77->GetBinContent(i);
-//     w = thet_73_77->GetBinWidth(i);
-//     val  = cont / w;
-//     thet_73_77->SetBinContent(i, val);
-// }
+for (int i = 1; i < NB; i++){
+    cont = thet_73_77->GetBinContent(i);
+    w = thet_73_77->GetBinWidth(i);
+    val  = cont / w;
+    thet_73_77->SetBinContent(i, val);
+}
 
 double t0 = 0; // Degrees
 double t45 = 45;
@@ -196,18 +196,18 @@ Smith75->SetLineColor(3);
 double maxh0 = thet_0_6->GetMaximum();
 // thet_0_6->Scale((max0/maxh0));
 // thet_0_6->Scale(0.00000000004);
-thet_0_6->Scale(0.0000000000022);
+thet_0_6->Scale(0.0000000037);
 
 double maxh45 = thet_43_47->GetMaximum();
 // thet_43_47->Scale(max45/maxh45);
 // thet_43_47->Scale(0.000000000009);
-thet_43_47->Scale(0.000000000028);
+thet_43_47->Scale(0.0000000006);
 
 
 double maxh75 = thet_73_77->GetMaximum();
 // thet_73_77->Scale(max75/maxh75);
 // thet_73_77->Scale(0.0000000000011);
-thet_73_77->Scale(0.000000000011);
+thet_73_77->Scale(0.00000000045);
 
 
 
@@ -220,11 +220,11 @@ canv->cd(1);
 Smith0->Draw("L");
 thet_0_6->Draw("hist same");
 
-// Smith45->Draw("L same");
-// thet_43_47->Draw("hist same");
+Smith45->Draw("L same");
+thet_43_47->Draw("hist same");
 
-// Smith75->Draw("L same");
-// thet_73_77->Draw("hist same");
+Smith75->Draw("L same");
+thet_73_77->Draw("hist same");
 
 
 TLegend *leg = new TLegend(0.7, 0.8, 0.9, 0.9);
