@@ -27,8 +27,8 @@ def main():
     ### ============================================ ###
 
     # ### ======== Dimensiones Nuevas ================ ###
-    sizex_pixels = 400 # px
-    sizey_pixels = 600 # px (Esta dimensión debe ser mas larga que X)
+    sizex_pixels = 250 # px
+    sizey_pixels = 529 # px (Esta dimensión debe ser mas larga que X)
     # ### ============================================ ###
 
     ### =============== Valor del radio de la semi-esfera =========== ###
@@ -66,7 +66,7 @@ def main():
     print(mapeo_z[-1], mapeo_z[0])
 
     ### Número de muones a simular ### 
-    n_muons = 200000
+    n_muons = 1000000
 
     # niterations = n_muons / nmuons_perbucle
 
