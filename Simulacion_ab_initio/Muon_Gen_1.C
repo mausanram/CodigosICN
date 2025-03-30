@@ -56,6 +56,7 @@ double Smith_Dull_Log(double *lx , double *lpar){
     double theta = lpar[0];
 
     //## ------------- Constantes físicas -------------- ##
+    double A = 2 * pow(10, 9); 
     double k = 8.0 / 3.0;
     double b = 0.771;
     double lambda_pi = 120;    // g/cm^2

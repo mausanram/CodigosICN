@@ -9,7 +9,9 @@ TChain *tree = new TChain("tree");
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_5.root");
     
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.root");
-tree->Add("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root");
+// tree->Add("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root");
+
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_250x529_SIGMA_LV_1.0_.root");
 
 
 int NB = 165;
@@ -43,8 +45,8 @@ tree->Draw("l>>Lcut", "l>0 & thet>22*TMath::Pi()/180");
 // theta_all->Fit("func1", "R");
 // theta_in->Fit("func2", "R");
 
-// TLine *line = new TLine(0.0725,0,0.0725,12000);
-TLine *line = new TLine(0.068,0,0.068,30000);
+TLine *line = new TLine(0.0725,0,0.0725,12000);
+// TLine *line = new TLine(0.068,0,0.068,30000);
 line->SetLineStyle(2);
 line->SetLineWidth(2);
 
@@ -62,8 +64,8 @@ TLegend *leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 leg->SetFillStyle(0);
 leg->AddEntry(L, "Datos Simulados", "l");
-// leg->AddEntry(line, "Grosor de la CCD: 0.0725 cm", "l");
-leg->AddEntry(line, "Grosor de la CCD: 0.068 cm", "l");
+leg->AddEntry(line, "Grosor de la CCD: 0.0725 cm", "l");
+// leg->AddEntry(line, "Grosor de la CCD: 0.068 cm", "l");
 leg->Draw();
 
 canv->cd(2);

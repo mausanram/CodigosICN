@@ -9,7 +9,9 @@ TChain *tree = new TChain("tree");
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_5.root");
 
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.root");
-tree->Add("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root");
+// tree->Add("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root");
+
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_250x529_SIGMA_LV_1.0_.root");
 
 // TTree *tree0 = (TTree*) file0->Get("tree");
 // TTree *tree = (TTree*) file->Get("tree");
@@ -56,14 +58,14 @@ func1->SetParameter(0, 5000);
 // double Al = 0.0706875;
 // double Ac = 0.0435;
 
-// double Ah = 0.2975625;
-// double Al = 0.05752875;
-// double Ac = 0.0271875;
+double Ah = 0.2975625;
+double Al = 0.05752875;
+double Ac = 0.0271875;
 
 // === CONNIE === //
-double Ah = 0.96579;
-double Al = 0.104244;
-double Ac = 0.04284;
+// double Ah = 0.96579;
+// double Al = 0.104244;
+// double Ac = 0.04284;
 
 TF1 *func2 = new TF1("func2", Form("[0]*((%f)*sin(x)*(cos(x))^3+(2*(%f + %f)/(1*TMath::Pi()))*(sin(x))^2*(cos(x))^2)", Ah, Al, Ac), 0.01, 85*TMath::Pi()/180);
 

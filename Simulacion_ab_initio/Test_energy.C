@@ -104,8 +104,9 @@ void Test_energy(){
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_4.root");
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_5.root");
 
-tree->Add("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root");
+// tree->Add("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root");
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.root");
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_250x529_SIGMA_LV_1.0_.root");
 
     // //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
 // // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
@@ -117,10 +118,10 @@ tree->Add("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X10
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_0.root");
 // TTree *tree = (TTree*) file->Get("tree");
 
-cout<<TMath::C() * 100 <<endl;
+// cout<<TMath::C() * 100 <<endl;
 
 // int NB = 100;
-int NB = 70;
+int NB = 60;
 double tlow = 1;
 double thi = 1 * pow(10,5);
 double xbins[NB+1];
@@ -162,26 +163,26 @@ double cont = 0;
 double w = 0;
 double val = 0;
 
-// for (int i = 1; i < NB; i++){
-//     cont = thet_0_6->GetBinContent(i);
-//     w = thet_0_6->GetBinWidth(i);
-//     val = cont / w;
-//     thet_0_6->SetBinContent(i, val);
-// }
+for (int i = 1; i < NB; i++){
+    cont = thet_0_6->GetBinContent(i);
+    w = thet_0_6->GetBinWidth(i);
+    val = cont / w;
+    thet_0_6->SetBinContent(i, val);
+}
 
-// for (int i = 1; i < NB; i++){
-//     cont = thet_43_47->GetBinContent(i);
-//     w = thet_43_47->GetBinWidth(i);
-//     val  = cont / w;
-//     thet_43_47->SetBinContent(i, val);
-// }
+for (int i = 1; i < NB; i++){
+    cont = thet_43_47->GetBinContent(i);
+    w = thet_43_47->GetBinWidth(i);
+    val  = cont / w;
+    thet_43_47->SetBinContent(i, val);
+}
 
-// for (int i = 1; i < NB; i++){
-//     cont = thet_73_77->GetBinContent(i);
-//     w = thet_73_77->GetBinWidth(i);
-//     val  = cont / w;
-//     thet_73_77->SetBinContent(i, val);
-// }
+for (int i = 1; i < NB; i++){
+    cont = thet_73_77->GetBinContent(i);
+    w = thet_73_77->GetBinWidth(i);
+    val  = cont / w;
+    thet_73_77->SetBinContent(i, val);
+}
 
 double t0 = 0; // Degrees
 double t45 = 45;
@@ -210,7 +211,10 @@ double maxh0 = thet_0_6->GetMaximum();
 // thet_0_6->Scale(0.00000000022);
 
 // thet_0_6->Scale(0.000000000029);
-thet_0_6->Scale(0.000000000085);
+// thet_0_6->Scale(0.000000000085);
+
+thet_0_6->Scale(0.000000028);
+
 
 double maxh45 = thet_43_47->GetMaximum();
 // thet_43_47->Scale(max45/maxh45);
@@ -218,7 +222,9 @@ double maxh45 = thet_43_47->GetMaximum();
 // thet_43_47->Scale(0.000000000028);
 
 // thet_43_47->Scale(0.0000000000028);
-thet_43_47->Scale(0.000000000011);
+// thet_43_47->Scale(0.000000000011);
+
+thet_43_47->Scale(0.0000000055);
 
 
 double maxh75 = thet_73_77->GetMaximum();
@@ -227,7 +233,9 @@ double maxh75 = thet_73_77->GetMaximum();
 // thet_73_77->Scale(0.000000000011);
 
 // thet_73_77->Scale(0.00000000000075);
-thet_73_77->Scale(0.0000000000055);
+// thet_73_77->Scale(0.0000000000055);
+
+thet_73_77->Scale(0.0000000085);
 
 
 

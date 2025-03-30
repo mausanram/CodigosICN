@@ -11,7 +11,9 @@ TChain *tree = new TChain("tree");
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_5.root");
 
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.root");
-tree->Add("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root");
+// tree->Add("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root");
+
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_250x529_SIGMA_LV_1.0_.root");
 
 
 int NB = 70;
@@ -41,14 +43,14 @@ func1->SetParameter(0, 100000);
 // double Al = 0.06525;
 // double Ac = 0.0435;
 
-// double Ah = 0.2975625;
-// double Al = 0.05752875;
-// double Ac = 0.0271875;
+double Ah = 0.2975625;
+double Al = 0.05752875;
+double Ac = 0.0271875;
 
 // === CONNIE === //
-double Ah = 0.96579;
-double Al = 0.104244;
-double Ac = 0.04284;
+// double Ah = 0.96579;
+// double Al = 0.104244;
+// double Ac = 0.04284;
 
 // ======================================= Funcionde ajuste para la CCD  =============================================== ###
 // TF1 *func2 = new TF1("func2", Form("[0]*(((%f)/(1 * TMath::Pi())) + ((%f)/2)*abs(cos(x)) + ((%f)/2)*abs(sin(x)))", Ah, Al, Ac), 0.05,2*TMath::Pi() - 0.1); 

@@ -13,7 +13,7 @@ TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_250x529
 TTree *tree_icn = (TTree*) f_icn->Get("tree");
 
 // TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_0.3_C_0.root");
-TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_1.0_C_0.root");
+TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_250x529_SIGMA_LV_1.0_.root");
 TTree *tree_pp = (TTree*) f_pp->Get("tree");
 
 TFile *f_conn = new TFile("Edep_CONNIE_NSAMP400_MeV.root");
@@ -85,7 +85,7 @@ tree_icn->Draw("edep*1000>>edep_icn", "edep>0"); // EXPERIMENTAL INFO in KeV
 tree_conn->Draw("edep>>edep_conn", "edep>0"); // EXPERIMENTAL INFO CONNIE
 
 // ============= SIM AB INITIO histograms =========== //
-tree_pp->Draw("edep*1000>>edep_pp", "edep>0"); // SIM_AB_INITIO INFO
+tree_pp->Draw("edep*1>>edep_pp", "edep>0"); // SIM_AB_INITIO INFO
 
 
 tree_geant->Draw("EevtBar*1000*0.92>>muons", "EevtBar>0");
@@ -104,7 +104,7 @@ cout << "Integral muons: " << cont_muons <<endl;
 
 // ========== Scale histograms =========== //
 //edep->Scale(0.65, "");
-// edep_pp->Scale(cont_g4/cont_pp);
+edep_pp->Scale(cont_g4/cont_pp);
 //edep->SetLineColor(2);
 
 // edep0->Scale(63.);

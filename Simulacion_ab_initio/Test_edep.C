@@ -32,7 +32,7 @@ void Test_edep(){
 
     int NB = 120;
     double tlow = 0;
-    double thi = 1; // PAra la CCD
+    double thi = 1000; // PAra la CCD
     TH1F *edep = new TH1F("edep", "Distribuci#acute{o}n de Energ#acute{i}as Depositadas", NB, tlow, thi);
     edep->GetXaxis()->SetTitle("Energ#acute{i}a (MeV)");
     edep->SetStats(0);
