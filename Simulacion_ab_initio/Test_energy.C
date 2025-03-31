@@ -263,6 +263,10 @@ leg->AddEntry(Smith0, "Curva te#acute{o}rica de #theta = 0", "l");
 leg->AddEntry(Smith45, "Curva te#acute{o}rica para #theta = #frac{#pi}{4}", "l");
 leg->AddEntry(Smith75, "Curva te#acute{o}rica para #theta = #frac{5#pi}{12}", "l");
 leg->AddEntry(thet_0_6, "Datos Simulados", "f");
+
+// leg->AddEntry(Smith0, "Curva te#acute{o}rica de #theta = 0", "l");
+// leg->AddEntry(Smith45, "Curva te#acute{o}rica para #theta = #frac{#pi}{4}", "l");
+// leg->AddEntry(Smith75, "Curva te#acute{o}rica para #theta = #frac{5#pi}{12}", "l");
 leg->Draw();
 
 
