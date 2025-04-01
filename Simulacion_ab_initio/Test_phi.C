@@ -32,7 +32,7 @@ theta_in->SetStats(0);
 
 // Fill histograms //
 tree->Draw("phi>>phi_all");
-tree->Draw("phi>>phi_in", "edep > 0");
+tree->Draw("phi>>phi_in", "edep>0");
 // tree->Draw("phi>>theta_incut", "thet>22");
 
 // Define fuctions //

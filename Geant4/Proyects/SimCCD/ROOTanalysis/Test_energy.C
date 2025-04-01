@@ -135,8 +135,8 @@ TH1F *thet_73_77 = new TH1F("thet_73_77", "", NB, xbins);
 // TH1F *thet_73_77 = new TH1F("thet_73_77", "", NB, tlow, thi);
 
 thet_0_6->SetLineColor(1);
-thet_43_47->SetLineColor(1);
-thet_73_77->SetLineColor(1);
+thet_43_47->SetLineColor(2);
+thet_73_77->SetLineColor(3);
 
 
 // Fill histograms //

@@ -105,8 +105,11 @@ void Test_energy(){
 // tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_5.root");
 
 // tree->Add("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root");
-// tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.root");
-tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_250x529_SIGMA_LV_1.0_.root");
+
+
+tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.root");
+// tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_250x529_SIGMA_LV_1.0_.root");
+// tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_1.0_SD_Lineal_C.root");
 
     // //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
 // // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
@@ -146,8 +149,8 @@ TH1F *thet_73_77 = new TH1F("thet_73_77", "", NB, xbins);
 // TH1F *thet_73_77 = new TH1F("thet_73_77", "", NB, tlow, thi);
 
 thet_0_6->SetLineColor(1);
-thet_43_47->SetLineColor(1);
-thet_73_77->SetLineColor(1);
+thet_43_47->SetLineColor(2);
+thet_73_77->SetLineColor(3);
 
 
 // Fill histograms //
@@ -163,26 +166,26 @@ double cont = 0;
 double w = 0;
 double val = 0;
 
-for (int i = 1; i < NB; i++){
-    cont = thet_0_6->GetBinContent(i);
-    w = thet_0_6->GetBinWidth(i);
-    val = cont / w;
-    thet_0_6->SetBinContent(i, val);
-}
+// for (int i = 1; i < NB; i++){
+//     cont = thet_0_6->GetBinContent(i);
+//     w = thet_0_6->GetBinWidth(i);
+//     val = cont / w;
+//     thet_0_6->SetBinContent(i, val);
+// }
 
-for (int i = 1; i < NB; i++){
-    cont = thet_43_47->GetBinContent(i);
-    w = thet_43_47->GetBinWidth(i);
-    val  = cont / w;
-    thet_43_47->SetBinContent(i, val);
-}
+// for (int i = 1; i < NB; i++){
+//     cont = thet_43_47->GetBinContent(i);
+//     w = thet_43_47->GetBinWidth(i);
+//     val  = cont / w;
+//     thet_43_47->SetBinContent(i, val);
+// }
 
-for (int i = 1; i < NB; i++){
-    cont = thet_73_77->GetBinContent(i);
-    w = thet_73_77->GetBinWidth(i);
-    val  = cont / w;
-    thet_73_77->SetBinContent(i, val);
-}
+// for (int i = 1; i < NB; i++){
+//     cont = thet_73_77->GetBinContent(i);
+//     w = thet_73_77->GetBinWidth(i);
+//     val  = cont / w;
+//     thet_73_77->SetBinContent(i, val);
+// }
 
 double t0 = 0; // Degrees
 double t45 = 45;
@@ -206,36 +209,12 @@ double max75= Smith75->GetMaximum();
 Smith75->SetLineColor(3);
 
 double maxh0 = thet_0_6->GetMaximum();
-// thet_0_6->Scale((max0/maxh0));
-// thet_0_6->Scale(0.00000000004);
-// thet_0_6->Scale(0.00000000022);
-
-// thet_0_6->Scale(0.000000000029);
-// thet_0_6->Scale(0.000000000085);
-
-thet_0_6->Scale(0.000000028);
-
-
 double maxh45 = thet_43_47->GetMaximum();
-// thet_43_47->Scale(max45/maxh45);
-// thet_43_47->Scale(0.000000000009);
-// thet_43_47->Scale(0.000000000028);
-
-// thet_43_47->Scale(0.0000000000028);
-// thet_43_47->Scale(0.000000000011);
-
-thet_43_47->Scale(0.0000000055);
-
-
 double maxh75 = thet_73_77->GetMaximum();
-// thet_73_77->Scale(max75/maxh75);
-// thet_73_77->Scale(0.0000000000011);
-// thet_73_77->Scale(0.000000000011);
 
-// thet_73_77->Scale(0.00000000000075);
-// thet_73_77->Scale(0.0000000000055);
-
-thet_73_77->Scale(0.0000000085);
+thet_0_6->Scale(0.00000000019);
+thet_43_47->Scale(0.000000000023);
+thet_73_77->Scale(0.0000000000096);
 
 
 

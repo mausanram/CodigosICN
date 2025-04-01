@@ -12,12 +12,13 @@ TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_250x529
 // TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700__MeV.root");	// INFO MUONS ONLY
 TTree *tree_icn = (TTree*) f_icn->Get("tree");
 
-// TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_0.3_C_0.root");
-TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_250x529_SIGMA_LV_1.0_.root");
+TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_1.0_SD_Lineal_C.root");
+// TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_250x529_SIGMA_LV_1.0_.root"); //Python
 TTree *tree_pp = (TTree*) f_pp->Get("tree");
 
 TFile *f_conn = new TFile("Edep_CONNIE_NSAMP400_MeV.root");
 TTree *tree_conn = (TTree*) f_conn->Get("tree");
+
 
 // TFile *file3 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_400X525_C_0.root");
 // TTree *tree3 = (TTree*) file3->Get("tree");
@@ -85,7 +86,7 @@ tree_icn->Draw("edep*1000>>edep_icn", "edep>0"); // EXPERIMENTAL INFO in KeV
 tree_conn->Draw("edep>>edep_conn", "edep>0"); // EXPERIMENTAL INFO CONNIE
 
 // ============= SIM AB INITIO histograms =========== //
-tree_pp->Draw("edep*1>>edep_pp", "edep>0"); // SIM_AB_INITIO INFO
+tree_pp->Draw("edep*1000>>edep_pp", "edep>0"); // SIM_AB_INITIO INFO
 
 
 tree_geant->Draw("EevtBar*1000*0.92>>muons", "EevtBar>0");
@@ -137,7 +138,7 @@ TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 leg->AddEntry(edep_g4, "Sim-GEANT4", "LP");
 // leg->AddEntry(edep_icn, "All Clusters (ICN-NSAMP324)", "LEP");
 //leg->AddEntry(edep2, "Datos CONNIE-NSAMP400", "LEP");
-leg->AddEntry(edep_pp, "Sim-PP(sig: 0.3) ", "LEP");
+leg->AddEntry(edep_pp, "Sim-PP", "LEP");
 // leg->AddEntry(edep_geant_scale, "Sim-GEANT4 (0.92)", "LEP");
 leg->Draw();
 
