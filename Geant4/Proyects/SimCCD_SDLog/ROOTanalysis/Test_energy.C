@@ -94,7 +94,7 @@ double Smith_Dull_Log(double *lx , double *lpar){
 
 
 void Test_energy(){
-TFile *file = new TFile("./root_files/muons_1K_vacuum_250x529_file_m_old_SDLog.root");
+TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 
     // //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");

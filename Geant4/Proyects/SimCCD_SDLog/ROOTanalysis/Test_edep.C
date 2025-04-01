@@ -2,7 +2,7 @@ void Test_edep(){
 
 // TFile *f_geant = new TFile("./root_files/muons_2M_vacuum_file.root");
 // TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file_m.root");
-TFile *f_geant = new TFile("./root_files/muons_1K_vacuum_250x529_file_m_old_SDLog.root");
+TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
@@ -12,7 +12,7 @@ TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_250x529
 // TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700__MeV.root");	// INFO MUONS ONLY
 TTree *tree_icn = (TTree*) f_icn->Get("tree");
 
-TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.root");
+TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_1.0_C_0.root");
 // TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_250x529_SIGMA_LV_1.0_.root");
 TTree *tree_pp = (TTree*) f_pp->Get("tree");
 
@@ -42,7 +42,7 @@ edep_icn->SetLineColor(1);
 edep_icn->SetStats(0);
 
 TH1F *edep_g4 = new TH1F("edep_g4", "Distribuci#acute{o}n de Energ#acute{i}a Depositada", NB, tlow, thi);
-edep_g4->SetStats(0);
+// edep_g4->SetStats(0);
 edep_g4->SetLineStyle(1);
 edep_g4->SetLineColor(2);
 edep_g4->GetXaxis()->SetTitle("Energ#acute{i}a (KeV)");
@@ -82,7 +82,7 @@ tree_geant->Draw("EevtBar*0.92*1000>>edep_geant_scale", "EevtBar>0"); // GEANT4 
 // ============= EXPERIMENTAL histograms =========== //
 tree_icn->Draw("edep*1000>>edep_icn", "edep>0"); // EXPERIMENTAL INFO in KeV
 // tree0->Draw("edep>>edep0", "edep>0"); // EXPERIMENTAL INFO
-tree_conn->Draw("edep>>edep_conn", "edep>0"); // EXPERIMENTAL INFO CONNIE
+tree_conn->Draw("edep*1000>>edep_conn", "edep>0"); // EXPERIMENTAL INFO CONNIE
 
 // ============= SIM AB INITIO histograms =========== //
 tree_pp->Draw("edep*1000>>edep_pp", "edep>0"); // SIM_AB_INITIO INFO
@@ -104,7 +104,7 @@ cout << "Integral muons: " << cont_muons <<endl;
 
 // ========== Scale histograms =========== //
 //edep->Scale(0.65, "");
-edep_pp->Scale(cont_g4/cont_pp);
+// edep_pp->Scale(cont_g4/cont_pp);
 //edep->SetLineColor(2);
 
 // edep0->Scale(63.);
@@ -116,7 +116,8 @@ edep_g4->Scale(1);
 
 edep_geant_scale->Scale(0.4);
 
-edep_icn->Scale(13.0);
+edep_icn->Scale(7.0);
+edep_conn->Scale(3.0);
 
 // ======================================= //
 
@@ -127,10 +128,10 @@ TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
 canv->Divide(1,1);
 canv->cd(1);
 edep_g4->Draw("hist"); 	// edepG4 no Birks
-edep_pp->Draw("hist same"); 	// edepPP
-// // edep_conn->Draw("he0 same"); 	// CONNIE data
-// edep_icn->Draw("hist same"); 	// ICN data 
-// edep_geant_scale->Draw("hist same");
+// edep_pp->Draw("hist same"); 	// edepPP
+edep_conn->Draw("hist same"); 	// CONNIE data
+edep_icn->Draw("hist same"); 	// ICN data 
+edep_geant_scale->Draw("hist same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 // leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");
