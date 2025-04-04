@@ -140,12 +140,13 @@ thet_73_77->SetLineColor(3);
 
 
 // Fill histograms //
-// tree->Draw("EevtPri>>thet_0_6", "thetaPri>0 && thetaPri<(5*TMath::Pi()/180) && EevtBar > 0");
-// tree->Draw("EevtPri>>thet_43_47", "thetaPri>(44*TMath::Pi()/180) && thetaPri<(46*TMath::Pi()/180) && EevtBar > 0");
-// tree->Draw("EevtPri>>thet_73_77", "thetaPri>(74*TMath::Pi()/180) && thetaPri<(76*TMath::Pi()/180) && EevtBar > 0");
-tree->Draw("EevtPri*1000>>thet_0_6", "thetaPri>0 && thetaPri<(5*TMath::Pi()/180)");
-tree->Draw("EevtPri*1000>>thet_43_47", "thetaPri>(44*TMath::Pi()/180) && thetaPri<(46*TMath::Pi()/180)");
-tree->Draw("EevtPri*1000>>thet_73_77", "thetaPri>(74*TMath::Pi()/180) && thetaPri<(76*TMath::Pi()/180)");
+tree->Draw("EevtPri*1000>>thet_0_6", "thetaPri>0 && thetaPri<(5*TMath::Pi()/180) && EevtBar > 0");
+tree->Draw("EevtPri*1000>>thet_43_47", "thetaPri>(44*TMath::Pi()/180) && thetaPri<(46*TMath::Pi()/180) && EevtBar > 0");
+tree->Draw("EevtPri*1000>>thet_73_77", "thetaPri>(73*TMath::Pi()/180) && thetaPri<(77*TMath::Pi()/180) && EevtBar > 0");
+
+// tree->Draw("EevtPri*1000>>thet_0_6", "thetaPri>0 && thetaPri<(5*TMath::Pi()/180)");
+// tree->Draw("EevtPri*1000>>thet_43_47", "thetaPri>(44*TMath::Pi()/180) && thetaPri<(46*TMath::Pi()/180)");
+// tree->Draw("EevtPri*1000>>thet_73_77", "thetaPri>(74*TMath::Pi()/180) && thetaPri<(76*TMath::Pi()/180)");
 
 double cont = 0;
 double w = 0;
@@ -196,11 +197,15 @@ Smith75->SetLineColor(3);
 double maxh0 = thet_0_6->GetMaximum();
 double maxh45 = thet_43_47->GetMaximum();
 double maxh75 = thet_73_77->GetMaximum();
-// thet_0_6->Scale((max0/maxh0));
-// thet_0_6->Scale(0.00000000004);
-thet_0_6->Scale(0.00000000025);
-thet_43_47->Scale(0.00000000003);
-thet_73_77->Scale(0.0000000000069);
+
+
+// thet_0_6->Scale(0.00000000003);
+// thet_43_47->Scale(0.000000000003);
+// thet_73_77->Scale(0.00000000000075);
+
+thet_0_6->Scale(0.00000000024);
+thet_43_47->Scale(0.000000000026);
+thet_73_77->Scale(0.0000000000065);
 
 
 // Create Canvas //

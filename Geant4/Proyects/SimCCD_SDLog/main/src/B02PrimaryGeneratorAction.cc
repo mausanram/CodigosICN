@@ -99,13 +99,16 @@ void B02PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 
 	// Smith & Duller
 
-	double Emin = 10;
-	double Emax = pow(10,5);
-//	double Emin = 8e3;
-//	double Emax = 1e6;
+	// double Emin = 10;
+	// double Emax = pow(10,5);
+
+	double Emin = 0.1;
+	double Emax = 5;
+
 	const int ee = 10000;
 	double ES[ee];
-	double dE_log = (log10(Emax)-log10(Emin))/ee;
+	// double dE_log = (log10(Emax)-log10(Emin))/ee;
+	double dE_log = (Emax-Emin)/ee;
 
 	double Eu;            // Variable de energia cinetica
 	double Au = 2e9;                      // Parametros de la funcion de Smith
@@ -128,7 +131,8 @@ void B02PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 	double jpu = mpu*y0u*cu/(t0pu*r0u);
 	
 	for (int j=0; j<ee; j++) {    // Construye la funcion de Smith en un arreglo
-		Eu = pow(10, log10(Emin)+j*dE_log);
+		// Eu = pow(10, log10(Emin)+j*dE_log);
+		Eu = pow(10, Emin+j*dE_log);
 		Epu = (Eu+au*y0u*(1.0/cos(theta)-0.100))/ru;
 		Pmu = pow(0.100*cos(theta)*(1-(au*(y0u/cos(theta)-100)/(ru*Epu))),(Bmu/((ru*Epu+100*au)*cos(theta))));
 		ES[j] = Au*(pow(Epu,-gu))*Pmu*lpu*bu*jpu/(Epu*cos(theta)+bu*jpu);
@@ -136,7 +140,8 @@ void B02PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 
 	int nbins = ee;
 	G4RandGeneral GenDist(ES,nbins);          // Distribucion de energias
-	double E = pow(10, log10(Emin) + (GenDist.shoot())*(log10(Emax)-log10(Emin)));   // Sampleo de la energia
+	// double E = pow(10, log10(Emin) + (GenDist.shoot())*(log10(Emax)-log10(Emin)));   // Sampleo de la energia
+	double E = pow(10, Emin + (GenDist.shoot())*(Emax-Emin));   // Sampleo de la energia
 
        particleGun->SetParticleEnergy(E*MeV);
        particleGun->GeneratePrimaryVertex(anEvent);
