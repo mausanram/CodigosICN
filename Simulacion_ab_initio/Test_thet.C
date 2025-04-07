@@ -24,12 +24,12 @@ int NB = 60;
 double tlow = 0;
 double thi = TMath::Pi()/2.0;
 TH1F *theta_all = new TH1F("theta_all", "Distribuci#acute{o}n angular #theta de todos los muones simulados", NB, tlow, thi);
-theta_all->GetXaxis()->SetTitle("#acute{A}ngulo (Rad)");
+theta_all->GetXaxis()->SetTitle("#theta(rad)");
 theta_all->SetStats(0);
 
 
 TH1F *theta_in = new TH1F("theta_in", "Distribuci#acute{o}n angular #theta de los muones que impactaron la CCD", NB, tlow, thi);
-theta_in->GetXaxis()->SetTitle("#acute{A}ngulo (Rad)");
+theta_in->GetXaxis()->SetTitle("#theta(rad)");
 theta_in->SetStats(0);
 // TH1F *theta_incut = new TH1F("theta_incut", "", NB, tlow, thi);
 
@@ -96,14 +96,14 @@ std::cout << "Prob2 = "<< Prob2 << std::endl;
 // Create Canvas //
 TCanvas *canv = new TCanvas("canv","", 2*900, 700);
 canv->Divide(2,1);
-canv->SetGrid();
 canv->cd(1);
+canv->SetGrid(1);
 theta_all->Draw();
 func1->Draw("same");
 
 TLegend *leg = new TLegend(0.5, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
-leg->AddEntry(func1, "A_{0}sin#theta cos^{2}#theta", "l");
+leg->AddEntry(func1, "Asin#theta cos^{2}#theta", "l");
 leg->AddEntry(theta_all, "Datos Simulados", "f");
 leg->Draw();
 
@@ -117,7 +117,7 @@ func2->Draw("same");
 // // leg->SetTextAlign(11);
 // leg->SetHeader("", "C");
 // leg->SetFillStyle(0);
-// leg->AddEntry(func1, "A_{1} [(0.2975625)sin#theta cos^{3}#theta", "l");
+// leg->AddEntry(func1, "A_{1} [(sin#theta cos^{3}#theta", "l");
 // leg->AddEntry((TObject*)0, "", "");
 // leg->AddEntry((TObject*)0, "+ #left(#frac{0.1694325}{#pi}#right)sin^{2}#theta cos^{2}#theta]", " ");
 // leg->AddEntry((TObject*)0, "", "");
@@ -128,10 +128,10 @@ func2->Draw("same");
 leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 leg->SetHeader("", "C");
-leg->SetFillStyle(0);
-leg->AddEntry(func1, "A_{1} [(0.96579)sin#theta cos^{3}#theta", "l");
-leg->AddEntry((TObject*)0, "", "");
-leg->AddEntry((TObject*)0, "+ #left(#frac{0.294168}{#pi}#right)sin^{2}#theta cos^{2}#theta]", " ");
+// leg->SetFillStyle(0);
+leg->AddEntry(func1, "A [A_{s} sin#theta cos^{3}#theta + #left(#frac{2(A_{c} + A_{l})}{#pi}#right)sin^{2}#theta cos^{2}#theta]", "l");
+// leg->AddEntry((TObject*)0, "", "");
+// leg->AddEntry((TObject*)0, "+ #left(#frac{A_c + A_l}{#pi}#right)sin^{2}#theta cos^{2}#theta]", " ");
 leg->AddEntry((TObject*)0, "", "");
 leg->AddEntry(theta_all, "Datos Simulados", "f");
 leg->Draw();

@@ -20,12 +20,12 @@ int NB = 70;
 double tlow = 0;
 double thi = 2*TMath::Pi() + 0.1;
 TH1F *theta_all = new TH1F("phi_all", "Distribuci#acute{o}n angular #phi de todos los muones simulados", NB, tlow, thi);
-theta_all->GetXaxis()->SetTitle("#acute{A}ngulo (Rad)");
+theta_all->GetXaxis()->SetTitle("#phi (rad)");
 theta_all->SetStats(0);
 
 
 TH1F *theta_in = new TH1F("phi_in", "Distribuci#acute{o}n angular #phi de los muones que impactaron la CCD", NB, tlow, thi);
-theta_in->GetXaxis()->SetTitle("#acute{A}ngulo (Rad)");
+theta_in->GetXaxis()->SetTitle("#phi (rad)");
 theta_in->SetStats(0);
 
 // TH1F *theta_incut = new TH1F("theta_incut", "", NB, tlow, thi);
@@ -90,7 +90,7 @@ func1->Draw("same");
 
 TLegend *leg = new TLegend(0.5, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
-leg->AddEntry(func1, "A_{2}", "l");
+leg->AddEntry(func1, "A", "l");
 leg->AddEntry(theta_all, "Datos Simulados", "f");
 leg->Draw();
 
@@ -102,10 +102,10 @@ func2->Draw("same");
 leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 leg->SetHeader("", "C");
-leg->SetFillStyle(0);
-leg->AddEntry(func1, "A_{3} [0.96579 + #left(#frac{ 0.104244}{4}#right)#left|cos#theta #right| ", "l");
-leg->AddEntry((TObject*)0, "", "");
-leg->AddEntry((TObject*)0, "+ #left(#frac{0.04284}{4}#right) #left|sin#theta #right| ]", " ");
+// leg->SetFillStyle(0);
+leg->AddEntry(func1, "A [#frac{A_{s}}{#pi}+ #left(#frac{A_{l}}{4}#right)#left|cos#theta #right| + #left(#frac{A_{c}}{4}#right) #left|sin#theta #right| ]", "l");
+// leg->AddEntry((TObject*)0, "", "");
+// leg->AddEntry((TObject*)0, "+ #left(#frac{A_{c}}{4}#right) #left|sin#theta #right| ]", " ");
 leg->AddEntry((TObject*)0, "", "");
 leg->AddEntry(theta_all, "Datos Simulados", "f");
 leg->Draw();

@@ -1,6 +1,6 @@
 void Test_kappa(){
     // TFile *file = new TFile("Sim_ab_initio_NMUONS_2000000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
-    TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C.root");
+    TFile *file = new TFile("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_1.0_C_0.root");
 
 
     TTree *tree = (TTree*) file->Get("tree");
@@ -15,7 +15,7 @@ void Test_kappa(){
     TH1F *edep_Landau = new TH1F("edep_Landau", "", NB, tlow, thi);
     edep_Landau->GetXaxis()->SetTitle("Energy (MeV)");
 
-    TH1F *edep_Vav = new TH1F("edep_Vav", "", NB, tlow, thi + 1);
+    TH1F *edep_Vav = new TH1F("edep_Vav", "", NB, tlow, thi + 3);
     edep_Vav->GetXaxis()->SetTitle("Energy (MeV)");
     // edep->SetGrid(1);
 

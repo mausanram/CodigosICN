@@ -1,11 +1,5 @@
 void Test_thet(){
-//TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
-// TFile *file0 = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_0.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_3.0x3.0_RADIO_12_.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_50000_PLANES_1x1_RADIO_5_CCDSIZE_400x600_.root");
-//TFile *file = new TFile("../build/Sim_NMUONS_100000.root");
-TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m.root");
+TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
 
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
 // TFile *file = new TFile("./treesROOT_Barra/Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_0.root");
@@ -20,12 +14,12 @@ int NB = 90;
 double tlow = 0;
 double thi = TMath::Pi()/2.0;
 TH1F *theta_all = new TH1F("theta_all", "Distribuci#acute{o}n angular #theta de todos los muones simulados", NB, tlow, thi);
-theta_all->GetXaxis()->SetTitle("#acute{A}ngulo (Rad)");
+theta_all->GetXaxis()->SetTitle("#theta (rad)");
 theta_all->SetLineColor(2);
 theta_all->SetStats(0);
 
 TH1F *theta_in = new TH1F("theta_in", "Distribuci#acute{o}n angular #theta de los muones que impactaron la CCD", NB, tlow, thi);
-theta_in->GetXaxis()->SetTitle("#acute{A}ngulo (Rad)");
+theta_in->GetXaxis()->SetTitle("#theta(rad)");
 theta_in->SetLineColor(2);
 theta_in->SetStats(0);
 
@@ -91,7 +85,7 @@ func1->Draw("same");
 
 TLegend *leg = new TLegend(0.5, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
-leg->AddEntry(func1, "A_{0}sin#theta cos^{2}#theta", "l");
+leg->AddEntry(func1, "Asin#theta cos^{2}#theta", "l");
 leg->AddEntry(theta_all, "Datos Simulados", "f");
 leg->Draw();
 
@@ -102,10 +96,10 @@ func2->Draw("same");
 leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 leg->SetHeader("", "C");
-leg->SetFillStyle(0);
-leg->AddEntry(func1, "A_{1} [(0.2975625)sin#theta cos^{3}#theta", "l");
-leg->AddEntry((TObject*)0, "", "");
-leg->AddEntry((TObject*)0, "+ #left(#frac{0.1694325}{#pi}#right)sin^{2}#theta cos^{2}#theta]", " ");
+// leg->SetFillStyle(0);
+leg->AddEntry(func1, "A [A_{s} sin#theta cos^{3}#theta + #left(#frac{2(A_{c} + A_{l})}{#pi}#right)sin^{2}#theta cos^{2}#theta]", "l");
+// leg->AddEntry((TObject*)0, "", "");
+// leg->AddEntry((TObject*)0, "+ #left(#frac{A_c + A_l}{#pi}#right)sin^{2}#theta cos^{2}#theta]", " ");
 leg->AddEntry((TObject*)0, "", "");
 leg->AddEntry(theta_all, "Datos Simulados", "f");
 leg->Draw();

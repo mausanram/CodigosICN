@@ -1,10 +1,21 @@
 void histo_muons(){
 
 // TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_400x525_file.root");
-TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file.root");
+TChain *f_geant_tree = new TChain("B02Evts");
+// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old.root");
+
+f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
+// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_0.root");
+// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_1.root");
+// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_2.root");
+// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_3.root");
+// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_4.root");
+
+
+// TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
 // TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_300x529_file.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
-TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
+// TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
 
 // TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700_MeV.root"); // INFO ALL_CLUSTERS
@@ -28,7 +39,7 @@ edep_icn->SetLineColor(1);
 edep_icn->SetStats(0);
 
 TH1F *edep_g4 = new TH1F("edep_g4", "Simulation no Birks", NB, tlow, thi);
-edep_g4->SetStats(0);
+// edep_g4->SetStats(0);
 edep_g4->SetLineStyle(1);
 edep_g4->SetLineColor(2);
 
@@ -43,24 +54,25 @@ edep_geant_scale->SetLineStyle(2);
 edep_geant_scale->SetLineColor(1);
 
 // === Template for fit ==
-int NBmu = 200;
-double maxEd = 1000.;
+int NBmu = 150;
+double maxEd = 1500.;
 double muonsbw = maxEd/NBmu;
 
 TH1F *muons = new TH1F("muons","",NBmu,0,maxEd);
 muons->GetXaxis()->SetTitle("Energy (KeV)");
 muons->GetYaxis()->SetTitle("events");
 
-tree_geant->Draw("EevtBar*1000*0.92>>muons", "EevtBar>0");
+f_geant_tree->Draw("EevtBar*1000>>muons", "EevtBar>0");
 
 
 // ============= GEANT4 histograms =========== //
-tree_geant->Draw(" EevtBar*1000>>edep_g4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
-tree_geant->Draw("EevtBar*0.92*1000>>edep_geant_scale", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
+f_geant_tree->Draw("EevtBar*1000>>edep_g4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
+f_geant_tree->Draw("EevtBar*0.92*1000>>edep_geant_scale", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 
 
 // ============= EXPERIMENTAL histograms =========== //
 tree_icn->Draw("edep*1000.>>edep_icn", "edep>0"); // EXPERIMENTAL INFO in KeV
+edep_icn->SetMaximum(400);
 // tree0->Draw("edep>>edep0", "edep>0"); // EXPERIMENTAL INFO
 tree_conn->Draw("edep>>edep_conn", "edep>0"); // EXPERIMENTAL INFO CONNIE
 
@@ -73,13 +85,14 @@ double cont_muons = muons->Integral();
 cout << "Integral muons: " << cont_muons <<endl;
 
 // ============ Create Canvas ============== //
-// TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
-// canv->Divide(1,1);
-// canv->cd(1);
+TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
+canv->Divide(1,1);
+canv->cd(1);
 // edep_g4->Draw("hist"); 	// edepG4 no Birks
+muons->Draw("hist");
 // edep_pp->Draw("hist same"); 	// edepPP
 // // edep_conn->Draw("he0 same"); 	// CONNIE data
-// edep_icn->Draw("hist same"); 	// ICN data 
+// edep_icn->Draw("hist"); 	// ICN data 
 // edep_geant_scale->Draw("hist same");
 
 // TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);

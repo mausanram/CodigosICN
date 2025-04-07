@@ -120,15 +120,21 @@ double LV (double *lx, double *lpar) {
 
 	if (kappa<=0.01) {
 		// std::cout << "lambMP "<<  lambdamp << std::endl;
-		// std::cout << "DeltaMP "<<  Deltamp << std::endl;
+		std::cout <<"Régimen de Landau " << std::endl;
+		std::cout << "Kappa: " << kappa << endl;
 		double phi = TMath::Landau(lambda, lambdamp, 1.0);
 		return phi/xi;
 		// return phi;
 		}
 	else if (0.01<kappa && kappa<10) {
 		// std::cout << "2"<< std::endl;
-		double vav = TMath::Vavilov(Delta-Deltamp, kappa, beta2);
-		return vav;
+		std::cout <<"Régimen de Vavilov" << std::endl;
+		std::cout << "Kappa: " << kappa << endl;
+		// double vav = TMath::Vavilov(Delta-Deltamp, kappa, beta2);
+		// double vav = TMath::Vavilov(lambda-lambdamp, kappa, beta2);
+		// return vav;
+		double vav = TMath::Vavilov(lambda-lambdamp, kappa, beta2);
+		return vav/xi;
 		}
 	else {
 //		double gauss = exp(((Delta-DeltaAv)**2)/(2*sigma2));
@@ -169,7 +175,7 @@ void LandauVavilov_Mau_GOOD() {
 	double hhi = 1;
 
 	TF1 *f = new TF1("f", LV, 0, 1, 2);
-	// f->SetNpx(100);
+	f->SetNpx(1000);
 
 
 	// f->SetParameter(0, s);

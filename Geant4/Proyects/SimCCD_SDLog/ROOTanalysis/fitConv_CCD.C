@@ -17,9 +17,9 @@ double f(double *x, double *par) {
     ifstream inp;
     inp.open("muons.dat");
     double p;
-    int    Np    = 200;
+    int    Np    = 150;
     double Emin  = 0;              // Minimum energy
-    double Emax  = 1000;           // Maximum energy
+    double Emax  = 1500;           // Maximum energy
     double dE    = (Emax-Emin)/Np; // Energy interval
     double Ed;                     // Deposited energy
     //-------------------------------------------------------
@@ -56,6 +56,7 @@ double f(double *x, double *par) {
     return z * rebinf * KeVperbin;
 }  // function f
 
+
 //-------------------------------------
 // Fit convolution function
 //-------------------------------------
@@ -71,8 +72,8 @@ void fitConv_CCD() {
    ifstream inpf;
    inpf.open("muons.dat");
    double pv;
-   int    nbins = 200;
-   double Emax  = 1000;
+   int    nbins = 150;
+   double Emax  = 1500;
    double  dE   = Emax/nbins;
 
 
@@ -98,8 +99,8 @@ void fitConv_CCD() {
    //TFile *file = new TFile("ccm-data/bcm_t_nh_pe.root");
    TFile *file = new TFile("ccdhisto.root");
    //TFile *file = new TFile("ccm-data/from-Mayank/beamON_preBeam_bcm_nhits_previousEvent_selectingCosmicMuons.root");
-//    TH1F *hex = (TH1F*) file->FindObjectAny("edep_icn");
-   TH1F *hex = (TH1F*) file->FindObjectAny("edep_conn");
+   TH1F *hex = (TH1F*) file->FindObjectAny("edep_icn");
+//    TH1F *hex = (TH1F*) file->FindObjectAny("edep_conn");
    cout<< hex->GetNbinsX() << endl;
    cout << "Integral Prompt_Energy: " << hex->Integral() << " entries (before rebin)." << endl;
    hex->Rebin(rebinf); 
@@ -135,10 +136,16 @@ void fitConv_CCD() {
 
 	// // Data and Sim times 250x529 px)
  	// double I0sim  = 101.2;
-   	// double nmusim = 268880; //1000000 simulados en total;
-   	// double Tsim   = 16325357.85184; //sec 1M /  0.0612544 s^-1
-   	// double T      = 2434014; //s
+   	// double nmusim = 452649; //4000000 simulados en total;
+   	// double Tsim   = 8.38761e+07; //sec 4M /  0.0476894 s^-1
+   	// double T      = 825914; // Tiempo experimental s
    	// double eff = 1.0;
+
+	double I0sim  = 101.2;
+   	double nmusim = 113146; //1000000 simulados en total;
+   	double Tsim   = 20969020; //sec 4M /  0.0476894 s^-1
+   	double T      = 825914; // Tiempo experimental s
+   	double eff = 1.0;
 
 	// // Data and Sim CONNIE 420x1022 px)
 	// double I0sim  = 101.2;
@@ -148,12 +155,12 @@ void fitConv_CCD() {
 	// double eff = 1.0;
 
 	// Data and Sim CONNIE 420x700 px)
-	double I0sim  = 101.2;
-	double nmusim = 185579; //1000000 simulados en total;
-	double Tsim   = 16325357.9; //sec 1M /  0.061254354 s^-1
-	double T      = 1654349.759; //s
-	// double T      = 1067132; //s
-	double eff = 1.0;
+	// double I0sim  = 101.2;
+	// double nmusim = 185579; //4000000 simulados en total;
+	// double Tsim   = 16325357.9; //sec 1M /  0.061254354 s^-1
+	// double T      = 1654349.759; //s
+	// // double T      = 1067132; //s
+	// double eff = 1.0;
 
 
 
@@ -167,29 +174,29 @@ void fitConv_CCD() {
 	f1 = new TF1("f1", f, xm, xM, np);
 
 		// prebeam no muon selection
-	// double p0 = 0.05;    // Resolution
-	// double p1 = 4500.;    // Muon normalization
-	// double p2 = 7000.;    // Background 1
-	// double p3 = 4050.;    // Background 2
+		double p0 = 0.035;    // Resolution
+		double p1 = 5000.;    // Muon normalization
+		double p2 = 8075.;    // Background 1
+		double p3 = 6178.;    // Background 2
+		double p4 = 0.00000e+00;    // PE offset
+		double p5 = 1.0;    // No cambio de Unidades // por ahora
+		double p6 = 0.00000e-04;    // PE scale (quadratic)
+		double p7 = 220;    // E0
+		double p8 = 56.113;    // exponente bkgd 1
+		double p9 = 332.344;    // exponente bkgd 2
+
+	// ===== Parámetros para CONNIE ==== //
+	// // double p0 = 0.031;    // Resolution
+	// double p0 = 0.01;    // Resolution
+	// double p1 = 20000.;    // Muon normalization
+	// double p2 = 2075.;    // Background 1
+	// double p3 = 3178.;    // Background 2
 	// double p4 = 0.00000e+00;    // PE offset
 	// double p5 = 1.0;    // No cambio de Unidades // por ahora
 	// double p6 = 0.00000e-04;    // PE scale (quadratic)
 	// double p7 = 220;    // E0
-	// double p8 = 70;    // exponente bkgd 1
-	// double p9 = 650;    // exponente bkgd 2
-
-	// ===== Parámetros para CONNIE ==== //
-	// double p0 = 0.031;    // Resolution
-	double p0 = 0.01;    // Resolution
-	double p1 = 20000.;    // Muon normalization
-	double p2 = 2075.;    // Background 1
-	double p3 = 3178.;    // Background 2
-	double p4 = 0.00000e+00;    // PE offset
-	double p5 = 1.0;    // No cambio de Unidades // por ahora
-	double p6 = 0.00000e-04;    // PE scale (quadratic)
-	double p7 = 220;    // E0
-	double p8 = 56.113;    // exponente bkgd 1
-	double p9 = 332.344;    // exponente bkgd 2
+	// double p8 = 56.113;    // exponente bkgd 1
+	// double p9 = 332.344;    // exponente bkgd 2
 
 
 	f1->FixParameter(0, p0);    // Resolution
@@ -284,7 +291,7 @@ void fitConv_CCD() {
 	l->Draw();
 
 	// c1->Print("ConvNonlinear_CONNIE_420x1022.pdf");
-	c1->Print("ConvNonlinear_CONNIE_420x1022.pdf");
+	c1->Print("ConvNonlinear_res.pdf");
         double funcInt = f1->Integral(xm,xM);
 	cout << "Integral fitConv = " << funcInt << " muons" << endl;
 
@@ -322,28 +329,28 @@ void fitConv_CCD() {
 	// double p9 = 390.377;    // exponente bkgd 2
 
 	// // ========== CCD size: 529x250 ============== //
+	double p0 = 0.0;    // Resolution
+	double p1 = 5977.;    // Muon normalization
+	double p2 = 9582.;    // Background 1
+	double p3 = 2791;    // Background 2
+	double p4 = 0.00000e+00;    // PE offset
+	double p5 = 1.0;    // No cambio de Unidades // por ahora
+	double p6 = 0.00000e-04;    // PE scale (quadratic)
+	double p7 = 220;    // E0
+	double p8 = 66.897;    // exponente bkgd 1
+	double p9 = 397.646;    // exponente bkgd 2
+
+	// ========== CONNIE size: 420x1022 ============== //
 	// double p0 = 0.031;    // Resolution
-	// double p1 = 4330.;    // Muon normalization
-	// double p2 = 8075.;    // Background 1
-	// double p3 = 6178.;    // Background 2
+	// double p1 = 15500.;    // Muon normalization
+	// double p2 = 2075.;    // Background 1
+	// double p3 = 3178.;    // Background 2
 	// double p4 = 0.00000e+00;    // PE offset
 	// double p5 = 1.0;    // No cambio de Unidades // por ahora
 	// double p6 = 0.00000e-04;    // PE scale (quadratic)
 	// double p7 = 220;    // E0
 	// double p8 = 56.113;    // exponente bkgd 1
 	// double p9 = 332.344;    // exponente bkgd 2
-
-	// ========== CONNIE size: 420x1022 ============== //
-	double p0 = 0.031;    // Resolution
-	double p1 = 15500.;    // Muon normalization
-	double p2 = 2075.;    // Background 1
-	double p3 = 3178.;    // Background 2
-	double p4 = 0.00000e+00;    // PE offset
-	double p5 = 1.0;    // No cambio de Unidades // por ahora
-	double p6 = 0.00000e-04;    // PE scale (quadratic)
-	double p7 = 220;    // E0
-	double p8 = 56.113;    // exponente bkgd 1
-	double p9 = 332.344;    // exponente bkgd 2
 
 
 
