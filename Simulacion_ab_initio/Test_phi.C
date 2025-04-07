@@ -16,7 +16,7 @@ TChain *tree = new TChain("tree");
 tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_250x529_SIGMA_LV_1.0_.root");
 
 
-int NB = 70;
+int NB = 20;
 double tlow = 0;
 double thi = 2*TMath::Pi() + 0.1;
 TH1F *theta_all = new TH1F("phi_all", "Distribuci#acute{o}n angular #phi de todos los muones simulados", NB, tlow, thi);
@@ -31,8 +31,11 @@ theta_in->SetStats(0);
 // TH1F *theta_incut = new TH1F("theta_incut", "", NB, tlow, thi);
 
 // Fill histograms //
-tree->Draw("phi>>phi_all");
-tree->Draw("phi>>phi_in", "edep>0");
+// tree->Draw("phi>>phi_all");
+// tree->Draw("phi>>phi_in", "edep>0");
+
+tree->Draw("phi>>phi_all", "thet>70*TMath::Pi()/180");
+tree->Draw("phi>>phi_in", "edep>0 && thet>70*TMath::Pi()/180");
 // tree->Draw("phi>>theta_incut", "thet>22");
 
 // Define fuctions //
