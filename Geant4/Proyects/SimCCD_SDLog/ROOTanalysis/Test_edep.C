@@ -7,8 +7,8 @@ TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLo
 TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
 
-// TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700_MeV.root"); // INFO ALL_CLUSTERS
-TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_250x529_EXPOSURE_4504_MeV.root"); // INFO ALL_CLUSTERS
+TFile *f_icn = new TFile("../../../../Simulacion_ab_initio//Edep_NSAMP324_MeV.root"); // INFO ALL_CLUSTERS
+// TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_250x529_EXPOSURE_4504_MeV.root"); // INFO ALL_CLUSTERS
 // TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700__MeV.root");	// INFO MUONS ONLY
 TTree *tree_icn = (TTree*) f_icn->Get("tree");
 
@@ -35,7 +35,8 @@ edep_geant_birks->SetLineColor(3);
 edep_geant_birks->SetStats(0);
 
 //TH1F *edep0 = new TH1F("edep0", "Lab. Det. ", NB, tlow, thi);
-TH1F *edep_icn = new TH1F("edep_icn", "Espectro de Energ#acute{i}as Depositada (ICN)", NB, tlow, thi);
+// TH1F *edep_icn = new TH1F("edep_icn", "Espectro de Energ#acute{i}as Depositada (ICN)", NB, tlow, thi);
+TH1F *edep_icn = new TH1F("edep_icn", "Espectro de Energ#acute{i}as Depositada (#theta > 20)", NB, tlow, thi);
 edep_icn->GetXaxis()->SetTitle("Energ#acute{i}a (KeV)");
 edep_icn->SetLineStyle(1);
 edep_icn->SetLineColor(1);
@@ -60,8 +61,8 @@ edep_pp->SetLineColor(4);
 
 TH1F *edep_geant_scale = new TH1F("edep_geant_scale", "Simulation GEANT4 scale", NB, tlow, thi);
 edep_geant_scale->SetStats(0);
-edep_geant_scale->SetLineStyle(2);
-edep_geant_scale->SetLineColor(1);
+edep_geant_scale->SetLineStyle(1);
+edep_geant_scale->SetLineColor(2);
 
 // === Template for fit ==
 int NBmu = 200;
@@ -77,7 +78,7 @@ muons->GetYaxis()->SetTitle("events");
 tree_geant->Draw("WevtBar*1000>>edep_geant_birks", "EevtBar>0"); // GEANT4 INFO (BIRKS)
 tree_geant->Draw(" EevtBar*1000>>edep_g4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 //tree->Draw("Ehitbar>>edep_cut", "thet>22*TMath::Pi()/180 & edep>0");
-tree_geant->Draw("EevtBar*0.92*1000>>edep_geant_scale", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
+tree_geant->Draw("EevtBar*0.904*1000>>edep_geant_scale", "EevtBar>0 && thetaPri > 18*TMath::Pi()/180"); // GEANT4 INFO (NO BIRKS)
 
 
 // ============= EXPERIMENTAL histograms =========== //
@@ -121,7 +122,9 @@ edep_g4->Scale(1);
 
 edep_geant_scale->Scale(0.4);
 
-// edep_icn->Scale(7.0);
+// edep_icn->Scale(3.7);
+edep_icn->Scale(2.8); // Para 20°
+// edep_icn->Scale(2.4); // Para 25°
 // edep_conn->Scale(3.0);
 
 // ======================================= //
@@ -132,20 +135,21 @@ edep_geant_scale->Scale(0.4);
 TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
 canv->Divide(1,1);
 canv->cd(1);
-edep_g4->Draw("hist"); 	// edepG4 no Birks
+// edep_g4->Draw("hist"); 	// edepG4 no Birks
 // edep_geant_birks->Draw("hist same");
-edep_pp->Draw("hist same"); 	// edepPP
+// edep_pp->Draw("hist same"); 	// edepPP
 // edep_conn->Draw("hist"); 	// CONNIE data
-// edep_icn->Draw("hist same"); 	// ICN data 
-// edep_geant_scale->Draw("hist same");
+edep_icn->Draw("hist same"); 	// ICN data 
+edep_geant_scale->Draw("hist same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 // leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");
-leg->AddEntry(edep_g4, "Simulaci#acute{o}n Geant4", "LP");
+// leg->AddEntry(edep_g4, "Simulaci#acute{o}n Geant4", "LP");
 // leg->AddEntry(edep_icn, "Datos de todos los clusters (NSAMP324)", "LEP");
+leg->AddEntry(edep_icn, "Datos de muones ICN (NSAMP324)", "LP");
 // leg->AddEntry(edep_conn, "Datos de todos los clusters (NSAMP400)", "LEP");
-leg->AddEntry(edep_pp, "Simulaci#acute{o}n ab initio", "LP");
-// leg->AddEntry(edep_geant_scale, "Sim-GEANT4 (0.92)", "LEP");
+// leg->AddEntry(edep_pp, "Simulaci#acute{o}n ab initio", "LP");
+leg->AddEntry(edep_geant_scale, "Sim-GEANT4 (0.904)", "LP");
 leg->Draw();
 
 

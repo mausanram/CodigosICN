@@ -9,8 +9,14 @@ TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.r
 TTree *tree = (TTree*) file->Get("B02Evts");
 // tree->Print();
 
+
+TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_MeV.root"); // INFO ALL_CLUSTERS
+// TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700__MeV.root");	// INFO MUONS ONLY
+TTree *tree_icn = (TTree*) f_icn->Get("tree");
+
+
 // int NB = 90;
-int NB = 90;
+int NB = 100;
 double tlow = 0;
 double thi = TMath::Pi()/2.0;
 TH1F *theta_all = new TH1F("theta_all", "Distribuci#acute{o}n angular #theta de todos los muones simulados", NB, tlow, thi);
@@ -21,8 +27,17 @@ theta_all->SetStats(0);
 TH1F *theta_in = new TH1F("theta_in", "Distribuci#acute{o}n angular #theta de los muones que impactaron la CCD", NB, tlow, thi);
 theta_in->GetXaxis()->SetTitle("#theta(rad)");
 theta_in->SetLineColor(2);
-theta_in->SetStats(0);
+// theta_in->SetStats(0);
 
+TH1F *theta_icn = new TH1F("theta_icn", "Distribuci#acute{o}n angular #theta del ICN", NB, tlow, thi);
+theta_icn->GetXaxis()->SetTitle("#theta(rad)");
+theta_icn->SetLineColor(1);
+// theta_icn->SetStats(0);
+
+TH1F *theta_cut = new TH1F("theta_cut", "Distribuci#acute{o}n angular #theta del ICN", NB, tlow, thi);
+theta_cut->GetXaxis()->SetTitle("#theta(rad)");
+theta_cut->SetLineColor(2);
+// theta_cut->SetStats(0);
 // TH1F *theta_incut = new TH1F("theta_incut", "", NB, tlow, thi);
 
 // Fill histograms //
@@ -31,7 +46,9 @@ tree->Draw("thetaPri>>theta_all");
 
 // tree0->Draw("thet>>theta_in", "l>0 ");
 tree->Draw("thetaPri>>theta_in", "nHitBar>0");
+tree->Draw("thetaPri>>theta_cut", "nHitBar>0 && thetaPri > 25*TMath::Pi()/180");
 // tree->Draw("thet>>theta_incut", "thet>22*TMath::Pi()/180");
+tree_icn->Draw("thet>>theta_icn");
 
 // Define fuctions //
 TF1 *func1 = new TF1("func1", "[0]*sin(x)*(cos(x))^2", 0.01, 85*TMath::Pi()/180);
@@ -89,8 +106,11 @@ leg->AddEntry(func1, "Asin#theta cos^{2}#theta", "l");
 leg->AddEntry(theta_all, "Datos Simulados", "f");
 leg->Draw();
 
+theta_icn->Scale(7.2);
 canv->cd(2);
-theta_in->Draw();
+theta_in->Draw("hist");
+// theta_cut->Draw("hist");
+theta_icn->Draw("hist same");
 func2->Draw("same");
 
 leg = new TLegend(0.7, 0.8, 0.9, 0.9);
@@ -101,7 +121,8 @@ leg->AddEntry(func1, "A [A_{s} sin#theta cos^{3}#theta + #left(#frac{2(A_{c} + A
 // leg->AddEntry((TObject*)0, "", "");
 // leg->AddEntry((TObject*)0, "+ #left(#frac{A_c + A_l}{#pi}#right)sin^{2}#theta cos^{2}#theta]", " ");
 leg->AddEntry((TObject*)0, "", "");
-leg->AddEntry(theta_all, "Datos Simulados", "f");
+leg->AddEntry(theta_all, "Datos Simulados (#theta > 22^{o})", "f");
+leg->AddEntry(theta_icn, "Datos ICN", "f");
 leg->Draw();
 
 
