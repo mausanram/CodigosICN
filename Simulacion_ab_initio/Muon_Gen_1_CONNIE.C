@@ -423,7 +423,7 @@ void Muon_Gen_1_CONNIE(){
 
     // Sim_ab_initio_NMUONS_200000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root
 
-    TFile *file = TFile::Open("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_0.root", "recreate");
+    TFile *file = TFile::Open("Sim_ab_initio_CONNIE_NMUONS_1000000_PLANES_1.7_RADIO_7_CCDSIZE_420X1022_C_1.root", "recreate");
     TTree *tree = new TTree("tree", "tree");
 
     double Rand_thet;

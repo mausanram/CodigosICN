@@ -16,7 +16,7 @@ TChain *tree = new TChain("tree");
 tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_250x529_SIGMA_LV_1.0_.root");
 
 
-int NB = 20;
+int NB = 70;
 double tlow = 0;
 double thi = 2*TMath::Pi() + 0.1;
 TH1F *theta_all = new TH1F("phi_all", "Distribuci#acute{o}n angular #phi de todos los muones simulados", NB, tlow, thi);
@@ -31,11 +31,11 @@ theta_in->SetStats(0);
 // TH1F *theta_incut = new TH1F("theta_incut", "", NB, tlow, thi);
 
 // Fill histograms //
-// tree->Draw("phi>>phi_all");
-// tree->Draw("phi>>phi_in", "edep>0");
+tree->Draw("phi>>phi_all");
+tree->Draw("phi>>phi_in", "edep>0");
 
-tree->Draw("phi>>phi_all", "thet>70*TMath::Pi()/180");
-tree->Draw("phi>>phi_in", "edep>0 && thet>70*TMath::Pi()/180");
+// tree->Draw("phi>>phi_all", "thet>70*TMath::Pi()/180");
+// tree->Draw("phi>>phi_in", "edep>0 && thet>70*TMath::Pi()/180");
 // tree->Draw("phi>>theta_incut", "thet>22");
 
 // Define fuctions //
@@ -93,7 +93,7 @@ func1->Draw("same");
 
 TLegend *leg = new TLegend(0.5, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
-leg->AddEntry(func1, "A", "l");
+leg->AddEntry(func1, "C", "l");
 leg->AddEntry(theta_all, "Datos Simulados", "f");
 leg->Draw();
 
@@ -106,7 +106,7 @@ leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 leg->SetHeader("", "C");
 // leg->SetFillStyle(0);
-leg->AddEntry(func1, "A [#frac{A_{s}}{#pi}+ #left(#frac{A_{l}}{4}#right)#left|cos#theta #right| + #left(#frac{A_{c}}{4}#right) #left|sin#theta #right| ]", "l");
+leg->AddEntry(func1, "C [#frac{A_{s}}{#pi}+ #left(#frac{A_{ll}}{4}#right)#left|cos#theta #right| + #left(#frac{A_{lc}}{4}#right) #left|sin#theta #right| ]", "l");
 // leg->AddEntry((TObject*)0, "", "");
 // leg->AddEntry((TObject*)0, "+ #left(#frac{A_{c}}{4}#right) #left|sin#theta #right| ]", " ");
 leg->AddEntry((TObject*)0, "", "");

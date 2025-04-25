@@ -123,8 +123,8 @@ tree->Add("Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_C_0.r
 
 // cout<<TMath::C() * 100 <<endl;
 
-// int NB = 100;
-int NB = 60;
+int NB = 100;
+// int NB = 60;
 double tlow = 1;
 double thi = 1 * pow(10,5);
 double xbins[NB+1];
@@ -153,7 +153,7 @@ thet_43_47->SetLineColor(2);
 thet_73_77->SetLineColor(3);
 
 
-// Fill histograms //
+// // Fill histograms //
 // tree->Draw("epri>>thet_0_6", "thet>0 && thet<(5*TMath::Pi()/180)");
 // tree->Draw("epri>>thet_43_47", "thet>(44*TMath::Pi()/180) && thet<(46*TMath::Pi()/180)");
 // tree->Draw("epri>>thet_73_77", "thet>(74*TMath::Pi()/180) && thet<(76*TMath::Pi()/180)");
@@ -192,7 +192,7 @@ double t45 = 45;
 double t75 = 75;
 
 // TF1 *Smith0 = new TF1("Distribuciones de Smith-Duller", Smith_Dull, tlow, thi, 1);
-TF1 *Smith0 = new TF1("Distribuciones de Smith-Duller", Smith_Dull, tlow, thi, 1);
+TF1 *Smith0 = new TF1("Distribuciones de Smith-Duller para muones que impactaron la CCD", Smith_Dull, tlow, thi, 1);
 Smith0->SetParameter(0, t0);
 Smith0->GetXaxis()->SetTitle("Energ#acute{i}a(MeV)");
 double max0= Smith0->GetMaximum();
@@ -212,9 +212,16 @@ double maxh0 = thet_0_6->GetMaximum();
 double maxh45 = thet_43_47->GetMaximum();
 double maxh75 = thet_73_77->GetMaximum();
 
-thet_0_6->Scale(0.00000000019);
-thet_43_47->Scale(0.000000000023);
-thet_73_77->Scale(0.0000000000096);
+
+
+// thet_0_6->Scale(0.000000000042);
+// thet_43_47->Scale(0.0000000000043);
+// thet_73_77->Scale(0.0000000000011);
+
+
+thet_0_6->Scale(0.00000000031);
+thet_43_47->Scale(0.000000000038);
+thet_73_77->Scale(0.000000000017);
 
 
 
@@ -237,7 +244,7 @@ thet_73_77->Draw("hist same");
 TLegend *leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 // leg->SetHeader("", "C");
-leg->SetFillStyle(0);
+// leg->SetFillStyle(0);
 leg->AddEntry(Smith0, "Curva te#acute{o}rica de #theta = 0", "l");
 leg->AddEntry(Smith45, "Curva te#acute{o}rica para #theta = #frac{#pi}{4}", "l");
 leg->AddEntry(Smith75, "Curva te#acute{o}rica para #theta = #frac{5#pi}{12}", "l");
