@@ -79,7 +79,8 @@ def main(argObj):
 
         try :
             # print('Voy a obtener el OsCan y el active area')
-            dataCal = hdu_list[extension].data[:,:]
+            dataCal = hdu_list[extension].data[:700,:] # En electrones
+            # dataCal = hdu_list[extension].data[:,:]
             header = hdu_list[extension].header
             # oScan = hdu_list[extension].data[:,550:]
 
@@ -149,7 +150,7 @@ def main(argObj):
         file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs.pkl'
 
     elif units == 1:
-        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_electrons.pkl'
+        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_SIZE_700x420_' + '_electrons.pkl'
 
     elif units == 2:
         file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_KeV.pkl'
