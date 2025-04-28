@@ -1,7 +1,7 @@
 void Test_L(){
 // TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_2.root");
-TFile *file = new TFile("./root_files/muons_1K_vacuum_250x529_file_m_old_SDLog_0.root");
+TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_0.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 
 
@@ -39,11 +39,11 @@ L_ICN->SetLineColor(1);
 TH1F *Lcut = new TH1F("Lcut", "", NB, tlow, thi);
 
 // Fill histograms //
-// tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0");
-// tree0->Draw("l>>LPP", "l > 0");
+tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0");
+tree0->Draw("l>>LPP", "l > 0");
 
-tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0 && thetaPri>25*TMath::Pi()/180");
-tree0->Draw("l>>LPP", "l > 0 && thet>25*TMath::Pi()/180");
+// tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0 && thetaPri>25*TMath::Pi()/180");
+// tree0->Draw("l>>LPP", "l > 0 && thet>25*TMath::Pi()/180");
 
 tree_icn->Draw("l>>L_ICN", "l > 0");
 
@@ -54,7 +54,7 @@ line->SetLineStyle(2);
 line->SetLineWidth(2);
 
 // LPP->Scale(0.94);
-LPP->Scale(0.1);
+// LPP->Scale(0.1);
 // L->Scale(10.);
 L_ICN->Scale(0.71);
 
@@ -62,9 +62,9 @@ L_ICN->Scale(0.71);
 TCanvas *canv = new TCanvas("canv","", 2*700, 600);
 // canv->Divide(2,1);
 canv->cd(1);
-// L->Draw("hist");
-LPP->Draw("hist");
-L_ICN->Draw("hist same");
+L->Draw("hist");
+LPP->Draw("hist same");
+// L_ICN->Draw("hist same");
 line->Draw("same");
 // Lcut->Draw("same");
 

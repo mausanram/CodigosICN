@@ -1,7 +1,7 @@
 void Test_LvsThet(){
 // TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_2.root");
-TFile *file = new TFile("./root_files/muons_1K_vacuum_250x529_file_m_old_SDLog_0.root");
+TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_0.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 
 
@@ -29,8 +29,10 @@ histLTpp->SetStats(0);
 
 // Fil histograms
 double pl, pt, plpp, ptpp;
+int nH;
 tree->SetBranchAddress("LengthMuLAr", &pl);
 tree->SetBranchAddress("thetaPri", &pt);
+tree->SetBranchAddress("nHitBar", &nH);
 
 tree0->SetBranchAddress("l", &plpp);
 tree0->SetBranchAddress("thet", &ptpp);
@@ -38,6 +40,8 @@ tree0->SetBranchAddress("thet", &ptpp);
 int nentries = tree->GetEntries();
    for (int i = 0; i < nentries; i++) {
       tree->GetEntry(i);
+    //   if (pl > 0 & nH >0){
+        //  if (nH >0){
       if (pl > 0){
         histLT->Fill(pl, pt);
       }
