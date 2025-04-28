@@ -28,11 +28,12 @@ histLTpp->GetYaxis()->SetTitle("#theta (rad)");
 histLTpp->SetStats(0);
 
 // Fil histograms
-double pl, pt, plpp, ptpp;
+double pl, pt, pedep, plpp, ptpp;
 int nH;
 tree->SetBranchAddress("LengthMuLAr", &pl);
 tree->SetBranchAddress("thetaPri", &pt);
 tree->SetBranchAddress("nHitBar", &nH);
+tree->SetBranchAddress("EevtBar", &pedep);
 
 tree0->SetBranchAddress("l", &plpp);
 tree0->SetBranchAddress("thet", &ptpp);
@@ -41,8 +42,9 @@ int nentries = tree->GetEntries();
    for (int i = 0; i < nentries; i++) {
       tree->GetEntry(i);
     //   if (pl > 0 & nH >0){
-        //  if (nH >0){
-      if (pl > 0){
+    //   if (nH >0){
+    //   if (pl > 0){
+      if (pedep > 0){
         histLT->Fill(pl, pt);
       }
    }
