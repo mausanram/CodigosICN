@@ -1,5 +1,5 @@
 void Test_thet(){
-TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
+TFile *file = new TFile("./root_files/muons_1K_vacuum_250x529_file_m_old_SDLog_nHG_0.root");
 
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
 // TFile *file = new TFile("./treesROOT_Barra/Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_0.root");
@@ -53,8 +53,8 @@ theta_pp_in->SetLineColor(4);
 tree->Draw("thetaPri>>theta_all");
 
 // tree0->Draw("thet>>theta_in", "l>0 ");
-tree->Draw("thetaPri>>theta_in", "nHitBar>0");
-// tree->Draw("thetaPri>>theta_in", "LengthMuLAr>0");
+// tree->Draw("thetaPri>>theta_in", "nHitBar>0");
+tree->Draw("thetaPri>>theta_in", "LengthMuLAr>0");
 // tree->Draw("thetaPri>>theta_in", "nHitBar>0 && LengthMuLAr>0");
 
 

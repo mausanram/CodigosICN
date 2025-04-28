@@ -2,7 +2,7 @@ void Test_edep(){
 
 // TFile *f_geant = new TFile("./root_files/muons_2M_vacuum_file.root");
 // TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file_m.root");
-TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
+TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_nHG_1.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
 TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
 //TTree *tree = (TTree*) file->Get("B02Hits");
@@ -26,7 +26,7 @@ TLatex lat;
 
 int NB = 150;
 double tlow = 0;
-double thi = 1000;
+double thi = 1800;
 
 TH1F *edep_geant_birks = new TH1F("edep_geant_birks", "Energy Spectrum", NB, tlow, thi);
 edep_geant_birks->GetXaxis()->SetTitle("Energy (MeV)");
@@ -75,10 +75,10 @@ muons->GetXaxis()->SetTitle("Energy (KeV)");
 muons->GetYaxis()->SetTitle("events");
 
 // ============= GEANT4 histograms =========== //
-tree_geant->Draw("WevtBar*1000>>edep_geant_birks", "EevtBar>0"); // GEANT4 INFO (BIRKS)
-tree_geant->Draw(" EevtBar*1000>>edep_g4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
+tree_geant->Draw("WevtBar*1000>>edep_geant_birks", "nHitBar>0"); // GEANT4 INFO (BIRKS)
+tree_geant->Draw("EevtBar*1000>>edep_g4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 //tree->Draw("Ehitbar>>edep_cut", "thet>22*TMath::Pi()/180 & edep>0");
-tree_geant->Draw("EevtBar*0.904*1000>>edep_geant_scale", "EevtBar>0 && thetaPri > 18*TMath::Pi()/180"); // GEANT4 INFO (NO BIRKS)
+tree_geant->Draw("EevtBar*0.904*1000>>edep_geant_scale", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 
 
 // ============= EXPERIMENTAL histograms =========== //
@@ -90,8 +90,8 @@ edep_icn->SetMaximum(350);
 edep_conn->SetMaximum(800);
 
 // ============= SIM AB INITIO histograms =========== //
-tree_pp->Draw("edep*1000>>edep_pp", "edep>0"); // SIM_AB_INITIO INFO
-
+// tree_pp->Draw("edep*0.904*1000>>edep_pp", "edep>0 && thet>22*TMath::Pi()/180"); // SIM_AB_INITIO INFO
+tree_pp->Draw("edep*0.904*1000>>edep_pp", "edep>0"); // SIM_AB_INITIO INFO
 
 
 tree_geant->Draw("EevtBar*1000*0.92>>muons", "EevtBar>0");
@@ -117,14 +117,14 @@ cout << "Integral muons: " << cont_muons <<endl;
 // edep0->Scale(50);
 //edep0->SetLineColor(4);
 
-edep_g4->Scale(1);
+// edep_g4->Scale(1);
 //edep1->SetLineColor(1);
 
-edep_geant_scale->Scale(0.4);
+// edep_geant_scale->Scale(0.4);
 
 // edep_icn->Scale(3.7);
-edep_icn->Scale(2.8); // Para 20°
-// edep_icn->Scale(2.4); // Para 25°
+// edep_icn->Scale(2.8); // Para 20°
+edep_icn->Scale(2.4); // Para 25°
 // edep_conn->Scale(3.0);
 
 // ======================================= //
@@ -137,7 +137,7 @@ canv->Divide(1,1);
 canv->cd(1);
 // edep_g4->Draw("hist"); 	// edepG4 no Birks
 // edep_geant_birks->Draw("hist same");
-// edep_pp->Draw("hist same"); 	// edepPP
+edep_pp->Draw("hist same"); 	// edepPP
 // edep_conn->Draw("hist"); 	// CONNIE data
 edep_icn->Draw("hist same"); 	// ICN data 
 edep_geant_scale->Draw("hist same");

@@ -1,7 +1,7 @@
 void Test_LvsThet(){
 // TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_2.root");
-TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_0.root");
+TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_nHG_0.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 
 
@@ -69,7 +69,7 @@ line->SetLineColor(2);
 TCanvas *canv = new TCanvas("canv","", 2*700, 600);
 canv->Divide(2,1);
 canv->cd(1);
-histLT->Draw();
+histLT->Draw("colZ");
 line->Draw("same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.8, 0.8);
@@ -77,7 +77,7 @@ leg->AddEntry(line, "Grosor de CCD: 0.0725 cm", "l");
 leg->Draw();
 
 canv->cd(2);
-histLTpp->Draw();
+histLTpp->Draw("colZ");
 line->Draw("same");
 
 leg = new TLegend(0.5, 0.7, 0.8, 0.8);

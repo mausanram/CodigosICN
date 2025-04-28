@@ -183,13 +183,14 @@ void B02EventAction::EndOfEventAction(const G4Event* aEvent)
 	  //fEvtTuple->fill(7,fph);
       analysisManager->FillNtupleIColumn(1,8, n_hit);
 	  //fEvtTuple->fill(8, n_hit);
-      //analysisManager->FillNtupleDColumn(1,8,fLength/cm);
+      analysisManager->FillNtupleDColumn(1,9,fLength/cm);
+      analysisManager->FillNtupleDColumn(1,10,fEnergy/MeV);
       analysisManager->AddNtupleRow(1);
 
 } // if BHC
 
-analysisManager->FillNtupleDColumn(1,9,fLength/cm);
-analysisManager->FillNtupleDColumn(1,10,fEnergy/MeV);
+// analysisManager->FillNtupleDColumn(1,9,fLength/cm);
+// analysisManager->FillNtupleDColumn(1,10,fEnergy/MeV);
 
 }  //B02EndOfEventAction
 
