@@ -15,15 +15,16 @@ TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_MeV.roo
 TTree *tree_icn = (TTree*) f_icn->Get("tree");
 
 
-int NB = 200;
+int NB = 150;
 double tlow = 0.;
-double thi = 0.8;
+double thi = 0.4;
+
 // TH1F *L = new TH1F("L", "Distance Distribution (CCD size: 0.9x0.6x0.0725 cm)", NB, tlow, thi);
 // L->GetXaxis()->SetTitle("Distance (cm)");
 // TH1F *L = new TH1F("L", "Distribuci#acute{o}n de Longitudes con corte angular de 25^{o}", NB, tlow, thi);
-TH1F *L = new TH1F("L", "Distribuci#acute{o}n de Longitudes", NB, tlow, thi);
+TH1F *L = new TH1F("L", "Distribuci#acute{o}n de Longitudes (#theta > 20^{0})", NB, tlow, thi);
 L->GetXaxis()->SetTitle("Distancia (cm)");
-// L->SetStats(0);
+L->SetStats(0);
 L->SetLineColor(2);
 
 // TH1F *LPP = new TH1F("LPP", "Distribuci#acute{o}n de Longitudes con corte angular de 25^{o}", NB, tlow, thi);
@@ -35,50 +36,50 @@ LPP->SetLineColor(4);
 
 TH1F *L_ICN = new TH1F("L_ICN", "Distribuci#acute{o}n de Longitudes", NB, tlow, thi);
 L_ICN->GetXaxis()->SetTitle("Distancia (cm)");
-// L_ICN->SetStats(0);
+L_ICN->SetStats(0);
 L_ICN->SetLineColor(1);
 
 
 TH1F *Lcut = new TH1F("Lcut", "", NB, tlow, thi);
 
 // Fill histograms //
-tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0");  
+// tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0");  
 // tree->Draw("LengthMuLAr>>L", "nHitBar>0");
 // tree->Draw("LengthMuLAr>>L", "nHitBar>0 && LengthMuLAr>0");
 
 
 tree0->Draw("l>>LPP", "l > 0");
 
-// tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0 && thetaPri>22*TMath::Pi()/180");
+tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0 && thetaPri>20*TMath::Pi()/180");
 // tree0->Draw("l>>LPP", "l > 0 && thet>25*TMath::Pi()/180");
 
 tree_icn->Draw("l>>L_ICN", "l > 0");
 
 
 //TLine *line = new TLine(0.0725,0,0.0725,30000);
-TLine *line = new TLine(0.0725,0,0.0725,600);
+TLine *line = new TLine(0.0725,0,0.0725,8000);
 line->SetLineStyle(2);
 line->SetLineWidth(2);
 
 // LPP->Scale(0.94);
 // LPP->Scale(0.1);
 // L->Scale(10.);
-L_ICN->Scale(6.5);
+L_ICN->Scale(6);
 
 // Create Canvas //
 TCanvas *canv = new TCanvas("canv","", 2*700, 600);
-// canv->Divide(2,1);
+canv->Divide(2,1);
 canv->cd(1);
 L->Draw("hist");
-LPP->Draw("hist same");
-// L_ICN->Draw("hist same");
+// LPP->Draw("hist same");
+L_ICN->Draw("hist same");
 line->Draw("same");
-// Lcut->Draw("same");
+Lcut->Draw("same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.8, 0.8);
 leg->AddEntry(L, "Simulaci#acute{o}n Geant4", "lp");
-leg->AddEntry(LPP, "Simulaci#acute{o}n ab initio", "lp");
-// leg->AddEntry(L_ICN, "Datos ICN", "l");
+// leg->AddEntry(LPP, "Simulaci#acute{o}n ab initio", "lp");
+leg->AddEntry(L_ICN, "Datos ICN", "l");
 leg->AddEntry(line, "Grosor de CCD: 0.0725 cm", "l");
 leg->Draw();
 

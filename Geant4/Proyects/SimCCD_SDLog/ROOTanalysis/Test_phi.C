@@ -34,12 +34,12 @@ phi_in->SetStats(0);
 phi_in->GetXaxis()->SetTitle("#phi (rad)");
 phi_in->SetLineColor(2);
 
-TH1F *phi_cut = new TH1F("phi_cut", "Distribuci#acute{o}n angular #phi (para #theta > 25^{o})", NB, tlow, thi);
+TH1F *phi_cut = new TH1F("phi_cut", "Distribuci#acute{o}n angular #phi (para #theta > 20^{o})", NB, tlow, thi);
 phi_cut->SetStats(0);
 phi_cut->GetXaxis()->SetTitle("#phi (rad)");
 phi_cut->SetLineColor(2);
 
-TH1F *phi_icn = new TH1F("phi_icn", "Distribuci#acute{o}n angular #phi de los muones que impactaron la CCD", NB, tlow, thi);
+TH1F *phi_icn = new TH1F("phi_icn", "Distribuci#acute{o}n angular #phi", NB, tlow, thi);
 phi_icn->SetStats(0);
 phi_icn->GetXaxis()->SetTitle("#phi (rad)");
 phi_icn->SetLineColor(1);
@@ -50,7 +50,7 @@ phi_icn->SetLineColor(1);
 
 tree_pp->Draw("phi>>phi_all");
 tree_pp->Draw("phi>>phi_in", " edep > 0 ");
-tree_pp->Draw("phi>>phi_cut", " edep > 0 && thet>25*TMath::Pi()/180");
+tree_pp->Draw("phi>>phi_cut", " edep > 0 && thet>20*TMath::Pi()/180");
 tree_icn->Draw("phi>>phi_icn");
 
 
@@ -109,26 +109,26 @@ leg->AddEntry(phi_all, "Datos Simulados", "f");
 leg->Draw();
 
 
-TLine *line1 = new TLine(TMath::Pi()/2,0,TMath::Pi()/2,2800);
+TLine *line1 = new TLine(TMath::Pi()/2,0,TMath::Pi()/2,2400);
 line1->SetLineStyle(2);
 line1->SetLineWidth(2);
 
-TLine *line2 = new TLine(TMath::Pi(),0,TMath::Pi(),3000);
+TLine *line2 = new TLine(TMath::Pi(),0,TMath::Pi(),2500);
 line2->SetLineStyle(2);
 line2->SetLineWidth(2);
 
-TLine *line3 = new TLine(3*TMath::Pi()/2,0,3*TMath::Pi()/2,2800);
+TLine *line3 = new TLine(3*TMath::Pi()/2,0,3*TMath::Pi()/2,2400);
 line3->SetLineStyle(2);
 line3->SetLineWidth(2);
 
 canv->cd(2);
 phi_cut->SetMinimum(0);
 phi_in->SetMinimum(0);
-phi_in->Draw();
-// phi_cut->Draw("hist");
-func2->Draw("same"); 
-// phi_icn->Scale(6.5);
-// phi_icn->Draw("hist same");
+// phi_in->Draw();
+phi_cut->Draw("hist");
+// func2->Draw("same"); 
+phi_icn->Scale(6.5);
+phi_icn->Draw("hist same");
 line1->Draw("same");
 line2->Draw("same");
 line3->Draw("same");
@@ -137,12 +137,12 @@ leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 // leg->SetHeader("", "C");
 // leg->SetFillStyle(0);
-leg->AddEntry(func1, "A [#frac{A_{s}}{#pi}+ #left(#frac{A_{l}}{4}#right)#left|cos#theta #right| + #left(#frac{A_{c}}{4}#right) #left|sin#theta #right| ]", "l");
+// leg->AddEntry(func1, "A [#frac{A_{s}}{#pi}+ #left(#frac{A_{l}}{4}#right)#left|cos#theta #right| + #left(#frac{A_{c}}{4}#right) #left|sin#theta #right| ]", "l");
 // leg->AddEntry((TObject*)0, "", "");
 // leg->AddEntry((TObject*)0, "+ #left(#frac{A_{c}}{4}#right) #left|sin#theta #right| ]", " ");
 // leg->AddEntry((TObject*)0, "", "");
-leg->AddEntry(phi_all, "Datos Simulados ", "f");
-// leg->AddEntry(phi_icn, "Datos ICN ", "f");
+leg->AddEntry(phi_all, "Simulaci#acute{o}n de Geant4 ", "f");
+leg->AddEntry(phi_icn, "Datos ICN ", "f");
 leg->Draw();
 
 canv->Print("Dis_phi.pdf");
