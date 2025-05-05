@@ -1353,7 +1353,7 @@ def event_DataFrame(dataCal, label_img, nlabels_img, prop, header, extension, un
 
     return TF 
 
-def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
+def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, min_energy):
     CCD_depth = 725 ## micras
     px_to_micras = 15 ## micras
     px_to_cm = 0.0015 ## cm/px
@@ -1397,6 +1397,9 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
         rM = prop[event-1].axis_major_length / 2
         rm = prop[event-1].axis_minor_length / 2
 
+        ## Tensor de inercia ##
+        inercia_tensor = prop[event-1].inertia_tensor
+        non_diag_inercia_tensor = inercia_tensor[0][1]
 
         ## Aquí se calcula la elipcidad del cluster ##
         try:
@@ -1449,13 +1452,16 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             list_charge_all_events.append(charge)
             continue 
 
-        # elif rM <= Elipticity * rm:
-        #     list_charge_all_events.append(charge)
-        #     continue
-
         elif elip < Elipticity:
             list_charge_all_events.append(charge)
             continue
+        
+        ## Nuevos parámetros ##
+        elif charge < min_energy:
+            continue
+        
+        # elif non_diag_inercia_tensor > 0:
+        #     continue
 
         elif  elip >= Elipticity :
             # charge = data_maskEvent.sum()
