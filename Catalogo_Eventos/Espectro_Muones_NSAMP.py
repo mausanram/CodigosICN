@@ -187,7 +187,7 @@ def main(argObj):
             fondo = ma.masked_array(dataCal,fondo_mask)
             valor_promedio_fondo = fondo.data.mean()
 
-            DeltaL, DeltaEL, list_charge, _, list_theta, list_phi, list_charge_all_events = muon_filter(dataCal=dataCal, label_img=label_img, 
+            DeltaL, DeltaEL, list_charge, _, list_theta, list_phi, list_charge_all_events,  = muon_filter(dataCal=dataCal, label_img=label_img, 
                                                                                         nlabels_img=n_events, prop=prop, Solidit=Solidit, Elipticity=Elip)
             if extension == 0: 
                 for index in np.arange(0, len(DeltaEL)):

@@ -585,6 +585,8 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
     list_charge = []
     list_theta = []
     list_phi = []
+    list_elip = []
+    list_sold = []
 
     list_charge_all_events = []
 
@@ -690,12 +692,14 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             list_charge.append(charge)
             list_theta.append(theta)
             list_phi.append(phi)
+            list_elip.append(elip)
+            list_sold.append(Solidity)
             # print(charge, DeltaEL)
 
             # if DeltaEL_range_min <= DeltaEL <= DeltaEL_range_max:
             list_Muon_labels.append(event)
 
-    return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta, list_phi, list_charge_all_events
+    return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta, list_phi, list_charge_all_events, list_elip, list_sold
 
 
 def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop, min_Charge, Sigma, skirts):

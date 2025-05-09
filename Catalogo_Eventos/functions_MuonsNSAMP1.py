@@ -1367,8 +1367,12 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, min_
     list_charge = []
     list_theta = []
     list_phi = []
+    list_elip = []
+    list_sold = []
 
     list_charge_all_events = []
+    list_elip_all_events = []
+    list_sol_all_events = []
 
     for event in np.arange(1, nlabels_img):
         mask = np.invert(label_img == event)
@@ -1450,10 +1454,14 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, min_
 
         elif  Solidity < Solidit:
             list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
             continue 
 
         elif elip < Elipticity:
             list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
             continue
         
         ## Nuevos parámetros ##
@@ -1601,12 +1609,14 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, min_
             list_DeltaEL.append(Delta_EL)
             list_charge.append(charge)
             list_theta.append(theta)
+            list_elip.append(elip)
+            list_sold.append(Solidity)
             # print(charge, DeltaEL)
 
             # if DeltaEL_range_min <= DeltaEL <= DeltaEL_range_max:
             list_Muon_labels.append(event)
 
-    return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta, list_phi, list_charge_all_events
+    return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta, list_phi, list_charge_all_events, list_elip, list_sold, list_elip_all_events, list_sol_all_events
 ### ====================================================================================================== ###
 
 ### ========================= Catálogo de Muones Rectos (verticales/horizontales) ========================= ###
