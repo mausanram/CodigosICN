@@ -12,6 +12,9 @@ TTree *tree0 = (TTree*) file0->Get("tree");
 TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_muons_CONNIE_NSAMP400_700x420_SIGMAS_5_MeV.root"); // INFO ALL_CLUSTERS
 TTree *tree_icn = (TTree*) f_icn->Get("tree");
 
+TFile *f_ICN = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_MeV.root"); // INFO ALL_CLUSTERS
+TTree *tree_ICN = (TTree*) f_ICN->Get("tree");
+
 
 int NB = 200;
 double tlow = 0.;
@@ -32,8 +35,13 @@ LPP->SetLineColor(4);
 
 TH1F *L_ICN = new TH1F("L_ICN", "Distribuci#acute{o}n de Longitudes", NB, tlow, thi);
 L_ICN->GetXaxis()->SetTitle("Distancia (cm)");
-// L_ICN->SetStats(0);
+L_ICN->SetStats(0);
 L_ICN->SetLineColor(1);
+
+TH1F *L_ICN_true = new TH1F("L_ICN_true", "Distribuci#acute{o}n de Longitudes", NB, tlow, thi);
+L_ICN_true->GetXaxis()->SetTitle("Distancia (cm)");
+L_ICN->SetStats(0);
+L_ICN_true->SetLineColor(2);
 
 
 TH1F *Lcut = new TH1F("Lcut", "", NB, tlow, thi);
@@ -46,6 +54,7 @@ tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0 && thetaPri>25*TMath::Pi()/180");
 tree0->Draw("l>>LPP", "l > 0 && thet>25*TMath::Pi()/180");
 
 tree_icn->Draw("l>>L_ICN", "l > 0");
+tree_ICN->Draw("l>>L_ICN_true", "l > 0");
 
 
 //TLine *line = new TLine(0.0725,0,0.0725,30000);
@@ -63,15 +72,17 @@ TCanvas *canv = new TCanvas("canv","", 2*700, 600);
 // canv->Divide(2,1);
 canv->cd(1);
 // L->Draw("hist");
-LPP->Draw("hist");
+// LPP->Draw("hist");
 L_ICN->Draw("hist same");
+L_ICN_true->Draw("hist same");
 line->Draw("same");
 // Lcut->Draw("same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.8, 0.8);
 // leg->AddEntry(L, "Simulaci#acute{o}n Geant4", "lp");
-leg->AddEntry(LPP, "Simulaci#acute{o}n ab initio", "lp");
+// leg->AddEntry(LPP, "Simulaci#acute{o}n ab initio", "lp");
 leg->AddEntry(L_ICN, "Datos CONNIE", "l");
+leg->AddEntry(L_ICN_true, "Datos ICN", "l");
 leg->AddEntry(line, "Grosor de CCD: 0.068 cm", "l");
 leg->Draw();
 

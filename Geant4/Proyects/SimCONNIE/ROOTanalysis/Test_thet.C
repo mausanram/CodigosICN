@@ -35,6 +35,7 @@ theta_icn->GetXaxis()->SetTitle("#theta(rad)");
 theta_icn->SetLineColor(1);
 theta_icn->SetStats(0);
 
+
 TH1F *theta_cut = new TH1F("theta_cut", "Distribuci#acute{o}n angular #theta del ICN", NB, tlow, thi);
 theta_cut->GetXaxis()->SetTitle("#theta(rad)");
 theta_cut->SetLineColor(2);
@@ -107,12 +108,12 @@ leg->AddEntry(func1, "Csin#theta cos^{2}#theta", "l");
 leg->AddEntry(theta_all, "Datos Simulados", "f");
 leg->Draw();
 
-theta_icn->Scale(7.2);
+// theta_icn->Scale(7.2);
 canv->cd(2);
-theta_in->Draw("hist");
+// theta_in->Draw("hist");
 // theta_cut->Draw("hist");
 
-theta_icn->Scale(5.1);
+theta_icn->Scale(40);
 theta_icn->Draw("hist same");
 func2->Draw("same");
 
