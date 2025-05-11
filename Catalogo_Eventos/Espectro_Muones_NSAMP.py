@@ -136,8 +136,8 @@ def main(argObj):
 
             try :
                 # print('Voy a obtener el OsCan y el active area')
-                data = hdu_list[extension].data[:,:550]
-                oScan = hdu_list[extension].data[:,550:]
+                data = hdu_list[extension].data[:250,10:539]
+                oScan = hdu_list[extension].data[:250,539:]
 
                 oscan_x = oScan.shape[1]
                 oscan_y = oScan.shape[0]
@@ -311,7 +311,7 @@ def main(argObj):
     elif units == 1:
         file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_electrons.pkl'
     elif units == 2:
-        file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_KeV.pkl'
+        file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_SIZE_250xKeV.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
