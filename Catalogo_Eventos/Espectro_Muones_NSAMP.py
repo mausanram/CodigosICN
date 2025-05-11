@@ -40,7 +40,7 @@ DeltaEL_range = 85
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 units = 2
-n_sigmas = 35
+n_sigmas = 20
 numero_bins = 600
 
 def Gaussian2(x,m,s,g,a1,a2): #data, mean, sigma, gain, height1, heigth2
@@ -57,10 +57,23 @@ def main(argObj):
 
     list_totalEvents = []
 
+    ### ===== List og all events === ##
     list_charge_of_all_extension_1 = []
     list_charge_of_all_extension_2 = []
     list_charge_of_all_extension_4 = []
 
+    list_elip_of_all_extension_1 = []
+    list_elip_of_all_extension_2 = []
+    list_elip_of_all_extension_4 = []
+
+    list_sol_of_all_extension_1 = []
+    list_sol_of_all_extension_2 = []
+    list_sol_of_all_extension_4 = []
+
+    ### ============================ ###
+
+
+    ### ===== List for muons ===== ###
     list_EventCharge_extension_2 =[]
     list_EventCharge_extension_1 = []
     list_EventCharge_extension_4 = []
@@ -81,9 +94,19 @@ def main(argObj):
     list_phi_extension_1 = []
     list_phi_extension_4 = []
 
+    list_elip_extension_2 =[]
+    list_elip_extension_1 = []
+    list_elip_extension_4 = []
+
+    list_sol_extension_2 =[]
+    list_sol_extension_1 = []
+    list_sol_extension_4 = []
+
     list_fit_gain_2 = []
     list_fit_gain_1 = []
     list_fit_gain_4 = []
+
+    ### ========================= ###
 
     nerr_img = 0
     nerr_ext = 0
@@ -187,37 +210,58 @@ def main(argObj):
             fondo = ma.masked_array(dataCal,fondo_mask)
             valor_promedio_fondo = fondo.data.mean()
 
-            DeltaL, DeltaEL, list_charge, _, list_theta, list_phi, list_charge_all_events,  = muon_filter(dataCal=dataCal, label_img=label_img, 
-                                                                                        nlabels_img=n_events, prop=prop, Solidit=Solidit, Elipticity=Elip)
+            DeltaL, DeltaEL, list_charge, _, list_theta, list_phi, list_charge_all_events, list_elip, list_sol, list_elip_all, list_sol_all = muon_filter(dataCal=dataCal, label_img=label_img, 
+                                                                                        nlabels_img=n_events, prop=prop, Solidit=Solidit, Elipticity=Elip, min_energy = 10)
             if extension == 0: 
                 for index in np.arange(0, len(DeltaEL)):
-                    list_charge_of_all_extension_1.append(list_charge_all_events[index])
+                    ### ===== Muons ===== ###
                     list_DeltaEL_extension_1.append(DeltaEL[index])
                     list_EventCharge_extension_1.append(list_charge[index])
                     list_DeltaL_extension_1.append(DeltaL[index])
                     list_theta_extension_1.append(list_theta[index])
                     list_phi_extension_1.append(list_phi[index])
+                    list_elip_extension_1.append(list_elip[index])
+                    list_sol_extension_1.append(list_sol[index])
                     list_fit_gain_1.append(Gain)
+
+                for index in np.arange(0, len(list_charge_all_events)):
+                    ### ==== All events ==== ###
+                    list_charge_of_all_extension_1.append(list_charge_all_events[index])
+                    list_elip_of_all_extension_1.append(list_elip_all[index])
+                    list_sol_of_all_extension_1.append(list_sol_all[index])
+                    ### ==================== ###
                     
             if extension == 1: 
                 for index in np.arange(0, len(DeltaEL)):
-                    list_charge_of_all_extension_2.append(list_charge_all_events[index])
                     list_DeltaEL_extension_2.append(DeltaEL[index])
                     list_EventCharge_extension_2.append(list_charge[index])
                     list_DeltaL_extension_2.append(DeltaL[index])
                     list_theta_extension_2.append(list_theta[index])
                     list_phi_extension_2.append(list_phi[index])
+                    list_elip_extension_2.append(list_elip[index])
+                    list_sol_extension_2.append(list_sol[index])
                     list_fit_gain_2.append(Gain)
+
+                for index in np.arange(0, len(list_charge_all_events)):
+                    list_charge_of_all_extension_2.append(list_charge_all_events[index])
+                    list_elip_of_all_extension_2.append(list_elip_all[index])
+                    list_sol_of_all_extension_2.append(list_sol_all[index])
             
             if extension == 3: 
                 for index in np.arange(0, len(DeltaEL)):
-                    list_charge_of_all_extension_4.append(list_charge_all_events[index])
                     list_DeltaEL_extension_4.append(DeltaEL[index])
                     list_EventCharge_extension_4.append(list_charge[index])
                     list_DeltaL_extension_4.append(DeltaL[index])
                     list_theta_extension_4.append(list_theta[index])
                     list_phi_extension_4.append(list_phi[index])
+                    list_elip_extension_4.append(list_elip[index])
+                    list_sol_extension_4.append(list_sol[index])
                     list_fit_gain_4.append(Gain)
+
+                for index in np.arange(0, len(list_charge_all_events)):
+                    list_charge_of_all_extension_4.append(list_charge_all_events[index])
+                    list_elip_of_all_extension_4.append(list_elip_all[index])
+                    list_sol_of_all_extension_4.append(list_sol_all[index])
 
         print('Imagen ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
         del hdu_list              
@@ -228,13 +272,19 @@ def main(argObj):
                         'Solidity' : list_Solidit,
                         'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_DeltaEL_extension_1,
                                          'deltaL' : list_DeltaL_extension_1, 'all_events' : list_charge_of_all_extension_1,
-                                         'theta': list_theta_extension_1, 'phi': list_phi_extension_1, 'gain' : list_fit_gain_1}, 
+                                         'theta': list_theta_extension_1, 'phi': list_phi_extension_1, 'gain' : list_fit_gain_1,
+                                         'elip' : list_elip_extension_1, 'sol' : list_sol_extension_1,
+                                         'all_events_elip' : list_elip_of_all_extension_1, 'all_events_sol' : list_sol_of_all_extension_1}, 
                         'extension_2' : {'charge' : list_EventCharge_extension_2, 'deltaEL' : list_DeltaEL_extension_2, 
                                         'deltaL' : list_DeltaL_extension_2, 'all_events' : list_charge_of_all_extension_2,
-                                        'theta': list_theta_extension_2, 'phi': list_phi_extension_2,'gain' : list_fit_gain_2},
+                                        'theta': list_theta_extension_2, 'phi': list_phi_extension_2,'gain' : list_fit_gain_2, 
+                                        'elip' : list_elip_extension_2, 'sol' : list_sol_extension_2,
+                                        'all_events_elip' : list_elip_of_all_extension_2, 'all_events_sol' : list_sol_of_all_extension_2},
                         'extension_4' : {'charge' : list_EventCharge_extension_4, 'deltaEL' : list_DeltaEL_extension_4, 
                                          'deltaL' : list_DeltaL_extension_4, 'all_events' : list_charge_of_all_extension_4,
-                                         'theta': list_theta_extension_4, 'phi': list_phi_extension_4, 'gain' : list_fit_gain_4}}
+                                         'theta': list_theta_extension_4, 'phi': list_phi_extension_4, 'gain' : list_fit_gain_4, 
+                                         'elip' : list_elip_extension_4, 'sol' : list_sol_extension_4, 
+                                         'all_events_elip' : list_elip_of_all_extension_4, 'all_events_sol' : list_sol_of_all_extension_4}}
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()

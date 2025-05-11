@@ -1403,7 +1403,7 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, min_
 
         ## Tensor de inercia ##
         inercia_tensor = prop[event-1].inertia_tensor
-        non_diag_inercia_tensor = inercia_tensor[0][1]
+        # non_diag_inercia_tensor = inercia_tensor[0][1]
 
         ## Aquí se calcula la elipcidad del cluster ##
         try:
@@ -1435,18 +1435,26 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, min_
         ## Aquí comienza el filtro de muones 
         if rM == 0 or rm == 0:
             list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
             continue 
 
         elif maxx - minx <= 3:
             list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
             continue
 
         elif maxy - miny <= 3:
             list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
             continue
 
         elif not Barycentercharge:
             list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
             continue
 
         elif differval < MeanValue_Event: 
@@ -1465,8 +1473,8 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, min_
             continue
         
         ## Nuevos parámetros ##
-        elif charge < min_energy:
-            continue
+        # elif charge < min_energy:
+        #     continue
         
         # elif non_diag_inercia_tensor > 0:
         #     continue

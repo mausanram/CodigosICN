@@ -589,6 +589,8 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
     list_sold = []
 
     list_charge_all_events = []
+    list_elip_all_events = []
+    list_sol_all_events = []
 
     for event in np.arange(1, nlabels_img):
         mask = np.invert(label_img == event)
@@ -648,18 +650,26 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
         ## Aquí comienza el filtro de muones 
         if rM == 0 or rm == 0:
             list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
             continue 
 
         elif maxx - minx <= 3:
             list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
             continue
 
         elif maxy - miny <= 3:
             list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
             continue
 
         elif not Barycentercharge:
             list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
             continue
 
         elif differval < MeanValue_Event: 
@@ -667,10 +677,14 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
 
         elif  Solidity < Solidit:
             list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
             continue 
 
         elif elip < Elipticity:
             list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
             continue
 
         elif  elip >= Elipticity :
@@ -678,7 +692,7 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
 
             # if charge > 100:
             Delta_EL = (charge)/ (Delta_L) 
-            theta = np.arctan((Diagonal_lenght * px_to_cm)/(CCD_depth * micra_to_cm)) *(180 /np.pi)
+            theta = np.arctan((Diagonal_lenght * px_to_cm)/(CCD_depth * micra_to_cm))
 
             try:
                 phi = phi_angle_ROOT(data_maskEvent)
@@ -699,7 +713,7 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             # if DeltaEL_range_min <= DeltaEL <= DeltaEL_range_max:
             list_Muon_labels.append(event)
 
-    return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta, list_phi, list_charge_all_events, list_elip, list_sold
+    return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta, list_phi, list_charge_all_events, list_elip, list_sold, list_elip_all_events, list_sol_all_events
 
 
 def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop, min_Charge, Sigma, skirts):
