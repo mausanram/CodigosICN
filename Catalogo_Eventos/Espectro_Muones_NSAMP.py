@@ -26,7 +26,7 @@ px_to_micras = 15
 micra_to_cm = 1 / 10000
 
 ## Datos del filtro de muones GENERAL
-Solidit = 0.7
+Solidit = 0.65
 Elip = 0.65
 
 ## Datos del filtro POR EXTENSIÓN
@@ -311,7 +311,7 @@ def main(argObj):
     elif units == 1:
         file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_electrons.pkl'
     elif units == 2:
-        file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_SIZE_250xKeV.pkl'
+        file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_SIZE_250x539_KeV.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 

@@ -25,7 +25,7 @@ px_to_micras = 15
 micra_to_cm = 1 / 10000
 
 ## Datos del filtro de muones GENERAL
-Solidit = 0.7
+Solidit = 0.65
 Elip = 0.65
 RUNID = 116
 
