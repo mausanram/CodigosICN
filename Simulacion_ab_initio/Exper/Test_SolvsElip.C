@@ -49,13 +49,14 @@ line_0->Draw("same");
 
 canv->cd(2);
 histLTnonmuons->Draw("same colZ");
+// histLT->Draw("same colZ");
 line->Draw("same");
 line_0->Draw("same");
 
 TLegend *leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 leg->SetFillStyle(0);
-leg->AddEntry(histLT, "Datos CONNIE", "l");
+leg->AddEntry(histLT, "Datos ICN", "l");
 leg->AddEntry(line, "Grosor de la CCD: 0.0725 cm", "l");
 // leg->AddEntry(line, "Grosor de la CCD: 0.068 cm", "l");
 // leg->Draw();
