@@ -33,8 +33,6 @@ Elip = 0.65
 list_Elip = [0.65, 0.65, 0, 0.65]
 list_Solidit = [0.7, 0.7, 0, 0.7]
 
-DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
-
 ratio_keV = 0.0036
 DeltaEL_range = 85
 
@@ -211,7 +209,7 @@ def main(argObj):
             valor_promedio_fondo = fondo.data.mean()
 
             DeltaL, DeltaEL, list_charge, _, list_theta, list_phi, list_charge_all_events, list_elip, list_sol, list_elip_all, list_sol_all = muon_filter(dataCal=dataCal, label_img=label_img, 
-                                                                                        nlabels_img=n_events, prop=prop, Solidit=Solidit, Elipticity=Elip, min_energy = 10)
+                                                                                        nlabels_img=n_events, prop=prop, Solidit=Solidit, Elipticity=Elip)
             if extension == 0: 
                 for index in np.arange(0, len(DeltaEL)):
                     ### ===== Muons ===== ###
@@ -311,7 +309,7 @@ def main(argObj):
     elif units == 1:
         file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_electrons.pkl'
     elif units == 2:
-        file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_SIZE_250x539_KeV.pkl'
+        file_name = 'dict_muons_NSAMP324_Extensions_1_2_4_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_SIZE_250x539_KeV.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 

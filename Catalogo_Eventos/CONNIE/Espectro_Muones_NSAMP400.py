@@ -78,14 +78,9 @@ def main(argObj):
             print('Loading error in image ' + str(img) + 'in open the image.')
             continue
         
-        # for extension in (0,1,3):
-            # Elip = list_Elip[extension]
-            # Solidit = list_Solidit[extension]
         extension = 0
 
         try :
-            # print('Voy a obtener el OsCan y el active area')
-            # dataCal = hdu_list[extension].data[:600,:] # En electrones
             dataCal = hdu_list[extension].data[:,:]
             header = hdu_list[extension].header
 

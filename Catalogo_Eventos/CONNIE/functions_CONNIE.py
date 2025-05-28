@@ -10,7 +10,7 @@ import random
 import time
 
 # from ROOT import TF1, TH1F, Fit, TCanvas, gStyle
-from ROOT import TMath, TF1, TH1F, TCanvas, gStyle, TProfile, TGraphErrors
+from ROOT import TMath, TF1, TH1F, TH2F, TCanvas, gStyle, TProfile, TGraphErrors
 
 
 def event_DataFrame(dataCal, label_img, nlabels_img, prop, header, extension, unidades) -> pd.DataFrame:
@@ -571,6 +571,237 @@ def phi_angle_ROOT(data_mask):
                             
     return phi
 
+
+def phi_angle_pixels(data_mask):
+    NBX = data_mask.shape[1]
+    NBY = data_mask.shape[0]
+    XY_proportion = 2
+
+
+    nbx = NBX
+    lox = 0
+    hix = data_mask.shape[1]
+
+    nby = NBY
+    loy = 0
+    hiy = data_mask.shape[0]
+
+    hist2d = TH2F("hist2d", "", nbx,lox,hix, nby,loy,hiy)
+    for i in np.arange(0, nbx):
+        for j in np.arange(0, nby):
+            # cont = data_mask[i][j]
+            if data_mask[j][i]:
+                hist2d.SetBinContent(int(i+1),int(j+1), data_mask[j][i])
+            else:
+                # n = n+1
+                # print(n)
+                cont = 0
+                hist2d.SetBinContent(int(i+1),int(j+1), cont)
+
+    fitline = TF1("fitline", "[0] + [1]*x",lox,hix)  
+    hist2d.Fit("fitline", "R")
+
+    ### ===== Parámetros del Ajuste ===== ###
+    ordenada = fitline.GetParameters()[0]
+    pendiente = fitline.GetParameters()[1]
+    Prob = fitline.GetProb()
+    Chi2 = fitline.GetChisquare()
+    ### ================================== ###
+
+    flag_hor = False
+    flag_ver = False
+
+    ### ====== Esta sección determina si es un muon horizontal, vertical u oblicuo ===== ###
+    if NBX > NBY * XY_proportion:
+        flag_hor = True
+        c_l = data_mask[:, 0:int(NBX/2)]
+        c_r = data_mask[:, int(NBX/2):NBX] 
+
+    elif NBY > NBX * XY_proportion:
+        flag_ver = True
+        c_d = data_mask[:int(NBY/2), :]
+        c_u = data_mask[int(NBY/2):NBY, :]
+        
+    else: 
+        c_ld = data_mask[0:int(NBY/2), 0:int(NBX/2)]
+        c_lu = data_mask[int(NBY/2):NBY, 0:int(NBX/2)]
+        c_rd = data_mask[0:int(NBY/2),int(NBX/2):NBX]
+        c_ru = data_mask[int(NBY/2):NBY, int(NBX/2):NBX]
+
+
+    ### ====== Esta sección determina el ángulo phi con la pendiente del ajuste === ###
+    if flag_hor: ## Es un muon horizontal
+        if pendiente > 0:
+            ## El muon puede estar en el cuadrante 1 o 3
+            # print('pendiente positiva')
+
+            n_cl = 0
+            n_cr = 0
+            for index_y in np.arange(0, len(c_l)):
+                # print(index)
+                for index_x in np.arange(0, len(c_l[0])):
+                    # print(index_x)
+                    if c_l[index_y][index_x] != 0:
+                        n_cl = n_cl +1
+
+            for index_y in np.arange(0, len(c_r)):
+                # print(index)
+                for index_x in np.arange(0, len(c_r[0])):
+                    # print(index_x)
+                    if c_r[index_y][index_x] != 0:
+                        n_cr = n_cr +1
+
+            if n_cl < n_cr:
+                # print('El muon está en el sector 1')
+                phi = np.arctan(pendiente)
+
+            elif n_cl > n_cr:
+                # print('El muon está en el sector 3')
+                phi = np.arctan(pendiente) + np.pi
+        else: 
+            # print('pendiente negativa')
+            ### El muon puede estar en el cuadrante 2 o 4
+
+            n_cl = 0
+            n_cr = 0
+            for index_y in np.arange(0, len(c_l)):
+                # print(index)
+                for index_x in np.arange(0, len(c_l[0])):
+                    # print(index_x)
+                    if c_l[index_y][index_x] != 0:
+                        n_cl = n_cl +1
+
+            for index_y in np.arange(0, len(c_r)):
+                # print(index)
+                for index_x in np.arange(0, len(c_r[0])):
+                    # print(index_x)
+                    if c_r[index_y][index_x] != 0:
+                        n_cr = n_cr +1
+
+            if n_cl > n_cr:
+                # print('El muon está en el sector 2')
+                phi = np.arctan(pendiente)  + np.pi/2
+
+            elif n_cl < n_cr:
+                # print('El muon está en el sector 4')
+                phi = np.arctan(pendiente) + 3 * np.pi/ 2
+
+    if flag_ver: ## Es un muon horizontal
+        if pendiente > 0:
+            ## El muon puede estar en el cuadrante 1 o 3
+            # print('pendiente positiva')
+
+            n_cu = 0
+            n_cd = 0
+            for index_y in np.arange(0, len(c_d)):
+                # print(index)
+                for index_x in np.arange(0, len(c_d[0])):
+                    # print(index_x)
+                    if c_d[index_y][index_x] != 0:
+                        n_cd = n_cd + 1
+
+            for index_y in np.arange(0, len(c_u)):
+                # print(index)
+                for index_x in np.arange(0, len(c_u[0])):
+                    # print(index_x)
+                    if c_u[index_y][index_x] != 0:
+                        n_cu = n_cu + 1
+
+            if n_cu > n_cd:
+                # print('El muon está en el sector 1')
+                phi = np.arctan(pendiente)
+
+            elif n_cu < n_cd:
+                # print('El muon está en el sector 3')
+                phi = np.arctan(pendiente) + np.pi
+        else: 
+            # print('pendiente negativa')
+            ### El muon puede estar en el cuadrante 2 o 4
+
+            n_cu = 0
+            n_cd = 0
+            for index_y in np.arange(0, len(c_u)):
+                # print(index)
+                for index_x in np.arange(0, len(c_u[0])):
+                    # print(index_x)
+                    if c_u[index_y][index_x] != 0:
+                        n_cu = n_cu + 1
+
+            for index_y in np.arange(0, len(c_d)):
+                # print(index)
+                for index_x in np.arange(0, len(c_d[0])):
+                    # print(index_x)
+                    if c_d[index_y][index_x] != 0:
+                        n_cd = n_cd + 1
+
+            if n_cu > n_cd:
+                # print('El muon está en el sector 2')
+                phi = np.arctan(pendiente)  + np.pi/2
+
+            elif n_cu < n_cd:
+                # print('El muon está en el sector 4')
+                phi = np.arctan(pendiente) + 3 * np.pi/ 2
+
+
+    if not flag_ver and not flag_hor: ## Otros casos
+        if pendiente > 0:
+            ## El muon puede estar en el cuadrante 1 o 3
+            # print('pendiente positiva')
+
+            n_cu = 0
+            n_cd = 0
+            for index_y in np.arange(0, len(c_ld)):
+                # print(index)
+                for index_x in np.arange(0, len(c_ld[0])):
+                    # print(index_x)
+                    if c_ld[index_y][index_x] != 0:
+                        n_cd = n_cd + 1
+
+            for index_y in np.arange(0, len(c_ru)):
+                # print(index)
+                for index_x in np.arange(0, len(c_ru[0])):
+                    # print(index_x)
+                    if c_ru[index_y][index_x] != 0:
+                        n_cu = n_cu + 1
+
+            if n_cu > n_cd:
+                # print('El muon está en el sector 1')
+                phi = np.arctan(pendiente)
+
+            elif n_cu < n_cd:
+                # print('El muon está en el sector 3')
+                phi = np.arctan(pendiente) + np.pi
+        else: 
+            # print('pendiente negativa')
+            ### El muon puede estar en el cuadrante 2 o 4
+
+            n_cu = 0
+            n_cd = 0
+            for index_y in np.arange(0, len(c_lu)):
+                # print(index)
+                for index_x in np.arange(0, len(c_lu[0])):
+                    # print(index_x)
+                    if c_lu[index_y][index_x] != 0:
+                        n_cu = n_cu + 1
+
+            for index_y in np.arange(0, len(c_rd)):
+                # print(index)
+                for index_x in np.arange(0, len(c_rd[0])):
+                    # print(index_x)
+                    if c_rd[index_y][index_x] != 0:
+                        n_cd = n_cd + 1
+
+            if n_cu > n_cd:
+                # print('El muon está en el sector 2')
+                phi = np.arctan(pendiente)  + np.pi/2
+
+            elif n_cu < n_cd:
+                # print('El muon está en el sector 4')
+                phi = np.arctan(pendiente) + 3 * np.pi/ 2
+        
+    return phi
+
+
 def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
     CCD_depth = 680 ## micras
     px_to_micras = 15 ## micras
@@ -695,7 +926,7 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             theta = np.arctan((Diagonal_lenght * px_to_cm)/(CCD_depth * micra_to_cm))
 
             try:
-                phi = phi_angle_ROOT(data_maskEvent)
+                phi = phi_angle_pixels(data_maskEvent)
             except:
                 phi = -4
 
