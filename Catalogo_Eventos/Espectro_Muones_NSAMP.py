@@ -38,7 +38,7 @@ DeltaEL_range = 85
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 units = 2
-n_sigmas = 20
+n_sigmas = 13
 numero_bins = 600
 
 def Gaussian2(x,m,s,g,a1,a2): #data, mean, sigma, gain, height1, heigth2
