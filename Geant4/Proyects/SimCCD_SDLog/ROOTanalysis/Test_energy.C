@@ -97,18 +97,6 @@ void Test_energy(){
 TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
 TTree *tree = (TTree*) file->Get("B02Evts");
 
-    // //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
-// // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
-// // TFile *file = new TFile("Sim_ab_initio_NMUONS_500000_PLANES_3.0x3.0_RADIO_12_0.root");
-
-// // TFile *file = new TFile("Sim_ab_initio_NMUONS_300000_PLANES_1.5x1.5_RADIO_8_CCDSIZE_400x600_SIGMA_LV_1.0_.root");
-// // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_1000000_PLANES_150x150_RADIO_450.root");
-// // TFile *file = new TFile("MuonGen_NMUONS_10000_pyth.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_100000_PLANES_1.5_RADIO_8_CCDSIZE_400X600_C_0.root");
-// TTree *tree = (TTree*) file->Get("tree");
-
-// cout<<TMath::C() * 100 <<endl;
-
 // int NB = 100;
 int NB = 70;
 double tlow = 1;
@@ -129,10 +117,6 @@ xbins[NB] = thi;
 TH1F *thet_0_6 = new TH1F("thet_0_6", "", NB, xbins);
 TH1F *thet_43_47= new TH1F("thet_43_47", "", NB, xbins);
 TH1F *thet_73_77 = new TH1F("thet_73_77", "", NB, xbins);
-
-// TH1F *thet_0_6 = new TH1F("thet_0_6", "", NB, tlow, thi);
-// TH1F *thet_43_47 = new TH1F("thet_43_47", "", NB, tlow, thi);
-// TH1F *thet_73_77 = new TH1F("thet_73_77", "", NB, tlow, thi);
 
 thet_0_6->SetLineColor(1);
 thet_43_47->SetLineColor(2);
@@ -199,10 +183,7 @@ double maxh45 = thet_43_47->GetMaximum();
 double maxh75 = thet_73_77->GetMaximum();
 
 
-// thet_0_6->Scale(0.00000000003);
-// thet_43_47->Scale(0.000000000003);
-// thet_73_77->Scale(0.00000000000075);
-
+/// ===== Se escalan a mano los histogramas al tamaño de la función ===== ///
 thet_0_6->Scale(0.00000000024);
 thet_43_47->Scale(0.000000000026);
 thet_73_77->Scale(0.0000000000065);
@@ -222,6 +203,9 @@ thet_43_47->Draw("hist same");
 Smith75->Draw("L same");
 thet_73_77->Draw("hist same");
 
+gPad->SetLogy(1);
+gPad->SetLogx(1);
+
 
 TLegend *leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
@@ -233,20 +217,6 @@ leg->AddEntry(Smith75, "Curva te#acute{o}rica para #theta = #frac{5#pi}{12}", "l
 leg->AddEntry(thet_0_6, "Datos Simulados", "f");
 leg->Draw();
 
-
-// Smith0->Draw();
-// Smith45->Draw("same");
-// Smith75->Draw("same");
-
-gPad->SetLogy(1);
-gPad->SetLogx(1);
-// func1->Draw("same");
-
-// canv->cd(2);
-// energy_in->Draw();
-// gPad->SetLogy(1);
-// gPad->SetLogx(1);
-// func2->Draw("same");
 canv->Print("Dis_enpri.pdf");
 
 }
