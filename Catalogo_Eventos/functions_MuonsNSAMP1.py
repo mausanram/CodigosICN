@@ -1327,11 +1327,11 @@ def phi_angle_pixels(data_mask):
 
             if n_cl > n_cr:
                 # print('El muon está en el sector 2')
-                phi = np.arctan(pendiente)  + np.pi/2
+                phi = np.pi + np.arctan(pendiente)  
 
             elif n_cl < n_cr:
                 # print('El muon está en el sector 4')
-                phi = np.arctan(pendiente) + 3 * np.pi/ 2
+                phi = 2 * np.pi + np.arctan(pendiente) 
 
     if flag_ver: ## Es un muon horizontal
         if pendiente > 0:
@@ -1383,11 +1383,11 @@ def phi_angle_pixels(data_mask):
 
             if n_cu > n_cd:
                 # print('El muon está en el sector 2')
-                phi = np.arctan(pendiente)  + np.pi/2
+                phi = np.pi + np.arctan(pendiente)
 
             elif n_cu < n_cd:
                 # print('El muon está en el sector 4')
-                phi = np.arctan(pendiente) + 3 * np.pi/ 2
+                phi = phi = 2 * np.pi + np.arctan(pendiente)
 
 
     if not flag_ver and not flag_hor: ## Otros casos
@@ -1440,11 +1440,11 @@ def phi_angle_pixels(data_mask):
 
             if n_cu > n_cd:
                 # print('El muon está en el sector 2')
-                phi = np.arctan(pendiente)  + np.pi/2
+                phi = np.pi + np.arctan(pendiente)
 
             elif n_cu < n_cd:
                 # print('El muon está en el sector 4')
-                phi = np.arctan(pendiente) + 3 * np.pi/ 2
+                phi = 2 * np.pi + np.arctan(pendiente)
         
     return phi
 
