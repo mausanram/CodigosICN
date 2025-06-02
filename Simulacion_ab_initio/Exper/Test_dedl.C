@@ -1,6 +1,6 @@
 void Test_dedl(){
 
-TFile *f_icn = new TFile("../tree_muons_ICN_NSAMP324_250x539_SIGMAS_20_MeV.root"); // INFO ALL_CLUSTERS
+TFile *f_icn = new TFile("../tree_muons_ICN_NSAMP324_250x539_SIGMAS_13_MeV.root"); // INFO ALL_CLUSTERS
 TTree *tree_ICN = (TTree*) f_icn->Get("tree");
 
 

@@ -1708,31 +1708,31 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             # if charge > 100:
             Delta_EL = (charge)/ (Delta_L) 
 
-            if 2000 > Delta_EL  or Delta_EL > 3500:
-                continue
+            # if 2000 > Delta_EL  or Delta_EL > 3500:
+            #     continue
             
-            else:
-                #### ======================== CÁLCULO DEL ÁNGULO THETA ============================ ###
-                #### ---------  Se toma que TODOS los muones atravezaron por completo la CCD ------ ###
-                theta = np.arctan((Diagonal_lenght * px_to_cm)/(CCD_depth * micra_to_cm)) 
+            # else:
+            #### ======================== CÁLCULO DEL ÁNGULO THETA ============================ ###
+            #### ---------  Se toma que TODOS los muones atravezaron por completo la CCD ------ ###
+            theta = np.arctan((Diagonal_lenght * px_to_cm)/(CCD_depth * micra_to_cm)) 
 
-                ### ============ CÁLCULO DEL ÁNGULO PHI (pixels) ===================== ###
-                try:
-                    phi = phi_angle_pixels(data_maskEvent)
-                except:
-                    phi = -4
+            ### ============ CÁLCULO DEL ÁNGULO PHI (pixels) ===================== ###
+            try:
+                phi = phi_angle_pixels(data_maskEvent)
+            except:
+                phi = -4
 
-                list_phi.append(phi)    
-                list_DeltaL.append(Delta_L)
-                list_DeltaEL.append(Delta_EL)
-                list_charge.append(charge)
-                list_theta.append(theta)
-                list_elip.append(elip)
-                list_sold.append(Solidity)
-                # print(charge, DeltaEL)
+            list_phi.append(phi)    
+            list_DeltaL.append(Delta_L)
+            list_DeltaEL.append(Delta_EL)
+            list_charge.append(charge)
+            list_theta.append(theta)
+            list_elip.append(elip)
+            list_sold.append(Solidity)
+            # print(charge, DeltaEL)
 
-                # if DeltaEL_range_min <= DeltaEL <= DeltaEL_range_max:
-                list_Muon_labels.append(event)
+            # if DeltaEL_range_min <= DeltaEL <= DeltaEL_range_max:
+            list_Muon_labels.append(event)
 
     return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta, list_phi, list_charge_all_events, list_elip, list_sold, list_elip_all_events, list_sol_all_events
 ### ====================================================================================================== ###
