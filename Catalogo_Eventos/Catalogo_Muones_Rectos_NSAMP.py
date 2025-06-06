@@ -18,7 +18,7 @@ import os
 current_path = os.getcwd()
 units = 2
 
-n_sigmas = 13
+n_sigmas = 20
 ratio_keV = 0.0036
 CCD_depth = 725 #micras
 px_to_cm = 0.0015
@@ -32,7 +32,7 @@ Elipticity = 0.7
 min_Charge =  100 # keV
 n_skirts = 0
 
-numero_bins = 500
+numero_bins = 600
 
 def Gaussian2(x,m,s,g,a1,a2): #data, mean, sigma, gain, height1, heigth2
     return a1*np.exp(-1/2*((x-m)/s)**2)+a2*np.exp(-1/2*((x-m-g)/s)**2)
@@ -147,8 +147,9 @@ def main(argObj):
 
             dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, extension=extension, gain=Gain, ratio_keV=ratio_keV, 
                                                    unidades= units, offset=Offset, sigma_ADUs = sig_ADUs)
-            
+            print('Sigma: ', sigma)
             fondo_value = n_sigmas * sigma
+            print('Fondo val: ', fondo_value)
             
             del oScan
 
@@ -157,7 +158,7 @@ def main(argObj):
             label_img, n_events = sk.measure.label(dataCal > fondo_value, connectivity=2, return_num=True)
             prop = sk.measure.regionprops(label_img, dataCal)
             # print(type(prop))
-
+            print('N_events: ', n_events)
             list_totalEvents.append(n_events)
             # print(nlabels_img)
             # list_labels.append(label_img)
@@ -176,34 +177,46 @@ def main(argObj):
                 for index in np.arange(0, len(list_vertical[0])):
                     list_EventCharge_extension_1.append(list_vertical[2][index])
                     list_sigmas_vertical_event_extension_1.append(list_vertical[0][index])
+                    plt.imshow(list_vertical[1][index])
+                    plt.show()
                     list_vertical_event_extension_1.append(list_vertical[1][index])
 
                 for index in np.arange(0, len(list_horizontal[0])):
                     list_EventCharge_extension_1.append(list_horizontal[2][index])
                     list_sigmas_horizontal_event_extension_1.append(list_horizontal[0][index])
                     list_horizontal_event_extension_1.append(list_horizontal[1][index])
+                    plt.imshow(list_horizontal[1][index])
+                    plt.show()
 
             if extension == 1:
                 for index in np.arange(0, len(list_vertical[0])):
                     list_EventCharge_extension_2.append(list_vertical[2][index])
                     list_sigmas_vertical_event_extension_2.append(list_vertical[0][index])
                     list_vertical_event_extension_2.append(list_vertical[1][index])
+                    plt.imshow(list_vertical[1][index])
+                    plt.show()
 
                 for index in np.arange(0, len(list_horizontal[0])):
                     list_EventCharge_extension_2.append(list_horizontal[2][index])
                     list_sigmas_horizontal_event_extension_2.append(list_horizontal[0][index])
                     list_horizontal_event_extension_2.append(list_horizontal[1][index])
+                    plt.imshow(list_horizontal[1][index])
+                    plt.show()
 
             if extension == 3:
                 for index in np.arange(0, len(list_vertical[0])):
                     list_EventCharge_extension_4.append(list_vertical[2][index])
                     list_sigmas_vertical_event_extension_4.append(list_vertical[0][index])
                     list_vertical_event_extension_4.append(list_vertical[1][index])
+                    plt.imshow(list_vertical[1][index])
+                    plt.show()
 
                 for index in np.arange(0, len(list_horizontal[0])):
                     list_EventCharge_extension_4.append(list_horizontal[2][index])
                     list_sigmas_horizontal_event_extension_4.append(list_horizontal[0][index])
                     list_horizontal_event_extension_4.append(list_horizontal[1][index])
+                    plt.imshow(list_horizontal[1][index])
+                    plt.show()
             
             # print('Extension ' + str(extension) + ' terminada.')
 

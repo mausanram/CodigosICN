@@ -18,7 +18,7 @@ import os
 current_path = os.getcwd()
 units = 1
 
-n_sigmas = 4
+n_sigmas = 5
 ratio_keV = 0.0037
 CCD_depth = 725 #micras
 px_to_cm = 0.0015
@@ -27,8 +27,8 @@ micra_to_cm = 1 / 10000
 DeltaEL_range = 85
 
 
-Solidit = 0.7
-Elipticity = 0.8
+Solidit = 0.65
+Elipticity = 0.7
 # min_Charge =  100 # keV
 min_Charge =  100 # electrons
 n_skirts = 0
@@ -106,11 +106,15 @@ def main(argObj):
             list_EventCharge_extension_1.append(list_vertical[2][index])
             list_sigmas_vertical_event_extension_1.append(list_vertical[0][index])
             list_vertical_event_extension_1.append(list_vertical[1][index])
+            plt.imshow(list_vertical[1][index])
+            plt.show()
 
         for index in np.arange(0, len(list_horizontal[0])):
             list_EventCharge_extension_1.append(list_horizontal[2][index])
             list_sigmas_horizontal_event_extension_1.append(list_horizontal[0][index])
             list_horizontal_event_extension_1.append(list_horizontal[1][index])
+            plt.imshow(list_horizontal[1][index])
+            plt.show()
         
         # print('Extension ' + str(extension) + ' terminada.')
 

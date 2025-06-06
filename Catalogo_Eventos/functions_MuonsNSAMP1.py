@@ -1816,14 +1816,14 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop
             # if charge < min_Charge:
             #     continue
             
-            if (Longitud_x < 7 and Longitud_y > 10): 
+            if (Longitud_x < 12 and Longitud_y > 12): 
                 # num_muons = num_muons + 1
 
                 list_sigmas_vertical_event.append(Sigma)
                 list_vertical_event.append(data_maskEvent)
                 list_charge_vertical_event.append(charge)
 
-            if ( Longitud_y < 7 and Longitud_x > 10):
+            if ( Longitud_y < 12 and Longitud_x > 12):
                 # num_muons = num_muons + 1
 
                 list_sigmas_horizontal_event.append(Sigma)
