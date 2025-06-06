@@ -18,7 +18,7 @@ import os
 current_path = os.getcwd()
 units = 2
 
-n_sigmas = 13
+n_sigmas = 20
 ratio_keV = 0.0036
 CCD_depth = 725 #micras
 px_to_cm = 0.0015
