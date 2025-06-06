@@ -18,7 +18,7 @@ import os
 current_path = os.getcwd()
 units = 2
 
-n_sigmas = 20
+n_sigmas = 13
 ratio_keV = 0.0036
 CCD_depth = 725 #micras
 px_to_cm = 0.0015
@@ -28,7 +28,7 @@ DeltaEL_range = 85
 
 
 Solidit = 0.65
-Elipticity = 0.9
+Elipticity = 0.7
 min_Charge =  100 # keV
 n_skirts = 0
 
