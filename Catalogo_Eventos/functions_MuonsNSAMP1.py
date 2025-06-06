@@ -1798,6 +1798,9 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop
         elif maxx - minx <= 3:
             continue
 
+        elif maxy - miny <= 3:
+            continue
+
         elif not Barycentercharge:
             continue
 
@@ -1810,8 +1813,8 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop
         elif  elip >= Elipticity :
             charge = data_maskEvent.sum()
 
-            if charge < min_Charge:
-                continue
+            # if charge < min_Charge:
+            #     continue
             
             if (Longitud_x < 7 and Longitud_y > 10): 
                 # num_muons = num_muons + 1
