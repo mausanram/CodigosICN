@@ -27,7 +27,7 @@ dedl_pp->SetStats(0);
 dedl_pp->SetLineStyle(1);
 dedl_pp->SetLineColor(4);
 
-TH1F *dedl_geant_scale = new TH1F("dedl_geant_scale", "Distribuci#acute{o}n de Energ#acute{i}as Depositadas (#theta > 20^{o})", NB, tlow, thi);
+TH1F *dedl_geant_scale = new TH1F("dedl_geant_scale", "Distribuci#acute{o}n de dE/dL", NB, tlow, thi);
 dedl_geant_scale->SetStats(0);
 dedl_geant_scale->SetLineStyle(1);
 dedl_geant_scale->SetLineColor(1);
@@ -81,6 +81,7 @@ TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 leg->AddEntry(dedl_g4, "Simulaci#acute{o}n Geant4", "LP");
 leg->AddEntry(dedl_pp, "Simulaci#acute{o}n ab initio", "LP");
 leg->AddEntry(dedl_geant_scale, "Simulaci#acute{o}n de Geant4 (escalada: 0.904)", "LP");
+leg->AddEntry(dedl_icn, "Datos ICN", "LP");
 leg->Draw();
 
 
