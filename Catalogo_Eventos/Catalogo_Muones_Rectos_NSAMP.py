@@ -240,11 +240,11 @@ def main(argObj):
     # print(eventos_circulares)
 
     if units == 0:
-        file_name = 'dict_straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_Skirts_'+str(n_skirts) + '_with_sigmas_ADU__NSAMP324.pkl'
+        file_name = 'dict_straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_Skirts_'+str(n_skirts) + '_NSIGMAS_' + str(n_sigmas) + '_ADUs__NSAMP324.pkl'
     elif units == 1:
-        file_name = 'dict_straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_Skirts_'+str(n_skirts) + '_with_sigmas_ele__NSAMP324.pkl'
+        file_name = 'dict_straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_Skirts_'+str(n_skirts) + '_NSIGMAS_' + str(n_sigmas) + '_elec__NSAMP324.pkl'
     elif units == 2:
-        file_name = 'dict_straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_Skirts_'+str(n_skirts) + '_with_sigmas_KeV__NSAMP324.pkl'
+        file_name = 'dict_straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_Skirts_'+str(n_skirts) + '_NSIGMAS_' + str(n_sigmas) + '_KeV__NSAMP324.pkl'
     
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
