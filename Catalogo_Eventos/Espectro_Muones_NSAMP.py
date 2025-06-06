@@ -178,17 +178,19 @@ def main(argObj):
                     if  Prob < 0.05:
                         nerr_ext = nerr_ext + 1
                         print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
+                        continue
+
                 # if Gain < 100 or Gain > 240:
                 #     ### Aquí se deberá poner la ganancia promedio de cada extensión una vez que se obtenga de muchas imágenes
                 #     print('Fit gain error in extension ' + str(extension) + ' of image ' + str(img))
-                #     continue
 
             except:
                 print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
                 continue
             
             
-            dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, extension=extension, gain=Gain, ratio_keV=ratio_keV, unidades= units, offset=Offset, sigma_ADUs = sig_ADUs)
+            dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, extension=extension, gain=Gain, ratio_keV=ratio_keV, 
+                                                   unidades= units, offset=Offset, sigma_ADUs = sig_ADUs)
             
             fondo_value = n_sigmas * sigma
             

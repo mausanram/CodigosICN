@@ -18,8 +18,8 @@ import os
 current_path = os.getcwd()
 units = 2
 
-n_sigmas = 4
-ratio_keV = 0.0037
+n_sigmas = 13
+ratio_keV = 0.0036
 CCD_depth = 725 #micras
 px_to_cm = 0.0015
 px_to_micras = 15
@@ -27,10 +27,10 @@ micra_to_cm = 1 / 10000
 DeltaEL_range = 85
 
 
-Solidit = 0.7
+Solidit = 0.65
 Elipticity = 0.9
 min_Charge =  100 # keV
-n_skirts = 1
+n_skirts = 0
 
 numero_bins = 500
 
@@ -112,16 +112,32 @@ def main(argObj):
             del header
 
             try:
-                dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, make_figure_flag=False)
+                dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, 
+                                                    Bins_fit=numero_bins,make_figure_flag=False, range_fit=[-30, 350])
 
                 sig_ADUs = dict_popt['sigma']
                 Offset = dict_popt['Offset']
                 Gain = dict_popt['Gain']
+                Prob = dict_popt['Prob']
 
-                if Gain < 100:
-                    ### Aquí se deberá poner la ganancia promedio de cada extensión una vez que se obtenga de muchas imágenes
-                    print('Fit gain error in extension ' + str(extension) + ' of image ' + str(img))
-                        # continue
+                if Prob < 0.05:
+                    del_Bin = 600
+                    dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
+                                                        Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-30, 400])
+                    sig_ADUs = dict_popt['sigma']
+                    Offset = dict_popt['Offset']
+                    Gain = dict_popt['Gain']
+                    Prob = dict_popt['Prob']
+
+                    if  Prob < 0.05:
+                        # nerr_ext = nerr_ext + 1
+                        print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
+                        continue
+
+                # if Gain < 100:
+                #     ### Aquí se deberá poner la ganancia promedio de cada extensión una vez que se obtenga de muchas imágenes
+                #     print('Fit gain error in extension ' + str(extension) + ' of image ' + str(img))
+                #         # continue
 
             except:
                 print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
@@ -129,7 +145,8 @@ def main(argObj):
 
             # sig_electrons = abs((sig_ADUs) / Gain)
 
-            dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, extension=extension, gain=Gain, ratio_keV=ratio_keV, unidades= units, offset=Offset, sigma_ADUs = sig_ADUs)
+            dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, extension=extension, gain=Gain, ratio_keV=ratio_keV, 
+                                                   unidades= units, offset=Offset, sigma_ADUs = sig_ADUs)
             
             fondo_value = n_sigmas * sigma
             
@@ -151,8 +168,9 @@ def main(argObj):
             fondo = ma.masked_array(dataCal,fondo_mask)
             valor_promedio_fondo = fondo.data.mean()
 
-            list_vertical, list_horizontal = muon_straight_filter(dataCal= dataCal, label_img=label_img, n_events=n_events, Solidit=Solidit, Elipticity=Elipticity, 
-                                                                    Prop= prop, min_Charge=min_Charge, Sigma=sigma, skirts= n_skirts)
+            list_vertical, list_horizontal = muon_straight_filter(dataCal= dataCal, label_img=label_img, n_events=n_events, Solidit=Solidit, 
+                                                                  Elipticity=Elipticity, Prop= prop, min_Charge=min_Charge, 
+                                                                  Sigma=sigma, skirts= n_skirts)
 
             if extension == 0:
                 for index in np.arange(0, len(list_vertical[0])):
@@ -197,9 +215,11 @@ def main(argObj):
                         'extension_1' : {'charge' : list_EventCharge_extension_1, 'vertical_sigmas' : list_sigmas_vertical_event_extension_1,
                         'Vertical_Events' : list_vertical_event_extension_1, 'horizontal_sigmas' : list_sigmas_horizontal_event_extension_1, 
                         'Horizontal_Events' : list_horizontal_event_extension_1}, 
+
                         'extension_2' : {'charge' : list_EventCharge_extension_2, 'vertical_sigmas' : list_sigmas_vertical_event_extension_2, 
                         'Vertical_Events' : list_vertical_event_extension_2, 'horizontal_sigmas' : list_sigmas_horizontal_event_extension_2, 
                         'Horizontal_Events' : list_horizontal_event_extension_2},
+
                         'extension_4' : {'charge' : list_EventCharge_extension_4,  'vertical_sigmas' : list_sigmas_vertical_event_extension_4, 
                         'Vertical_Events' : list_vertical_event_extension_4, 'horizontal_sigmas' : list_sigmas_horizontal_event_extension_4, 
                         'Horizontal_Events' : list_horizontal_event_extension_4}}
@@ -219,8 +239,13 @@ def main(argObj):
     print(eventos_rectos)
     # print(eventos_circulares)
 
-
-    file_name = 'dict__straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_Skirts_'+str(n_skirts) + '_with_sigmas_ADUs__NSAMP324.pkl'
+    if units == 0:
+        file_name = 'dict_straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_Skirts_'+str(n_skirts) + '_with_sigmas_ADU__NSAMP324.pkl'
+    elif units == 1:
+        file_name = 'dict_straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_Skirts_'+str(n_skirts) + '_with_sigmas_ele__NSAMP324.pkl'
+    elif units == 2:
+        file_name = 'dict_straight_muons_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Elip_'+str(Elipticity) + '_Sol_' + str(Solidit) + '_Skirts_'+str(n_skirts) + '_with_sigmas_KeV__NSAMP324.pkl'
+    
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
