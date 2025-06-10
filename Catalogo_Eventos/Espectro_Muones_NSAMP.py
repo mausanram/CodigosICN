@@ -104,6 +104,10 @@ def main(argObj):
     list_fit_gain_1 = []
     list_fit_gain_4 = []
 
+    list_datamasked_extension_2 =[]
+    list_datamasked_extension_1 = []
+    list_datamasked_extension_4 = []
+
     ### ========================= ###
 
     nerr_img = 0
@@ -210,8 +214,22 @@ def main(argObj):
             fondo = ma.masked_array(dataCal,fondo_mask)
             valor_promedio_fondo = fondo.data.mean()
 
-            DeltaL, DeltaEL, list_charge, _, list_theta, list_phi, list_charge_all_events, list_elip, list_sol, list_elip_all, list_sol_all = muon_filter(dataCal=dataCal, label_img=label_img, 
-                                                                                        nlabels_img=n_events, prop=prop, Solidit=Solidit, Elipticity=Elip)
+            dict_lists = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
+                                     prop=prop, Solidit=Solidit, Elipticity=Elip, dedl_min=1500)
+            
+            DeltaL = dict_lists["muons"]["l"]
+            DeltaEL = dict_lists["muons"]["dedl"]
+            list_charge = dict_lists["muons"]["charge_muons"]
+            list_theta = dict_lists["muons"]["theta"]
+            list_phi = dict_lists["muons"]["phi"]
+            list_elip = dict_lists["muons"]["elip"]
+            list_sol = dict_lists["muons"]["sol"]
+            list_datamasked = dict_lists["muons"]["image"]
+
+            list_charge_all_events = dict_lists["non_muons"]["charge"]
+            list_elip_all = dict_lists["non_muons"]["elip"]
+            list_sol_all = dict_lists["non_muons"]["sol"]
+
             if extension == 0: 
                 for index in np.arange(0, len(DeltaEL)):
                     ### ===== Muons ===== ###
@@ -223,6 +241,7 @@ def main(argObj):
                     list_elip_extension_1.append(list_elip[index])
                     list_sol_extension_1.append(list_sol[index])
                     list_fit_gain_1.append(Gain)
+                    list_datamasked_extension_1.append(list_datamasked[index])
 
                 for index in np.arange(0, len(list_charge_all_events)):
                     ### ==== All events ==== ###
@@ -241,6 +260,7 @@ def main(argObj):
                     list_elip_extension_2.append(list_elip[index])
                     list_sol_extension_2.append(list_sol[index])
                     list_fit_gain_2.append(Gain)
+                    list_datamasked_extension_2.append(list_datamasked[index])
 
                 for index in np.arange(0, len(list_charge_all_events)):
                     list_charge_of_all_extension_2.append(list_charge_all_events[index])
@@ -257,6 +277,7 @@ def main(argObj):
                     list_elip_extension_4.append(list_elip[index])
                     list_sol_extension_4.append(list_sol[index])
                     list_fit_gain_4.append(Gain)
+                    list_datamasked_extension_4.append(list_datamasked[index])
 
                 for index in np.arange(0, len(list_charge_all_events)):
                     list_charge_of_all_extension_4.append(list_charge_all_events[index])
@@ -268,23 +289,29 @@ def main(argObj):
 
     num_muons = len(list_EventCharge_extension_1) + len(list_EventCharge_extension_2) + len(list_EventCharge_extension_4)
 
-    dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_muons, 'Energy_Units' : units, 'Elipticity' : list_Elip, 
-                        'Solidity' : list_Solidit,
+    dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_muons, 'Energy_Units' : units, 
+                        'Elipticity' : list_Elip, 'Solidity' : list_Solidit,
+
                         'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_DeltaEL_extension_1,
                                          'deltaL' : list_DeltaL_extension_1, 'all_events' : list_charge_of_all_extension_1,
                                          'theta': list_theta_extension_1, 'phi': list_phi_extension_1, 'gain' : list_fit_gain_1,
                                          'elip' : list_elip_extension_1, 'sol' : list_sol_extension_1,
-                                         'all_events_elip' : list_elip_of_all_extension_1, 'all_events_sol' : list_sol_of_all_extension_1}, 
+                                         'all_events_elip' : list_elip_of_all_extension_1, 'all_events_sol' : list_sol_of_all_extension_1,
+                                         'datamasked' : list_datamasked_extension_1},
+
                         'extension_2' : {'charge' : list_EventCharge_extension_2, 'deltaEL' : list_DeltaEL_extension_2, 
                                         'deltaL' : list_DeltaL_extension_2, 'all_events' : list_charge_of_all_extension_2,
                                         'theta': list_theta_extension_2, 'phi': list_phi_extension_2,'gain' : list_fit_gain_2, 
                                         'elip' : list_elip_extension_2, 'sol' : list_sol_extension_2,
-                                        'all_events_elip' : list_elip_of_all_extension_2, 'all_events_sol' : list_sol_of_all_extension_2},
+                                        'all_events_elip' : list_elip_of_all_extension_2, 'all_events_sol' : list_sol_of_all_extension_2,
+                                        'datamasked' : list_datamasked_extension_2},
+
                         'extension_4' : {'charge' : list_EventCharge_extension_4, 'deltaEL' : list_DeltaEL_extension_4, 
                                          'deltaL' : list_DeltaL_extension_4, 'all_events' : list_charge_of_all_extension_4,
                                          'theta': list_theta_extension_4, 'phi': list_phi_extension_4, 'gain' : list_fit_gain_4, 
                                          'elip' : list_elip_extension_4, 'sol' : list_sol_extension_4, 
-                                         'all_events_elip' : list_elip_of_all_extension_4, 'all_events_sol' : list_sol_of_all_extension_4}}
+                                         'all_events_elip' : list_elip_of_all_extension_4, 'all_events_sol' : list_sol_of_all_extension_4,
+                                         'datamasked' : list_datamasked_extension_4}}
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()
@@ -307,7 +334,7 @@ def main(argObj):
     print(eventos_rectos)
 
     if units == 0:
-        file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_ADUs.pkl'
+        file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_ADUs.pkl'
     elif units == 1:
         file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj))+'_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_electrons.pkl'
     elif units == 2:

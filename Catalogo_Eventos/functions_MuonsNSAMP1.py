@@ -1583,13 +1583,11 @@ def event_DataFrame(dataCal, label_img, nlabels_img, prop, header, extension, un
 
     return TF 
 
-def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
+def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, dedl_min):
     CCD_depth = 725 ## micras
     px_to_micras = 15 ## micras
     px_to_cm = 0.0015 ## cm/px
     micra_to_cm = 1 / 10000 ## micras/cm
-
-    DeltaEL_range_min, DeltaEL_range_max = 1, 4
 
     list_Muon_labels = []
     list_DeltaEL = []
@@ -1599,6 +1597,7 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
     list_phi = []
     list_elip = []
     list_sold = []
+    list_datamasked = []
 
     list_charge_all_events = []
     list_elip_all_events = []
@@ -1708,10 +1707,12 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             # if charge > 100:
             Delta_EL = (charge)/ (Delta_L) 
 
-            # if 2000 > Delta_EL  or Delta_EL > 3500:
-            #     continue
+            if Delta_EL < dedl_min:
+                list_charge_all_events.append(charge)
+                list_sol_all_events.append(Solidity)
+                list_elip_all_events.append(elip)
+                continue
             
-            # else:
             #### ======================== CÁLCULO DEL ÁNGULO THETA ============================ ###
             #### ---------  Se toma que TODOS los muones atravezaron por completo la CCD ------ ###
             theta = np.arctan((Diagonal_lenght * px_to_cm)/(CCD_depth * micra_to_cm)) 
@@ -1729,12 +1730,16 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             list_theta.append(theta)
             list_elip.append(elip)
             list_sold.append(Solidity)
-            # print(charge, DeltaEL)
+            list_datamasked.append(data_maskEvent)
 
-            # if DeltaEL_range_min <= DeltaEL <= DeltaEL_range_max:
             list_Muon_labels.append(event)
 
-    return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta, list_phi, list_charge_all_events, list_elip, list_sold, list_elip_all_events, list_sol_all_events
+    dict_lists = {"muons" : {"l": list_DeltaL, "dedl" : list_DeltaEL, "charge_muons" : list_charge, "theta": list_theta, 
+                             "phi": list_phi, "elip": list_elip, "sol": list_sold, "image" : list_datamasked}, 
+
+                 "non_muons" : {"charge": list_charge_all_events, "elip": list_elip_all_events, "sol": list_sol_all_events}}
+    
+    return dict_lists
 ### ====================================================================================================== ###
 
 ### ========================= Catálogo de Muones Rectos (verticales/horizontales) ========================= ###

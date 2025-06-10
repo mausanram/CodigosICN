@@ -44,7 +44,7 @@ tree_geant->Draw("(EevtBar*1000)/LengthMuLAr>>dedl_g4", "LengthMuLAr>0");
 tree_geant->Draw("(EevtBar*0.904*1000)/LengthMuLAr>>dedl_geant_scale", "LengthMuLAr>0"); 
 
 // ============= SIM AB INITIO histograms =========== //
-tree_pp->Draw("(edep*1000)/l>>dedl_pp", "l>0"); // SIM_AB_INITIO INFO
+tree_pp->Draw("(edep*0.904*1000)/l>>dedl_pp", "l>0"); // SIM_AB_INITIO INFO
 
 tree_icn->Draw("(edep*1000)/l>>dedl_icn", "l>0");
 
@@ -73,7 +73,7 @@ TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
 canv->cd(1);
 
 // dedl_g4->Draw("hist same");
-// dedl_pp->Draw("hist same");
+dedl_pp->Draw("hist same");
 dedl_geant_scale->Draw("hist same");
 dedl_icn->Draw("hist same");
 
