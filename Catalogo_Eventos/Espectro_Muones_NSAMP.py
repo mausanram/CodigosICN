@@ -113,6 +113,11 @@ def main(argObj):
     nerr_img = 0
     nerr_ext = 0
 
+    nerr_ext1 = 0
+    nerr_ext2 = 0
+    nerr_ext4 = 0
+
+
     total_images = len(argObj)
     image_in_bucle = 0
 
@@ -163,7 +168,7 @@ def main(argObj):
             
             try:
                 dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, 
-                                                    Bins_fit=numero_bins,make_figure_flag=False, range_fit=[-30, 350])
+                                                    Bins_fit=numero_bins,make_figure_flag=False, range_fit=[-50, 360])
 
                 sig_ADUs = dict_popt['sigma']
                 Offset = dict_popt['Offset']
@@ -171,18 +176,47 @@ def main(argObj):
                 Prob = dict_popt['Prob']
                 
                 if Prob < 0.05:
-                    del_Bin = 600
+                    del_Bin = 500
                     dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                        Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-30, 400])
+                                                        Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-30, 390])
                     sig_ADUs = dict_popt['sigma']
                     Offset = dict_popt['Offset']
                     Gain = dict_popt['Gain']
                     Prob = dict_popt['Prob']
+                    
+                    if Prob < 0.05:
+                        del_Bin = 400
+                        dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
+                                                            Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-30, 390])
+                        
+                        sig_ADUs = dict_popt['sigma']
+                        Offset = dict_popt['Offset']
+                        Gain = dict_popt['Gain']
+                        Prob = dict_popt['Prob']
+                    
+                        
+                        if Prob < 0.05:
+                            del_Bin = 300
+                            dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
+                                                                Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-50, 400])
+                            
+                            sig_ADUs = dict_popt['sigma']
+                            Offset = dict_popt['Offset']
+                            Gain = dict_popt['Gain']
+                            Prob = dict_popt['Prob']
+                    
 
-                    if  Prob < 0.05:
-                        nerr_ext = nerr_ext + 1
-                        print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
-                        continue
+                            if  Prob < 0.05:
+                                nerr_ext = nerr_ext + 1
+                                if extension == 0:
+                                    nerr_ext1 += 1
+                                elif extension == 1:
+                                    nerr_ext2 += 1
+                                elif extension == 3:
+                                    nerr_ext4 += 1
+
+                                print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
+                                continue
 
                 # if Gain < 100 or Gain > 240:
                 #     ### Aquí se deberá poner la ganancia promedio de cada extensión una vez que se obtenga de muchas imágenes
@@ -290,7 +324,7 @@ def main(argObj):
     num_muons = len(list_EventCharge_extension_1) + len(list_EventCharge_extension_2) + len(list_EventCharge_extension_4)
 
     dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_muons, 'Energy_Units' : units, 
-                        'Elipticity' : list_Elip, 'Solidity' : list_Solidit,
+                        'Elipticity' : list_Elip, 'Solidity' : list_Solidit, 'Fit_errors' : (nerr_ext1, nerr_ext2, nerr_ext4),
 
                         'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_DeltaEL_extension_1,
                                          'deltaL' : list_DeltaL_extension_1, 'all_events' : list_charge_of_all_extension_1,
@@ -322,7 +356,7 @@ def main(argObj):
     Eventos_Totales = 'Eventos Detectados en Total: ' +  str(total_events)
     eventos_rectos = 'Muones Detectados: ' + str(num_muons)
     img_err = 'Imágenes con error al cargar: ' + str(nerr_img)
-    ext_err = 'Error en fit de extension: ' + str(nerr_ext)
+    ext_err = 'Error en fit de extensiones: ' + str(nerr_ext)
     # relacion = total_events / num_muons
     
     # eventos_circulares = 'Muones Circulares Detectados: ' + str(len(list_EventosCirc))
@@ -332,6 +366,8 @@ def main(argObj):
     print(ext_err)
     print(Eventos_Totales)
     print(eventos_rectos)
+    print('Error in extension 1, 2, 4 fits: ', nerr_ext1, nerr_ext2, nerr_ext4)
+    
 
     if units == 0:
         file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_ADUs.pkl'
