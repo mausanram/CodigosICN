@@ -44,7 +44,7 @@ tree_geant->Draw("(EevtBar*1000)/LengthMuLAr>>dedl_g4", "LengthMuLAr>0");
 tree_geant->Draw("(EevtBar*0.904*1000)/LengthMuLAr>>dedl_geant_scale", "LengthMuLAr>0"); 
 
 // ============= SIM AB INITIO histograms =========== //
-tree_pp->Draw("(edep*0.904*1000)/l>>dedl_pp", "l>0"); // SIM_AB_INITIO INFO
+tree_pp->Draw("(edep*1000)/l>>dedl_pp", "l>0"); // SIM_AB_INITIO INFO
 
 tree_icn->Draw("(edep*1000)/l>>dedl_icn", "l>0");
 
@@ -72,16 +72,16 @@ TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
 // canv->Divide(2,1);
 canv->cd(1);
 
-// dedl_g4->Draw("hist same");
+dedl_g4->Draw("hist same");
 dedl_pp->Draw("hist same");
-dedl_geant_scale->Draw("hist same");
-dedl_icn->Draw("hist same");
+// dedl_geant_scale->Draw("hist same");
+// dedl_icn->Draw("hist same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 leg->AddEntry(dedl_g4, "Simulaci#acute{o}n Geant4", "LP");
 leg->AddEntry(dedl_pp, "Simulaci#acute{o}n ab initio", "LP");
-leg->AddEntry(dedl_geant_scale, "Simulaci#acute{o}n de Geant4 (escalada: 0.904)", "LP");
-leg->AddEntry(dedl_icn, "Datos ICN", "LP");
+// leg->AddEntry(dedl_geant_scale, "Simulaci#acute{o}n de Geant4 (escalada: 0.904)", "LP");
+// leg->AddEntry(dedl_icn, "Datos ICN", "LP");
 leg->Draw();
 
 
