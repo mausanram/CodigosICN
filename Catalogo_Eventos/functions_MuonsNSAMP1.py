@@ -1661,6 +1661,7 @@ def linear_fit(data_mask):
         pendiente = fitline.GetParameters()[1]
         Chi_2 = fitline.GetChisquare()
         data_mask = data_mask_rot
+        print(ordenada, pendiente, Chi_2/Qs, flag_rot)
         ### ================================== ###
 
     return ordenada, pendiente, Chi_2/Qs, flag_rot, data_mask
@@ -1814,8 +1815,8 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, dedl
             except:
                 phi = -4
                 
-            if phi < 0:
-                continue
+            # if phi < 0:
+            #     continue
 
             list_phi.append(phi)    
             list_DeltaL.append(Delta_L)

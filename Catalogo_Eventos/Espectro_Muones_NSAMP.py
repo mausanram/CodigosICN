@@ -370,13 +370,17 @@ def main(argObj):
     
 
     if units == 0:
-        file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_ADUs.pkl'
+        file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj)) + \
+            '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_ADUs.pkl'
+    
     elif units == 1:
-        file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj)) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_electrons.pkl'
+        file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj)) + \
+            '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_electrons.pkl'
+    
     elif units == 2:
         file_name = 'dict_muons_NSAMP324_Extensions_1_2_4_NIMGS_' + str(len(argObj)) + \
             '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + \
-            '_dEDL_' + str(dedl_value_min) + '_SIZE_250x539_KeV_.pkl'
+            '_DEDL_' + str(dedl_value_min) + '_SIZE_250x539_KeV_.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
