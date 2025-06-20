@@ -1367,7 +1367,6 @@ def phi_angle_pixels(data_mask, pendiente, flag_rot):
                 phi = phi = 2 * np.pi + np.arctan(pendiente)
                 flag_control = True
 
-
     elif not flag_ver and not flag_hor: ## Otros casos
         if pendiente > 0:
             ## El muon puede estar en el cuadrante 1 o 3
@@ -1429,10 +1428,18 @@ def phi_angle_pixels(data_mask, pendiente, flag_rot):
                 flag_control = True
 
     if flag_rot and flag_control:
-        phi = phi - TMath.Pi()
-
-        if phi < 0:
-            phi = 2 * TMath.Pi() + phi
+        if np.pi/2 < phi < np.pi:
+            # print('Estoy en el sector 1 (rotado)')
+            phi = phi - np.pi/2
+        elif np.pi < phi < 3*np.pi/2:
+            # print('Estoy en el sector 2 (rotado)')
+            phi = phi - np.pi/2
+        elif 3*np.pi/2 < phi < 2 * np.pi:
+            # print('Estoy en el sector 3 (rotado)')
+            phi = phi - np.pi/2
+        elif 0 < phi < np.pi/2:
+            # print('Estoy en el sector 4 (rotado)')
+            phi = phi + 3*np.pi/2 
     
     return phi
 
