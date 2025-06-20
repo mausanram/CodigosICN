@@ -380,7 +380,7 @@ def main(argObj):
     elif units == 2:
         file_name = 'dict_muons_NSAMP324_Extensions_1_2_4_NIMGS_' + str(len(argObj)) + \
             '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + \
-            '_DEDL_' + str(dedl_value_min) + '_SIZE_250x539_KeV_.pkl'
+            '_DEDL_' + str(dedl_value_min) + '_SIZE_250x539_KeV_n.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 

@@ -1822,8 +1822,8 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, dedl
             except:
                 phi = -4
                 
-            # if phi < 0:
-            #     continue
+            if phi < 0:
+                continue
 
             list_phi.append(phi)    
             list_DeltaL.append(Delta_L)
