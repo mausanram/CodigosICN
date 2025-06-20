@@ -1625,8 +1625,9 @@ def linear_fit(data_mask):
         flag_rot = True
         long_y = data_mask.shape[0] - 1
 
-        data_mask_rot = np.empty((NBX, NBY))
-        data_mask_rot[:] = np.nan
+        data_mask_zeros = np.empty((NBX, NBY))
+        # data_mask_rot[:] = np.nan
+        data_mask_zeros[:] = 0
 
         angle_rot = TMath.Pi()/2
 
@@ -1634,7 +1635,12 @@ def linear_fit(data_mask):
             for x_bin in range(0, NBX):
                 if data_mask[y_bin][x_bin] != 0:
                     # nx, ny = pixel_rot(x_bin=x_bin, x0=0, y_bin=y_bin, y0=0, theta= angle_rot)
-                    data_mask_rot[x_bin][long_y - y_bin] = data_mask[y_bin][x_bin]
+                    data_mask_zeros[x_bin][long_y - y_bin] = data_mask[y_bin][x_bin]
+
+        label_img, nlabels_img = sk.measure.label(data_mask_zeros > 0, connectivity=2, return_num=True)
+        # loc_rot = ndimage.find_objects(label_img == 1)[0]
+        mask_rot = np.invert(label_img==1)
+        data_mask_rot = ma.masked_array(data_mask_zeros, mask_rot)
 
         
         NBX = data_mask_rot.shape[1]
