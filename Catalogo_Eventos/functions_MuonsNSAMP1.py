@@ -1299,12 +1299,12 @@ def phi_angle_pixels(data_mask, pendiente, flag_rot):
 
             if n_cl > n_cr:
                 # print('El muon está en el sector 2')
-                phi = np.pi + np.arctan(pendiente) 
+                phi = np.pi - np.arctan(pendiente) 
                 flag_control = True 
 
             elif n_cl < n_cr:
                 # print('El muon está en el sector 4')
-                phi = 2 * np.pi + np.arctan(pendiente) 
+                phi = 3 * np.pi/2 - np.arctan(pendiente) 
                 flag_control = True
 
     elif flag_ver: ## Es un muon horizontal
@@ -1359,12 +1359,12 @@ def phi_angle_pixels(data_mask, pendiente, flag_rot):
 
             if n_cu > n_cd:
                 # print('El muon está en el sector 2')
-                phi = np.pi + np.arctan(pendiente)
+                phi = np.pi - np.arctan(pendiente)
                 flag_control = True
 
             elif n_cu < n_cd:
                 # print('El muon está en el sector 4')
-                phi = phi = 2 * np.pi + np.arctan(pendiente)
+                phi =  3* np.pi/2 - np.arctan(pendiente)
                 flag_control = True
 
     elif not flag_ver and not flag_hor: ## Otros casos
@@ -1395,7 +1395,7 @@ def phi_angle_pixels(data_mask, pendiente, flag_rot):
 
             elif n_cu < n_cd:
                 # print('El muon está en el sector 3')
-                phi = np.arctan(pendiente) + np.pi
+                phi =  np.pi + np.arctan(pendiente)
                 flag_control = True
         else: 
             # print('pendiente negativa')
@@ -1419,12 +1419,12 @@ def phi_angle_pixels(data_mask, pendiente, flag_rot):
 
             if n_cu > n_cd:
                 # print('El muon está en el sector 2')
-                phi = np.pi + np.arctan(pendiente)
+                phi = np.pi - np.arctan(pendiente)
                 flag_control = True
 
             elif n_cu < n_cd:
                 # print('El muon está en el sector 4')
-                phi = 2 * np.pi + np.arctan(pendiente)
+                phi = 3 * np.pi-2 - np.arctan(pendiente)
                 flag_control = True
 
     if flag_rot and flag_control:
@@ -1445,6 +1445,7 @@ def phi_angle_pixels(data_mask, pendiente, flag_rot):
 
 ### =================================================================== ###
 
+### ========================= Funcion de rotacion ===================== ###
 def pixel_rot(x_bin, x0, y_bin, y0, theta):
     diff_x = x_bin - x0
     diff_y = y_bin - y0
@@ -1454,6 +1455,7 @@ def pixel_rot(x_bin, x0, y_bin, y0, theta):
 
     # return int(np.around(new_x, 0)), int(np.around(new_y, 0))
     return int(new_x), int(new_y)
+### =================================================================== ###
 
 ### ================================ Filtro de Muones General ============================================ ###
 def event_DataFrame(dataCal, label_img, nlabels_img, prop, header, extension, unidades) -> pd.DataFrame:
@@ -2584,3 +2586,4 @@ def all_cluster(dataCal, label_img, nlabels_img, prop):
     return list_charge
 
 
+# Esto es un código de prueba de acentos, necesito saber si me funcionará de manera correcta para programar tambien así que voy a poner un path: /home/screen/prueba.txt
