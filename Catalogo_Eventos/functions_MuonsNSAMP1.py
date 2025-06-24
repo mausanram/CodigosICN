@@ -1275,7 +1275,7 @@ def phi_angle_pixels(data_mask, pendiente, flag_rot):
 
             elif n_cl > n_cr:
                 # print('El muon está en el sector 3')
-                phi = np.arctan(pendiente) + np.pi
+                phi = np.pi + np.arctan(pendiente) 
                 flag_control = True
         else: 
             # print('pendiente negativa')
@@ -1299,15 +1299,15 @@ def phi_angle_pixels(data_mask, pendiente, flag_rot):
 
             if n_cl > n_cr:
                 # print('El muon está en el sector 2')
-                phi = np.pi - np.arctan(pendiente) 
+                phi = np.pi + np.arctan(pendiente) 
                 flag_control = True 
 
             elif n_cl < n_cr:
                 # print('El muon está en el sector 4')
-                phi = 3 * np.pi/2 - np.arctan(pendiente) 
+                phi = 2 * np.pi + np.arctan(pendiente) 
                 flag_control = True
 
-    elif flag_ver: ## Es un muon horizontal
+    elif flag_ver: ## Es un muon vertical
         if pendiente > 0:
             ## El muon puede estar en el cuadrante 1 o 3
             # print('pendiente positiva')
@@ -1359,12 +1359,12 @@ def phi_angle_pixels(data_mask, pendiente, flag_rot):
 
             if n_cu > n_cd:
                 # print('El muon está en el sector 2')
-                phi = np.pi - np.arctan(pendiente)
+                phi = np.pi + np.arctan(pendiente)
                 flag_control = True
 
             elif n_cu < n_cd:
                 # print('El muon está en el sector 4')
-                phi =  3* np.pi/2 - np.arctan(pendiente)
+                phi =  2* np.pi + np.arctan(pendiente)
                 flag_control = True
 
     elif not flag_ver and not flag_hor: ## Otros casos
@@ -1419,12 +1419,12 @@ def phi_angle_pixels(data_mask, pendiente, flag_rot):
 
             if n_cu > n_cd:
                 # print('El muon está en el sector 2')
-                phi = np.pi - np.arctan(pendiente)
+                phi = np.pi + np.arctan(pendiente)
                 flag_control = True
 
             elif n_cu < n_cd:
                 # print('El muon está en el sector 4')
-                phi = 3 * np.pi-2 - np.arctan(pendiente)
+                phi = 2 * np.pi + np.arctan(pendiente)
                 flag_control = True
 
     if flag_rot and flag_control:
@@ -1676,7 +1676,7 @@ def linear_fit(data_mask):
         pendiente = fitline.GetParameters()[1]
         Chi_2 = fitline.GetChisquare()
         data_mask = data_mask_rot
-        print(ordenada, pendiente, Chi_2/Qs, flag_rot)
+        # print(ordenada, pendiente, Chi_2/Qs, flag_rot)  
         ### ================================== ###
 
     return ordenada, pendiente, Chi_2/Qs, flag_rot, data_mask
