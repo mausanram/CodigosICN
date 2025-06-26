@@ -24,7 +24,7 @@ micra_to_cm = 1 / 10000
 ## Datos del filtro de muones GENERAL
 Solidit = 0.65
 Elip = 0.65
-dedl_value_min = 100
+dedl_value_min = 1400
 
 ## Datos del filtro POR EXTENSIÓN
 list_Elip = [0.65, 0.65, 0, 0.65]
