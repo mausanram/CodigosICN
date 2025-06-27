@@ -154,6 +154,7 @@ def pdf_creator3x3_indexs(pdf_name, list_pixelmatrix, list_index):
                 # print('n_events: ', n_events)
                 axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].imshow(list_pixelmatrix[index], cmap = color_map)
                 axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].set_title('ID: ' + str(list_index[index]))
+                plt.tight_layout()
 
                 if n_events == 9:
                     n_events = 10
@@ -189,6 +190,7 @@ def pdf_creator3x3_indexs(pdf_name, list_pixelmatrix, list_index):
                     # print('n_events: ', n_events)
                     axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].imshow(list_pixelmatrix[index], cmap = color_map)
                     axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].set_title('ID: ' + str(list_index[index]))
+                    plt.tight_layout()
 
                     if n_events == 9:
                         n_events = 10
