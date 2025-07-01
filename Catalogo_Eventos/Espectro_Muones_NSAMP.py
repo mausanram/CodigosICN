@@ -131,8 +131,8 @@ def main(argObj):
             image_in_bucle += 1
 
             path = img.split('/')
-            run = path[2]
-            # print('Year: ', run)
+            # run = path[2]
+            print('Year: ', path)
 
         except:
             nerr_img = nerr_img + 1
