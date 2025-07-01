@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import matplotlib as mpl
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
@@ -6,8 +5,7 @@ import numpy.ma as ma
 import pandas as pd 
 import skimage as sk
 import scipy.ndimage as nd
-import random
-import time
+import scipy.ndimage as ndimage
 
 # from ROOT import TF1, TH1F, Fit, TCanvas, gStyle
 from ROOT import TMath, TF1, TH1F, TH2F, TCanvas, gStyle, TProfile, TGraphErrors
@@ -571,42 +569,10 @@ def phi_angle_ROOT(data_mask):
                             
     return phi
 
-
-def phi_angle_pixels(data_mask):
+def phi_angle_pixels(data_mask, pendiente, flag_rot):
     NBX = data_mask.shape[1]
     NBY = data_mask.shape[0]
     XY_proportion = 2
-
-
-    nbx = NBX
-    lox = 0
-    hix = data_mask.shape[1]
-
-    nby = NBY
-    loy = 0
-    hiy = data_mask.shape[0]
-
-    hist2d = TH2F("hist2d", "", nbx,lox,hix, nby,loy,hiy)
-    for i in np.arange(0, nbx):
-        for j in np.arange(0, nby):
-            # cont = data_mask[i][j]
-            if data_mask[j][i]:
-                hist2d.SetBinContent(int(i+1),int(j+1), data_mask[j][i])
-            else:
-                # n = n+1
-                # print(n)
-                cont = 0
-                hist2d.SetBinContent(int(i+1),int(j+1), cont)
-
-    fitline = TF1("fitline", "[0] + [1]*x",lox,hix)  
-    hist2d.Fit("fitline", "R")
-
-    ### ===== Parámetros del Ajuste ===== ###
-    ordenada = fitline.GetParameters()[0]
-    pendiente = fitline.GetParameters()[1]
-    Prob = fitline.GetProb()
-    Chi2 = fitline.GetChisquare()
-    ### ================================== ###
 
     flag_hor = False
     flag_ver = False
@@ -630,6 +596,7 @@ def phi_angle_pixels(data_mask):
 
 
     ### ====== Esta sección determina el ángulo phi con la pendiente del ajuste === ###
+    flag_control = False
     if flag_hor: ## Es un muon horizontal
         if pendiente > 0:
             ## El muon puede estar en el cuadrante 1 o 3
@@ -654,10 +621,12 @@ def phi_angle_pixels(data_mask):
             if n_cl < n_cr:
                 # print('El muon está en el sector 1')
                 phi = np.arctan(pendiente)
+                flag_control = True
 
             elif n_cl > n_cr:
                 # print('El muon está en el sector 3')
-                phi = np.arctan(pendiente) + np.pi
+                phi = np.pi + np.arctan(pendiente) 
+                flag_control = True
         else: 
             # print('pendiente negativa')
             ### El muon puede estar en el cuadrante 2 o 4
@@ -681,12 +650,14 @@ def phi_angle_pixels(data_mask):
             if n_cl > n_cr:
                 # print('El muon está en el sector 2')
                 phi = np.pi + np.arctan(pendiente) 
+                flag_control = True 
 
             elif n_cl < n_cr:
                 # print('El muon está en el sector 4')
                 phi = 2 * np.pi + np.arctan(pendiente) 
+                flag_control = True
 
-    if flag_ver: ## Es un muon horizontal
+    elif flag_ver: ## Es un muon vertical
         if pendiente > 0:
             ## El muon puede estar en el cuadrante 1 o 3
             # print('pendiente positiva')
@@ -710,10 +681,12 @@ def phi_angle_pixels(data_mask):
             if n_cu > n_cd:
                 # print('El muon está en el sector 1')
                 phi = np.arctan(pendiente)
+                flag_control = True
 
             elif n_cu < n_cd:
                 # print('El muon está en el sector 3')
                 phi = np.arctan(pendiente) + np.pi
+                flag_control = True
         else: 
             # print('pendiente negativa')
             ### El muon puede estar en el cuadrante 2 o 4
@@ -737,13 +710,14 @@ def phi_angle_pixels(data_mask):
             if n_cu > n_cd:
                 # print('El muon está en el sector 2')
                 phi = np.pi + np.arctan(pendiente)
+                flag_control = True
 
             elif n_cu < n_cd:
                 # print('El muon está en el sector 4')
-                phi = 2 * np.pi + np.arctan(pendiente) 
+                phi =  2* np.pi + np.arctan(pendiente)
+                flag_control = True
 
-
-    if not flag_ver and not flag_hor: ## Otros casos
+    elif not flag_ver and not flag_hor: ## Otros casos
         if pendiente > 0:
             ## El muon puede estar en el cuadrante 1 o 3
             # print('pendiente positiva')
@@ -767,10 +741,12 @@ def phi_angle_pixels(data_mask):
             if n_cu > n_cd:
                 # print('El muon está en el sector 1')
                 phi = np.arctan(pendiente)
+                flag_control = True
 
             elif n_cu < n_cd:
                 # print('El muon está en el sector 3')
-                phi = np.arctan(pendiente) + np.pi
+                phi =  np.pi + np.arctan(pendiente)
+                flag_control = True
         else: 
             # print('pendiente negativa')
             ### El muon puede estar en el cuadrante 2 o 4
@@ -794,21 +770,137 @@ def phi_angle_pixels(data_mask):
             if n_cu > n_cd:
                 # print('El muon está en el sector 2')
                 phi = np.pi + np.arctan(pendiente)
+                flag_control = True
 
             elif n_cu < n_cd:
                 # print('El muon está en el sector 4')
                 phi = 2 * np.pi + np.arctan(pendiente)
-        
+                flag_control = True
+
+    if flag_rot and flag_control:
+        if np.pi/2 < phi < np.pi:
+            # print('Estoy en el sector 1 (rotado)')
+            phi = phi - np.pi/2
+        elif np.pi < phi < 3*np.pi/2:
+            # print('Estoy en el sector 2 (rotado)')
+            phi = phi - np.pi/2
+        elif 3*np.pi/2 < phi < 2 * np.pi:
+            # print('Estoy en el sector 3 (rotado)')
+            phi = phi - np.pi/2
+        elif 0 < phi < np.pi/2:
+            # print('Estoy en el sector 4 (rotado)')
+            phi = phi + 3*np.pi/2 
+    
     return phi
 
+def pixel_rot(x_bin, x0, y_bin, y0, theta):
+    diff_x = x_bin - x0
+    diff_y = y_bin - y0
 
-def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
-    CCD_depth = 680 ## micras
+    new_x = diff_x * np.cos(theta) - diff_y * np.sin(theta) + x0
+    new_y = diff_x * np.sin(theta) + diff_y * np.cos(theta) + y0
+
+    # return int(np.around(new_x, 0)), int(np.around(new_y, 0))
+    return int(new_x), int(new_y)
+
+def linear_fit(data_mask):
+    NBX = data_mask.shape[1]
+    NBY = data_mask.shape[0]
+    flag_rot = False
+
+    nbx = NBX
+    lox = 0
+    hix = data_mask.shape[1]
+
+    nby = NBY
+    loy = 0
+    hiy = data_mask.shape[0]
+
+    Qs = 0
+
+    hist2d = TH2F("hist2d", "", nbx,lox,hix, nby,loy,hiy)
+    for i in np.arange(0, nbx):
+        for j in np.arange(0, nby):
+            q = data_mask[j][i]
+            if q != 0:
+                Qs += q
+                hist2d.SetBinContent(int(i+1),int(j+1), q)
+            else:
+                hist2d.SetBinContent(int(i+1),int(j+1), 0)
+
+    fitline = TF1("fitline", "[0] + [1]*x",lox,hix)  
+    hist2d.Fit("fitline", "RNQ")
+
+    ### ===== Parámetros del Ajuste ===== ###
+    ordenada = fitline.GetParameters()[0]
+    pendiente = fitline.GetParameters()[1]
+    Chi_2 = fitline.GetChisquare()
+    ### ================================== ###
+
+    if Chi_2/Qs > 2:
+        # print('Intenté el ajuste pero fallé.')
+        flag_rot = True
+        long_y = data_mask.shape[0] - 1
+
+        data_mask_zeros = np.empty((NBX, NBY))
+        # data_mask_rot[:] = np.nan
+        data_mask_zeros[:] = 0
+
+        angle_rot = TMath.Pi()/2
+
+        for y_bin in range(0, NBY):
+            for x_bin in range(0, NBX):
+                if data_mask[y_bin][x_bin] != 0:
+                    # nx, ny = pixel_rot(x_bin=x_bin, x0=0, y_bin=y_bin, y0=0, theta= angle_rot)
+                    data_mask_zeros[x_bin][long_y - y_bin] = data_mask[y_bin][x_bin]
+
+        label_img, nlabels_img = sk.measure.label(data_mask_zeros > 0, connectivity=2, return_num=True)
+        # loc_rot = ndimage.find_objects(label_img == 1)[0]
+        mask_rot = np.invert(label_img==1)
+        data_mask_rot = ma.masked_array(data_mask_zeros, mask_rot)
+
+        
+        NBX = data_mask_rot.shape[1]
+        NBY = data_mask_rot.shape[0]
+
+        nbx = NBX
+        lox = 0
+        hix = data_mask_rot.shape[1]
+
+        nby = NBY
+        loy = 0
+        hiy = data_mask_rot.shape[0]
+
+        Qs = 0
+
+        hist2d_rot = TH2F("hist2d_rot", "", nbx,lox,hix, nby,loy,hiy)
+        for j in range(0, nby):
+            for i in range(0, nbx):
+                q = data_mask_rot[j][i]
+                if q != 0:
+                    Qs += q
+                    hist2d_rot.SetBinContent(int(i+1),int(j+1), q)
+                else:
+                    hist2d_rot.SetBinContent(int(i+1),int(j+1), 0)
+
+        fitline = TF1("fitline", "[0] + [1]*x",lox,hix)  
+        hist2d_rot.Fit("fitline", "RNQ")
+
+        ### ===== Parámetros del Ajuste ===== ###
+        ordenada = fitline.GetParameters()[0]
+        pendiente = fitline.GetParameters()[1]
+        Chi_2 = fitline.GetChisquare()
+        data_mask = data_mask_rot
+        # print('Ord: ', ordenada, 'Pend: ', pendiente, 'Chi2: ', Chi_2/Qs, 'flag_rot: ', flag_rot)
+        ### ================================== ###
+
+    return ordenada, pendiente, Chi_2/Qs, flag_rot, data_mask
+
+def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, dedl_min):
+    CCD_depth = 725 ## micras
     px_to_micras = 15 ## micras
     px_to_cm = 0.0015 ## cm/px
     micra_to_cm = 1 / 10000 ## micras/cm
-
-    DeltaEL_range_min, DeltaEL_range_max = 1, 4
 
     list_Muon_labels = []
     list_DeltaEL = []
@@ -818,20 +910,21 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
     list_phi = []
     list_elip = []
     list_sold = []
+    list_datamasked = []
 
     list_charge_all_events = []
     list_elip_all_events = []
     list_sol_all_events = []
 
-    for event in np.arange(1, nlabels_img):
+    for event in range(1, nlabels_img):
         mask = np.invert(label_img == event)
-        loc = nd.find_objects(label_img == event)[0]
+        loc = ndimage.find_objects(label_img == event)[0]
         
         data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
                                             mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
 
-        coordX_centerCharge = round(nd.center_of_mass(data_maskEvent)[1])
-        coordY_centerCharge = round(nd.center_of_mass(data_maskEvent)[0])
+        coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
+        coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
 
         coordY_centerCharge, coordX_centerCharge = int(prop[event-1].centroid_local[0]), int(prop[event-1].centroid_local[1])
         # print(type(coordY_centerCharge))
@@ -850,6 +943,9 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
         rM = prop[event-1].axis_major_length / 2
         rm = prop[event-1].axis_minor_length / 2
 
+        ## Tensor de inercia ##
+        # inercia_tensor = prop[event-1].inertia_tensor
+        # non_diag_inercia_tensor = inercia_tensor[0][1]
 
         ## Aquí se calcula la elipcidad del cluster ##
         try:
@@ -917,35 +1013,63 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
             list_sol_all_events.append(Solidity)
             list_elip_all_events.append(elip)
             continue
-
+        
         elif  elip >= Elipticity :
             # charge = data_maskEvent.sum()
 
             # if charge > 100:
             Delta_EL = (charge)/ (Delta_L) 
-            theta = np.arctan((Diagonal_lenght * px_to_cm)/(CCD_depth * micra_to_cm))
 
+            if Delta_EL < dedl_min:
+                list_charge_all_events.append(charge)
+                list_sol_all_events.append(Solidity)
+                list_elip_all_events.append(elip)
+                continue
+                
+
+            # print('Estoy por entrar a linear_fit')
+            ord, pend, chi2_Qs, flag_rot, data_mask = linear_fit(data_mask=data_maskEvent)
+            # print('Ord: ', ord, 'Pend: ', pend, 'Chi2: ', chi2_Qs, 'flag_rot: ', flag_rot)
+
+            if chi2_Qs > 2:
+                list_charge_all_events.append(charge)
+                list_sol_all_events.append(Solidity)
+                list_elip_all_events.append(elip)
+                continue
+            
+            #### ======================== CÁLCULO DEL ÁNGULO THETA ============================ ###
+            #### ---------  Se toma que TODOS los muones atravezaron por completo la CCD ------ ###
+            theta = np.arctan((Diagonal_lenght * px_to_cm)/(CCD_depth * micra_to_cm)) 
+
+            ### ============ CÁLCULO DEL ÁNGULO PHI (pixels) ===================== ###
             try:
-                phi = phi_angle_pixels(data_maskEvent)
+                # print('Phi angle function')
+                phi = phi_angle_pixels(data_mask, pend, flag_rot)
+
             except:
                 phi = -4
+                
+            if phi < 0:
+                continue
 
-
-
+            list_phi.append(phi)    
             list_DeltaL.append(Delta_L)
             list_DeltaEL.append(Delta_EL)
             list_charge.append(charge)
             list_theta.append(theta)
-            list_phi.append(phi)
             list_elip.append(elip)
             list_sold.append(Solidity)
-            # print(charge, DeltaEL)
+            list_datamasked.append(data_maskEvent)
 
-            # if DeltaEL_range_min <= DeltaEL <= DeltaEL_range_max:
             list_Muon_labels.append(event)
 
-    return list_DeltaL, list_DeltaEL, list_charge, list_Muon_labels, list_theta, list_phi, list_charge_all_events, list_elip, list_sold, list_elip_all_events, list_sol_all_events
+    dict_lists = {"muons" : {"l": list_DeltaL, "dedl" : list_DeltaEL, "charge_muons" : list_charge, "theta": list_theta, 
+                             "phi": list_phi, "elip": list_elip, "sol": list_sold, "image" : list_datamasked,
+                             "label" : list_Muon_labels}, 
 
+                 "non_muons" : {"charge": list_charge_all_events, "elip": list_elip_all_events, "sol": list_sol_all_events}}
+    
+    return dict_lists
 
 def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop, min_Charge, Sigma, skirts):
     list_sigmas_vertical_event = []
@@ -1055,7 +1179,6 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop
 
 
     return list_vertical_events, list_horizontal_events
-
 
 #### =================== FUNCIONES DE CLUSTERIZACIÓN Y CREACCIÓN DE PDFs ================== ###
 

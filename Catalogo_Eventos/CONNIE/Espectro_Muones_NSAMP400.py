@@ -1,9 +1,5 @@
-import math
 from astropy.io import fits
-import scipy.ndimage as ndimage
-from scipy.optimize import curve_fit
 import numpy as np
-import matplotlib.pyplot as plt
 import numpy.ma as ma
 import sys
 import skimage as sk
@@ -33,7 +29,7 @@ RUNID = 116
 list_Elip = [0.65, 0.65, 0, 0.65]
 list_Solidit = [0.7, 0.7, 0, 0.7]
 
-DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
+dedl_value_min = 1300
 
 ratio_keV = 0.0036
 DeltaEL_range = 85
@@ -60,6 +56,7 @@ def main(argObj):
     list_phi_extension_1 = []
     list_elip_extension_1 = []
     list_sol_extension_1 = []
+    list_datamasked_extension_1 = []
 
     total_images = len(argObj)
     image_in_bucle = 0
@@ -103,10 +100,22 @@ def main(argObj):
         ## Obteniendo el valor promedio del fondo
         fondo_mask = np.invert(label_img == 0)
         fondo = ma.masked_array(dataCal,fondo_mask)
-        valor_promedio_fondo = fondo.data.mean()
 
-        DeltaL, DeltaEL, list_charge, _, list_theta, list_phi, list_charge_all_events,  list_elip, list_sol, list_elip_all, list_sol_all = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
-                                                                                        prop=prop, Solidit=Solidit, Elipticity=Elip)
+
+        dict_lists = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, prop=prop, Solidit=Solidit, Elipticity=Elip, dedl_min= dedl_value_min)
+
+        DeltaL = dict_lists["muons"]["l"]
+        DeltaEL = dict_lists["muons"]["dedl"]
+        list_charge = dict_lists["muons"]["charge_muons"]
+        list_theta = dict_lists["muons"]["theta"]
+        list_phi = dict_lists["muons"]["phi"]
+        list_elip = dict_lists["muons"]["elip"]
+        list_sol = dict_lists["muons"]["sol"]
+        list_datamasked = dict_lists["muons"]["image"]
+
+        list_charge_all_events = dict_lists["non_muons"]["charge"]
+        list_elip_all = dict_lists["non_muons"]["elip"]
+        list_sol_all = dict_lists["non_muons"]["sol"]
 
         for index in np.arange(0, len(DeltaEL)):
             list_DeltaEL_extension_1.append(DeltaEL[index])
@@ -116,6 +125,7 @@ def main(argObj):
             list_phi_extension_1.append(list_phi[index])
             list_elip_extension_1.append(list_elip[index])
             list_sol_extension_1.append(list_sol[index])
+            list_datamasked_extension_1.append(list_datamasked[index])
 
         for index in np.arange(0, len(list_charge_all_events)):
             list_charge_of_all_extension_1.append(list_charge_all_events[index])
@@ -135,7 +145,9 @@ def main(argObj):
                                          'deltaL' : list_DeltaL_extension_1, 'all_events' : list_charge_of_all_extension_1,
                                          'theta': list_theta_extension_1, 'phi': list_phi_extension_1,
                                          'elip' : list_elip_extension_1, 'sol' : list_sol_extension_1,
-                                         'all_events_elip' : list_elip_of_all_extension_1, 'all_events_sol' : list_sol_of_all_extension_1}}
+                                         'all_events_elip' : list_elip_of_all_extension_1, 'all_events_sol' : list_sol_of_all_extension_1,
+                                         'datamasked' : list_datamasked_extension_1}
+                        }
 
 
     total_events = sum(list_totalEvents)
@@ -148,21 +160,22 @@ def main(argObj):
     eventos_rectos = 'Muones Detectados: ' + str(num_muons)
     # relacion = total_events / num_muons
     
-    # eventos_circulares = 'Muones Circulares Detectados: ' + str(len(list_EventosCirc))
-    # print('Número de elementos de la lista "list_EventCharge_AllExtensions": ', len(list_EventCharge_AllExtensions))
-    # print('elementos de la lista "list_EventCharge_AllExtensions":', list_EventCharge_AllExtensions)
+
     print(Eventos_Totales)
     print(eventos_rectos)
 
     ext = img.split('/')[-1].split('_')[-2].split('g')[-1]
     if units == 0:
-        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs.pkl'
+        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + \
+            '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs.pkl'
 
     elif units == 1:
-        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_SIZE_1022x420_' + '_electrons.pkl'
+        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + \
+            '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_SIZE_1022x420_' + '_electrons_new.pkl'
 
     elif units == 2:
-        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_KeV.pkl'
+        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + \
+            '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_KeV.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 

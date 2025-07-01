@@ -1453,6 +1453,7 @@ def pixel_rot(x_bin, x0, y_bin, y0, theta):
 
     # return int(np.around(new_x, 0)), int(np.around(new_y, 0))
     return int(new_x), int(new_y)
+
 ### =================================================================== ###
 
 ### ================================ Filtro de Muones General ============================================ ###
@@ -1604,13 +1605,14 @@ def DataFrame_muons(dict_muons, extension):
     DF_gain = pd.DataFrame(dict_extension['gain'], columns=['Gain (ADU/e-)'])
     DF_dedl = pd.DataFrame(dict_extension['deltaEL'], columns=['dEdL (KeV/cm)'])
     DF_l = pd.DataFrame(dict_extension['deltaL'], columns=['l (cm)'])
+    DF_date = pd.DataFrame(dict_extension['run'], columns=['date_run'])
 
     list_muonid =[]
     for index in range(0, len(list_datamask)):
         list_muonid.append(index)
     DF_muonid = pd.DataFrame(list_muonid, columns=['Muon ID'])
 
-    TotalFrame = pd.concat([DF_muonid, DF_gain, DF_sol, DF_eli, DF_thet, DF_phi, DF_charge, DF_l, DF_dedl], axis=1)
+    TotalFrame = pd.concat([DF_muonid, DF_date, DF_gain, DF_sol, DF_eli, DF_thet, DF_phi, DF_charge, DF_l, DF_dedl], axis=1)
     Frame = TotalFrame.set_index('Muon ID')
 
     return Frame, list_datamask
@@ -1727,7 +1729,7 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, dedl
     list_elip_all_events = []
     list_sol_all_events = []
 
-    for event in np.arange(1, nlabels_img):
+    for event in range(1, nlabels_img):
         mask = np.invert(label_img == event)
         loc = ndimage.find_objects(label_img == event)[0]
         
