@@ -104,6 +104,10 @@ def main(argObj):
     list_datamasked_extension_1 = []
     list_datamasked_extension_4 = []
 
+    list_run_extension_2 =[]
+    list_run_extension_1 = []
+    list_run_extension_4 = []
+
     ### ========================= ###
 
     nerr_img = 0
@@ -126,12 +130,17 @@ def main(argObj):
             hdu_list = fits.open(img)
             image_in_bucle += 1
 
+            path = img.split('/')
+            run = path[2]
+            # print('Year: ', run)
+
         except:
             nerr_img = nerr_img + 1
             print('Loading error in image ' + str(img) + 'in open the image.')
             continue
         
         for extension in (0,1,3):
+
             # extension = 3
             # extension = 1
             Elip = list_Elip[extension]
@@ -214,10 +223,6 @@ def main(argObj):
                                 print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
                                 continue
 
-                # if Gain < 100 or Gain > 240:
-                #     ### Aquí se deberá poner la ganancia promedio de cada extensión una vez que se obtenga de muchas imágenes
-                #     print('Fit gain error in extension ' + str(extension) + ' of image ' + str(img))
-
             except:
                 print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
                 continue
@@ -272,6 +277,7 @@ def main(argObj):
                     list_sol_extension_1.append(list_sol[index])
                     list_fit_gain_1.append(Gain)
                     list_datamasked_extension_1.append(list_datamasked[index])
+                    list_run_extension_1.append(run)
 
                 for index in np.arange(0, len(list_charge_all_events)):
                     ### ==== All events ==== ###
@@ -291,6 +297,7 @@ def main(argObj):
                     list_sol_extension_2.append(list_sol[index])
                     list_fit_gain_2.append(Gain)
                     list_datamasked_extension_2.append(list_datamasked[index])
+                    list_run_extension_2.append(run)
 
                 for index in np.arange(0, len(list_charge_all_events)):
                     list_charge_of_all_extension_2.append(list_charge_all_events[index])
@@ -308,6 +315,7 @@ def main(argObj):
                     list_sol_extension_4.append(list_sol[index])
                     list_fit_gain_4.append(Gain)
                     list_datamasked_extension_4.append(list_datamasked[index])
+                    list_run_extension_4.append(run)
 
                 for index in np.arange(0, len(list_charge_all_events)):
                     list_charge_of_all_extension_4.append(list_charge_all_events[index])
@@ -327,21 +335,22 @@ def main(argObj):
                                          'theta': list_theta_extension_1, 'phi': list_phi_extension_1, 'gain' : list_fit_gain_1,
                                          'elip' : list_elip_extension_1, 'sol' : list_sol_extension_1,
                                          'all_events_elip' : list_elip_of_all_extension_1, 'all_events_sol' : list_sol_of_all_extension_1,
-                                         'datamasked' : list_datamasked_extension_1},
+                                         'datamasked' : list_datamasked_extension_1, 'run' : list_run_extension_1},
 
                         'extension_2' : {'charge' : list_EventCharge_extension_2, 'deltaEL' : list_DeltaEL_extension_2, 
                                         'deltaL' : list_DeltaL_extension_2, 'all_events' : list_charge_of_all_extension_2,
                                         'theta': list_theta_extension_2, 'phi': list_phi_extension_2,'gain' : list_fit_gain_2, 
                                         'elip' : list_elip_extension_2, 'sol' : list_sol_extension_2,
                                         'all_events_elip' : list_elip_of_all_extension_2, 'all_events_sol' : list_sol_of_all_extension_2,
-                                        'datamasked' : list_datamasked_extension_2},
+                                        'datamasked' : list_datamasked_extension_2, 'run' : list_run_extension_2},
 
                         'extension_4' : {'charge' : list_EventCharge_extension_4, 'deltaEL' : list_DeltaEL_extension_4, 
                                          'deltaL' : list_DeltaL_extension_4, 'all_events' : list_charge_of_all_extension_4,
                                          'theta': list_theta_extension_4, 'phi': list_phi_extension_4, 'gain' : list_fit_gain_4, 
                                          'elip' : list_elip_extension_4, 'sol' : list_sol_extension_4, 
                                          'all_events_elip' : list_elip_of_all_extension_4, 'all_events_sol' : list_sol_of_all_extension_4,
-                                         'datamasked' : list_datamasked_extension_4}}
+                                         'datamasked' : list_datamasked_extension_4, 'run' : list_run_extension_4}
+                                         }
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()

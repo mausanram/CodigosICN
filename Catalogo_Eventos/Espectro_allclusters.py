@@ -35,33 +35,10 @@ def gaussian(x, a, mean, sigma):
 def main(argObj):
     list_totalEvents = []
 
-    list_charge_of_all_extension_1 = []
-    list_charge_of_all_extension_2 = []
-    list_charge_of_all_extension_4 = []
 
     list_EventCharge_extension_2 =[]
     list_EventCharge_extension_1 = []
     list_EventCharge_extension_4 = []
-
-    list_DeltaEL_extension_2 = []
-    list_DeltaEL_extension_1 = []
-    list_DeltaEL_extension_4 = []
-
-    list_DeltaL_extension_2 = []
-    list_DeltaL_extension_1 = []
-    list_DeltaL_extension_4 = []
-
-    list_theta_extension_2 = []
-    list_theta_extension_1 = []
-    list_theta_extension_4 = []
-
-    list_phi_extension_2 = []
-    list_phi_extension_1 = []
-    list_phi_extension_4 = []
-
-    list_fit_gain_2 = []
-    list_fit_gain_1 = []
-    list_fit_gain_4 = []
 
     nerr_img = 0
     nerr_ext = 0
@@ -194,7 +171,7 @@ def main(argObj):
 
     num_clusters = len(list_EventCharge_extension_1) + len(list_EventCharge_extension_2) + len(list_EventCharge_extension_4)
 
-    dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_clusters, 'Energy_Units' : units,
+    dict_to_save_pkl = {'Num_Images' : total_images , 'All_clusters_detected' : num_clusters, 'Energy_Units' : units,
                         'extension_1' : {'charge' : list_EventCharge_extension_1}, 
                         'extension_2' : {'charge' : list_EventCharge_extension_2},
                         'extension_4' : {'charge' : list_EventCharge_extension_4}}
