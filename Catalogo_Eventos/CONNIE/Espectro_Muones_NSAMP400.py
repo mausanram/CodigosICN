@@ -19,20 +19,21 @@ CCD_depth = 680 #micras
 px_to_cm = 0.0015
 px_to_micras = 15
 micra_to_cm = 1 / 10000
+imgsize_y = 1022
+imgsize_x = 420
 
 ## Datos del filtro de muones GENERAL
 Solidit = 0.65
 Elip = 0.65
 RUNID = 116
 
-dedl_value_min = 1300
+dedl_value_min = 1300 #KeV/cm
 
-ratio_keV = 0.0036
-DeltaEL_range = 85
+ratio_keV = 0.00368
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 #### ==== LOS DATOS DE CONNIE YA ESTÁN CALIBRADOS EN ELECTRONES Y SE CARGAN LOS DATOS ASÍ ==== ###
-units = 1
+units = 2
 n_sigmas = 5
 numero_bins = 500
 
@@ -74,16 +75,25 @@ def main(argObj):
         extension = 0
 
         try :
-            dataCal = hdu_list[extension].data[:,:]
+            data = hdu_list[extension].data[:imgsize_y,:imgsize_x]
             header = hdu_list[extension].header
+
+            sigma_eletrons = header['RD_NOISE']     # Se lee la sigma del header de cada extensión 
+
+            if units == 1:
+                dataCal = data## En electrones
+                sigma = abs(sigma_eletrons)
+
+            elif units == 2:
+                dataCal = ratio_keV * data## En keV
+                sigma= sigma_eletrons * ratio_keV
+
 
         except:
             print('Loading error in extension ' + str(extension) + ' of image ' + str(img) + 'in load the data.')
             continue
 
-
-        sigma_eletrons = header['RD_NOISE']     # Se lee la sigma del header de cada extensión 
-        fondo_value = n_sigmas * sigma_eletrons
+        fondo_value = n_sigmas * sigma
 
         label_img, n_events = sk.measure.label(dataCal > fondo_value, connectivity=2, return_num=True)
         prop = sk.measure.regionprops(label_img, dataCal)
@@ -167,11 +177,11 @@ def main(argObj):
 
     elif units == 1:
         file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + \
-            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_DEDL_' + str(dedl_value_min) +'_SIZE_1022x420_electrons_new.pkl'
+            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_DEDL_' + str(dedl_value_min) + '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_electrons_new.pkl'
 
     elif units == 2:
-        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + \
-            '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_KeV.pkl'
+        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + \
+            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_DEDL_' + str(dedl_value_min) + '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_KeV_new.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 

@@ -11,8 +11,9 @@ TTree *tree = (TTree*) file->Get("B02Evts");
 
 
 // TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_muons_CONNIE_NSAMP400_1022x420_SIGMAS_5_MeV.root"); // INFO ALL_CLUSTERS
-TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_muons_CONNIE_NSAMP400_700x420_SIGMAS_5_MeV.root"); // INFO ALL_CLUSTERS
+// TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_muons_CONNIE_NSAMP400_700x420_SIGMAS_5_MeV.root"); // INFO ALL_CLUSTERS
 // TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700__MeV.root");	// INFO MUONS ONLY
+TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/tree_muons_CONNIE_NSAMP400_1022x420_SIGMAS_5_MeV_new.root");	// INFO MUONS ONLY
 TTree *tree_icn = (TTree*) f_icn->Get("tree");
 
 
@@ -50,7 +51,8 @@ tree->Draw("thetaPri>>theta_all");
 tree->Draw("thetaPri>>theta_in", "nHitBar>0");
 tree->Draw("thetaPri>>theta_cut", "nHitBar>0 && thetaPri > 25*TMath::Pi()/180");
 // tree->Draw("thet>>theta_incut", "thet>22*TMath::Pi()/180");
-tree_icn->Draw("thet*TMath::Pi()/180>>theta_icn");
+// tree_icn->Draw("thet*TMath::Pi()/180>>theta_icn");
+tree_icn->Draw("thet>>theta_icn");
 
 // Define fuctions //
 TF1 *func1 = new TF1("func1", "[0]*sin(x)*(cos(x))^2", 0.01, 85*TMath::Pi()/180);
@@ -111,9 +113,9 @@ leg->Draw();
 // theta_icn->Scale(7.2);
 canv->cd(2);
 // theta_in->Draw("hist");
-// theta_cut->Draw("hist");
+theta_cut->Draw("hist");
 
-theta_icn->Scale(40);
+theta_icn->Scale(21);
 theta_icn->Draw("hist same");
 func2->Draw("same");
 

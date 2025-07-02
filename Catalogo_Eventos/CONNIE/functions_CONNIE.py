@@ -1182,6 +1182,36 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop
 
 #### =================== FUNCIONES DE CLUSTERIZACIÓN Y CREACCIÓN DE PDFs ================== ###
 
+def DataFrame_muons(dict_muons, extension):
+    KeV_elec_ratio = 0.00368    # KeV/e-
+    if extension == 1:
+        dict_extension = dict_muons['extension_1']
+    elif extension == 2:
+        dict_extension = dict_muons['extension_2']
+    elif extension == 4:
+        dict_extension = dict_muons['extension_4']
+
+    list_datamask = dict_extension['datamasked']
+    DF_charge = pd.DataFrame(dict_extension['charge'] * np.array(KeV_elec_ratio), columns=['Charge (KeV)'])
+    DF_sol = pd.DataFrame(dict_extension['sol'], columns=['Solidity'])
+    DF_eli = pd.DataFrame(dict_extension['elip'], columns=['Elipticity'])
+    DF_thet = pd.DataFrame(np.degrees(dict_extension['theta']), columns=['Theta (Deg)'])
+    DF_phi = pd.DataFrame(np.degrees(dict_extension['phi']), columns=['Phi (Deg)'])
+    DF_dedl = pd.DataFrame(dict_extension['deltaEL'] * np.array(KeV_elec_ratio), columns=['dEdL (KeV/cm)'])
+    DF_l = pd.DataFrame(dict_extension['deltaL'], columns=['l (cm)'])
+
+    list_muonid =[]
+    for index in range(0, len(list_datamask)):
+        list_muonid.append(index)
+    DF_muonid = pd.DataFrame(list_muonid, columns=['Muon ID'])
+
+    TotalFrame = pd.concat([DF_muonid, DF_sol, DF_eli, DF_thet, DF_phi, DF_charge, DF_l, DF_dedl], axis=1)
+    Frame = TotalFrame.set_index('Muon ID')
+
+    return Frame, list_datamask
+
+
+
 def all_cluster(dataCal, label_img, nlabels_img, prop):
     list_charge = []
 
