@@ -1,4 +1,6 @@
+import matplotlib.colors
 import matplotlib.pyplot as plt
+import matplotlib
 import os
 
 from reportlab.pdfgen import canvas
@@ -138,6 +140,7 @@ def pdf_creator3x3_indexs(pdf_name, list_pixelmatrix, list_index):
     color_matrix = [0.4, 0.4470, 0.2410]
     color_map ='jet'
     coord3x3 = [[0,0],[0,1], [0,2], [1,0], [1,1], [1,2], [2,0], [2,1], [2,2]] 
+    Norm = matplotlib.colors.LogNorm(vmin=10**-1, vmax=5 * 10**0)
 
 
     n_last_events = 0
@@ -155,7 +158,7 @@ def pdf_creator3x3_indexs(pdf_name, list_pixelmatrix, list_index):
             n_events = n_events + 1
             if n_events < 10: 
                 # print('n_events: ', n_events)
-                axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].imshow(list_pixelmatrix[index], cmap = color_map)
+                axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].imshow(list_pixelmatrix[index], cmap = color_map, norm = Norm)
                 axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].set_title('ID: ' + str(list_index[index]))
                 plt.tight_layout()
 
@@ -191,7 +194,7 @@ def pdf_creator3x3_indexs(pdf_name, list_pixelmatrix, list_index):
             if n_muonstot >= Resto:
                 if n_events < 10: 
                     # print('n_events: ', n_events)
-                    axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].imshow(list_pixelmatrix[index], cmap = color_map)
+                    axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].imshow(list_pixelmatrix[index], cmap = color_map, norm = Norm)
                     axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].set_title('ID: ' + str(list_index[index]))
                     plt.tight_layout()
 
@@ -219,7 +222,7 @@ def pdf_creator3x3_indexs(pdf_name, list_pixelmatrix, list_index):
             elif n_muonstot<Resto:
                 n_last_events = n_last_events + 1
 
-                axs[coord3x3[n_last_events - 1][0],coord3x3[n_last_events - 1][1]].imshow(list_pixelmatrix[index], cmap=color_map)
+                axs[coord3x3[n_last_events - 1][0],coord3x3[n_last_events - 1][1]].imshow(list_pixelmatrix[index], cmap=color_map, norm = Norm)
                 axs[coord3x3[n_last_events - 1][0],coord3x3[n_last_events - 1][1]].set_title('ID: ' + str(list_index[index]))
 
                 if n_muonstot == 0:
@@ -259,6 +262,8 @@ def pdf_creator3x3_verticals(pdf_name, list_pixelmatrix):
     color_map ='jet'
     coord3x3 = [[0,0],[0,1], [0,2], [1,0], [1,1], [1,2], [2,0], [2,1], [2,2]] 
 
+    Norm = matplotlib.colors.LogNorm(vmin=10**-1, vmax=5 * 10**0)
+
 
     n_last_events = 0
     n_muonstot = len(list_pixelmatrix)
@@ -277,7 +282,7 @@ def pdf_creator3x3_verticals(pdf_name, list_pixelmatrix):
                 # print('n_events: ', n_events)
                 ylen, xlen = list_pixelmatrix[index].shape
 
-                axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].imshow(list_pixelmatrix[index], cmap = color_map)
+                axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].imshow(list_pixelmatrix[index], cmap = color_map, norm = Norm)
                 axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].set_title('ID: ' + str(index))
                 axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].set_ylabel('xlen: ' + xlen + ' , ylen: ' + ylen)
                 plt.tight_layout()
@@ -314,7 +319,7 @@ def pdf_creator3x3_verticals(pdf_name, list_pixelmatrix):
             if n_muonstot >= Resto:
                 if n_events < 10: 
                     # print('n_events: ', n_events)
-                    axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].imshow(list_pixelmatrix[index], cmap = color_map)
+                    axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].imshow(list_pixelmatrix[index], cmap = color_map, norm = Norm)
                     axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].set_title('ID: ' + str(index))
                     plt.tight_layout()
 
@@ -342,7 +347,7 @@ def pdf_creator3x3_verticals(pdf_name, list_pixelmatrix):
             elif n_muonstot<Resto:
                 n_last_events = n_last_events + 1
 
-                axs[coord3x3[n_last_events - 1][0],coord3x3[n_last_events - 1][1]].imshow(list_pixelmatrix[index], cmap=color_map)
+                axs[coord3x3[n_last_events - 1][0],coord3x3[n_last_events - 1][1]].imshow(list_pixelmatrix[index], cmap=color_map, norm = Norm)
                 axs[coord3x3[n_last_events - 1][0],coord3x3[n_last_events - 1][1]].set_title('ID: ' + str(index))
                 plt.tight_layout()
 

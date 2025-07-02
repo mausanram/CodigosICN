@@ -25,10 +25,6 @@ Solidit = 0.65
 Elip = 0.65
 RUNID = 116
 
-## Datos del filtro POR EXTENSIÓN
-list_Elip = [0.65, 0.65, 0, 0.65]
-list_Solidit = [0.7, 0.7, 0, 0.7]
-
 dedl_value_min = 1300
 
 ratio_keV = 0.0036
@@ -170,8 +166,8 @@ def main(argObj):
             '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs.pkl'
 
     elif units == 1:
-        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + \
-            '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_SIZE_1022x420_' + '_electrons_new.pkl'
+        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + \
+            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_DEDL_' + str(dedl_value_min) +'_SIZE_1022x420_electrons_new.pkl'
 
     elif units == 2:
         file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + \
