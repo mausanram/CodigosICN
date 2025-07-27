@@ -129,7 +129,7 @@ def pdf_creator3x3(pdf_name, list_pixelmatrix):
 
     return 0
 
-def pdf_creator3x3_indexs(pdf_name, list_pixelmatrix, list_index):
+def pdf_creator3x3_indexs(pdf_name, list_pixelmatrix, list_index, norm):
     print('The PDF is being created')
     print(len(list_pixelmatrix), ' muons will be display')
     c = canvas.Canvas(pdf_name, letter)
@@ -140,7 +140,7 @@ def pdf_creator3x3_indexs(pdf_name, list_pixelmatrix, list_index):
     color_matrix = [0.4, 0.4470, 0.2410]
     color_map ='jet'
     coord3x3 = [[0,0],[0,1], [0,2], [1,0], [1,1], [1,2], [2,0], [2,1], [2,2]] 
-    Norm = matplotlib.colors.LogNorm(vmin=10**-1, vmax=10000 * 10**0)
+    Norm = norm
 
 
     n_last_events = 0

@@ -34,7 +34,7 @@ ratio_keV = 0.00368
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 #### ==== LOS DATOS DE CONNIE YA ESTÁN CALIBRADOS EN ELECTRONES Y SE CARGAN LOS DATOS ASÍ ==== ###
 units = 2
-n_sigmas = 5
+n_sigmas = 4
 numero_bins = 500
 
 
