@@ -44,7 +44,7 @@ DeltaEL_range = 85
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 #### ==== LOS DATOS DE CONNIE YA ESTÁN CALIBRADOS EN ELECTRONES ==== ###
 units = 1
-n_sigmas = 5
+n_sigmas = 4
 numero_bins = 500
 
 def main(argObj):
@@ -127,15 +127,15 @@ def main(argObj):
     ext = img.split('/')[-1].split('_')[-2].split('g')[-1]
     if units == 0:
         file_name = 'dict_allclusters_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + '_NSIG_' + str(n_sigmas) + \
-            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_ADUs_new.pkl'
+            '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_ADUs_new.pkl'
 
     elif units == 1:
         file_name = 'dict_allclusters_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + '_NSIG_' + str(n_sigmas) + \
-            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_electrons_new.pkl'
+            '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_electrons_new.pkl'
 
     elif units == 2:
         file_name = 'dict_allclusters_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + '_NSIG_' + str(n_sigmas) + \
-            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_KeV_new.pkl'
+            '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_KeV_new.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
