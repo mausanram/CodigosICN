@@ -172,15 +172,15 @@ def main(argObj):
 
     ext = img.split('/')[-1].split('_')[-2].split('g')[-1]
     if units == 0:
-        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + \
-            '_img' + str(ext) + '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_ADUs.pkl'
+        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + '_NSIG_' + str(n_sigmas) + \
+            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_DEDL_' + str(dedl_value_min) + '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_ADUs_new.pkl'
 
     elif units == 1:
-        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + \
+        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + '_NSIG_' + str(n_sigmas) + \
             '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_DEDL_' + str(dedl_value_min) + '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_electrons_new.pkl'
 
     elif units == 2:
-        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + \
+        file_name = 'dict_muons_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + '_NSIG_' + str(n_sigmas) + \
             '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_DEDL_' + str(dedl_value_min) + '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_KeV_new.pkl'
 
     file_object_histogram = open(file_name, 'wb')

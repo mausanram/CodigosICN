@@ -29,6 +29,8 @@ micra_to_cm = 1 / 10000
 Solidit = 0.7
 Elip = 0.65
 RUNID = 116
+imgsize_y = 1022
+imgsize_x = 420
 
 ## Datos del filtro POR EXTENSIÓN
 list_Elip = [0.65, 0.65, 0, 0.65]
@@ -76,7 +78,7 @@ def main(argObj):
         try :
             # print('Voy a obtener el OsCan y el active area')
             # dataCal = hdu_list[extension].data[:600,:] # En electrones
-            dataCal = hdu_list[extension].data[:,:] # En electrones
+            dataCal = hdu_list[extension].data[:imgsize_y,:imgsize_x] # En electrones 
             header = hdu_list[extension].header
             # oScan = hdu_list[extension].data[:,550:]
 
@@ -124,14 +126,16 @@ def main(argObj):
 
     ext = img.split('/')[-1].split('_')[-2].split('g')[-1]
     if units == 0:
-        file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + '_ADUs.pkl'
+        file_name = 'dict_allclusters_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + '_NSIG_' + str(n_sigmas) + \
+            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_ADUs_new.pkl'
 
     elif units == 1:
-        # file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + 'SIZE_600x420_electrons.pkl'
-        file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + 'SIZE_1022x420_electrons.pkl'
+        file_name = 'dict_allclusters_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + '_NSIG_' + str(n_sigmas) + \
+            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_electrons_new.pkl'
 
     elif units == 2:
-        file_name = 'dict_allclustes_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_Images_' + str(len(argObj)) + '_NSIGMAS_'+ str(n_sigmas) +'_img' + str(ext) + '_KeV.pkl'
+        file_name = 'dict_allclusters_NSAMP400_CONNIE_RUNID_' + str(RUNID) + '_NIMG_' + str(len(argObj)) + '_NSIG_' + str(n_sigmas) + \
+            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_SIZE_' + str(imgsize_y) + 'x' +str(imgsize_x) + '_KeV_new.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
