@@ -1222,7 +1222,7 @@ def all_cluster(dataCal, label_img, nlabels_img, prop):
         data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
                                             mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
         
-        ysize, xsize = data_maskEvent.shape
+        ysize, xsize = data_maskEvent.shape[0], data_maskEvent.shape[1]
 
         ## Aquí se calcula la carga total del cluster
         charge = data_maskEvent.sum()
@@ -1235,6 +1235,7 @@ def all_cluster(dataCal, label_img, nlabels_img, prop):
 def DataFrame_allclusters(dict_all, units):
     KeV_elec_ratio = 0.00368    # KeV/e-
     dict_extension = dict_all['extension_1']
+    Len = len(dict_extension['charge'])
 
     if units == 1:
         DF_charge = pd.DataFrame(dict_extension['charge'], columns=['Charge (e-)'])
@@ -1245,7 +1246,7 @@ def DataFrame_allclusters(dict_all, units):
     DF_ysize = pd.DataFrame(dict_extension['ysize (px)'], columns=['Ysize (px)'])
 
     list_clusterid =[]
-    for index in range(0, len(dict_extension['charge'])):
+    for index in range(0, Len):
         list_clusterid.append(index)
     DF_clusterid = pd.DataFrame(list_clusterid, columns=['Cluster ID'])
 

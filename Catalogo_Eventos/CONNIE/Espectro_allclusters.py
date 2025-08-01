@@ -35,7 +35,7 @@ ratio_keV = 0.0036
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 #### ==== LOS DATOS DE CONNIE YA ESTÁN CALIBRADOS EN ELECTRONES ==== ###
 units = 1
-n_sigmas = 4
+n_sigmas = 5
 numero_bins = 500
 
 def main(argObj):
