@@ -26,20 +26,11 @@ px_to_micras = 15
 micra_to_cm = 1 / 10000
 
 ## Datos del filtro de muones GENERAL
-Solidit = 0.7
-Elip = 0.65
 RUNID = 116
 imgsize_y = 1022
 imgsize_x = 420
 
-## Datos del filtro POR EXTENSIÓN
-list_Elip = [0.65, 0.65, 0, 0.65]
-list_Solidit = [0.7, 0.7, 0, 0.7]
-
-DeltaEL_range_min, DeltaEL_range_max = 0.9, 3.55
-
 ratio_keV = 0.0036
-DeltaEL_range = 85
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 #### ==== LOS DATOS DE CONNIE YA ESTÁN CALIBRADOS EN ELECTRONES ==== ###
@@ -102,9 +93,8 @@ def main(argObj):
         ## Obteniendo el valor promedio del fondo
         fondo_mask = np.invert(label_img == 0)
         fondo = ma.masked_array(dataCal,fondo_mask)
-        valor_promedio_fondo = fondo.data.mean()
 
-        list_charge = all_cluster(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, prop=prop)
+        list_charge, list_xsize, list_ysize = all_cluster(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, prop=prop)
 
         for index in np.arange(0, len(list_charge)):
             list_EventCharge_extension_1.append(list_charge[index])
@@ -115,8 +105,8 @@ def main(argObj):
 
     num_clusters = len(list_EventCharge_extension_1)
 
-    dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_clusters, 'Energy_Units' : units,
-                        'extension_1' : {'charge' : list_EventCharge_extension_1}}
+    dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_clusters, 'Energy_Units' : units, 'Nsigmas' : n_sigmas,
+                        'extension_1' : {'charge' : list_EventCharge_extension_1, 'xsize (px)' : list_xsize, 'ysize (px)' : list_ysize}}
 
     total_events = sum(list_totalEvents)
     Final = datetime.datetime.now()
