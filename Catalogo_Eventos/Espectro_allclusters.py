@@ -99,7 +99,7 @@ def main(argObj):
             
             try:
                 dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, 
-                                                    Bins_fit=numero_bins,make_figure_flag=False, range_fit=[-30, 350])
+                                                    Bins_fit=numero_bins,make_figure_flag=False, range_fit=[-50, 360])
 
                 sig_ADUs = dict_popt['sigma']
                 Offset = dict_popt['Offset']
@@ -107,21 +107,48 @@ def main(argObj):
                 Prob = dict_popt['Prob']
                 
                 if Prob < 0.05:
-                    del_Bin = 600
+                    del_Bin = 500
                     dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                        Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-30, 400])
+                                                        Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-30, 390])
                     sig_ADUs = dict_popt['sigma']
                     Offset = dict_popt['Offset']
                     Gain = dict_popt['Gain']
                     Prob = dict_popt['Prob']
+                    
+                    if Prob < 0.05:
+                        del_Bin = 400
+                        dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
+                                                            Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-30, 390])
+                        
+                        sig_ADUs = dict_popt['sigma']
+                        Offset = dict_popt['Offset']
+                        Gain = dict_popt['Gain']
+                        Prob = dict_popt['Prob']
+                    
+                        
+                        if Prob < 0.05:
+                            del_Bin = 300
+                            dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
+                                                                Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-50, 400])
+                            
+                            sig_ADUs = dict_popt['sigma']
+                            Offset = dict_popt['Offset']
+                            Gain = dict_popt['Gain']
+                            Prob = dict_popt['Prob']
+                    
 
-                    if  Prob < 0.05:
-                        nerr_ext = nerr_ext + 1
-                        print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
-                # if Gain < 100 or Gain > 240:
-                #     ### Aquí se deberá poner la ganancia promedio de cada extensión una vez que se obtenga de muchas imágenes
-                #     print('Fit gain error in extension ' + str(extension) + ' of image ' + str(img))
-                #     continue
+                            if  Prob < 0.05:
+                                nerr_ext = nerr_ext + 1
+                                if extension == 0:
+                                    nerr_ext1 += 1
+                                elif extension == 1:
+                                    nerr_ext2 += 1
+                                elif extension == 3:
+                                    nerr_ext4 += 1
+
+                                print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
+                                continue
+
 
             except:
                 print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
