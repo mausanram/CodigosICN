@@ -261,12 +261,13 @@ def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, Bins_fit, make
 
         fgaus2 = TF1("fgauss2","[3]*exp(-0.5*((x-[0])/[1])^2)+[4]*exp(-0.5*((x-[0]-[2])/[1])^2)", range_fit[0], range_fit[1],5) # TF1("nombre", "funcion escrita como en root", min, max, #parametros)
         
-        h3=TH1F("histogram", "Distribution of OsCan",Bins_fit, range_fit[0], range_fit[1])
+        # h3=TH1F("histogram", "Distribution of OsCan",Bins_fit, range_fit[0], range_fit[1])
+        h3=TH1F("histogram", "Distribution of OsCan",Bins_fit, -300, 400)
         for pixel_value in Overscan_plane.flatten():
             # if not np.ma.is_masked(pixel_value):
             h3.Fill(pixel_value)
             #print(pixel_value)
-        fgaus2.SetParameters(0,10,100, 100, 100) # Establecer parametros iniciales del fit, de manera visual es posible determinarlos como una primera aproximacion
+        fgaus2.SetParameters(0,40,210, 400, 50) # Establecer parametros iniciales del fit, de manera visual es posible determinarlos como una primera aproximacion
         h3.Fit(fgaus2, "RQN")
 
         dict_popt = {'Mean' :fgaus2.GetParameters()[0], 'sigma' : abs(fgaus2.GetParameters()[1]), 'Gain' : abs(fgaus2.GetParameters()[2]), 
@@ -274,7 +275,7 @@ def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, Bins_fit, make
     
     return dict_popt
 
-def data_calibrated(active_area, extension, offset, list_gain, ratio_keV, unidades):
+def data_calibrated(active_area, extension, list_gain, ratio_keV, unidades):
     dataP = active_area
 
     if unidades == 0:
@@ -288,7 +289,7 @@ def data_calibrated(active_area, extension, offset, list_gain, ratio_keV, unidad
 
     return data
 
-def data_calibrated_NSAMP(active_area, extension, offset, gain, ratio_keV, unidades, sigma_ADUs):
+def data_calibrated_NSAMP(active_area, gain, ratio_keV, unidades, sigma_ADUs):
     ## NO se aplica el offset porque ya se le aplicó la mediana del OsCan##
     dataP = active_area ## En ADUs
 

@@ -30,8 +30,8 @@ ratio_keV = 0.0036
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 units = 2
-n_sigmas = 5
-numero_bins = 600
+n_sigmas = 40
+numero_bins = 1000
 
 def Gaussian2(x,m,s,g,a1,a2): #data, mean, sigma, gain, height1, heigth2
     return a1*np.exp(-1/2*((x-m)/s)**2)+a2*np.exp(-1/2*((x-m-g)/s)**2)
@@ -73,24 +73,17 @@ def main(argObj):
             print('Loading error in image ' + str(img) + 'in open the image.')
             continue
         
-        for extension in (0,1,3):
-            # extension = 3
-            # extension = 1
-            # Elip = list_Elip[extension]
-            # Solidit = list_Solidit[extension]
-            
+        for extension in (0,1,3):            
             try :
-                # print('Voy a obtener el OsCan y el active area')
-                data = hdu_list[extension].data[:100,10:539]
-                oScan = hdu_list[extension].data[:100,539:]
+                max_y = 300
+                max_x = 539
+
+                data = hdu_list[extension].data[:max_y,10:max_x]
+                oScan = hdu_list[extension].data[:max_y,max_x:]
 
                 oscan_x = oScan.shape[1]
                 oscan_y = oScan.shape[0]
 
-                header = hdu_list[extension].header
-                # nsamp = float(header['NSAMP'])
-
-                # print('Voy a obtener el valor medio de los píxeles')
                 mean_rows_value = []
                 for element in np.arange(0, oscan_y):
                     row = oScan[element: element +1, 0: oscan_x]
@@ -101,12 +94,15 @@ def main(argObj):
                 true_active_area = data - mean_rows_value
 
             except:
-                print('Loading error in extension ' + str(extension) + ' of image ' + str(img) + 'in load the data.')
+                print('Loading error in extension ' + str(extension + 1) + ' of image ' + str(img) + 'in load the data.')
                 continue
             
+            ### Hcnage the range for any kind of image
+            # Range_fit = [-50, 350]  # FOr Fe-55
+            Range_fit = [-100, 270] # For Fe-55 & Cs-137
             try:
                 dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, 
-                                                    Bins_fit=numero_bins,make_figure_flag=False, range_fit=[-50, 360])
+                                                    Bins_fit=numero_bins,make_figure_flag=False, range_fit=[Range_fit[0], Range_fit[1]])
 
                 sig_ADUs = dict_popt['sigma']
                 Offset = dict_popt['Offset']
@@ -116,7 +112,7 @@ def main(argObj):
                 if Prob < 0.05:
                     del_Bin = 500
                     dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                        Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-30, 390])
+                                                        Bins_fit=del_Bin, make_figure_flag=False, range_fit=[Range_fit[0], Range_fit[1]])
                     sig_ADUs = dict_popt['sigma']
                     Offset = dict_popt['Offset']
                     Gain = dict_popt['Gain']
@@ -125,7 +121,7 @@ def main(argObj):
                     if Prob < 0.05:
                         del_Bin = 400
                         dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                            Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-30, 390])
+                                                            Bins_fit=del_Bin, make_figure_flag=False, range_fit=[Range_fit[0], Range_fit[1]])
                         
                         sig_ADUs = dict_popt['sigma']
                         Offset = dict_popt['Offset']
@@ -136,7 +132,7 @@ def main(argObj):
                         if Prob < 0.05:
                             del_Bin = 300
                             dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                                Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-50, 400])
+                                                                Bins_fit=del_Bin, make_figure_flag=False, range_fit=[Range_fit[0], Range_fit[1]])
                             
                             sig_ADUs = dict_popt['sigma']
                             Offset = dict_popt['Offset']
@@ -153,16 +149,14 @@ def main(argObj):
                                 elif extension == 3:
                                     nerr_ext4 += 1
 
-                                print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
+                                print('Fit error in extension ' + str(extension + 1) + ' of image ' + str(img))
                                 continue
 
             except:
-                print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
+                print('Fit error in extension ' + str(extension + 1) + ' of image ' + str(img))
                 continue
             
-            
-            dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, extension=extension, gain=Gain, 
-                                                   ratio_keV=ratio_keV, unidades= units, offset=Offset, sigma_ADUs = sig_ADUs)
+            dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, gain=Gain, ratio_keV=ratio_keV, unidades= units, sigma_ADUs = sig_ADUs)
             
             fondo_value = n_sigmas * sigma
             
@@ -177,7 +171,6 @@ def main(argObj):
             ## Obteniendo el valor promedio del fondo
             fondo_mask = np.invert(label_img == 0)
             fondo = ma.masked_array(dataCal,fondo_mask)
-            valor_promedio_fondo = fondo.data.mean()
 
             list_charge = all_cluster(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, prop=prop)
 
@@ -215,12 +208,16 @@ def main(argObj):
     print('Hora del final de cálculo: ', Final)
     print('Tiempo de cálculo: ', Final-Inicio)
 
+    ### Change the file name when the images changes 
+    # in_path = 'dict_energy_allclusters_Fe55_Cs137_NSAMP200_Extensions_1_to_4_Imgs_' # For Fe-55 & Cs-137
+    in_path = 'dict_energy_allclusters_Fe55_NSAMP200_Extensions_1_to_4_Imgs_' # For Fe-55 
+
     if units == 0:
-        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_100x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_ADUs.pkl'
+        file_name = in_path + str(total_images) + '_SIZE_' + str(max_y)+ 'x' + str(max_x) + '_NSIGMAS_' + str(n_sigmas)  + '_ADUs.pkl'
     elif units == 1:
-        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_100x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_electrons.pkl'
+        file_name = in_path + str(total_images) + '_SIZE_' + str(max_y)+ 'x' + str(max_x) + '_NSIGMAS_' + str(n_sigmas)  + '_electrons.pkl'
     elif units == 2:
-        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_100x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_KeV.pkl'
+        file_name = in_path + str(total_images) + '_SIZE_' + str(max_y)+ 'x' + str(max_x) + '_NSIGMAS_' + str(n_sigmas)  + '_KeV.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
