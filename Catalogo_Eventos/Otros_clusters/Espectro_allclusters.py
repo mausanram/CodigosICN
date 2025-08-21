@@ -97,7 +97,7 @@ def main(argObj):
                 print('Loading error in extension ' + str(extension + 1) + ' of image ' + str(img) + 'in load the data.')
                 continue
             
-            ### Hcnage the range for any kind of image
+            ### Change the range for any kind of image
             # Range_fit = [-50, 350]  # FOr Fe-55
             Range_fit = [-100, 270] # For Fe-55 & Cs-137
             try:
