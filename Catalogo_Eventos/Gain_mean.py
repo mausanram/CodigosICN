@@ -21,7 +21,8 @@ units = 2
 nsigmas_for_seed = 10
 nsigmas_for_skirts = 8
  
-numero_bins = 1000
+# numero_bins = 1000
+numero_bins = 600
 
 def main(argObj):
     list_gain_extension_2 = []
@@ -72,6 +73,7 @@ def main(argObj):
             ### Change the range for any kind of image
             Range_fit = [-50, 350]  # FOr Fe-55
             # Range_fit = [-100, 270] # For Fe-55 & Cs-137
+            Range_fit = [-50, 350]
 
             try:
                 dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, 
