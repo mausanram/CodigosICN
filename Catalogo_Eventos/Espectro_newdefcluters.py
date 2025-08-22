@@ -14,12 +14,12 @@ import time
 ## CONSTANTES ## 
 current_path = os.getcwd()
 
-ratio_keV = 0.00368
+ratio_keV = 0.00367
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 units = 2
-nsigmas_for_seed = 10
-nsigmas_for_skirts = 8
+nsigmas_for_seed = 13
+nsigmas_for_skirts = 10
  
 numero_bins = 1000
 
@@ -69,9 +69,8 @@ def main(argObj):
                 oscan_y = oScan.shape[0]
 
                 mean_rows_value = []
-                for element in np.arange(0, oscan_y):
+                for element in range(0, oscan_y):
                     row = oScan[element: element +1, 0: oscan_x]
-                    num_row = element + 1
                     mean_value = np.median(row)
                     mean_rows_value.append([mean_value])
 
@@ -81,65 +80,15 @@ def main(argObj):
                 print('Loading error in extension ' + str(extension + 1) + ' of image ' + str(img) + 'in load the data.')
                 continue
 
-            ### Change the range for any kind of image
-            Range_fit = [-50, 350]  # FOr Fe-55
-            # Range_fit = [-100, 270] # For Fe-55 & Cs-137
-
-            try:
-                dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, 
-                                                    Bins_fit=numero_bins,make_figure_flag=False, range_fit=[Range_fit[0], Range_fit[1]])
-
-                sig_ADUs = dict_popt['sigma']
-                Offset = dict_popt['Offset']
-                Gain = dict_popt['Gain']
-                Prob = dict_popt['Prob']
-                
-                if Prob < 0.05:
-                    del_Bin = 500
-                    dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                        Bins_fit=del_Bin, make_figure_flag=False, range_fit=[Range_fit[0], Range_fit[1]])
-                    sig_ADUs = dict_popt['sigma']
-                    Offset = dict_popt['Offset']
-                    Gain = dict_popt['Gain']
-                    Prob = dict_popt['Prob']
-                    
-                    if Prob < 0.05:
-                        del_Bin = 400
-                        dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                            Bins_fit=del_Bin, make_figure_flag=False, range_fit=[Range_fit[0], Range_fit[1]])
-                        
-                        sig_ADUs = dict_popt['sigma']
-                        Offset = dict_popt['Offset']
-                        Gain = dict_popt['Gain']
-                        Prob = dict_popt['Prob']
-                    
-                        
-                        if Prob < 0.05:
-                            del_Bin = 300
-                            dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                                Bins_fit=del_Bin, make_figure_flag=False, range_fit=[Range_fit[0], Range_fit[1]])
-                            
-                            sig_ADUs = dict_popt['sigma']
-                            Offset = dict_popt['Offset']
-                            Gain = dict_popt['Gain']
-                            Prob = dict_popt['Prob']
-                    
-
-                            if  Prob < 0.05:
-                                nerr_ext = nerr_ext + 1
-                                if extension == 0:
-                                    nerr_ext1 += 1
-                                elif extension == 1:
-                                    nerr_ext2 += 1
-                                elif extension == 3:
-                                    nerr_ext4 += 1
-
-                                print('Fit error in extension ' + str(extension + 1) + ' of image ' + str(img))
-                                continue
-
-            except:
-                print('Fit error in extension ' + str(extension + 1) + ' of image ' + str(img))
-                continue
+            if extension == 0:
+                Gain = 187.898 # ADU/e-
+                sig_ADUs = 81.0868 # ADUs
+            if extension == 1:
+                Gain = 192.728
+                sig_ADUs = 61.626
+            if extension == 3:
+                Gain = 189.728
+                sig_ADUs = 3081
             
             dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, gain=Gain, ratio_keV=ratio_keV, unidades= units, sigma_ADUs = sig_ADUs)
             
@@ -151,10 +100,6 @@ def main(argObj):
             # dataCal = example
             xshape = dataCal.shape[1]
             yshape = dataCal.shape[0]
-
-
-            neg_px = 0
-            null_px = 0
             n_seeds = 0
             list_clusters = []
 
@@ -232,10 +177,11 @@ def main(argObj):
                         list_clusters.append(data_zeros)
 
                         copy_dataCal = ma.masked_array(copy_dataCal, mask=data_zeros)
+
+                        del set_neighbor
                     
                     else:
                         continue
-
             
             if extension == 0:
                 for index in range(0, len(list_clusters)):
@@ -245,6 +191,9 @@ def main(argObj):
 
                     charge = datamask.sum()
                     list_EventCharge_extension_1.append(charge)
+                
+                del list_clusters
+                del copy_dataCal
 
             if extension == 1:
                 for index in range(0, len(list_clusters)):
@@ -255,6 +204,9 @@ def main(argObj):
                     charge = datamask.sum()
                     list_EventCharge_extension_2.append(charge)
 
+                del list_clusters
+                del copy_dataCal
+
             if extension == 3:
                 for index in range(0, len(list_clusters)):
                     sample_mask = list_clusters[index]
@@ -263,6 +215,9 @@ def main(argObj):
 
                     charge = datamask.sum()
                     list_EventCharge_extension_4.append(charge)
+
+                del list_clusters
+                del copy_dataCal
 
             n_total_ext = n_total_ext + 1     
 
