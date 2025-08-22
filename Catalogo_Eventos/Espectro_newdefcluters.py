@@ -21,7 +21,7 @@ units = 2
 nsigmas_for_seed = 13
 nsigmas_for_skirts = 10
  
-numero_bins = 1000
+numero_bins = 600
 
 def main(argObj):
     list_totalEvents = []
@@ -59,7 +59,7 @@ def main(argObj):
         
         for extension in (0,1,3):            
             try :
-                max_y = 150
+                max_y = 250
                 max_x = 539
 
                 data = hdu_list[extension].data[:max_y,10:max_x]
@@ -80,15 +80,26 @@ def main(argObj):
                 print('Loading error in extension ' + str(extension + 1) + ' of image ' + str(img) + 'in load the data.')
                 continue
 
+            # if extension == 0:
+            #     Gain = 187.898 # ADU/e-
+            #     sig_ADUs = 81.0868 # ADUs
+            # if extension == 1:
+            #     Gain = 192.728
+            #     sig_ADUs = 61.626
+            # if extension == 3:
+            #     Gain = 189.728
+            #     sig_ADUs = 3081
+
+            # For muons
             if extension == 0:
-                Gain = 187.898 # ADU/e-
-                sig_ADUs = 81.0868 # ADUs
+                Gain = 195.697 # ADU/e-
+                sig_ADUs = 63.51 # ADUs
             if extension == 1:
-                Gain = 192.728
-                sig_ADUs = 61.626
+                Gain = 192.964
+                sig_ADUs = 19.927
             if extension == 3:
-                Gain = 189.728
-                sig_ADUs = 3081
+                Gain = 188.046
+                sig_ADUs = 17.829
             
             dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, gain=Gain, ratio_keV=ratio_keV, unidades= units, sigma_ADUs = sig_ADUs)
             
