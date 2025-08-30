@@ -21,8 +21,8 @@ units = 2
 nsigmas_for_seed = 10
 nsigmas_for_skirts = 8
  
-# numero_bins = 1000
-numero_bins = 600
+numero_bins = 1000
+# numero_bins = 600
 
 def main(argObj):
     list_gain_extension_2 = []
