@@ -47,6 +47,21 @@ def main(argObj):
     num_images =  'Imágenes Analizadas: ' +  str(total_images)
     print('Hora de inicio del cálculo: ', Inicio)
 
+    path= './dict_mean_gains_NSAMP200.pkl' # For NSAMP200
+
+    try:
+        dict_gain = open(path, 'rb')
+        data_dict_gain = pkl.load(dict_gain)
+        dict_gain.close()
+
+        ext1 = data_dict_gain['extension_1']
+        ext2 = data_dict_gain['extension_2']
+        ext4 = data_dict_gain['extension_4']
+
+    except:
+        print('Gain file not found.')
+        exit()
+
     for img in argObj:
         try:
             hdu_list = fits.open(img)
@@ -79,27 +94,28 @@ def main(argObj):
             except:
                 print('Loading error in extension ' + str(extension + 1) + ' of image ' + str(img) + 'in load the data.')
                 continue
-
-            # if extension == 0:
-            #     Gain = 187.898 # ADU/e-
-            #     sig_ADUs = 81.0868 # ADUs
-            # if extension == 1:
-            #     Gain = 192.728
-            #     sig_ADUs = 61.626
-            # if extension == 3:
-            #     Gain = 189.728
-            #     sig_ADUs = 3081
-
-            # For muons
+            
+            # NSMAP 200
             if extension == 0:
-                Gain = 195.697 # ADU/e-
-                sig_ADUs = 63.51 # ADUs
+                Gain = ext1['Gain'] # ADU/e-
+                sig_ADUs = ext1['Sigma'] # ADUs
             if extension == 1:
-                Gain = 192.964
-                sig_ADUs = 19.927
+                Gain = ext2['Gain'] # ADU/e-
+                sig_ADUs = ext2['Sigma'] # ADUs
             if extension == 3:
-                Gain = 188.046
-                sig_ADUs = 17.829
+                Gain = ext4['Gain'] # ADU/e-
+                sig_ADUs = ext4['Sigma'] # ADUs
+
+            # NSAMp324
+            # if extension == 0:
+            #     Gain = 195.697 # ADU/e-
+            #     sig_ADUs = 63.51 # ADUs
+            # if extension == 1:
+            #     Gain = 192.964
+            #     sig_ADUs = 19.927
+            # if extension == 3:
+            #     Gain = 188.046
+            #     sig_ADUs = 17.829
             
             dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, gain=Gain, ratio_keV=ratio_keV, unidades= units, sigma_ADUs = sig_ADUs)
             

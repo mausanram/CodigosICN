@@ -71,9 +71,12 @@ def main(argObj):
                 continue
 
             ### Change the range for any kind of image
-            Range_fit = [-50, 350]  # FOr Fe-55
+            # Range_fit = [-50, 350]  # FOr Fe-55
             # Range_fit = [-100, 270] # For Fe-55 & Cs-137
-            Range_fit = [-50, 350]
+            Range_fit = [-50, 350] # For muons
+
+            file_name = 'dict_mean_gains_NSAMP324.pkl'
+            # file_name = 'dict_mean_gains_NSAMP200.pkl'
 
             try:
                 dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, 
@@ -137,10 +140,6 @@ def main(argObj):
 
             Range_fit_1 = [-70, 115]
             Range_fit_2 = [195, 350]
-            ratio_keV = 0.00367  ## KeV/e-
-
-            # data = hdu_list[extension-1].data[:, :550]
-            data = true_active_area
 
             hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins,  range=(oScan.min(), 18000))
             offset = bins_edges[np.argmax(hist)]
@@ -163,9 +162,9 @@ def main(argObj):
             true_gain = fgaus_sec.GetParameters()[1] - fgaus_fir.GetParameters()[1]
             err_true_gain = fgaus_sec.GetParError(1) + fgaus_fir.GetParError(1)
             sigma = fgaus_fir.GetParameters()[2]
-            # print(true_gain)
+            print('Ext ' + str(extension) + ':', true_gain)
 
-            if 180 < true_gain < 200:
+            if 170 < true_gain < 210:
                 print('Fit done')
                 if extension == 0:
                     list_gain_extension_1.append(true_gain)
@@ -237,7 +236,6 @@ def main(argObj):
     print('The main gain of extension 2 is: ', dict_gains['extension_2']['Gain'], ' +- ', dict_gains['extension_2']['Err_gain'], ' & Sigma: ', dict_gains['extension_2']['Sigma'], ' ADU/e-')
     print('The main gain of extension 4 is: ', dict_gains['extension_4']['Gain'], ' +- ', dict_gains['extension_4']['Err_gain'], ' & Sigma: ', dict_gains['extension_4']['Sigma'], ' ADU/e-')
 
-    file_name = 'dict_mean_gains_NSAMP324.pkl'
     file_object_histogram = open(file_name, 'wb')
     pkl.dump(dict_gains, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
