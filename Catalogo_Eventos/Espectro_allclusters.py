@@ -52,6 +52,9 @@ def main(argObj):
     n_total_img = 0
     n_total_ext = 0
 
+    NSAMP = 324
+    # NSAMP = 200
+
     Inicio = datetime.datetime.now()
     num_images =  'Imágenes Analizadas: ' +  str(total_images)
     print('Hora de inicio del cálculo: ', Inicio)
@@ -172,11 +175,11 @@ def main(argObj):
     print('Tiempo de cálculo: ', Final-Inicio)
 
     if units == 0:
-        file_name = 'dict_energy_allclusters_NSAMP200_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_ADUs.pkl'
+        file_name = 'dict_energy_allclusters_NSAMP' + str(NSAMP)+ '_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + 'sci_ADUs.pkl'
     elif units == 1:
-        file_name = 'dict_energy_allclusters_NSAMP200_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_electrons.pkl'
+        file_name = 'dict_energy_allclusters_NSAMP' + str(NSAMP)+ '_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + 'sci_electrons.pkl'
     elif units == 2:
-        file_name = 'dict_energy_allclusters_NSAMP200_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_KeV.pkl'
+        file_name = 'dict_energy_allclusters_NSAMP' + str(NSAMP)+ '_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + 'sci_KeV.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pkl.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
