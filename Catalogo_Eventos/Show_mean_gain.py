@@ -2,7 +2,8 @@ import pickle as pkl
 import numpy as np
 
 # path= './dict_mean_gains.pkl'
-path= './dict_mean_gains_NSAMP324.pkl'
+# path= './dict_mean_gains_NSAMP324.pkl'
+path= './dict_mean_gains_NSAMP200.pkl'
 
 dict_gain = open(path, 'rb')
 data_dict_gain = pkl.load(dict_gain)
@@ -14,10 +15,14 @@ ext1 = data_dict_gain['extension_1']
 ext2 = data_dict_gain['extension_2']
 ext4 = data_dict_gain['extension_4']
 
+err_per_ext1 =  np.around(ext1['Err_gain'] * 100 / ext1['Gain'], 3)
+err_per_ext2 =  np.around(ext2['Err_gain'] * 100 / ext2['Gain'], 3)
+err_per_ext4 =  np.around(ext4['Err_gain'] * 100 / ext4['Gain'], 3)
+
 # print(ext1.keys())
-print('Gain in ext1: ', np.around(ext1['Gain'], 3), ' +- ', np.around(ext1['Err_gain'], 3), ' ADU/e-')
-print('Gain in ext2: ', np.around(ext2['Gain'], 3), ' +- ', np.around(ext2['Err_gain'], 3), ' ADU/e-')
-print('Gain in ext4: ', np.around(ext4['Gain'], 3), ' +- ', np.around(ext4['Err_gain'], 3), ' ADU/e-', end='\n\n')
+print('Gain in ext1: ', np.around(ext1['Gain'], 3), ' +- ', np.around(ext1['Err_gain'], 3), ' ADU/e- (' + str(err_per_ext1) + '%)')
+print('Gain in ext2: ', np.around(ext2['Gain'], 3), ' +- ', np.around(ext2['Err_gain'], 3), ' ADU/e- (' + str(err_per_ext2) + '%)')
+print('Gain in ext4: ', np.around(ext4['Gain'], 3), ' +- ', np.around(ext4['Err_gain'], 3), ' ADU/e- (' + str(err_per_ext4) + '%)', end='\n\n')
 
 print('Sigma ext1: ', np.around(ext1['Sigma'], 3), ' ADU')
 print('Sigma ext2: ', np.around(ext2['Sigma'], 3), ' ADU')

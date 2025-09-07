@@ -22,7 +22,7 @@ current_path = os.getcwd()
 ratio_keV = 0.00367
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
-units = 2
+units = 0
 n_sigmas = 5
 numero_bins = 600
 
@@ -52,15 +52,15 @@ def main(argObj):
     n_total_img = 0
     n_total_ext = 0
 
-    NSAMP = 324
-    # NSAMP = 200
+    # NSAMP = 324
+    NSAMP = 200
 
     Inicio = datetime.datetime.now()
     num_images =  'Imágenes Analizadas: ' +  str(total_images)
     print('Hora de inicio del cálculo: ', Inicio)
 
     # path= './dict_mean_gains_NSAMP200.pkl' # For NSAMP200
-    path= './dict_mean_gains_NSAMP324.pkl' # For NSAMP200
+    path= './dict_mean_gains_NSAMP324.pkl' # For NSAMP324
 
     try:
         dict_gain = open(path, 'rb')
@@ -102,7 +102,6 @@ def main(argObj):
                 mean_rows_value = []
                 for element in np.arange(0, oscan_y):
                     row = oScan[element: element +1, 0: oscan_x]
-                    num_row = element + 1
                     mean_value = np.median(row)
                     mean_rows_value.append([mean_value])
 
@@ -115,10 +114,10 @@ def main(argObj):
             if extension == 0:
                 Gain = ext1['Gain'] # ADU/e-
                 sig_ADUs = ext1['Sigma'] # ADUs
-            if extension == 1:
+            elif extension == 1:
                 Gain = ext2['Gain'] # ADU/e-
                 sig_ADUs = ext2['Sigma'] # ADUs
-            if extension == 3:
+            elif extension == 3:
                 Gain = ext4['Gain'] # ADU/e-
                 sig_ADUs = ext4['Sigma'] # ADUs
             
