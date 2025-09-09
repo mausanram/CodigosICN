@@ -21,7 +21,7 @@ units = 2
 nsigmas_for_seed = 10
 nsigmas_for_skirts = 8
  
-numero_bins = 1000
+numero_bins = 900
 # numero_bins = 600
 
 def main(argObj):
@@ -70,7 +70,6 @@ def main(argObj):
                 max_y = 250
                 max_x = 539
 
-                true_active_area = hdu_list[extension].data[:max_y,10:max_x]
                 oScan = hdu_list[extension].data[:max_y,max_x:]
 
             except:
@@ -78,76 +77,35 @@ def main(argObj):
                 continue
 
             ### Change the range for any kind of image
-            # Range_fit = [-50, 350]  # FOr Fe-55
+            Range_fit = [-65, 300]  # FOr Fe-55
             # Range_fit = [-100, 270] # For Fe-55 & Cs-137
-            Range_fit = [-50, 350] # For muons
+            # Range_fit = [-50, 350] # For muons
 
             # file_name = 'dict_mean_gains_NSAMP324.pkl'
             file_name = 'dict_mean_gains_NSAMP200.pkl'
 
-            try:
-                dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, 
-                                                    Bins_fit=numero_bins,make_figure_flag=False, range_fit=[Range_fit[0], Range_fit[1]])
-
-                sig_ADUs = dict_popt['sigma']
-                Offset = dict_popt['Offset']
-                Gain = dict_popt['Gain']
-                Prob = dict_popt['Prob']
-                
-                if Prob < 0.05:
-                    del_Bin = 500
-                    dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                        Bins_fit=del_Bin, make_figure_flag=False, range_fit=[Range_fit[0], Range_fit[1]])
-                    sig_ADUs = dict_popt['sigma']
-                    Offset = dict_popt['Offset']
-                    Gain = dict_popt['Gain']
-                    Prob = dict_popt['Prob']
-                    
-                    if Prob < 0.05:
-                        del_Bin = 400
-                        dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                            Bins_fit=del_Bin, make_figure_flag=False, range_fit=[Range_fit[0], Range_fit[1]])
-                        
-                        sig_ADUs = dict_popt['sigma']
-                        Offset = dict_popt['Offset']
-                        Gain = dict_popt['Gain']
-                        Prob = dict_popt['Prob']
-                    
-                        
-                        if Prob < 0.05:
-                            del_Bin = 300
-                            dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                                Bins_fit=del_Bin, make_figure_flag=False, range_fit=[Range_fit[0], Range_fit[1]])
-                            
-                            sig_ADUs = dict_popt['sigma']
-                            Offset = dict_popt['Offset']
-                            Gain = dict_popt['Gain']
-                            Prob = dict_popt['Prob']
-                    
-
-                            if  Prob < 0.05:
-                                nerr_ext = nerr_ext + 1
-                                if extension == 0:
-                                    nerr_ext1 += 1
-                                elif extension == 1:
-                                    nerr_ext2 += 1
-                                elif extension == 3:
-                                    nerr_ext4 += 1
-
-                                print('Fit error in extension ' + str(extension + 1) + ' of image ' + str(img))
-                                continue
-
-            except:
-                print('Fit double gaussian error in extension ' + str(extension + 1) + ' of image ' + str(img))
-                set_blacklist.add(str(img))
-                continue
-
-            Bins = 300
+            Bins = numero_bins
             Bins_fit = Bins
+
+            min_oScan = np.min(oScan)
+
+            hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins,  range=(min_oScan, 18000))
+            offset = bins_edges[np.argmax(hist)]
+            # print('Offset Value: ', offset, ' ADUs')
+
+            Overscan_plane = oScan - offset
+            oScan = Overscan_plane
+
+            # Bins = numero_bins
             # Range_fit = [-100, 400]
 
-            Range_fit_1 = [-70, 115]
-            Range_fit_2 = [195, 350]
+            if extension == 0:
+                Range_fit_1 = [-70, 115]
+                Range_fit_2 = [165, 300]
+
+            elif extension == 1:
+                Range_fit_1 = [-70, 115]
+                Range_fit_2 = [140, 300]
 
             hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins,  range=(oScan.min(), 18000))
             offset = bins_edges[np.argmax(hist)]
@@ -170,9 +128,8 @@ def main(argObj):
             true_gain = fgaus_sec.GetParameters()[1] - fgaus_fir.GetParameters()[1]
             err_true_gain = fgaus_sec.GetParError(1) + fgaus_fir.GetParError(1)
             sigma = fgaus_fir.GetParameters()[2]
-            # print('Ext ' + str(extension) + ':', true_gain)
 
-            if 170 < true_gain < 210:
+            if 180 < true_gain < 210:
                 # print('Fit done')
                 if extension == 0:
                     nused_img_ext1+=1
@@ -193,7 +150,8 @@ def main(argObj):
                 print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
 
             else:
-                print('Error individual gaussians fit')
+                print('Error individual gaussians fit in ext ' + str(extension+1) + ' of image ' + str(img))
+                print('Gain:', true_gain)
                 print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
                 continue
 
