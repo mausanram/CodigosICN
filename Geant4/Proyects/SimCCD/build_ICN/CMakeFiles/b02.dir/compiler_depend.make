@@ -5109,7 +5109,8 @@ CMakeFiles/b02.dir/src/B02PhysicsList.cc.o: /home/labdet/Documents/MauSan/Progra
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4VRestDiscreteProcess.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4ParticleChangeForDecay.hh \
   /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4DecayProcessType.hh \
-  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RadioactiveDecayPhysics.hh
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4RadioactiveDecayPhysics.hh \
+  /home/labdet/Software/Geant4/geant4-v11.2.2-install/include/Geant4/G4HadronPhysicsFTFP_BERT.hh
 
 CMakeFiles/b02.dir/src/B02PrimaryGeneratorAction.cc.o: /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD/main/src/B02PrimaryGeneratorAction.cc \
   /usr/include/stdc-predef.h \
