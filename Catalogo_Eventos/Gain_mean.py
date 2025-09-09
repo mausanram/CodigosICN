@@ -170,7 +170,7 @@ def main(argObj):
             true_gain = fgaus_sec.GetParameters()[1] - fgaus_fir.GetParameters()[1]
             err_true_gain = fgaus_sec.GetParError(1) + fgaus_fir.GetParError(1)
             sigma = fgaus_fir.GetParameters()[2]
-            print('Ext ' + str(extension) + ':', true_gain)
+            # print('Ext ' + str(extension) + ':', true_gain)
 
             if 170 < true_gain < 210:
                 # print('Fit done')
@@ -234,6 +234,7 @@ def main(argObj):
         sig_mean_ext4 += list_sig_extension_4[index]
 
 
+    print('Number of elements per ext: ', nused_img_ext1, nused_img_ext2, nused_img_ext4)
 
     dict_gains = {'extension_1' : {'Gain' : gain_mean_ext1/len(list_gain_extension_1), 'Err_gain' : err_gain_mean_ext1/len(list_gain_extension_1), 
                                    'Sigma' : sig_mean_ext1/len(list_gain_extension_1)}, 
@@ -241,7 +242,6 @@ def main(argObj):
                                    'Sigma' : sig_mean_ext1/len(list_gain_extension_2)},
                   'extension_4' : {'Gain' : gain_mean_ext4/len(list_gain_extension_4), 'Err_gain' : err_gain_mean_ext4/len(list_gain_extension_4),
                                    'Sigma' : sig_mean_ext1/len(list_gain_extension_4)} }
-    print('Number of elements per ext: ', nused_img_ext1, nused_img_ext2, nused_img_ext4)
     print('The main gain of extension 1 is: ', dict_gains['extension_1']['Gain'], ' +- ', dict_gains['extension_1']['Err_gain'], ' & Sigma: ', dict_gains['extension_1']['Sigma'], ' ADU/e-')
     print('The main gain of extension 2 is: ', dict_gains['extension_2']['Gain'], ' +- ', dict_gains['extension_2']['Err_gain'], ' & Sigma: ', dict_gains['extension_2']['Sigma'], ' ADU/e-')
     print('The main gain of extension 4 is: ', dict_gains['extension_4']['Gain'], ' +- ', dict_gains['extension_4']['Err_gain'], ' & Sigma: ', dict_gains['extension_4']['Sigma'], ' ADU/e-')
