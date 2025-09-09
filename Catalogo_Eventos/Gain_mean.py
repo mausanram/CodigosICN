@@ -240,8 +240,8 @@ def main(argObj):
                                    'Sigma' : sig_mean_ext1/len(list_gain_extension_1)}, 
                   'extension_2' : {'Gain' : gain_mean_ext2/len(list_gain_extension_2), 'Err_gain' : err_gain_mean_ext2/len(list_gain_extension_2),
                                    'Sigma' : sig_mean_ext1/len(list_gain_extension_2)},
-                  'extension_4' : {'Gain' : gain_mean_ext4/len(list_gain_extension_4), 'Err_gain' : err_gain_mean_ext4/len(list_gain_extension_4),
-                                   'Sigma' : sig_mean_ext1/len(list_gain_extension_4)} }
+                  'extension_4' : {'Gain' : gain_mean_ext4, 'Err_gain' : err_gain_mean_ext4, 'Sigma' : sig_mean_ext1} }
+    
     print('The main gain of extension 1 is: ', dict_gains['extension_1']['Gain'], ' +- ', dict_gains['extension_1']['Err_gain'], ' & Sigma: ', dict_gains['extension_1']['Sigma'], ' ADU/e-')
     print('The main gain of extension 2 is: ', dict_gains['extension_2']['Gain'], ' +- ', dict_gains['extension_2']['Err_gain'], ' & Sigma: ', dict_gains['extension_2']['Sigma'], ' ADU/e-')
     print('The main gain of extension 4 is: ', dict_gains['extension_4']['Gain'], ' +- ', dict_gains['extension_4']['Err_gain'], ' & Sigma: ', dict_gains['extension_4']['Sigma'], ' ADU/e-')
