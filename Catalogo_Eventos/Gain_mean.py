@@ -37,11 +37,18 @@ def main(argObj):
     list_sig_extension_1 = []
     list_sig_extension_4 = []
 
+    nused_img_ext1 = 0
+    nused_img_ext2 = 0
+    nused_img_ext4 = 0
+
+
     nerr_img = 0
     nerr_ext = 0
 
     total_images = len(argObj)
     image_in_bucle = 0
+
+    set_blacklist = set()
 
 
     Inicio = datetime.datetime.now()
@@ -75,8 +82,8 @@ def main(argObj):
             # Range_fit = [-100, 270] # For Fe-55 & Cs-137
             Range_fit = [-50, 350] # For muons
 
-            file_name = 'dict_mean_gains_NSAMP324.pkl'
-            # file_name = 'dict_mean_gains_NSAMP200.pkl'
+            # file_name = 'dict_mean_gains_NSAMP324.pkl'
+            file_name = 'dict_mean_gains_NSAMP200.pkl'
 
             try:
                 dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, 
@@ -132,6 +139,7 @@ def main(argObj):
 
             except:
                 print('Fit double gaussian error in extension ' + str(extension + 1) + ' of image ' + str(img))
+                set_blacklist.add(str(img))
                 continue
 
             Bins = 300
@@ -165,16 +173,19 @@ def main(argObj):
             print('Ext ' + str(extension) + ':', true_gain)
 
             if 170 < true_gain < 210:
-                print('Fit done')
+                # print('Fit done')
                 if extension == 0:
+                    nused_img_ext1+=1
                     list_gain_extension_1.append(true_gain)
                     list_gainerr_extension_1.append(err_true_gain)
                     list_sig_extension_1.append(sigma)
                 if extension == 1:
+                    nused_img_ext2+=1
                     list_gain_extension_2.append(true_gain)
                     list_gainerr_extension_2.append(err_true_gain)
                     list_sig_extension_2.append(sigma)
                 if extension == 3:
+                    nused_img_ext4+=1
                     list_gain_extension_4.append(true_gain)
                     list_gainerr_extension_4.append(err_true_gain)
                     list_sig_extension_4.append(sigma)
@@ -196,7 +207,6 @@ def main(argObj):
         gain_mean_ext1 += (gain * (1 / err_gain**2))/((1 / err_gain**2))
 
         err_gain_mean_ext1 += np.sqrt(1 / (1 / err_gain**2))
-
         sig_mean_ext1 += list_sig_extension_1[index]
 
 
@@ -231,14 +241,21 @@ def main(argObj):
                                    'Sigma' : sig_mean_ext1/len(list_gain_extension_2)},
                   'extension_4' : {'Gain' : gain_mean_ext4/len(list_gain_extension_4), 'Err_gain' : err_gain_mean_ext4/len(list_gain_extension_4),
                                    'Sigma' : sig_mean_ext1/len(list_gain_extension_4)} }
-    
+    print('Number of elements per ext: ', nused_img_ext1, nused_img_ext2, nused_img_ext4)
     print('The main gain of extension 1 is: ', dict_gains['extension_1']['Gain'], ' +- ', dict_gains['extension_1']['Err_gain'], ' & Sigma: ', dict_gains['extension_1']['Sigma'], ' ADU/e-')
     print('The main gain of extension 2 is: ', dict_gains['extension_2']['Gain'], ' +- ', dict_gains['extension_2']['Err_gain'], ' & Sigma: ', dict_gains['extension_2']['Sigma'], ' ADU/e-')
     print('The main gain of extension 4 is: ', dict_gains['extension_4']['Gain'], ' +- ', dict_gains['extension_4']['Err_gain'], ' & Sigma: ', dict_gains['extension_4']['Sigma'], ' ADU/e-')
 
+
+
     file_object_histogram = open(file_name, 'wb')
     pkl.dump(dict_gains, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
+
+    file_object = open('set_blacklist.pkl', 'wb')
+    pkl.dump(dict_gains, file_object) ## Save the dictionary with all info 
+    file_object.close()
+    print('The blacklist is in set_blacklist.pkl, use the pickle library to open')
         
 
 if __name__ == "__main__":

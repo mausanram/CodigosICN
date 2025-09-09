@@ -1,6 +1,9 @@
 void TestDiffMod(){
 TChain *tree = new TChain("tree");
 tree->Add("tree_DiffusionMod_Ext1_Vert.root");
+// tree->Add("tree_DiffusionMod_Ext1_Horz.root");
+// tree->Add("tree_DiffusionMod_Ext2_Vert.root");
+// tree->Add("tree_DiffusionMod_Ext2_horz.root");
 
 float sprd_val;
 float deep_val;
@@ -8,9 +11,9 @@ float deep_val;
 tree->SetBranchAddress("sprd", &sprd_val);
 tree->SetBranchAddress("deep", &deep_val);
 
-int n_entries = tree->GetEntries();
-double arr_sprd[n_entries];
-double arr_deep[n_entries];
+int nentries = tree->GetEntries();
+double arr_sprd[1000];
+double arr_deep[1000];
 
 // std::cout<<tree->GetEntries()<<endl;
 
@@ -24,11 +27,11 @@ for (int i = 0; i < tree->GetEntries(); i++){
 };
 
 TCanvas *c1 = new TCanvas("c1");
-TGraph *diff_data = new TGraph(n_entries, arr_deep, arr_sprd);
+TGraph *diff_data = new TGraph(nentries, arr_deep, arr_sprd);
 diff_data->SetMarkerStyle(2);
 diff_data->GetXaxis()->SetRangeUser(0, 730);
 diff_data->GetYaxis()->SetRangeUser(0, 1.3);
-diff_data->GetXaxis()->SetTitle("Deep (\mu m)");
+diff_data->GetXaxis()->SetTitle("Deep (mu m)");
 diff_data->GetYaxis()->SetTitle("Spread (px)");
 diff_data->SetTitle("Diffusion Model (Ext1-Vert)");
 
