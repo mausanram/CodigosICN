@@ -115,7 +115,7 @@ def main(argObj):
             fgaus_sec = TF1("gaus2","gaus", Range_fit_2[0], Range_fit_2[1],3)
 
 
-            h3=TH1F("histogram", r"Distribucion del Overscan",Bins_fit, -200, 400)
+            h3=TH1F("h3", r"Distribucion del Overscan",Bins_fit, -200, 400)
             for pixel_value in Overscan_plane.flatten():
                 h3.Fill(pixel_value)
 
@@ -128,6 +128,8 @@ def main(argObj):
             true_gain = fgaus_sec.GetParameters()[1] - fgaus_fir.GetParameters()[1]
             err_true_gain = fgaus_sec.GetParError(1) + fgaus_fir.GetParError(1)
             sigma = fgaus_fir.GetParameters()[2]
+
+            del h3
 
             if 180 < true_gain < 210:
                 # print('Fit done')
