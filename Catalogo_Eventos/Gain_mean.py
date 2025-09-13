@@ -77,12 +77,12 @@ def main(argObj):
                 continue
 
             ### Change the range for any kind of image
-            Range_fit = [-65, 300]  # FOr Fe-55
+            # Range_fit = [-65, 300]  # FOr Fe-55
             # Range_fit = [-100, 270] # For Fe-55 & Cs-137
-            # Range_fit = [-50, 350] # For muons
+            Range_fit = [-50, 350] # For muons
 
-            # file_name = 'dict_mean_gains_NSAMP324.pkl'
-            file_name = 'dict_mean_gains_NSAMP200.pkl'
+            file_name = 'dict_mean_gains_NSAMP324.pkl'
+            # file_name = 'dict_mean_gains_NSAMP200.pkl'
 
             Bins = numero_bins
             Bins_fit = Bins
