@@ -98,8 +98,8 @@ def main(argObj):
                 continue
             
             ### Change the range for any kind of image
-            # Range_fit = [-50, 350]  # FOr Fe-55
-            Range_fit = [-100, 270] # For Fe-55 & Cs-137
+            Range_fit = [-50, 350]  # FOr Fe-55
+            # Range_fit = [-100, 270] # For Fe-55 & Cs-137
             try:
                 dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, 
                                                     Bins_fit=numero_bins,make_figure_flag=False, range_fit=[Range_fit[0], Range_fit[1]])
