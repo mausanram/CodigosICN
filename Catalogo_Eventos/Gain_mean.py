@@ -21,8 +21,8 @@ units = 2
 nsigmas_for_seed = 10
 nsigmas_for_skirts = 8
  
-numero_bins = 900
-# numero_bins = 600
+# numero_bins = 900
+numero_bins = 400
 
 def main(argObj):
     list_gain_extension_2 = []
@@ -99,13 +99,23 @@ def main(argObj):
             # Bins = numero_bins
             # Range_fit = [-100, 400]
 
+            ### FOr Fe-55
+            # if extension == 0:
+            #     Range_fit_1 = [-70, 115]
+            #     Range_fit_2 = [165, 300]
+
+            # elif extension == 1:
+            #     Range_fit_1 = [-70, 115]
+            #     Range_fit_2 = [140, 300]
+
+            ### FOr Muons
             if extension == 0:
-                Range_fit_1 = [-70, 115]
-                Range_fit_2 = [165, 300]
+                Range_fit_1 = [-130, 125]
+                Range_fit_2 = [200, 330]
 
             elif extension == 1:
-                Range_fit_1 = [-70, 115]
-                Range_fit_2 = [140, 300]
+                Range_fit_1 = [-130, 125]
+                Range_fit_2 = [200, 330]
 
             hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins,  range=(oScan.min(), 18000))
             offset = bins_edges[np.argmax(hist)]
@@ -131,7 +141,7 @@ def main(argObj):
 
             del h3
 
-            if 180 < true_gain < 210:
+            if 180 < true_gain < 215:
                 # print('Fit done')
                 if extension == 0:
                     nused_img_ext1+=1
@@ -200,7 +210,8 @@ def main(argObj):
                                    'Sigma' : sig_mean_ext1/len(list_gain_extension_1)}, 
                   'extension_2' : {'Gain' : gain_mean_ext2/len(list_gain_extension_2), 'Err_gain' : err_gain_mean_ext2/len(list_gain_extension_2),
                                    'Sigma' : sig_mean_ext1/len(list_gain_extension_2)},
-                  'extension_4' : {'Gain' : gain_mean_ext4, 'Err_gain' : err_gain_mean_ext4, 'Sigma' : sig_mean_ext1} }
+                  'extension_4' : {'Gain' : gain_mean_ext4/len(list_gain_extension_4), 'Err_gain' : err_gain_mean_ext4/len(list_gain_extension_4), 
+                                   'Sigma' : sig_mean_ext1/len(list_gain_extension_4)} }
     
     print('The main gain of extension 1 is: ', dict_gains['extension_1']['Gain'], ' +- ', dict_gains['extension_1']['Err_gain'], ' & Sigma: ', dict_gains['extension_1']['Sigma'], ' ADU/e-')
     print('The main gain of extension 2 is: ', dict_gains['extension_2']['Gain'], ' +- ', dict_gains['extension_2']['Err_gain'], ' & Sigma: ', dict_gains['extension_2']['Sigma'], ' ADU/e-')
