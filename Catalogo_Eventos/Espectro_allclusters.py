@@ -22,7 +22,7 @@ current_path = os.getcwd()
 ratio_keV = 0.00367
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
-units = 0
+units = 2
 n_sigmas = 5
 numero_bins = 600
 
@@ -59,8 +59,8 @@ def main(argObj):
     num_images =  'Imágenes Analizadas: ' +  str(total_images)
     print('Hora de inicio del cálculo: ', Inicio)
 
-    # path= './dict_mean_gains_NSAMP200.pkl' # For NSAMP200
-    path= './dict_mean_gains_NSAMP324.pkl' # For NSAMP324
+    path= './dict_mean_gains_NSAMP200.pkl' # For NSAMP200
+    # path= './dict_mean_gains_NSAMP324.pkl' # For NSAMP324
 
     try:
         dict_gain = open(path, 'rb')
