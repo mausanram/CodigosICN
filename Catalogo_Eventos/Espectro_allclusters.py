@@ -52,15 +52,15 @@ def main(argObj):
     n_total_img = 0
     n_total_ext = 0
 
-    # NSAMP = 324
-    NSAMP = 200
+    NSAMP = 324
+    # NSAMP = 200
 
     Inicio = datetime.datetime.now()
     num_images =  'Imágenes Analizadas: ' +  str(total_images)
     print('Hora de inicio del cálculo: ', Inicio)
 
-    path= './dict_mean_gains_NSAMP200.pkl' # For NSAMP200
-    # path= './dict_mean_gains_NSAMP324.pkl' # For NSAMP324
+    # path= './dict_mean_gains_NSAMP200.pkl' # For NSAMP200
+    path= './dict_mean_gains_NSAMP324.pkl' # For NSAMP324
 
     try:
         dict_gain = open(path, 'rb')
