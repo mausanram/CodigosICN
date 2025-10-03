@@ -1,8 +1,8 @@
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/build_Casa/CMakeFiles/b02.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/build_Casa/CMakeFiles/B02.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/build_Casa/CMakeFiles/edit_cache.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/build_Casa/CMakeFiles/rebuild_cache.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/build_Casa/CMakeFiles/list_install_components.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/build_Casa/CMakeFiles/install.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/build_Casa/CMakeFiles/install/local.dir
-/home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/build_Casa/CMakeFiles/install/strip.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/build_Casa/CMakeFiles/b02.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/build_Casa/CMakeFiles/B02.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/build_Casa/CMakeFiles/edit_cache.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/build_Casa/CMakeFiles/rebuild_cache.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/build_Casa/CMakeFiles/list_install_components.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/build_Casa/CMakeFiles/install.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/build_Casa/CMakeFiles/install/local.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/build_Casa/CMakeFiles/install/strip.dir

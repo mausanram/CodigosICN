@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/main
+CMAKE_SOURCE_DIR = /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/main
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/build_Casa
+CMAKE_BINARY_DIR = /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/build_Casa
 
 # Utility rule file for B02.
 
@@ -81,6 +81,6 @@ CMakeFiles/B02.dir/clean:
 .PHONY : CMakeFiles/B02.dir/clean
 
 CMakeFiles/B02.dir/depend:
-	cd /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/build_Casa && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/main /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/main /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/build_Casa /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/build_Casa /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/build_Casa/CMakeFiles/B02.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/build_Casa && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/main /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/main /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/build_Casa /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/build_Casa /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/build_Casa/CMakeFiles/B02.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/B02.dir/depend
 

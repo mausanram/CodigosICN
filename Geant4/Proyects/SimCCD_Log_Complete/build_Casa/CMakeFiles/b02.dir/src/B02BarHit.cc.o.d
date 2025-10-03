@@ -1,12 +1,12 @@
 CMakeFiles/b02.dir/src/B02BarHit.cc.o: \
- /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/main/src/B02BarHit.cc \
+ /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/main/src/B02BarHit.cc \
  /usr/include/stdc-predef.h \
- /home/bruce/Documents/Programas/Geant4/Proyects/SimCCD_SDLog/main/include/B02BarHit.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VHit.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/globals.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4ios.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Types.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4GlobalConfig.hh \
+ /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_Complete/main/include/B02BarHit.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4VHit.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/globals.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4ios.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4Types.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4GlobalConfig.hh \
  /usr/include/c++/11/complex \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -178,7 +178,7 @@ CMakeFiles/b02.dir/src/B02BarHit.cc.o: \
  /usr/include/c++/11/bits/ostream.tcc \
  /usr/include/c++/11/bits/istream.tcc \
  /usr/include/c++/11/bits/sstream.tcc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/tls.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/tls.hh \
  /usr/include/c++/11/iostream /usr/include/c++/11/algorithm \
  /usr/include/c++/11/utility /usr/include/c++/11/bits/stl_relops.h \
  /usr/include/c++/11/bits/stl_algo.h \
@@ -204,10 +204,10 @@ CMakeFiles/b02.dir/src/B02BarHit.cc.o: \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc \
  /usr/include/c++/11/pstl/execution_defs.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4String.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4String.hh \
  /usr/include/c++/11/cstring /usr/include/string.h /usr/include/strings.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4String.icc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/templates.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4String.icc \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/templates.hh \
  /usr/include/c++/11/climits \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h \
@@ -217,9 +217,9 @@ CMakeFiles/b02.dir/src/B02BarHit.cc.o: \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
  /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Exception.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4ExceptionSeverity.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4EnvironmentUtils.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4Exception.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4ExceptionSeverity.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4EnvironmentUtils.hh \
  /usr/include/c++/11/iomanip /usr/include/c++/11/locale \
  /usr/include/c++/11/bits/locale_facets_nonio.h /usr/include/c++/11/ctime \
  /usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h \
@@ -235,53 +235,53 @@ CMakeFiles/b02.dir/src/B02BarHit.cc.o: \
  /usr/include/c++/11/bits/parse_numbers.h \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4THitsCollection.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Allocator.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4THitsCollection.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4Allocator.hh \
  /usr/include/c++/11/cstddef \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4AllocatorPool.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VHitsCollection.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Allocator.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4ThreeVector.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/ThreeVector.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Utility/defs.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/ThreeVector.icc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4UnitsTable.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4ThreeVector.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4UnitsTable.icc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VVisManager.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Transform3D.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Geometry/Transform3D.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Geometry/Transform3D.icc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/Rotation.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationInterfaces.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/LorentzVector.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/LorentzVector.icc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/AxisAngle.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/AxisAngle.icc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationInterfaces.icc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationX.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationX.icc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationY.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationY.icc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationZ.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/RotationZ.icc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Vector/Rotation.icc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Geometry/Point3D.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Geometry/BasicVector3D.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Geometry/Vector3D.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/CLHEP/Geometry/Normal3D.h \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4RotationMatrix.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Circle.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VMarker.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Visible.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Visible.icc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Point3D.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Colour.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Color.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VMarker.icc \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4Colour.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VisAttributes.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/graphics_reps_defs.hh \
- /home/bruce/Documents/Software/Geant4/geant4-v11.3.0-install/include/Geant4/G4VisAttributes.icc
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4AllocatorPool.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4VHitsCollection.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4Allocator.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4ThreeVector.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/ThreeVector.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Utility/defs.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/ThreeVector.icc \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4UnitsTable.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4ThreeVector.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4UnitsTable.icc \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4VVisManager.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4Transform3D.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Geometry/Transform3D.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Geometry/Transform3D.icc \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/Rotation.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/RotationInterfaces.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/LorentzVector.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/LorentzVector.icc \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/AxisAngle.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/AxisAngle.icc \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/RotationInterfaces.icc \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/RotationX.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/RotationX.icc \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Units/PhysicalConstants.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Units/SystemOfUnits.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/RotationY.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/RotationY.icc \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/RotationZ.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/RotationZ.icc \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Vector/Rotation.icc \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Geometry/Point3D.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Geometry/BasicVector3D.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Geometry/Vector3D.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/CLHEP/Geometry/Normal3D.h \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4RotationMatrix.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4Circle.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4VMarker.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4Visible.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4Visible.icc \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4Point3D.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4Colour.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4Color.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4VMarker.icc \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4Colour.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4VisAttributes.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/graphics_reps_defs.hh \
+ /home/bruce/Software/GEANT4/geant4-v11.3.2-install/include/Geant4/G4VisAttributes.icc
