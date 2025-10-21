@@ -109,7 +109,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
     //     << " mm" << G4endl;
   solidWorld= new G4Box("World",HalfWorldLength,HalfWorldLength,HalfWorldLength);
   //logicWorld= new G4LogicalVolume( solidWorld, Vacuum, "World", 0, 0, 0);
-  logicWorld= new G4LogicalVolume( solidWorld, Vacuum, "World");
+  logicWorld= new G4LogicalVolume(solidWorld, Air, "World");
   physiWorld = new G4PVPlacement(0,G4ThreeVector(0., 0., 0.), logicWorld, "World", 0, false, 0, true);   
   // =========================================== //
   
@@ -187,7 +187,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   Sibox = new G4Box("CCD", 0.5*XLength*cm, 0.5*YLength*cm, 0.5*ZLength*cm);
   SiLogic = new G4LogicalVolume(Sibox, Si, "CCD", 0, 0, 0);
   // new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), SiLogic, "CCD", vacuum_stLV, false, 0,true);
-  new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), SiLogic, "CCD", logicWorld, false, 0,true);
+  new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), SiLogic, "CCD", vacuum_stLV, false, 0,true);
 
   fSiLogic = SiLogic;
 

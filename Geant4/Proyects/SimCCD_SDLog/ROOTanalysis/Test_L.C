@@ -2,7 +2,8 @@ void Test_L(){
 // TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_2.root");
 // TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_0.root");
-TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_nHG_1.root");
+// TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_nHG_1.root");
+TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_nHG_10.root");
 
 TTree *tree = (TTree*) file->Get("B02Evts");
 
@@ -72,9 +73,9 @@ canv->Divide(2,1);
 canv->cd(1);
 L->Draw("hist");
 // LPP->Draw("hist same");
-L_ICN->Draw("hist same");
-line->Draw("same");
-Lcut->Draw("same");
+// L_ICN->Draw("hist same");
+// line->Draw("same");
+// Lcut->Draw("same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.8, 0.8);
 leg->AddEntry(L, "Simulaci#acute{o}n Geant4", "lp");
