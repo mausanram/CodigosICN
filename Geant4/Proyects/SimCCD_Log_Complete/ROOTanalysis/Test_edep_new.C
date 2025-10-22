@@ -9,8 +9,8 @@ TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
 
 TLatex lat;
 
-int NB = 150;
-double tlow = -100;
+int NB = 100;
+double tlow = 0;
 double thi = 1000;
 
 //TH1F *edep0 = new TH1F("edep0", "Lab. Det. ", NB, tlow, thi);
@@ -22,7 +22,7 @@ edep_icn->SetLineColor(1);
 edep_icn->SetStats(0);
 
 TH1F *edep_g4 = new TH1F("edep_g4", "Distribuci#acute{o}n de Energ#acute{i}a Depositada", NB, tlow, thi);
-edep_g4->SetStats(0);
+// edep_g4->SetStats(0);
 edep_g4->SetLineStyle(1);
 edep_g4->SetLineColor(2);
 edep_g4->GetXaxis()->SetTitle("Energ#acute{i}a (KeV)");
@@ -34,7 +34,7 @@ edep_geant_scale->SetLineColor(2);
 edep_geant_scale->GetXaxis()->SetTitle("Energ#acute{i}a (KeV)");
 
 // ============= GEANT4 histograms =========== //
-tree_geant->Draw("EevtBar>>edep_g4"); // GEANT4 INFO (NO BIRKS)
+tree_geant->Draw("EevtBar*1000>>edep_g4", "EevtBar > 0"); // GEANT4 INFO (NO BIRKS)
 
 // ============ Create Canvas ============== //
 TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
@@ -44,7 +44,7 @@ edep_g4->Draw("hist");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 leg->AddEntry(edep_icn, "Datos de muones ICN (NSAMP324)", "LP");
-leg->AddEntry(edep_geant_scale, "Simulaci#acute{o}n de Geant4 (escalada: 0.904)", "LP");
+leg->AddEntry(edep_geant_scale, "Simulaci#acute{o}n de Geant4", "LP");
 leg->Draw();
 
 

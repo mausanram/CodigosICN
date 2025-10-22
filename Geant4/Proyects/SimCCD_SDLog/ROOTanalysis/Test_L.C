@@ -51,7 +51,8 @@ TH1F *Lcut = new TH1F("Lcut", "", NB, tlow, thi);
 
 tree0->Draw("l>>LPP", "l > 0");
 
-tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0 && thetaPri>20*TMath::Pi()/180");
+// tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0 && thetaPri>20*TMath::Pi()/180");
+tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0");
 // tree0->Draw("l>>LPP", "l > 0 && thet>25*TMath::Pi()/180");
 
 tree_icn->Draw("l>>L_ICN", "l > 0");

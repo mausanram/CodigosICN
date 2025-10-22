@@ -18,7 +18,7 @@
 /analysis/ntuple/setFileName 0 ../ROOTanalysis/root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_nHG_10
 /analysis/ntuple/setFileName 1 ../ROOTanalysis/root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_nHG_10
 
-/run/beamOn 5000
+/run/beamOn 1000000
 
 
 

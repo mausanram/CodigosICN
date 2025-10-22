@@ -34,7 +34,7 @@ edep_geant_scale->SetLineColor(2);
 edep_geant_scale->GetXaxis()->SetTitle("Energ#acute{i}a (KeV)");
 
 // ============= GEANT4 histograms =========== //
-tree_geant->Draw("EevtBar>>edep_g4"); // GEANT4 INFO (NO BIRKS)
+tree_geant->Draw("EevtBar*1000>>edep_g4"); // GEANT4 INFO (NO BIRKS)
 
 // ============ Create Canvas ============== //
 TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
