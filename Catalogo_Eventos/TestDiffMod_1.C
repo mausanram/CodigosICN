@@ -1,10 +1,10 @@
 #include <string>
 
-void TestDiffMod(){
+void TestDiffMod_1(){
 TChain *tree = new TChain("tree");
-// tree->Add("tree_DiffusionMod_Ext1_Vert.root");
+tree->Add("tree_DiffusionMod_Ext1_Vert.root");
 // tree->Add("tree_DiffusionMod_Ext1_Horz.root");
-tree->Add("tree_DiffusionMod_Ext2_Vert.root");
+// tree->Add("tree_DiffusionMod_Ext2_Vert.root");
 // tree->Add("tree_DiffusionMod_Ext2_Horz.root");
 
 float sprd_val;
@@ -40,8 +40,8 @@ diff_data->GetXaxis()->SetRangeUser(0, 730);
 diff_data->GetYaxis()->SetRangeUser(0, 1.3);
 diff_data->GetXaxis()->SetTitle("Profundidad (#mu m)");
 diff_data->GetYaxis()->SetTitle("Anchura (px)");
-// diff_data->SetTitle("Modelo de Difusi#acute{o}n(Extensi#acute{o}n 1)");
-diff_data->SetTitle("Modelo de Difusi#acute{o}n(Extensi#acute{o}n 2)");
+diff_data->SetTitle("Modelo de Difusi#acute{o}n(Extensi#acute{o}n 1)");
+// diff_data->SetTitle("Modelo de Difusi#acute{o}n(Extensi#acute{o}n 2)");
 diff_curve_0->SetParameters(-211.9, 0.00102);
 
 TF1 *diff_curve = new TF1("diff_curve", "sqrt([0]* log(1 - [1]*x))/15", 100, 720);
