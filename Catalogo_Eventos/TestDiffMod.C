@@ -38,9 +38,9 @@ diff_data->GetYaxis()->SetTitle("Anchura (px)");
 // diff_data->SetTitle("Modelo de Difusi#acute{o}n(Extensi#acute{o}n 1)");
 diff_data->SetTitle("Modelo de Difusi#acute{o}n(Extensi#acute{o}n 2)");
 
-TF1 *diff_curve = new TF1("diff_curve", "sqrt([0]* log(1 - [1]*x))/15", 0, 725);
+TF1 *diff_curve = new TF1("diff_curve", "sqrt([0]* log(1 - [1]*x))/15", 100, 720);
 diff_curve->SetParameters(-300, 0.0004);
-diff_data->Fit(diff_curve);
+diff_data->Fit(diff_curve, "R");
 
 TGraph *frame = new TGraph(10, 0, 725);
 
@@ -52,8 +52,8 @@ diff_curve->Draw("same");
 TLegend *leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 // leg->SetFillStyle(0);
-// leg->AddEntry(diff_curve, "#sqrt{#alpha log(1 - #beta z)} fit: #alpha = -306.329 #mu m^{2}, #beta = 0.0007903 #mu m^{-1}", "l"); // Estension 1
-leg->AddEntry(diff_curve, "#sqrt{#alpha log(1 - #beta z)} fit: #alpha = -332.143 #mu m^{2}, #beta = 0.0007341 #mu m^{-1}", "l"); // Estension 2
+// leg->AddEntry(diff_curve, "#sqrt{#alpha log(1 - #beta z)} fit: #alpha = -928.476 #mu m^{2}, #beta = 0.00032346 #mu m^{-1}", "l"); // Estension 1
+leg->AddEntry(diff_curve, "#sqrt{#alpha log(1 - #beta z)} fit: #alpha = -1004.13 #mu m^{2}, #beta = 0.000296189 #mu m^{-1}", "l"); // Estension 2
 // leg->AddEntry(line, "Grosor de la CCD: 0.068 cm", "l");
 leg->Draw();
 

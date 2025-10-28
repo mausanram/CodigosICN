@@ -23,7 +23,7 @@
 #/vis/viewer/clearCutawayPlanes
 #/vis/viewer/addCutawayPlane 0 0 0 m 1 0 0
 /vis/viewer/zoom 0.8
-/vis/scene/add/axes 0 0 0 2 m
+/vis/scene/add/axes 0 0 0 20 cm
 
 #color particle tracks
 /vis/modeling/trajectories/create/drawByParticleID 
