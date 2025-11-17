@@ -267,76 +267,76 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   flangefillLV->SetVisAttributes(semiTransparentYellow);
   // End flange
 
-  // // == Coldhead == //
-  // // Interface //
-  // G4double Radio_interface = 12.34/2; // cm
-  // G4double halfinterface_size = 5.39/2; // cm
-  // G4Tubs* interface = new G4Tubs("interface", (Radio_interface - halfinterface_size)*cm, Radio_interface*cm, (half_inch/2)*cm,0,2*pi);
-  // G4LogicalVolume* interfaceLV = new G4LogicalVolume(interface, Steel, "interfaceLV");
-  // new G4PVPlacement(0, G4ThreeVector(0*cm, 0*cm, (halfsize_box+2*half_high_cryoshield+1*half_inch+(half_inch/2))*cm), interfaceLV, "interfaceLV", logicWorld, false, 0, true);
-  // interfaceLV->SetVisAttributes(blue);
+  // == Coldhead == //
+  // Interface //
+  G4double Radio_interface = 12.34/2; // cm
+  G4double halfinterface_size = 5.39/2; // cm
+  G4Tubs* interface = new G4Tubs("interface", (Radio_interface - halfinterface_size)*cm, Radio_interface*cm, (half_inch/2)*cm,0,2*pi);
+  G4LogicalVolume* interfaceLV = new G4LogicalVolume(interface, Steel, "interfaceLV");
+  new G4PVPlacement(0, G4ThreeVector(0*cm, 0*cm, (halfsize_box+2*half_high_cryoshield+1*half_inch+(half_inch/2))*cm), interfaceLV, "interfaceLV", logicWorld, false, 0, true);
+  interfaceLV->SetVisAttributes(blue);
 
-  // G4Tubs* interface_fill = new G4Tubs("interface", 0, (Radio_interface - halfinterface_size)*cm, (half_inch/2)*cm,0,2*pi);
-  // G4LogicalVolume* interface_fillLV = new G4LogicalVolume(interface_fill, Vacuum, "interface_fillLV");
-  // new G4PVPlacement(0, G4ThreeVector(0*cm, 0*cm, (halfsize_box+2*half_high_cryoshield+1*half_inch+(half_inch/2))*cm), interface_fillLV, "interface_fillLV", logicWorld, false, 0, true);
-  // interface_fillLV->SetVisAttributes(semiTransparentYellow);
-  // // End Interface //
+  G4Tubs* interface_fill = new G4Tubs("interface", 0, (Radio_interface - halfinterface_size)*cm, (half_inch/2)*cm,0,2*pi);
+  G4LogicalVolume* interface_fillLV = new G4LogicalVolume(interface_fill, Vacuum, "interface_fillLV");
+  new G4PVPlacement(0, G4ThreeVector(0*cm, 0*cm, (halfsize_box+2*half_high_cryoshield+1*half_inch+(half_inch/2))*cm), interface_fillLV, "interface_fillLV", logicWorld, false, 0, true);
+  interface_fillLV->SetVisAttributes(semiTransparentYellow);
+  // End Interface //
 
-  // // Head //
-  // G4double halfhigh_head = 20.71/2; // cm
-  // G4double halfsize_head = 8.8/2; // cm
-  // G4Box* head = new G4Box("head", halfsize_head*cm, halfsize_head*cm, halfhigh_head*cm);
+  // Head //
+  G4double halfhigh_head = 20.71/2; // cm
+  G4double halfsize_head = 8.8/2; // cm
+  G4Box* head = new G4Box("head", halfsize_head*cm, halfsize_head*cm, halfhigh_head*cm);
 
-  // G4double thick_head = halfsize_head - 0.5; // cm
-  // G4Box* head_cut = new G4Box("head_cut", (thick_head)*cm, (thick_head)*cm, (halfhigh_head+2)*cm);
-  // G4SubtractionSolid* true_head = new G4SubtractionSolid("true_head", head, head_cut, 0, G4ThreeVector(0*cm, 0.*cm, (-thick_head-0.1)*cm));
-  // G4LogicalVolume* headLV = new G4LogicalVolume(true_head, Al, "headLV");
-  // new G4PVPlacement(0, G4ThreeVector(0*cm, 0*cm, (halfsize_box+2*half_high_cryoshield+half_inch+(half_inch)+halfhigh_head)*cm), headLV, "headLV", logicWorld, false, 0, true);
+  G4double thick_head = halfsize_head - 0.5; // cm
+  G4Box* head_cut = new G4Box("head_cut", (thick_head)*cm, (thick_head)*cm, (halfhigh_head+2)*cm);
+  G4SubtractionSolid* true_head = new G4SubtractionSolid("true_head", head, head_cut, 0, G4ThreeVector(0*cm, 0.*cm, (-thick_head-0.1)*cm));
+  G4LogicalVolume* headLV = new G4LogicalVolume(true_head, Al, "headLV");
+  new G4PVPlacement(0, G4ThreeVector(0*cm, 0*cm, (halfsize_box+2*half_high_cryoshield+half_inch+(half_inch)+halfhigh_head)*cm), headLV, "headLV", logicWorld, false, 0, true);
   
-  // G4Box* headfill = new G4Box("headfill", (thick_head-0.01)*cm, (thick_head-0.01)*cm, (halfhigh_head-2+0.7)*cm);
-  // G4LogicalVolume* headfillLV = new G4LogicalVolume(headfill, Air, "headfillLV");
-  // new G4PVPlacement(0, G4ThreeVector(0*cm, 0*cm, (halfsize_box+2*half_high_cryoshield+5*half_inch+halfhigh_head/2)*cm), headfillLV, "headfillLV", logicWorld, false, 0, true);
-  // headfillLV->SetVisAttributes(blue);
-  // // End Head //
+  G4Box* headfill = new G4Box("headfill", (thick_head-0.01)*cm, (thick_head-0.01)*cm, (halfhigh_head-2+0.7)*cm);
+  G4LogicalVolume* headfillLV = new G4LogicalVolume(headfill, Air, "headfillLV");
+  new G4PVPlacement(0, G4ThreeVector(0*cm, 0*cm, (halfsize_box+2*half_high_cryoshield+5*half_inch+halfhigh_head/2)*cm), headfillLV, "headfillLV", logicWorld, false, 0, true);
+  headfillLV->SetVisAttributes(blue);
+  // End Head //
 
-  // // // Tubs //
-  // G4double Radio_tubs = 3.03/2; // cm
-  // G4double thick_tubs = 0.5/2;
-  // G4double halfhigh_tubs = 15.65/2; // cm
-  // G4Tubs* tube1 = new G4Tubs("tube1", (Radio_tubs - thick_tubs)*cm, Radio_tubs*cm, (halfhigh_tubs+half_inch*4)*cm,0,2*pi);
-  // G4LogicalVolume* tube1LV = new G4LogicalVolume(tube1, Al, "tube1LV");
-  // new G4PVPlacement(0, G4ThreeVector((Radio_tubs)*cm, 0*cm, (halfsize_box+half_high_cryoshield+(half_inch))*cm), tube1LV, "tube1LV", box_stLV, false, 0, true);
-  // tube1LV->SetVisAttributes(cgray);
+  // // Tubs //
+  G4double Radio_tubs = 3.03/2; // cm
+  G4double thick_tubs = 0.5/2;
+  G4double halfhigh_tubs = 15.65/2; // cm
+  G4Tubs* tube1 = new G4Tubs("tube1", (Radio_tubs - thick_tubs)*cm, Radio_tubs*cm, (halfhigh_tubs+half_inch*4)*cm,0,2*pi);
+  G4LogicalVolume* tube1LV = new G4LogicalVolume(tube1, Al, "tube1LV");
+  new G4PVPlacement(0, G4ThreeVector((Radio_tubs)*cm, 0*cm, (halfsize_box+half_high_cryoshield+(half_inch))*cm), tube1LV, "tube1LV", box_stLV, false, 0, true);
+  tube1LV->SetVisAttributes(cgray);
 
-  // G4Tubs* tube2 = new G4Tubs("tube2", (Radio_tubs - thick_tubs)*cm, Radio_tubs*cm, (halfhigh_tubs+half_inch*4)*cm,0,2*pi);
-  // G4LogicalVolume* tube2LV = new G4LogicalVolume(tube2, Al, "tube2LV");
-  // new G4PVPlacement(0, G4ThreeVector((-Radio_tubs)*cm, 0*cm, (halfsize_box+half_high_cryoshield+(half_inch))*cm), tube2LV, "tube2LV", box_stLV, false, 0, true);
-  // tube2LV->SetVisAttributes(cgray);
-  // // // End tubs //
+  G4Tubs* tube2 = new G4Tubs("tube2", (Radio_tubs - thick_tubs)*cm, Radio_tubs*cm, (halfhigh_tubs+half_inch*4)*cm,0,2*pi);
+  G4LogicalVolume* tube2LV = new G4LogicalVolume(tube2, Al, "tube2LV");
+  new G4PVPlacement(0, G4ThreeVector((-Radio_tubs)*cm, 0*cm, (halfsize_box+half_high_cryoshield+(half_inch))*cm), tube2LV, "tube2LV", box_stLV, false, 0, true);
+  tube2LV->SetVisAttributes(cgray);
+  // // End tubs //
 
-  // // // Tubs Coldhead //
-  // Radio_tubs = 3.208/2; // cm
-  // thick_tubs = 0.5/2;
-  // halfhigh_tubs = 5./2; // cm
-  // G4Tubs* coldhead1 = new G4Tubs("coldhead1", (Radio_tubs - thick_tubs)*cm, Radio_tubs*cm, (halfhigh_tubs)*cm,0,2*pi);
-  // G4LogicalVolume* coldhead1LV = new G4LogicalVolume(coldhead1, Cu, "coldhead1LV");
-  // new G4PVPlacement(0, G4ThreeVector((-Radio_tubs)*cm, 0*cm, (3*halfhigh_tubs+half_inch/4 + 0.2)*cm), coldhead1LV, "coldhead1LV", box_stLV, false, 0, true);
-  // coldhead1LV->SetVisAttributes(brown);
+  // // Tubs Coldhead //
+  Radio_tubs = 3.208/2; // cm
+  thick_tubs = 0.5/2;
+  halfhigh_tubs = 5./2; // cm
+  G4Tubs* coldhead1 = new G4Tubs("coldhead1", (Radio_tubs - thick_tubs)*cm, Radio_tubs*cm, (halfhigh_tubs)*cm,0,2*pi);
+  G4LogicalVolume* coldhead1LV = new G4LogicalVolume(coldhead1, Cu, "coldhead1LV");
+  new G4PVPlacement(0, G4ThreeVector((-Radio_tubs)*cm, 0*cm, (3*halfhigh_tubs+half_inch/4 + 0.2)*cm), coldhead1LV, "coldhead1LV", box_stLV, false, 0, true);
+  coldhead1LV->SetVisAttributes(brown);
 
-  // G4Tubs* coldhead2 = new G4Tubs("coldhead2", (Radio_tubs - thick_tubs)*cm, Radio_tubs*cm, (halfhigh_tubs)*cm,0,2*pi);
-  // G4LogicalVolume* coldhead2LV = new G4LogicalVolume(coldhead2, Cu, "coldhead2LV");
-  // new G4PVPlacement(0, G4ThreeVector((Radio_tubs)*cm, 0*cm, (3*halfhigh_tubs+half_inch/4 + 0.2)*cm), coldhead2LV, "coldhead2LV", box_stLV, false, 0, true);
-  // coldhead2LV->SetVisAttributes(brown);
-  // // // End tubs Colhead //
+  G4Tubs* coldhead2 = new G4Tubs("coldhead2", (Radio_tubs - thick_tubs)*cm, Radio_tubs*cm, (halfhigh_tubs)*cm,0,2*pi);
+  G4LogicalVolume* coldhead2LV = new G4LogicalVolume(coldhead2, Cu, "coldhead2LV");
+  new G4PVPlacement(0, G4ThreeVector((Radio_tubs)*cm, 0*cm, (3*halfhigh_tubs+half_inch/4 + 0.2)*cm), coldhead2LV, "coldhead2LV", box_stLV, false, 0, true);
+  coldhead2LV->SetVisAttributes(brown);
+  // // End tubs Colhead //
 
-  // // // Base Coldhead //
-  // G4double Radio_basecold = 7.06/2; // cm
-  // G4double halfhigh_basecold = 0.77/2; // cm
-  // G4Tubs* base_cold = new G4Tubs("base_cold", (0)*cm, Radio_basecold*cm, (halfhigh_basecold)*cm,0,2*pi);
-  // G4LogicalVolume* base_coldLV = new G4LogicalVolume(base_cold, Cu, "base_coldLV");
-  // new G4PVPlacement(0, G4ThreeVector((0)*cm, 0*cm, (2*halfhigh_tubs+0.1)*cm), base_coldLV, "base_coldLV", box_stLV, false, 0, true);
-  // base_coldLV->SetVisAttributes(brown);
-  // // ======  END COLD HEAD ===== //
+  // // Base Coldhead //
+  G4double Radio_basecold = 7.06/2; // cm
+  G4double halfhigh_basecold = 0.77/2; // cm
+  G4Tubs* base_cold = new G4Tubs("base_cold", (0)*cm, Radio_basecold*cm, (halfhigh_basecold)*cm,0,2*pi);
+  G4LogicalVolume* base_coldLV = new G4LogicalVolume(base_cold, Cu, "base_coldLV");
+  new G4PVPlacement(0, G4ThreeVector((0)*cm, 0*cm, (2*halfhigh_tubs+0.1)*cm), base_coldLV, "base_coldLV", box_stLV, false, 0, true);
+  base_coldLV->SetVisAttributes(brown);
+  // ======  END COLD HEAD ===== //
 
 
   // ====== COPPER BASE ===== //
