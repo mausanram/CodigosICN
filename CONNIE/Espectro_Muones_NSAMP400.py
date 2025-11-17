@@ -109,7 +109,7 @@ def main(argObj):
 
 
         dict_lists = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
-                                 prop=prop, Solidit=Solidit, Elipticity=Elip, dedl_min= dedl_value_min
+                                 prop=prop, Solidit=Solidit, Elipticity=Elip, dedl_min= dedl_value_min,
                                  CCD_depth= CCD_depth)
 
         DeltaL = dict_lists["muons"]["l"]
