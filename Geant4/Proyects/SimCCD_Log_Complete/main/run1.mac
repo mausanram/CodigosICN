@@ -15,10 +15,10 @@
 
 /analysis/setFileName muons_file
 
-/analysis/ntuple/setFileName 0 ../ROOTanalysis/root_files/muons_1K_SimComplete
-/analysis/ntuple/setFileName 1 ../ROOTanalysis/root_files/muons_1K_SimComplete 
+/analysis/ntuple/setFileName 0 ../ROOTanalysis/root_files/muons_500K_SimCOMPLETE_1
+/analysis/ntuple/setFileName 1 ../ROOTanalysis/root_files/muons_500K_SimCOMPLETE_1 
 
-/run/beamOn 1000
+/run/beamOn 500000
 
 
 

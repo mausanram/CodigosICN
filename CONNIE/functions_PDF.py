@@ -284,7 +284,7 @@ def pdf_creator3x3_verticals(pdf_name, list_pixelmatrix):
 
                 axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].imshow(list_pixelmatrix[index], cmap = color_map, norm = Norm)
                 axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].set_title('ID: ' + str(index))
-                axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].set_ylabel('xlen: ' + xlen + ' , ylen: ' + ylen)
+                # axs[coord3x3[n_events - 1][0],coord3x3[n_events - 1][1]].set_ylabel('xlen: ' + xlen + ' , ylen: ' + ylen)
                 plt.tight_layout()
 
                 if n_events == 9:

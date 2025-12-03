@@ -50,42 +50,19 @@ int main(int argc,char** argv)
    //  User action initialization
   runManager->SetUserInitialization(new B02ActionInitialization());
   
-   
- //////////////////////////////////////////////////////////////////////////////////////  
-  /*
-   auto B02DetConstruction = new B02DetectorConstruction();
-   runManager->SetUserInitialization(B02DetConstruction);
-   
-   G4VUserPhysicsList* physics = new B02PhysicsList;
-   runManager->SetUserInitialization(physics);
-    
-   G4VUserPrimaryGeneratorAction* gen_action = new B02PrimaryGeneratorAction(new B02DetectorConstruction);
-   runManager->SetUserAction(gen_action); 
-    
-   G4UserEventAction* event_action = new B02EventAction();
-   runManager->SetUserAction(event_action);
-  
-   G4UserRunAction* run_action = new B02RunAction(new B02EventAction());
-   runManager->SetUserAction(run_action);
- 
-   //G4UserSteppingAction* stepping_action = new B02SteppingAction(new B02DetectorConstruction(), new B02EventAction());
-   G4UserSteppingAction* stepping_action = new B02SteppingAction(new B02EventAction());
-   runManager->SetUserAction(stepping_action);     
-*/
-////////////////////////////////////////////////////////////////////////////////
 
   // Initialize G4 kernel
-  //
-    runManager->Initialize();
-    
+  runManager->Initialize();
+  
+
   // Initialize visualization with the default graphics system
-  auto visManager = new G4VisExecutive(argc, argv);
-  // Constructors can also take optional arguments:
-  // - a graphics system of choice, eg. "OGL"
-  // - and a verbosity argument - see /vis/verbose guidance.
-  // auto visManager = new G4VisExecutive(argc, argv, "OGL", "Quiet");
-  // auto visManager = new G4VisExecutive("Quiet");
-  visManager->Initialize();
+  // auto visManager = new G4VisExecutive(argc, argv);
+  G4VisManager* visManager = nullptr;
+
+  if (ui) {
+      visManager = new G4VisExecutive;
+      visManager->Initialize();
+  }
 
   // Get the pointer to the User Interface manager
   auto UImanager = G4UImanager::GetUIpointer();
@@ -105,7 +82,11 @@ int main(int argc,char** argv)
     delete ui;
   }
   
-  delete visManager;
+  if (ui) {
+      visManager = new G4VisExecutive;
+      visManager->Initialize();
+  }
+  
   delete runManager;
  
 }

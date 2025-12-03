@@ -263,7 +263,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
 
   G4Tubs* flangefill = new G4Tubs("flangefill", 0, (RadioCyl - inRadio_flag-0.01)*cm, (half_inch/2)*cm,0,2*pi);
   G4LogicalVolume* flangefillLV = new G4LogicalVolume(flangefill, Vacuum, "flangefill");
-  new G4PVPlacement(0, G4ThreeVector(0*cm, 0*cm, (halfsize_box+2*half_high_cryoshield+half_inch/2)*cm), flangefillLV, "flangefillLV", box_stLV, false, 0, true);
+  new G4PVPlacement(0, G4ThreeVector(0*cm, 0*cm, (halfsize_box+2*half_high_cryoshield+half_inch/2)*cm), flangefillLV, "flangefillLV", logicWorld, false, 0, true);
   flangefillLV->SetVisAttributes(semiTransparentYellow);
   // End flange
 
