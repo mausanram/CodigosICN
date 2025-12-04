@@ -84,7 +84,7 @@ void B02EventAction::EndOfEventAction(const G4Event* aEvent)
 ////    
     
   if(!analysisManager->GetH1(2)) return; // No histo booked !
-  if(!analysisManager->GetNtuple(0)) return;  
+  //if(!analysisManager->GetNtuple(0)) return;  
   
   G4int event_id = aEvent->GetEventID();  
   //
