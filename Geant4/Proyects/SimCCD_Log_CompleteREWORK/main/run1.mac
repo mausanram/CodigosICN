@@ -1,0 +1,25 @@
+/control/verbose 0
+/run/verbose 0
+/tracking/verbose 0
+/event/verbose 0
+#/stepping/verbose 0
+/run/printProgress 0
+
+
+#/testhadr/phys/thermalScattering  false
+
+#/B02/gun/rndm off
+#/gun/energy 5 GeV
+
+#/generator/SmithActivation false 
+/generator/SmithActivation true
+
+/analysis/setFileName muons_file
+
+/analysis/ntuple/setFileName 0 ../ROOTanalysis/root_files/muons_100K_SimCOMPLETE_30R_2P_0
+/analysis/ntuple/setFileName 1 ../ROOTanalysis/root_files/muons_100K_SimCOMPLETE_30R_2P_0 
+
+/run/beamOn 100000
+
+
+

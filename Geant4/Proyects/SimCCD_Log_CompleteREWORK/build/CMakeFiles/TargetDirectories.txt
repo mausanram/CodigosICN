@@ -1,0 +1,8 @@
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/CMakeFiles/b02.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/CMakeFiles/B02.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/CMakeFiles/edit_cache.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/CMakeFiles/rebuild_cache.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/CMakeFiles/list_install_components.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/CMakeFiles/install.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/CMakeFiles/install/local.dir
+/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/CMakeFiles/install/strip.dir
