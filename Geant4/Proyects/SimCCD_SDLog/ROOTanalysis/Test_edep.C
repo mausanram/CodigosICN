@@ -60,7 +60,7 @@ edep_pp->SetLineStyle(1);
 edep_pp->SetLineColor(4);
 
 TH1F *edep_geant_scale = new TH1F("edep_geant_scale", "Distribuci#acute{o}n de Energ#acute{i}as Depositadas (#theta > 20^{o})", NB, tlow, thi);
-edep_geant_scale->SetStats(0);
+//edep_geant_scale->SetStats(0);
 edep_geant_scale->SetLineStyle(1);
 edep_geant_scale->SetLineColor(2);
 edep_geant_scale->GetXaxis()->SetTitle("Energ#acute{i}a (KeV)");
@@ -79,7 +79,7 @@ muons->GetYaxis()->SetTitle("events");
 tree_geant->Draw("WevtBar*1000>>edep_geant_birks", "nHitBar>0"); // GEANT4 INFO (BIRKS)
 tree_geant->Draw("EevtBar*1000>>edep_g4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 //tree->Draw("Ehitbar>>edep_cut", "thet>22*TMath::Pi()/180 & edep>0");
-tree_geant->Draw("EevtBar*0.904*1000>>edep_geant_scale", "EevtBar>0 && thetaPri>20*TMath::Pi()/180"); // GEANT4 INFO (NO BIRKS)
+tree_geant->Draw("EevtBar*1000>>edep_geant_scale", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 
 
 // ============= EXPERIMENTAL histograms =========== //

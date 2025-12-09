@@ -25,7 +25,7 @@ double thi = 0.4;
 // TH1F *L = new TH1F("L", "Distribuci#acute{o}n de Longitudes con corte angular de 25^{o}", NB, tlow, thi);
 TH1F *L = new TH1F("L", "Distribuci#acute{o}n de Longitudes (#theta > 20^{0})", NB, tlow, thi);
 L->GetXaxis()->SetTitle("Distancia (cm)");
-L->SetStats(0);
+// L->SetStats(0);
 L->SetLineColor(2);
 
 // TH1F *LPP = new TH1F("LPP", "Distribuci#acute{o}n de Longitudes con corte angular de 25^{o}", NB, tlow, thi);

@@ -31,12 +31,11 @@
 /vis/viewer/refresh
 /vis/geometry/set/visibility World ! false
 /vis/scene/notifyHandlers
-/vis/viewer/set/style w
-/vis/viewer/refresh
-/vis/viewer/set/hiddenEdge 0
-/vis/viewer/refresh
 /generator/SmithActivation true
-/run/beamOn 1000
+/run/beamOn 1
 /vis/scene/notifyHandlers scene-0
+/analysis/h1/getVector
+/analysis/h2/getVector
+/run/beamOn 300
 /analysis/h1/getVector
 /analysis/h2/getVector

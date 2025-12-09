@@ -1,6 +1,15 @@
 void Test_edep(){
-TFile *f_geant = new TFile("./root_files/muons_100K_SimCOMPLETE_30R_2P_0.root");
-TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
+TChain *tree_geant = new TChain("B02Evts");
+tree_geant->Add("../../../../../Data_Geant4/Version_R100_P5/muons_500K_SimCOMPLETE_*");
+//tree_geant->Add("../../../../../Data_Geant4/Version_R100_P5/muons_500K_SimCOMPLETE_2.root");
+//tree_geant->Add("../../../../../Data_Geant4/Version_R100_P5/muons_500K_SimCOMPLETE_1.root");
+//tree_geant->Add("../../../../../Data_Geant4/Version_R100_P5/muons_500K_SimCOMPLETE_3.root");
+//tree_geant->Add("../../../../../Data_Geant4/Version_R100_P5/muons_500K_SimCOMPLETE_4.root");
+//tree_geant->Add("../../../../../Data_Geant4/Version_R100_P5/muons_500K_SimCOMPLETE_5.root");
+
+
+TChain *tree_g4CCD = new TChain("B02Evts");
+tree_g4CCD->Add("../../SimCCD_SDLog/ROOTanalysis/root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_nHG_10.root");
 
 
 TFile *f_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_1.0_C_0.root");
@@ -52,6 +61,13 @@ edep_geant_scale->SetLineStyle(1);
 edep_geant_scale->SetLineColor(2);
 edep_geant_scale->GetXaxis()->SetTitle("Energ#acute{i}a (KeV)");
 
+
+TH1F *edep_geant_onlyccd = new TH1F("edep_geant_onlyccd", "Distribuci#acute{o}n de Energ#acute{i}as Depositadas)", NB, tlow, thi);
+// edep_geant_scale->SetStats(0);
+edep_geant_onlyccd->SetLineStyle(1);
+edep_geant_onlyccd->SetLineColor(1);
+edep_geant_onlyccd->GetXaxis()->SetTitle("Energ#acute{i}a (KeV)");
+
 // === Template for fit ==
 int NBmu = 200;
 double maxEd = 1000.;
@@ -66,9 +82,11 @@ muons->GetYaxis()->SetTitle("events");
 tree_geant->Draw("WevtBar*1000>>edep_geant_birks", "nHitBar>0"); // GEANT4 INFO (BIRKS)
 tree_geant->Draw("EevtBar*1000>>edep_g4", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
 //tree->Draw("Ehitbar>>edep_cut", "thet>22*TMath::Pi()/180 & edep>0");
+tree_g4CCD->Draw("EevtBar*1000>>edep_geant_onlyccd", "EevtBar>0");
 
 // tree_geant->Draw("EevtBar*0.904*1000>>edep_geant_scale", "EevtBar>0 && thetaPri>20*TMath::Pi()/180"); // GEANT4 INFO (NO BIRKS)
-tree_geant->Draw("EevtBar*0.904*1000>>edep_geant_scale", "EevtBar>0"); // GEANT4 INFO (NO BIRKS)
+// tree_geant->Draw("EevtBar*0.904*1000>>edep_geant_scale", "EevtBar>0"); // GEANT4 INFO 
+tree_geant->Draw("EevtBar*1000>>edep_geant_scale", "EevtBar>0"); 
 
 
 edep_icn->SetMaximum(350);
@@ -121,6 +139,7 @@ TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
 canv->Divide(2,1);
 canv->cd(1);
 edep_geant_scale->Draw("hist same");
+edep_geant_onlyccd->Draw("hist same");
 // edep_g4->Draw("hist"); 	// edepG4 no Birks
 // edep_geant_birks->Draw("hist same");
 // edep_pp->Draw("hist same"); 	// edepPP
@@ -131,10 +150,11 @@ TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 // leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");
 // leg->AddEntry(edep_g4, "Simulaci#acute{o}n Geant4", "LP");
 // leg->AddEntry(edep_icn, "Datos de todos los clusters (NSAMP324)", "LEP");
-leg->AddEntry(edep_icn, "Datos de muones ICN (NSAMP324)", "LP");
+// leg->AddEntry(edep_icn, "Datos de muones ICN (NSAMP324)", "LP");
 // leg->AddEntry(edep_conn, "Datos de todos los clusters (NSAMP400)", "LEP");
 // leg->AddEntry(edep_pp, "Simulaci#acute{o}n ab initio", "LP");
-leg->AddEntry(edep_geant_scale, "Simulaci#acute{o}n de Geant4 (escalada: 0.904)", "LP");
+leg->AddEntry(edep_geant_scale, "Simulaci#acute{o}n de Geant4 (con blindaje)", "LP");
+leg->AddEntry(edep_geant_onlyccd, "Simulaci#acute{o}n de Geant4 (solo CCD)", "LP");
 leg->Draw();
 
 

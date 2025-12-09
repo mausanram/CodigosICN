@@ -80,18 +80,25 @@ diff_curve_2->SetLineColor(4);
 TF1 *diff_curve_3 = new TF1("diff_curve_3", "sqrt([0]* log(1 - [1]*x))/15", 0, 725);
 diff_curve_3->SetLineColor(6);
 
+TF1 *diff_curve_4 = new TF1("diff_curve_4", "sqrt([0]* log(1 - [1]*x))/15", 0, 725);
+diff_curve_4->SetLineColor(3);
+
 diff_curve_1->SetParameters(-928.476, 0.00032346);
 diff_curve_2->SetParameters(-1004.13, 0.000296189);
 diff_curve_3->SetParameters(-487.071, 0.0004444);
+diff_curve_4->SetParameters(-553.743, 0.000438);
+
 diff_curve_0->Draw();
 diff_curve_1->Draw("same");
 diff_curve_2->Draw("same");
+diff_curve_4->Draw("same");
 // diff_curve_3->Draw("same");
 
 leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 // leg->SetFillStyle(0);
-leg->AddEntry(diff_curve_0, "CONNIE", "l");
+leg->AddEntry(diff_curve_0, "CONNIE paper", "l");
+leg->AddEntry(diff_curve_4, "CONNIE (proceso del ICN)", "l");
 leg->AddEntry(diff_curve_1, "ICN-Ext1", "l");
 leg->AddEntry(diff_curve_2, "ICN-Ext2", "l");
 // leg->AddEntry(diff_curve_3, "Ext2-Horz", "l");
