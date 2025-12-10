@@ -46,6 +46,5 @@
 #/B02/gun/rndm off
 #/gun/energy 5 GeV
 #/run/beamOn 1
-/generator/SmithActivation true
 
 #vis/ogl/printEPS

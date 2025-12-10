@@ -1,4 +1,4 @@
-# Install script for directory: /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/main
+# Install script for directory: /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD_Log_CompleteREWORK/main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -49,12 +49,12 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/b02"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/b02")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/b02")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/b02" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/b02")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/b02"
-         OLD_RPATH "/home/bruce/Software/GEANT4/geant4-v11.3.2-install/lib:"
+         OLD_RPATH "/home/labdet/Software/Geant4/geant4-v11.2.2-install/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/b02")
@@ -70,5 +70,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

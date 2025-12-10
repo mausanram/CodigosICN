@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd 
 import skimage as sk
 import scipy.ndimage as nd
+import array
 
 
 from ROOT import TMath, TF1, TH1F, TH2F, TCanvas, gStyle, TProfile, TGraphErrors
@@ -1589,7 +1590,9 @@ def event_DataFrame(dataCal, label_img, nlabels_img, prop, header, extension, un
 
     return TF 
 
-def DataFrame_muons(dict_muons, extension):
+def DataFrame_muons(dict_muons, extension, units=2):
+    ratio_eVelec = 0.0368 # KeV/e-
+
     if extension == 1:
         dict_extension = dict_muons['extension_1']
     elif extension == 2:
@@ -1598,15 +1601,20 @@ def DataFrame_muons(dict_muons, extension):
         dict_extension = dict_muons['extension_4']
 
     list_datamask = dict_extension['datamasked']
-    DF_charge = pd.DataFrame(dict_extension['charge'], columns=['Charge (KeV)'])
     DF_sol = pd.DataFrame(dict_extension['sol'], columns=['Solidity'])
     DF_eli = pd.DataFrame(dict_extension['elip'], columns=['Elipticity'])
     DF_thet = pd.DataFrame(np.degrees(dict_extension['theta']), columns=['Theta (Deg)'])
     DF_phi = pd.DataFrame(np.degrees(dict_extension['phi']), columns=['Phi (Deg)'])
     DF_gain = pd.DataFrame(dict_extension['gain'], columns=['Gain (ADU/e-)'])
-    DF_dedl = pd.DataFrame(dict_extension['deltaEL'], columns=['dEdL (KeV/cm)'])
     DF_l = pd.DataFrame(dict_extension['deltaL'], columns=['l (cm)'])
     DF_date = pd.DataFrame(dict_extension['run'], columns=['date_run'])
+    DF_dedl = pd.DataFrame(dict_extension['deltaEL'], columns=['dEdL (KeV/cm)'])
+    
+    if units == 1:
+        DF_charge = pd.DataFrame(dict_extension['charge']/np.array(ratio_eVelec), columns=['Charge (e-)'])
+        # DF_dedl = pd.DataFrame(dict_extension['deltaEL'], columns=['dEdL (e-/cm)'])
+    elif units == 2:
+        DF_charge = pd.DataFrame(dict_extension['charge'], columns=['Charge (KeV)'])
 
     list_muonid =[]
     for index in range(0, len(list_datamask)):

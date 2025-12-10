@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/main
+CMAKE_SOURCE_DIR = /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD_Log_CompleteREWORK/main
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build
+CMAKE_BINARY_DIR = /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build
 
 # Utility rule file for B02.
 
@@ -81,6 +81,6 @@ CMakeFiles/B02.dir/clean:
 .PHONY : CMakeFiles/B02.dir/clean
 
 CMakeFiles/B02.dir/depend:
-	cd /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/main /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/main /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build /home/bruce/Documents/Programs/CodigosICN/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/CMakeFiles/B02.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD_Log_CompleteREWORK/main /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD_Log_CompleteREWORK/main /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build /home/labdet/Documents/MauSan/Programas/Repositorio_Git/Geant4/Proyects/SimCCD_Log_CompleteREWORK/build/CMakeFiles/B02.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/B02.dir/depend
 
