@@ -21,11 +21,11 @@ double LV (double *lx, double *lpar) {
 	double L = lpar[0];		// Thickness of absorber (Distance crossed by the particle)
 
 	double p = lpar[1];		// Momentum (in MeV/c)
-	int z = 1;		// Charge number of incident particle
+	int z = 1;				// Charge number of incident particle
 	double ZA = 0.498487;	// Atomic number over Atomic mass of absorber (for Si)
 	double c = TMath::C();	// Speed of light
 	double me = 0.510998928;	// Electron mass in MeV/c^2
-	double M = 105.65839;	// Muon mass in MeV/c^2
+	double M = 105.65839;		// Muon mass in MeV/c^2
 	double I = 0.000173;		// Mean excitation energy (for Si)
 
 	double bg = p/M;
@@ -52,13 +52,12 @@ double LV (double *lx, double *lpar) {
 		d = 2*log(10.0)*X-C;
 		}
 	else if (X0<=X && X<X1) {
-		// cout<<"Entro aquí" << endl;
 		d = 2*log(10.0)*X-C+a*(pow((X1-X),k));
 		}
 	else if (X<X0) {
 		d = d0*(pow(10,(2*(X-X0))));
 		// d = 0;
-		}
+		} // Density Correction 
 
 	// double WM = 2*me*(pow((beta*gamma),2))/(1+(2*me/M)*(sqrt(1 + pow(beta*gamma, 2)))+pow((me/M),2));   // Maximum energy tranfer
 	double WM = 2*me*(pow((beta*gamma),2))/(1+(2*me*gamma/M) + pow((me/M),2));   // Maximum energy tranfer
