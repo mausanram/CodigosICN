@@ -113,7 +113,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
 
   // ====================== // end materials
     
-  fWorldLength = 150*cm;
+  fWorldLength = 250*cm;
   fRockLength = 0.80*fWorldLength;
   fRock2Length = 0.50*fWorldLength;
   fBarDiameter = 0.3*fRock2Length; 

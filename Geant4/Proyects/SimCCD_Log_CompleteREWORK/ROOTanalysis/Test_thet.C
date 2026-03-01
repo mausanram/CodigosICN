@@ -1,12 +1,24 @@
 void Test_thet(){
-TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_nHG_1.root");
+// TFile *file = new TFile("./root_files/muons_500K_SimCOMPLETE_240R_60P_1.root");
+
+TChain *tree = new TChain("B02Evts");
+tree->Add("./root_files/muons_500K_SimCOMPLETE_120R_30P_*.root");
+// tree->Add("./root_files/Version_240_radious_60_plane/muons_500K_SimCOMPLETE_1*.root");
+
+// TChain *tree = new TChain("B02Evts");
+// int nFiles = 7; // Number of files you want to add
+
+// for(int i = 0; i < nFiles; i++) {
+//     // Form() works like sprintf to create a string with the index i
+//     tree->Add(Form("./root_files/muons_500K_SimCOMPLETE_240R_60P_%d.root", i));
+// }
 
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
 // TFile *file = new TFile("./treesROOT_Barra/Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_0.root");
 
 
 // TTree *tree0 = (TTree*) file0->Get("tree");
-TTree *tree = (TTree*) file->Get("B02Evts");
+// TTree *tree = (TTree*) file->Get("B02Evts");
 // tree->Print();
 
 
@@ -34,7 +46,7 @@ theta_in->SetLineColor(2);
 TH1F *theta_icn = new TH1F("theta_icn", "Distribuci#acute{o}n angular #theta", NB, tlow, thi);
 theta_icn->GetXaxis()->SetTitle("#theta(rad)");
 theta_icn->SetLineColor(1);
-theta_icn->SetStats(0);
+// theta_icn->SetStats(0);
 
 TH1F *theta_cut = new TH1F("theta_cut", "Distribuci#acute{o}n angular #theta (#theta > 20^{o})", NB, tlow, thi);
 theta_cut->GetXaxis()->SetTitle("#theta(rad)");
@@ -60,7 +72,7 @@ tree->Draw("thetaPri>>theta_in", "LengthMuLAr>0");
 
 tree->Draw("thetaPri>>theta_cut", "nHitBar>0 && thetaPri > 20*TMath::Pi()/180");
 // tree->Draw("thet>>theta_incut", "thet>22*TMath::Pi()/180");
-tree_icn->Draw("thet>>theta_icn");
+// tree_icn->Draw("thet>>theta_icn");
 
 tree0->Draw("thet>>theta_pp_in", " l > 0 ");
 
@@ -141,9 +153,17 @@ leg->AddEntry(theta_icn, "Datos ICN", "f");
 // leg->AddEntry(theta_pp_in, "Sim-PP", "f");
 leg->Draw();
 
-
-
-
 canv->Print("Dis_thet.pdf");
 
+// // --- SAVE THE DATA (Professional Way #1) ---
+// TFile *output_data = new TFile("./Reduced_Histograms_240R_60P.root", "RECREATE");
+// theta_all->Write();
+// theta_in->Write();
+// theta_cut->Write();
+// // We save the fit functions too so we don't lose the Chi2 results
+// func1->Write();
+// func2->Write();
+// output_data->Close();
+
+// std::cout << "Done! Histograms saved to Reduced_Histograms_240R_60P.root" << std::endl;
 }

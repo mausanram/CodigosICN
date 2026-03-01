@@ -19,11 +19,11 @@ from functions_MuonsNSAMP1 import *
 ## CONSTANTES ## 
 current_path = os.getcwd()
 
-ratio_keV = 0.00367
+ratio_keV = 0.00368
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
-units = 2
-n_sigmas = 5
+units = 0
+n_sigmas = 8
 numero_bins = 600
 
 def Gaussian2(x,m,s,g,a1,a2): #data, mean, sigma, gain, height1, heigth2
@@ -52,7 +52,8 @@ def main(argObj):
     n_total_img = 0
     n_total_ext = 0
 
-    NSAMP = 324
+    NSAMP = 300
+    # NSAMP = 324
     # NSAMP = 200
 
     Inicio = datetime.datetime.now()
@@ -60,7 +61,8 @@ def main(argObj):
     print('Hora de inicio del cálculo: ', Inicio)
 
     # path= './dict_mean_gains_NSAMP200.pkl' # For NSAMP200
-    path= './dict_mean_gains_NSAMP324.pkl' # For NSAMP324
+    path= './dict_mean_gains_Fe55_NSAMP300.pkl' # For NSAMP300 (Fe55 images)
+    # path= './dict_mean_gains_NSAMP324.pkl' # For NSAMP324
 
     try:
         dict_gain = open(path, 'rb')
@@ -88,9 +90,11 @@ def main(argObj):
         
         for extension in (0,1,3):
             try :
+                x_max = 539
+                y_max = 250
                 # print('Voy a obtener el OsCan y el active area')
-                data = hdu_list[extension].data[:250,10:539]
-                oScan = hdu_list[extension].data[:250,539:]
+                data = hdu_list[extension].data[:y_max,10:x_max]
+                oScan = hdu_list[extension].data[:y_max,x_max:]
 
                 oscan_x = oScan.shape[1]
                 oscan_y = oScan.shape[0]
@@ -122,7 +126,6 @@ def main(argObj):
                 sig_ADUs = ext4['Sigma'] # ADUs
             
             dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, gain=Gain, ratio_keV=ratio_keV, unidades= units, sigma_ADUs = sig_ADUs)
-            
             fondo_value = n_sigmas * sigma
             
             del oScan
@@ -179,7 +182,7 @@ def main(argObj):
     elif units == 1:
         file_name = 'dict_energy_allclusters_NSAMP' + str(NSAMP)+ '_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + 'sci_electrons.pkl'
     elif units == 2:
-        file_name = 'dict_energy_allclusters_NSAMP' + str(NSAMP)+ '_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + 'sci_KeV.pkl'
+        file_name = 'dict_energy_allclusters_NSAMP' + str(NSAMP)+ '_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_251x529_' + '_NSIGMAS_' + str(n_sigmas)  + 'sci_KeV.pkl'
 
     file_object_histogram = open(file_name, 'wb')
     pkl.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 

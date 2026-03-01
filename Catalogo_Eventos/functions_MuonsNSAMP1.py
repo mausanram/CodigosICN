@@ -2602,6 +2602,41 @@ def diffution_horizontal_muon(dict, list_horizontal_labels, Delta_in, Delta_fin,
 ### =============================================================================== ###
 
 #### =================== FUNCIONES DE CLUSTERIZACIÓN Y CREACCIÓN DE PDFs ================== ###
+def simular_paso_cti(image, cti_val):
+    """
+    Simula el daño por transferencia (estela). 
+    Asume que la lectura es hacia el índice (0,0).
+    """
+    shifted = np.roll(image, shift=1, axis=0) # Mueve carga al píxel siguiente
+    shifted[0, :] = 0 # El primer píxel no recibe de nadie 'atrás'
+    
+    # La imagen dañada es (lo que se quedó) + (lo que recibió del anterior)
+    return image * (1 - cti_val) + shifted * cti_val
+
+def deconvolucion_cti(image_obs, cti_est, n_transfers, iterations=5):
+    """
+    image_obs: Tu cluster de Fe55 o Muón con estela.
+    cti_est: Valor de CTI estimado (ej. 1e-5).
+    n_transfers: Distancia promedio al nodo de lectura.
+    """
+    # CTI total acumulada en el trayecto
+    cti_total = cti_est * n_transfers
+    
+    img_corr = image_obs.copy()
+    
+    for _ in range(iterations):
+        # 1. Simulamos el daño sobre nuestra mejor suposición actual
+        img_damaged = simular_paso_cti(img_corr, cti_total)
+        
+        # 2. Calculamos el error respecto a la imagen real observada
+        error = image_obs - img_damaged
+        
+        # 3. Aplicamos la corrección (esquema iterativo de Van Cittert)
+        img_corr = img_corr + error
+        
+    # Asegurar que no terminemos con valores negativos físicos
+    img_corr[img_corr < 0] = 0
+    return img_corr
 
 def all_cluster(dataCal, label_img, nlabels_img, prop):
     list_charge = []
@@ -2610,15 +2645,31 @@ def all_cluster(dataCal, label_img, nlabels_img, prop):
         mask = np.invert(label_img == event)
         loc = ndimage.find_objects(label_img == event)[0]
         
-        data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
-                                            mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
+        # 2. Extraer el recorte (slice) de los datos originales
+        cluster_data = dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop].copy()
+        cluster_mask = mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop]
 
-        ## Aquí se calcula la carga total del cluster
+        # 3. Aplicar Deconvolución si se solicita
+        # if correct_cti:
+        # Estimamos n_transfers como la fila donde está el cluster
+        # (A mayor índice de fila, más transferencias ha sufrido)
+        n_transfers = loc[0].start 
+        
+        # Limpiamos el cluster antes de aplicar la máscara
+        cti_val=1e-6
+        cluster_data = deconvolucion_cti(cluster_data, cti_val, n_transfers)
+
+        # data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
+        #                                     mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
+        data_maskEvent = ma.masked_array(cluster_data, mask=cluster_mask)
+
+        y_shape, x_shape = data_maskEvent.shape
+        # if y_shape != 3 and x_shape != 3:
+        if y_shape > 3 and x_shape > 3:
+            continue
+
         charge = data_maskEvent.sum()
         list_charge.append(charge)
-
-        # if DeltaEL_range_min <= DeltaEL <= DeltaEL_range_max:
-        # list_Muon_labels.append(event)
 
     return list_charge
 

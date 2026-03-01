@@ -1,19 +1,9 @@
 from functions_py import *
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-import numpy.ma as ma
-import pandas as pd 
-import skimage as sk
-import scipy.ndimage as nd
-from array import array
 from functions_MuonsNSAMP1 import *
 import pickle as pkl
-import time
 
 ## CONSTANTES ## 
 current_path = os.getcwd()
-
 ratio_keV = 0.00368
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
@@ -41,9 +31,7 @@ def main(argObj):
     nused_img_ext2 = 0
     nused_img_ext4 = 0
 
-
     nerr_img = 0
-    nerr_ext = 0
 
     total_images = len(argObj)
     image_in_bucle = 0
@@ -59,7 +47,6 @@ def main(argObj):
         try:
             hdu_list = fits.open(img)
             image_in_bucle += 1
-
         except:
             nerr_img = nerr_img + 1
             print('Loading error in image ' + str(img) + 'in open the image.')
@@ -69,32 +56,42 @@ def main(argObj):
             try :
                 max_y = 250
                 max_x = 539
-
                 oScan = hdu_list[extension].data[:max_y,max_x:]
-
+                active_area = hdu_list[extension].data[:max_y,:max_x]
             except:
                 print('Loading error in extension ' + str(extension + 1) + ' of image ' + str(img) + 'in load the data.')
                 continue
 
+            ## Media extraction per row
+            medi_rows_value = []
+            for element in range(0, max_y):
+                row = oScan[element: element +1, 0: max_x]
+                num_row = element + 1
+                medi_value = np.median(row)
+                medi_rows_value.append([medi_value])
+            active_area = active_area - medi_rows_value    
+
             ### Change the range for any kind of image
             # Range_fit = [-65, 300]  # FOr Fe-55
             # Range_fit = [-100, 270] # For Fe-55 & Cs-137
-            Range_fit = [-50, 350] # For muons
+            # Range_fit = [-50, 350] # For muons
 
-            file_name = 'dict_mean_gains_NSAMP324.pkl'
+            # file_name = 'dict_mean_gain_NSAMP324.pkl'
             # file_name = 'dict_mean_gains_NSAMP200.pkl'
+            file_name = 'dict_mean_gains_Fe55_NSAMP300.pkl'
 
             Bins = numero_bins
             Bins_fit = Bins
 
             min_oScan = np.min(oScan)
+            min_active_area = np.min(active_area)
 
-            hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins,  range=(min_oScan, 18000))
+            hist, bins_edges = np.histogram(oScan.flatten(), bins = Bins,  range=(min_active_area, 18000))
             offset = bins_edges[np.argmax(hist)]
             # print('Offset Value: ', offset, ' ADUs')
 
             Overscan_plane = oScan - offset
-            oScan = Overscan_plane
+            acArea_plane = active_area
 
             # Bins = numero_bins
             # Range_fit = [-100, 400]
@@ -110,23 +107,22 @@ def main(argObj):
 
             ### FOr Muons
             if extension == 0:
-                Range_fit_1 = [-130, 125]
-                Range_fit_2 = [200, 330]
+                Range_fit_1 = [-100, 110]
+                Range_fit_2 = [120, 320]
 
             elif extension == 1:
-                Range_fit_1 = [-130, 125]
-                Range_fit_2 = [200, 330]
-
-            hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins,  range=(oScan.min(), 18000))
-            offset = bins_edges[np.argmax(hist)]
-            Overscan_plane = oScan - offset
+                Range_fit_1 = [-100, 110]
+                Range_fit_2 = [100, 320]
 
             fgaus_fir = TF1("gaus1","gaus", Range_fit_1[0], Range_fit_1[1],3) # TF1("nombre", "funcion escrita como en root", min, max, #parametros)
             fgaus_sec = TF1("gaus2","gaus", Range_fit_2[0], Range_fit_2[1],3)
 
 
             h3=TH1F("h3", r"Distribucion del Overscan",Bins_fit, -200, 400)
-            for pixel_value in Overscan_plane.flatten():
+            # for pixel_value in Overscan_plane.flatten():
+            #     h3.Fill(pixel_value)
+
+            for pixel_value in acArea_plane.flatten():
                 h3.Fill(pixel_value)
 
             fgaus_fir.SetParameters(200, 20, 60) # Establecer parametros iniciales del fit, de manera visual es posible determinarlos como una primera aproximacion
@@ -138,7 +134,6 @@ def main(argObj):
             true_gain = fgaus_sec.GetParameters()[1] - fgaus_fir.GetParameters()[1]
             err_true_gain = fgaus_sec.GetParError(1) + fgaus_fir.GetParError(1)
             sigma = fgaus_fir.GetParameters()[2]
-
             del h3
 
             if 180 < true_gain < 215:
@@ -158,15 +153,14 @@ def main(argObj):
                     list_gain_extension_4.append(true_gain)
                     list_gainerr_extension_4.append(err_true_gain)
                     list_sig_extension_4.append(sigma)
-                
                 print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
 
             else:
+                set_blacklist.add(img)
                 print('Error individual gaussians fit in ext ' + str(extension+1) + ' of image ' + str(img))
-                print('Gain:', true_gain)
+                # print('Gain:', true_gain)
                 print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
                 continue
-
 
     gain_mean_ext1 = 0
     err_gain_mean_ext1 = 0
@@ -178,8 +172,6 @@ def main(argObj):
 
         err_gain_mean_ext1 += np.sqrt(1 / (1 / err_gain**2))
         sig_mean_ext1 += list_sig_extension_1[index]
-
-
 
     gain_mean_ext2 = 0
     err_gain_mean_ext2 = 0
@@ -203,15 +195,20 @@ def main(argObj):
         err_gain_mean_ext4 += np.sqrt(1 / (1 / err_gain**2))
         sig_mean_ext4 += list_sig_extension_4[index]
 
+    
+    with open("black_list.txt", "w") as f:
+        for item in set_blacklist:
+            f.write(item + "\n")
+    print(f"Black List saved in black_list.txt file")
 
     print('Number of elements per ext: ', nused_img_ext1, nused_img_ext2, nused_img_ext4)
 
     dict_gains = {'extension_1' : {'Gain' : gain_mean_ext1/len(list_gain_extension_1), 'Err_gain' : err_gain_mean_ext1/len(list_gain_extension_1), 
                                    'Sigma' : sig_mean_ext1/len(list_gain_extension_1)}, 
                   'extension_2' : {'Gain' : gain_mean_ext2/len(list_gain_extension_2), 'Err_gain' : err_gain_mean_ext2/len(list_gain_extension_2),
-                                   'Sigma' : sig_mean_ext1/len(list_gain_extension_2)},
+                                   'Sigma' : sig_mean_ext2/len(list_gain_extension_2)},
                   'extension_4' : {'Gain' : gain_mean_ext4/len(list_gain_extension_4), 'Err_gain' : err_gain_mean_ext4/len(list_gain_extension_4), 
-                                   'Sigma' : sig_mean_ext1/len(list_gain_extension_4)} }
+                                   'Sigma' : sig_mean_ext2/len(list_gain_extension_4)} }
     
     print('The main gain of extension 1 is: ', dict_gains['extension_1']['Gain'], ' +- ', dict_gains['extension_1']['Err_gain'], ' & Sigma: ', dict_gains['extension_1']['Sigma'], ' ADU/e-')
     print('The main gain of extension 2 is: ', dict_gains['extension_2']['Gain'], ' +- ', dict_gains['extension_2']['Err_gain'], ' & Sigma: ', dict_gains['extension_2']['Sigma'], ' ADU/e-')
@@ -222,11 +219,6 @@ def main(argObj):
     file_object_histogram = open(file_name, 'wb')
     pkl.dump(dict_gains, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
-
-    file_object = open('set_blacklist.pkl', 'wb')
-    pkl.dump(dict_gains, file_object) ## Save the dictionary with all info 
-    file_object.close()
-    print('The blacklist is in set_blacklist.pkl, use the pickle library to open')
         
 
 if __name__ == "__main__":

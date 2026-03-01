@@ -39,9 +39,12 @@ class B02PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     G4String                         rndmFlag;	   //flag for a rndm impact point
     
     // ==== Dimensiones para caja de 10cm (ICN) ==== //
-    double R = 100.; //cm
-    double px = 5.;
-    double py = 5.; 
+    // double R = 240.; //cm
+    // double px = 60.;
+    // double py = 60.; 
+    double R = 120.; //cm
+    double px = 30.;
+    double py = 30.; 
 
     // ==== Dimensiones para CCD de 250x529 (ICN) ==== //
     // double R = 8.; // cm
