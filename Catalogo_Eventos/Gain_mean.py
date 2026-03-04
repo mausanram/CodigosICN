@@ -4,6 +4,8 @@ import os
 import pickle as pkl
 from ROOT import TF1, TH1F
 import sys
+from astropy.io import fits
+
 
 ## CONSTANTES ## 
 current_path = os.getcwd()
