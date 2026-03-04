@@ -1,6 +1,9 @@
-from functions_py import *
-from functions_MuonsNSAMP1 import *
+import datetime
+import numpy as np
+import os
 import pickle as pkl
+from ROOT import TF1, TH1F
+import sys
 
 ## CONSTANTES ## 
 current_path = os.getcwd()
@@ -26,6 +29,10 @@ def main(argObj):
     list_sig_extension_2 = []
     list_sig_extension_1 = []
     list_sig_extension_4 = []
+
+    list_sigerr_extension_2 = []
+    list_sigerr_extension_1 = []
+    list_sigerr_extension_4 = []
 
     nused_img_ext1 = 0
     nused_img_ext2 = 0
@@ -119,11 +126,11 @@ def main(argObj):
 
 
             h3=TH1F("h3", r"Distribucion del Overscan",Bins_fit, -200, 400)
-            # for pixel_value in Overscan_plane.flatten():
-            #     h3.Fill(pixel_value)
-
-            for pixel_value in acArea_plane.flatten():
+            for pixel_value in Overscan_plane.flatten():
                 h3.Fill(pixel_value)
+
+            # for pixel_value in acArea_plane.flatten():
+            #     h3.Fill(pixel_value)
 
             fgaus_fir.SetParameters(200, 20, 60) # Establecer parametros iniciales del fit, de manera visual es posible determinarlos como una primera aproximacion
             fgaus_sec.SetParameters(100, 200, 60)
@@ -134,6 +141,7 @@ def main(argObj):
             true_gain = fgaus_sec.GetParameters()[1] - fgaus_fir.GetParameters()[1]
             err_true_gain = fgaus_sec.GetParError(1) + fgaus_fir.GetParError(1)
             sigma = fgaus_fir.GetParameters()[2]
+            sigma_err = fgaus_fir.GetParError(2)
             del h3
 
             if 180 < true_gain < 215:
@@ -143,57 +151,106 @@ def main(argObj):
                     list_gain_extension_1.append(true_gain)
                     list_gainerr_extension_1.append(err_true_gain)
                     list_sig_extension_1.append(sigma)
+                    list_sigerr_extension_1.append(sigma_err)
                 if extension == 1:
                     nused_img_ext2+=1
                     list_gain_extension_2.append(true_gain)
                     list_gainerr_extension_2.append(err_true_gain)
                     list_sig_extension_2.append(sigma)
+                    list_sigerr_extension_2.append(sigma_err)
                 if extension == 3:
                     nused_img_ext4+=1
                     list_gain_extension_4.append(true_gain)
                     list_gainerr_extension_4.append(err_true_gain)
                     list_sig_extension_4.append(sigma)
+                    list_sigerr_extension_4.append(sigma_err)
                 print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
 
             else:
-                set_blacklist.add(img)
-                print('Error individual gaussians fit in ext ' + str(extension+1) + ' of image ' + str(img))
-                # print('Gain:', true_gain)
-                print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
+                if extension == 0:
+                    set_blacklist.add(img)
+                    print('Error individual gaussians fit in ext ' + str(extension+1) + ' of image ' + str(img))
+                    # print('Gain:', true_gain)
+                    print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
+                    continue
                 continue
 
-    gain_mean_ext1 = 0
-    err_gain_mean_ext1 = 0
-    sig_mean_ext1 = 0
+    sum_gain_weight_ext1 = 0
+    sum_wheith_gain_ext1 = 0
+    sum_sig_weight_ext1 = 0
+    sum_wheith_sig_ext1 = 0
     for index in range(0, len(list_gain_extension_1)):
         gain = list_gain_extension_1[index]
         err_gain = list_gainerr_extension_1[index]
-        gain_mean_ext1 += (gain * (1 / err_gain**2))/((1 / err_gain**2))
+        weight = (1 / (err_gain**2))
 
-        err_gain_mean_ext1 += np.sqrt(1 / (1 / err_gain**2))
-        sig_mean_ext1 += list_sig_extension_1[index]
+        sum_gain_weight_ext1 += gain*weight 
+        sum_wheith_gain_ext1 += weight
 
-    gain_mean_ext2 = 0
-    err_gain_mean_ext2 = 0
-    sig_mean_ext2 = 0
+        sig = list_sig_extension_1[index]
+        err_sig = list_sigerr_extension_1[index]
+        sig_weight = (1/(err_sig**2))
+
+        sum_sig_weight_ext1 += sig*sig_weight
+        sum_wheith_sig_ext1 += sig_weight
+
+    if sum_wheith_sig_ext1>0 and sum_wheith_gain_ext1>0:
+        mean_gain_ext1 = sum_gain_weight_ext1/sum_wheith_gain_ext1
+        true_gain_error_ext1 = np.sqrt(sum_wheith_gain_ext1)
+
+        mean_sig_ext1 = sum_sig_weight_ext1/sum_wheith_sig_ext1
+        true_sig_error_ext1 = np.sqrt(sum_wheith_sig_ext1)
+
+    sum_gain_weight_ext2 = 0
+    sum_wheith_gain_ext2 = 0
+    sum_sig_weight_ext2 = 0
+    sum_wheith_sig_ext2 = 0
     for index in range(0, len(list_gain_extension_2)):
         gain = list_gain_extension_2[index]
         err_gain = list_gainerr_extension_2[index]
-        gain_mean_ext2 += (gain * (1 / err_gain**2))/((1 / err_gain**2))
+        weight = (1 / (err_gain**2))
 
-        err_gain_mean_ext2 += np.sqrt(1 / (1 / err_gain**2))
-        sig_mean_ext2 += list_sig_extension_2[index]
+        sum_gain_weight_ext2 += gain*weight 
+        sum_wheith_gain_ext2 += weight
 
-    gain_mean_ext4 = 0
-    err_gain_mean_ext4 = 0
-    sig_mean_ext4 = 0
+        sig = list_sig_extension_2[index]
+        err_sig = list_sigerr_extension_2[index]
+        sig_weight = (1/(err_sig**2))
+
+        sum_sig_weight_ext2 += sig*sig_weight
+        sum_wheith_sig_ext2 += sig_weight
+
+    if sum_wheith_sig_ext2>0 and sum_wheith_gain_ext2>0:
+        mean_gain_ext2 = sum_gain_weight_ext2/sum_wheith_gain_ext2
+        true_gain_error_ext2 = np.sqrt(sum_wheith_gain_ext2)
+
+        mean_sig_ext2 = sum_sig_weight_ext2/sum_wheith_sig_ext2
+        true_sig_error_ext2 = np.sqrt(sum_wheith_sig_ext2)
+
+    sum_gain_weight_ext4 = 0
+    sum_wheith_gain_ext4 = 0
+    sum_sig_weight_ext4 = 0
+    sum_wheith_sig_ext4 = 0
     for index in range(0, len(list_gain_extension_4)):
         gain = list_gain_extension_4[index]
         err_gain = list_gainerr_extension_4[index]
-        gain_mean_ext4 += (gain * (1 / err_gain**2))/((1 / err_gain**2))
+        weight = (1 / (err_gain**2))
 
-        err_gain_mean_ext4 += np.sqrt(1 / (1 / err_gain**2))
-        sig_mean_ext4 += list_sig_extension_4[index]
+        sum_gain_weight_ext4 += gain*weight 
+        sum_wheith_gain_ext4 += weight
+
+        sig = list_sig_extension_4[index]
+        err_sig = list_sigerr_extension_4[index]
+        sig_weight = (1/(err_sig**2))
+
+        sum_sig_weight_ext4 += sig*sig_weight
+        sum_wheith_sig_ext4 += sig_weight
+    if sum_wheith_sig_ext4>0 and sum_wheith_gain_ext4>0:
+        mean_gain_ext4 = sum_gain_weight_ext4/sum_wheith_gain_ext4
+        true_gain_error_ext4 = np.sqrt(sum_wheith_gain_ext4)
+
+        mean_sig_ext4 = sum_sig_weight_ext4/sum_wheith_sig_ext4
+        true_sig_error_ext4 = np.sqrt(sum_wheith_sig_ext4)
 
     
     with open("black_list.txt", "w") as f:
@@ -203,16 +260,13 @@ def main(argObj):
 
     print('Number of elements per ext: ', nused_img_ext1, nused_img_ext2, nused_img_ext4)
 
-    dict_gains = {'extension_1' : {'Gain' : gain_mean_ext1/len(list_gain_extension_1), 'Err_gain' : err_gain_mean_ext1/len(list_gain_extension_1), 
-                                   'Sigma' : sig_mean_ext1/len(list_gain_extension_1)}, 
-                  'extension_2' : {'Gain' : gain_mean_ext2/len(list_gain_extension_2), 'Err_gain' : err_gain_mean_ext2/len(list_gain_extension_2),
-                                   'Sigma' : sig_mean_ext2/len(list_gain_extension_2)},
-                  'extension_4' : {'Gain' : gain_mean_ext4/len(list_gain_extension_4), 'Err_gain' : err_gain_mean_ext4/len(list_gain_extension_4), 
-                                   'Sigma' : sig_mean_ext2/len(list_gain_extension_4)} }
+    dict_gains = {'extension_1' : {'Gain' : mean_gain_ext1, 'Err_gain' : true_gain_error_ext1, 'Sigma' : mean_sig_ext1, 'Err_sig' : true_sig_error_ext1}, 
+                  'extension_2' : {'Gain' : mean_gain_ext2, 'Err_gain' : true_gain_error_ext2, 'Sigma' : mean_sig_ext2, 'Err_sig' : true_sig_error_ext2},
+                  'extension_4' : {'Gain' : mean_gain_ext4, 'Err_gain' : true_gain_error_ext4, 'Sigma' : mean_sig_ext4, 'Err_sig' : true_sig_error_ext4} }
     
-    print('The main gain of extension 1 is: ', dict_gains['extension_1']['Gain'], ' +- ', dict_gains['extension_1']['Err_gain'], ' & Sigma: ', dict_gains['extension_1']['Sigma'], ' ADU/e-')
-    print('The main gain of extension 2 is: ', dict_gains['extension_2']['Gain'], ' +- ', dict_gains['extension_2']['Err_gain'], ' & Sigma: ', dict_gains['extension_2']['Sigma'], ' ADU/e-')
-    print('The main gain of extension 4 is: ', dict_gains['extension_4']['Gain'], ' +- ', dict_gains['extension_4']['Err_gain'], ' & Sigma: ', dict_gains['extension_4']['Sigma'], ' ADU/e-')
+    print('The main gain of extension 1 is: ', dict_gains['extension_1']['Gain'], ' +- ', dict_gains['extension_1']['Err_gain'], ' & Sigma: ', dict_gains['extension_1']['Sigma'], ' +- ', dict_gains['extension_1']['Err_sig'], ' ADU/e-')
+    print('The main gain of extension 2 is: ', dict_gains['extension_2']['Gain'], ' +- ', dict_gains['extension_2']['Err_gain'], ' & Sigma: ', dict_gains['extension_2']['Sigma'], ' +- ', dict_gains['extension_2']['Err_sig'], ' ADU/e-')
+    print('The main gain of extension 4 is: ', dict_gains['extension_4']['Gain'], ' +- ', dict_gains['extension_4']['Err_gain'], ' & Sigma: ', dict_gains['extension_4']['Sigma'], ' +- ', dict_gains['extension_4']['Err_sig'], ' ADU/e-')
 
 
 

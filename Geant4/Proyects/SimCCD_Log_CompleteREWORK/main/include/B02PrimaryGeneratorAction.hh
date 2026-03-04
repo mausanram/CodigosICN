@@ -43,8 +43,8 @@ class B02PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     // double px = 60.;
     // double py = 60.; 
     double R = 120.; //cm
-    double px = 30.;
-    double py = 30.; 
+    double px = 6.;
+    double py = 6.; 
 
     // ==== Dimensiones para CCD de 250x529 (ICN) ==== //
     // double R = 8.; // cm

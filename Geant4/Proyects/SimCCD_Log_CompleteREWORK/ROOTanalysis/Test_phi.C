@@ -2,14 +2,16 @@ void Test_phi(){
 //TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
 // TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_3.0x3.0_RADIO_12_.root");
-TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
+// TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
+TChain *tree = new TChain("B02Evts");
+tree->Add("./root_files/muons_500K_SimCOMPLETE_120R_30P_*.root");
 
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_500000_PLANES_150x150_RADIO_100(1).root");
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_100000_PLANES_150x150_RADIO_450_0.root");
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_1.root");
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_0.root");
-TTree *tree = (TTree*) file->Get("B02Evts");
+// TTree *tree = (TTree*) file->Get("B02Evts");
 
 TFile *file_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_1.0_C_0.root");
 TTree *tree_pp = (TTree*) file_pp->Get("tree");
@@ -45,13 +47,13 @@ phi_icn->GetXaxis()->SetTitle("#phi (rad)");
 phi_icn->SetLineColor(1);
 
 // Fill histograms //
-// tree->Draw("(phiPri + TMath::Pi())>>phi_all");
-// tree->Draw("(phiPri + TMath::Pi())>>phi_in", " EevtBar > 0 ");
+tree->Draw("(phiPri + TMath::Pi())>>phi_all");
+tree->Draw("(phiPri + TMath::Pi())>>phi_in", "LengthMuLAr>0");
 
-tree_pp->Draw("phi>>phi_all");
-tree_pp->Draw("phi>>phi_in", " edep > 0 ");
-tree_pp->Draw("phi>>phi_cut", " edep > 0 && thet>20*TMath::Pi()/180");
-tree_icn->Draw("phi>>phi_icn");
+// tree_pp->Draw("phi>>phi_all");
+// tree_pp->Draw("phi>>phi_in", " edep > 0 ");
+// tree_pp->Draw("phi>>phi_cut", " edep > 0 && thet>20*TMath::Pi()/180");
+// tree_icn->Draw("phi>>phi_icn");
 
 
 // tree->Draw("phi>>theta_incut", "thet>22");
@@ -122,16 +124,16 @@ line3->SetLineStyle(2);
 line3->SetLineWidth(2);
 
 canv->cd(2);
-phi_cut->SetMinimum(0);
-phi_in->SetMinimum(0);
+// phi_cut->SetMinimum(0);
+// phi_in->SetMinimum(0);
 // phi_in->Draw();
-phi_cut->Draw("hist");
+phi_in->Draw("hist");
 // func2->Draw("same"); 
-phi_icn->Scale(6.5);
-phi_icn->Draw("hist same");
-line1->Draw("same");
-line2->Draw("same");
-line3->Draw("same");
+// phi_icn->Scale(6.5);
+// phi_icn->Draw("hist same");
+// line1->Draw("same");
+// line2->Draw("same");
+// line3->Draw("same");
 
 leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);

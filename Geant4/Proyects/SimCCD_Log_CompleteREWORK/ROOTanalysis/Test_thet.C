@@ -134,10 +134,10 @@ leg->Draw();
 
 theta_icn->Scale(7.2);
 canv->cd(2);
-// theta_in->Draw("hist");
-theta_cut->Draw("hist");
-theta_icn->Draw("hist same");
-// func2->Draw("same");
+theta_in->Draw("hist");
+// theta_cut->Draw("hist");
+// theta_icn->Draw("hist same");
+func2->Draw("same");
 // theta_pp_in->Draw("hist same");
 
 leg = new TLegend(0.7, 0.8, 0.9, 0.9);

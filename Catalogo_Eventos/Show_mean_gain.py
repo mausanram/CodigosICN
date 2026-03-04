@@ -25,6 +25,6 @@ print('Gain in ext1: ', np.around(ext1['Gain'], 3), ' +- ', np.around(ext1['Err_
 print('Gain in ext2: ', np.around(ext2['Gain'], 3), ' +- ', np.around(ext2['Err_gain'], 3), ' ADU/e- (' + str(err_per_ext2) + '%)')
 print('Gain in ext4: ', np.around(ext4['Gain'], 3), ' +- ', np.around(ext4['Err_gain'], 3), ' ADU/e- (' + str(err_per_ext4) + '%)', end='\n\n')
 
-print('Sigma ext1: ', np.around(ext1['Sigma'], 3), ' ADU')
-print('Sigma ext2: ', np.around(ext2['Sigma'], 3), ' ADU')
-print('Sigma ext4: ', np.around(ext4['Sigma'], 3), ' ADU')
+print('Sigma in ext1: ', np.around(ext1['Sigma'], 3), ' +- ', np.around(ext1['Err_sig'], 3), ' ADU (' + str(err_per_ext1) + '%)')
+print('Sigma in ext2: ', np.around(ext2['Sigma'], 3), ' +- ', np.around(ext2['Err_sig'], 3), ' ADU (' + str(err_per_ext2) + '%)')
+print('Sigma in ext4: ', np.around(ext4['Sigma'], 3), ' +- ', np.around(ext4['Err_sig'], 3), ' ADU (' + str(err_per_ext4) + '%)')

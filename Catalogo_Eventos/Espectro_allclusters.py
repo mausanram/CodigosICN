@@ -106,6 +106,7 @@ def main(argObj):
                 mean_rows_value = []
                 for element in np.arange(0, oscan_y):
                     row = oScan[element: element +1, 0: oscan_x]
+                    # row = data[element: element +1, 0: oscan_x]
                     mean_value = np.median(row)
                     mean_rows_value.append([mean_value])
 

@@ -53,14 +53,14 @@ theta_pp_in->SetLineColor(4);
 tree->Draw("thetaPri>>theta_all");
 
 // tree0->Draw("thet>>theta_in", "l>0 ");
-// tree->Draw("thetaPri>>theta_in", "nHitBar>0");
-tree->Draw("thetaPri>>theta_in", "LengthMuLAr>0");
+tree->Draw("thetaPri>>theta_in", "nHitBar>0");
+// tree->Draw("thetaPri>>theta_in", "LengthMuLAr>0");
 // tree->Draw("thetaPri>>theta_in", "nHitBar>0 && LengthMuLAr>0");
 
 
 tree->Draw("thetaPri>>theta_cut", "nHitBar>0 && thetaPri > 20*TMath::Pi()/180");
 // tree->Draw("thet>>theta_incut", "thet>22*TMath::Pi()/180");
-tree_icn->Draw("thet>>theta_icn");
+// tree_icn->Draw("thet>>theta_icn");
 
 tree0->Draw("thet>>theta_pp_in", " l > 0 ");
 

@@ -176,7 +176,6 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
 
   // --- End Substractions
 
-
   // We place the box IN THE WORLD
   G4LogicalVolume* logicSteelBox = new G4LogicalVolume(solid_FinalSteel, Steel, "Logic_SteelBox");
   new G4PVPlacement(0, G4ThreeVector(0,0,0), logicSteelBox, "Phys_SteelBox", logicWorld, false, 0, true);
@@ -377,7 +376,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   // CU BASE  + CCD
   // ========================================================
   G4double z_anchor_point = z_pos_disk - halfhigh_basecold; 
-  G4double custom_Z_shift = -5.0 * cm; // if it's equal to 0 then the base and CCD will be close to the base cold head
+  G4double custom_Z_shift = -5.37375 * cm; // if it's equal to 0 then the base and CCD will be close to the base cold head
   G4double z_start_base = z_anchor_point + custom_Z_shift;
 
   
