@@ -142,8 +142,10 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
 
 
 
-  G4double fact_transparent = 0.01;
+  G4double fact_transparent = 0.9;
   G4VisAttributes* semiTransparentYellow = new G4VisAttributes(G4Colour(1.0, 1.0, 0.0, fact_transparent));
+  semiTransparentYellow->SetForceSolid(true);
+
   G4VisAttributes* semiTransparentLighBlue = new G4VisAttributes(G4Colour(173., 216., 230., fact_transparent));
   // ================================= //
 
@@ -281,7 +283,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   z_current_pos += half_h_shield;
 
   G4Tubs* solid_Shield_St = new G4Tubs("Shield_St", RadioCyl_Tower - half_inch, RadioCyl_Tower, half_h_shield, 0, 2*pi);
-  G4LogicalVolume* logicShieldSt = new G4LogicalVolume(solid_Shield_St, Steel, "Logic_Shield_St");
+  G4LogicalVolume* logicShieldSt = new G4LogicalVolume(solid_Shield_St, Vacuum, "Logic_Shield_St");
   new G4PVPlacement(0, G4ThreeVector(0,0, z_current_pos), logicShieldSt, "Phys_Shield_St", logicWorld, false, 0, true);
 
   G4Tubs* solid_Shield_Vac_Raw = new G4Tubs("Shield_Vac_Raw", 0., RadioCyl_Tower - half_inch, half_h_shield, 0, 2*pi);
@@ -304,7 +306,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   z_current_pos += half_h_flange; 
 
   G4Tubs* solid_Flange_St = new G4Tubs("Flange_St", RadioCyl_Tower - inRadio_flange, RadioCyl_Tower, half_h_flange, 0, 2*pi);
-  G4LogicalVolume* logicFlangeSt = new G4LogicalVolume(solid_Flange_St, Steel, "Logic_Flange_St");
+  G4LogicalVolume* logicFlangeSt = new G4LogicalVolume(solid_Flange_St, Vacuum, "Logic_Flange_St");
   new G4PVPlacement(0, G4ThreeVector(0,0, z_current_pos), logicFlangeSt, "Phys_Flange_St", logicWorld, false, 0, true);
 
   G4Tubs* solid_Flange_Vac_Raw = new G4Tubs("Flange_Vac_Raw", 0., RadioCyl_Tower - inRadio_flange, half_h_flange, 0, 2*pi);  
@@ -329,7 +331,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   z_current_pos += half_h_inter;
 
   G4Tubs* solid_Inter_St = new G4Tubs("Inter_St", Radio_interface - halfinterface_size, Radio_interface, half_h_inter, 0, 2*pi);
-  G4LogicalVolume* logicInterSt = new G4LogicalVolume(solid_Inter_St, Steel, "Logic_Inter_St");
+  G4LogicalVolume* logicInterSt = new G4LogicalVolume(solid_Inter_St, Vacuum, "Logic_Inter_St");
   new G4PVPlacement(0, G4ThreeVector(0,0, z_current_pos), logicInterSt, "Phys_Inter_St", logicWorld, false, 0, true);
 
   G4Tubs* solid_Inter_Vac_Raw = new G4Tubs("Inter_Vac_Raw", 0., Radio_interface - halfinterface_size, half_h_inter, 0, 2*pi);  

@@ -29,7 +29,7 @@ theta_all->SetStats(0);
 TH1F *theta_in = new TH1F("theta_in", "Distribuci#acute{o}n angular #theta de los muones que impactaron la CCD", NB, tlow, thi);
 theta_in->GetXaxis()->SetTitle("#theta(rad)");
 theta_in->SetLineColor(2);
-// theta_in->SetStats(0);
+theta_in->SetStats(0);
 
 TH1F *theta_icn = new TH1F("theta_icn", "Distribuci#acute{o}n angular #theta", NB, tlow, thi);
 theta_icn->GetXaxis()->SetTitle("#theta(rad)");
@@ -58,9 +58,9 @@ tree->Draw("thetaPri>>theta_in", "LengthMuLAr>0");
 // tree->Draw("thetaPri>>theta_in", "nHitBar>0 && LengthMuLAr>0");
 
 
-tree->Draw("thetaPri>>theta_cut", "nHitBar>0 && thetaPri > 20*TMath::Pi()/180");
-// tree->Draw("thet>>theta_incut", "thet>22*TMath::Pi()/180");
-tree_icn->Draw("thet>>theta_icn");
+// tree->Draw("thetaPri>>theta_cut", "nHitBar>0 && thetaPri > 20*TMath::Pi()/180");
+tree->Draw("thet>>theta_incut", "thet>22*TMath::Pi()/180");
+// tree_icn->Draw("thet>>theta_icn");
 
 tree0->Draw("thet>>theta_pp_in", " l > 0 ");
 
@@ -122,22 +122,22 @@ leg->Draw();
 
 theta_icn->Scale(7.2);
 canv->cd(2);
-// theta_in->Draw("hist");
-theta_cut->Draw("hist");
-theta_icn->Draw("hist same");
-// func2->Draw("same");
+theta_in->Draw("hist");
+// theta_cut->Draw("hist");
+// theta_icn->Draw("hist same");
+func2->Draw("same");
 // theta_pp_in->Draw("hist same");
 
 leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 // leg->SetHeader("", "C");
 // leg->SetFillStyle(0);
-// leg->AddEntry(func1, "A [A_{s} sin#theta cos^{3}#theta + #left(#frac{2(A_{c} + A_{l})}{#pi}#right)sin^{2}#theta cos^{2}#theta]", "l");
+leg->AddEntry(func1, "A [A_{s} sin#theta cos^{3}#theta + #left(#frac{2(A_{c} + A_{l})}{#pi}#right)sin^{2}#theta cos^{2}#theta]", "l");
 // leg->AddEntry((TObject*)0, "", "");
 // leg->AddEntry((TObject*)0, "+ #left(#frac{A_c + A_l}{#pi}#right)sin^{2}#theta cos^{2}#theta]", " ");
 // leg->AddEntry((TObject*)0, "", "");
 leg->AddEntry(theta_all, "Simulaci#acute{o}n de Geant4", "f");
-leg->AddEntry(theta_icn, "Datos ICN", "f");
+// leg->AddEntry(theta_icn, "Datos ICN", "f");
 // leg->AddEntry(theta_pp_in, "Sim-PP", "f");
 leg->Draw();
 

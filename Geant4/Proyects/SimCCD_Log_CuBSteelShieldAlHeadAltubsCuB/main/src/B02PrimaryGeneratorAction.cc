@@ -61,7 +61,8 @@ void B02PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 
 	double theta;
 	
-	double h = 61.5;
+	// Suma de: Box (12.7) + Shield (18.87) + Flange (1.27) + Inter (2.54) + Head (20.71)
+    G4double z_tower_top = 0;
 
 	bool a = true;
 	while (a) {
@@ -82,7 +83,7 @@ void B02PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 	double Y = R*sin(theta)*sin(phi);
 	double Z = R*cos(theta);
 	// down the hemisphere
-	double Z1 = R*cos(theta)-h;
+	// double Z1 = R*cos(theta)-h;
 	
 	double u = G4RandFlat::shoot(-px/2, px/2);
 	double v = G4RandFlat::shoot(-py/2, py/2);
@@ -91,7 +92,7 @@ void B02PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 	double z0 = Z-u*sin(theta);
 	//double z0 = Z;
 	
-        particleGun->SetParticlePosition(G4ThreeVector(x0*cm,y0*cm,z0*cm));
+        particleGun->SetParticlePosition(G4ThreeVector(x0*cm,y0*cm,(z0+z_tower_top)*cm));
         particleGun->SetParticleMomentumDirection(G4ThreeVector(-sin(theta)*cos(phi),-sin(theta)*sin(phi),-cos(theta)));
 
 

@@ -122,12 +122,12 @@ leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->SetTextAlign(11);
 // leg->SetHeader("", "C");
 // leg->SetFillStyle(0);
-// leg->AddEntry(func1, "A [#frac{A_{s}}{#pi}+ #left(#frac{A_{l}}{4}#right)#left|cos#theta #right| + #left(#frac{A_{c}}{4}#right) #left|sin#theta #right| ]", "l");
+leg->AddEntry(func1, "A [#frac{A_{s}}{#pi}+ #left(#frac{A_{l}}{4}#right)#left|cos#theta #right| + #left(#frac{A_{c}}{4}#right) #left|sin#theta #right| ]", "l");
 // leg->AddEntry((TObject*)0, "", "");
 // leg->AddEntry((TObject*)0, "+ #left(#frac{A_{c}}{4}#right) #left|sin#theta #right| ]", " ");
 // leg->AddEntry((TObject*)0, "", "");
 leg->AddEntry(phi_all, "Simulaci#acute{o}n de Geant4 ", "f");
-leg->AddEntry(phi_icn, "Datos ICN ", "f");
+// leg->AddEntry(phi_icn, "Datos ICN ", "f");
 leg->Draw();
 
 canv->Print("Dis_phi.pdf");

@@ -1,10 +1,7 @@
 void Test_L(){
-// TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
-// TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_2.root");
-// TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_0.root");
-TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_nHG_1.root");
 
-TTree *tree = (TTree*) file->Get("B02Evts");
+TChain *tree = new TChain("B02Evts");
+tree->Add("./root_files/muons_1M_vacuum_250x529_file_SDLog_Cu_*.root");
 
 
 TFile *file0 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_1.0_C_0.root");
@@ -50,14 +47,15 @@ TH1F *Lcut = new TH1F("Lcut", "", NB, tlow, thi);
 
 tree0->Draw("l>>LPP", "l > 0");
 
-tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0 && thetaPri>20*TMath::Pi()/180");
+tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0");
+// tree->Draw("LengthMuLAr>>L", "LengthMuLAr>0 && thetaPri>20*TMath::Pi()/180");
 // tree0->Draw("l>>LPP", "l > 0 && thet>25*TMath::Pi()/180");
 
-tree_icn->Draw("l>>L_ICN", "l > 0");
+// tree_icn->Draw("l>>L_ICN", "l > 0");
 
 
 //TLine *line = new TLine(0.0725,0,0.0725,30000);
-TLine *line = new TLine(0.0725,0,0.0725,8000);
+TLine *line = new TLine(0.0725,0,0.0725,700);
 line->SetLineStyle(2);
 line->SetLineWidth(2);
 
@@ -72,14 +70,14 @@ canv->Divide(2,1);
 canv->cd(1);
 L->Draw("hist");
 // LPP->Draw("hist same");
-L_ICN->Draw("hist same");
+// L_ICN->Draw("hist same");
 line->Draw("same");
 Lcut->Draw("same");
 
 TLegend *leg = new TLegend(0.5, 0.7, 0.8, 0.8);
 leg->AddEntry(L, "Simulaci#acute{o}n Geant4", "lp");
 // leg->AddEntry(LPP, "Simulaci#acute{o}n ab initio", "lp");
-leg->AddEntry(L_ICN, "Datos ICN", "l");
+// leg->AddEntry(L_ICN, "Datos ICN", "l");
 leg->AddEntry(line, "Grosor de CCD: 0.0725 cm", "l");
 leg->Draw();
 
