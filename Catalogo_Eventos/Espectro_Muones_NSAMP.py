@@ -5,7 +5,7 @@ import numpy.ma as ma
 import sys
 import skimage as sk
 import datetime
-import pickle
+import pickle as pkl
 import os
 
 from functions_MuonsNSAMP1 import *
@@ -30,10 +30,10 @@ dedl_value_min = 1400
 list_Elip = [0.65, 0.65, 0, 0.65]
 list_Solidit = [0.65, 0.65, 0, 0.65]
 
-ratio_keV = 0.0036
+ratio_keV = 0.00367
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
-units = 2
+units = 1
 n_sigmas = 13
 numero_bins = 600
 
@@ -44,11 +44,6 @@ def gaussian(x, a, mean, sigma):
     return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))
 
 def main(argObj):
-    expgain = [227, 220.4, 94.72, 197.7] ## Ganancia para 324nsamp 
-
-    # expgain = [110.78158608889959, 144.4661840232508, 100,  63.730700893071976] ## 
-
-
     list_totalEvents = []
 
     ### ===== List og all events === ##
@@ -125,18 +120,34 @@ def main(argObj):
     num_images =  'Imágenes Analizadas: ' +  str(total_images)
     
     print('Hora de inicio del cálculo: ', Inicio)
+
+    path= './dict_mean_gains_NSAMP324.pkl'
+
+    try:
+        dict_gain = open(path, 'rb')
+        data_dict_gain = pkl.load(dict_gain)
+        dict_gain.close()
+
+        ext1 = data_dict_gain['extension_1']
+        ext2 = data_dict_gain['extension_2']
+        ext4 = data_dict_gain['extension_4']
+
+    except:
+        print('Gain file not found.')
+        exit()
+
     for img in argObj:
         try:
             hdu_list = fits.open(img)
             image_in_bucle += 1
 
             path = img.split('/')
-            run = path[6]
-            # print('Year: ', path)
+            run = path[2]
+            # print(run)
 
         except:
             nerr_img = nerr_img + 1
-            print('Loading error in image ' + str(img) + 'in open the image.')
+            print('Loading error in image ' + str(img) + ' in open the image.')
             continue
         
         for extension in (0,1,3):
@@ -157,7 +168,7 @@ def main(argObj):
                 header = hdu_list[extension].header
                 # nsamp = float(header['NSAMP'])
 
-                # print('Voy a obtener el valor medio de los píxeles')
+                # print('Voy a obtener la mediana de los píxeles')
                 mean_rows_value = []
                 for element in np.arange(0, oscan_y):
                     row = oScan[element: element +1, 0: oscan_x]
@@ -170,73 +181,25 @@ def main(argObj):
             except:
                 print('Loading error in extension ' + str(extension) + ' of image ' + str(img) + 'in load the data.')
                 continue
-            
-            try:
-                dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, 
-                                                    Bins_fit=numero_bins,make_figure_flag=False, range_fit=[-50, 360])
 
-                sig_ADUs = dict_popt['sigma']
-                Offset = dict_popt['Offset']
-                Gain = dict_popt['Gain']
-                Prob = dict_popt['Prob']
-                
-                if Prob < 0.05:
-                    del_Bin = 500
-                    dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                        Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-30, 390])
-                    sig_ADUs = dict_popt['sigma']
-                    Offset = dict_popt['Offset']
-                    Gain = dict_popt['Gain']
-                    Prob = dict_popt['Prob']
-                    
-                    if Prob < 0.05:
-                        del_Bin = 400
-                        dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                            Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-30, 390])
-                        
-                        sig_ADUs = dict_popt['sigma']
-                        Offset = dict_popt['Offset']
-                        Gain = dict_popt['Gain']
-                        Prob = dict_popt['Prob']
-                    
-                        
-                        if Prob < 0.05:
-                            del_Bin = 300
-                            dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                                Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-50, 400])
-                            
-                            sig_ADUs = dict_popt['sigma']
-                            Offset = dict_popt['Offset']
-                            Gain = dict_popt['Gain']
-                            Prob = dict_popt['Prob']
-                    
-
-                            if  Prob < 0.05:
-                                nerr_ext = nerr_ext + 1
-                                if extension == 0:
-                                    nerr_ext1 += 1
-                                elif extension == 1:
-                                    nerr_ext2 += 1
-                                elif extension == 3:
-                                    nerr_ext4 += 1
-
-                                print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
-                                continue
-
-            except:
-                print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
-                continue
+            if extension == 0:
+                Gain = ext1['Gain'] # ADU/e-
+                sig_ADUs = ext1['Sigma'] # ADUs
+            if extension == 1:
+                Gain = ext2['Gain'] # ADU/e-
+                sig_ADUs = ext2['Sigma'] # ADUs
+            if extension == 3:
+                Gain = ext4['Gain'] # ADU/e-
+                sig_ADUs = ext4['Sigma'] # ADUs
             
+            dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, gain=Gain, ratio_keV=ratio_keV, 
+                                                   unidades= units, sigma_ADUs = sig_ADUs)
             
-            dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, extension=extension, gain=Gain, ratio_keV=ratio_keV, 
-                                                   unidades= units, offset=Offset, sigma_ADUs = sig_ADUs)
-            
-            fondo_value = n_sigmas * sigma
-            
+            threshold = n_sigmas * sigma
             del oScan
             
 
-            label_img, n_events = sk.measure.label(dataCal > fondo_value, connectivity=2, return_num=True)
+            label_img, n_events = sk.measure.label(dataCal > threshold, connectivity=2, return_num=True)
             prop = sk.measure.regionprops(label_img, dataCal)
             
             list_totalEvents.append(n_events)
@@ -379,8 +342,9 @@ def main(argObj):
             '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_ADUs.pkl'
     
     elif units == 1:
-        file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj)) + \
-            '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_electrons.pkl'
+        file_name = 'dict_muons_NSAMP324_Extensions_1_2_4_NIMGS_' + str(len(argObj)) + \
+            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + \
+            '_SIZE_250x539_electrons.pkl'
     
     elif units == 2:
         file_name = 'dict_muons_NSAMP324_Extensions_1_2_4_NIMGS_' + str(len(argObj)) + \
@@ -388,7 +352,7 @@ def main(argObj):
             '_DEDL_' + str(dedl_value_min) + '_SIZE_250x539_KeV_n.pkl'
 
     file_object_histogram = open(file_name, 'wb')
-    pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
+    pkl.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
 
     print('Dictionary saved in', current_path + '/' + file_name, ' as a binary file. To open use library "pickle". ')

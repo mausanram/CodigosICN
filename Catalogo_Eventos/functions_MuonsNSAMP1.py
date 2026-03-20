@@ -1842,11 +1842,11 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, dedl
             # if charge > 100:
             Delta_EL = (charge)/ (Delta_L) 
 
-            if Delta_EL < dedl_min:
-                list_charge_all_events.append(charge)
-                list_sol_all_events.append(Solidity)
-                list_elip_all_events.append(elip)
-                continue
+            # if Delta_EL < dedl_min:
+            #     list_charge_all_events.append(charge)
+            #     list_sol_all_events.append(Solidity)
+            #     list_elip_all_events.append(elip)
+            #     continue
 
             _, pend, chi2_Qs, flag_rot, data_mask = linear_fit(data_mask=data_maskEvent)
 
