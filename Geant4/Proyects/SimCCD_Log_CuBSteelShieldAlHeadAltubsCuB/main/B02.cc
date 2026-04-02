@@ -27,11 +27,9 @@ int main(int argc,char** argv)
   if ( argc == 1 ) { ui = new G4UIExecutive(argc, argv); }
   
   // Choose the Random engine
-  //
   CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine);
 
   // User Verbose output class
-  //
   G4VSteppingVerbose* verbosity = new B02SteppingVerbose;
   G4VSteppingVerbose::SetInstance(verbosity);
   
@@ -42,15 +40,14 @@ int main(int argc,char** argv)
   // Mandatory user initialization classes
     
     
-   /// Detector construction
+  /// Detector construction
   runManager->SetUserInitialization(new B02DetectorConstruction()); 
   // Physics list
-   G4VUserPhysicsList* physics = new B02PhysicsList;
-   runManager->SetUserInitialization(physics);
-   //  User action initialization
+  G4VUserPhysicsList* physics = new B02PhysicsList;
+  runManager->SetUserInitialization(physics);
+  //  User action initialization
   runManager->SetUserInitialization(new B02ActionInitialization());
   
-
   // Initialize G4 kernel
   runManager->Initialize();
     
@@ -66,8 +63,7 @@ int main(int argc,char** argv)
   // Get the pointer to the User Interface manager
   auto UImanager = G4UImanager::GetUIpointer();
 
-    // Process macro or start UI session
-  //
+  // Process macro or start UI session
   if ( ! ui ) {
     // batch mode
     G4String command = "/control/execute ";
