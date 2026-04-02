@@ -133,7 +133,7 @@ def main(argObj):
         ext4 = data_dict_gain['extension_4']
 
     except:
-        print('Gain file not found.')
+        print(f"Gain file wasn't found in {path}")
         exit()
 
     for img in argObj:
