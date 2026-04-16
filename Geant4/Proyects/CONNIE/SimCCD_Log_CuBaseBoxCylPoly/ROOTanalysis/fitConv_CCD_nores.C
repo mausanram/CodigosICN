@@ -366,17 +366,17 @@ void fitConv_CCD_nores() {
 
 	lat->SetTextFont(42);
 	lat->SetTextSize(0.034);
-	lat->DrawLatex(0.15,0.85,Form("I^{CCM}_{0} = (%3.1f #pm %3.1f) m^{-2} s^{-1} sr^{-1}",I0,eI0));
-	lat->DrawLatex(0.15,0.80,Form("N_{#mu} = (%6.0f #pm %4.0f)",nmu,enmu));
-	lat->DrawLatex(0.15,0.76,Form("Resolution f = (%5.3f #pm %5.3f)",r,er));
-	lat->DrawLatex(0.15,0.72,Form("N_{b1} = (%6.0f #pm %4.0f)",nb1,enb1));
-	lat->DrawLatex(0.15,0.68,Form("#epsilon_1 = (%5.3f #pm %5.3f)",ep1,eep1));
-	lat->DrawLatex(0.15,0.64,Form("a_{0} = (%5.3f #pm %5.3f) PE",a0,ea0));
-	lat->DrawLatex(0.15,0.60,Form("a_{1} = (%5.3f #pm %5.3f) PE/MeV",a1,ea1));
-	lat->DrawLatex(0.15,0.56,Form("a_{2} = (%6.5f #pm %6.5f) MeV^{-1}",a2,ea2));
+	// lat->DrawLatex(0.15,0.85,Form("I^{CCM}_{0} = (%3.1f #pm %3.1f) m^{-2} s^{-1} sr^{-1}",I0,eI0));
+	lat->DrawLatex(0.55,0.84,Form("N_{#mu} = (%6.0f #pm %4.0f)",nmu,enmu));
+	// lat->DrawLatex(0.15,0.76,Form("Resolution f = (%5.3f #pm %5.3f)",r,er));
+	lat->DrawLatex(0.55,0.80,Form("N_{b1} = (%6.0f #pm %4.0f)",nb1,enb1));
+	lat->DrawLatex(0.55,0.76,Form("#epsilon_1 = (%5.3f #pm %5.3f)",ep1,eep1));
+	lat->DrawLatex(0.55,0.72,Form("a_{0} = (%5.3f #pm %5.3f) PE",a0,ea0));
+	lat->DrawLatex(0.55,0.68,Form("a_{1} = (%5.3f #pm %5.3f) PE/MeV",a1,ea1));
+	lat->DrawLatex(0.55,0.64,Form("a_{2} = (%6.5f #pm %6.5f) MeV^{-1}",a2,ea2));
 
-	lat->DrawLatex(0.15,0.52,Form("#chi^{2}/ndf = %4.2f/%d",chi2,ndf));
-	lat->DrawLatex(0.15,0.48,Form("Prob(#chi^{2}) = %6.4f",prob));
+	lat->DrawLatex(0.55,0.60,Form("#chi^{2}/ndf = %4.2f/%d",chi2,ndf));
+	lat->DrawLatex(0.55,0.56,Form("Prob(#chi^{2}) = %6.4f",prob));
 
 	TLegend *l = new TLegend(0.6, 0.6, 0.9, 0.75);
 	l->SetTextSize(0.03);

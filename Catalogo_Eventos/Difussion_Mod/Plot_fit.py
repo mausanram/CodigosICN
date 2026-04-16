@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
+import pandas as pd
 
 ## Plot's Configuration
 plt.rcParams.update({
@@ -37,7 +38,7 @@ plt.rcParams.update({
 def diffution_curve(x, alpha, beta):
     return np.sqrt((alpha * np.log(1 - (beta * x))))/15
 
-def data_extraction(path, extension, list_muons, flag_flip, delta_cut):
+def data_extraction(path, extension, list_muons, flag_flip, delta_cut, muon_type):
     list_spreads_all = []
     list_depth_all = []
     list_spreads_without_deltas = []
@@ -47,29 +48,39 @@ def data_extraction(path, extension, list_muons, flag_flip, delta_cut):
     #     flag_flip = True
 
     for index in range(0, len(list_muons)):
-        with open(path+ f"/muon{list_muons[index]}.xye", "r") as file:
-            list_linecharge = file.readlines()
+        file_path = path + f"/muon{list_muons[index]}.xye"    # For Vertical muons
+        column_names = ['x', 'y', 'charge']
+        df = pd.read_csv(file_path, sep='\s+', names=column_names, comment='#')
+
+        if muon_type == 0 or muon_type == 1:
+            row_charge = df.groupby('y')['charge'].sum().reset_index() # For Vertical muons
+            true_list_linecharge = list(row_charge['y'])
+        # print(row_charge.head())
+        else:
+            row_charge = df.groupby('x')['charge'].sum().reset_index() # For Horizontal muons
+            true_list_linecharge = list(row_charge['x'])
+
 
         with open(path+ f"/muon{list_muons[index]}_spreads.txt", "r") as file:
             list_lines = file.readlines()
-            list_spreads = []
+        
+        list_spreads = []
+        for line in list_lines:
+            true_line = line.split(" ")
+            line_charge = float(true_list_linecharge[list_lines.index(line)])
+            # print(f"line charge: {line_charge}")
 
-            for line in list_lines:
-                true_line = line.split(" ")
-                line_charge = float(list_linecharge[list_lines.index(line)].split(" ")[2])
+            spread = true_line[0]
+            # depth = true_line[1].split("\n")[0]
+
+            # list_spreads_without_deltas.append(spread)
+
+            if line_charge > delta_cut:
                 # print(f"line charge: {line_charge}")
-
-                spread = true_line[0]
-                # depth = true_line[1].split("\n")[0]
-
-                # list_spreads_without_deltas.append(spread)
-
-                if line_charge < delta_cut:
-                    # print(f"line charge: {line_charge}")
-                    list_spreads.append(float(spread))
-                    # list_depth.append(float(depth))
-                else:
-                    list_spreads.append(0)
+                list_spreads.append(0)
+                # list_depth.append(float(depth))
+            else:
+                list_spreads.append(float(spread))
 
         if flag_flip:
             list_spreads.reverse()
@@ -110,7 +121,7 @@ def data_visualization(list_depth_all, list_spread_all, extension):
 
     axs.set_ylabel("Spread (px)")
     axs.set_xlabel(r"Depth ($\mu$m)")
-    axs.set_title(f"Size-to-Depth Relation Extension {extension}")
+    axs.set_title(f"Size-to-Depth Relation (ICN data) Extension {extension}")
 
     axs.legend()
     axs.grid()
@@ -293,24 +304,24 @@ def main():
     Extension = 2 # Choose the extension
     flag_wholeExt = True # Active this to analyze all the types of muons at same time
 
-    flag_VUP = False # Active just one type of muons
+    flag_VUP = True # Active just one type of muons
     flag_VDOWN = False
     flag_HRIGHT1 = False
     flag_HRIGHT2 = False
-    flag_HLEFT = True
+    flag_HLEFT = False
 
     if flag_wholeExt:
         list_depths_all = []
         list_spreads_all = []
         list_types = ["VUP", "VDOWN", "HRIGHT1", "HRIGHT2", "HLEFT"]
         if Extension == 1:
-            list_deltacut = [250, 150, 150, 250, 200] # Delta cut threshold
+            list_deltacut = [1000, 1000, 1000, 1000, 1000] # Delta cut threshold
             # list_deltacut = [194, 194, 194, 194, 194] # Mean Delta cut threshold
             # list_deltacut = [180, 180, 180, 180, 180]
             muons = [
-                [80, 261, 353, 760, 765, 1096, 1121],
+                [261, 353, 760, 765, 1096, 1121],
                 [119, 321, 385],
-                [188, 315, 316, 505, 768, 857, 948],
+                [316, 505, 857, 948],
                 [73, 157, 204, 280, 329, 429, 504, 770, 783, 1014, 1114],
                 [330, 371, 773, 914, 1002, 1023]
             ]
@@ -322,7 +333,7 @@ def main():
             #     [330, 371, 773, 914, 1002, 1023]
             # ]
         else: 
-            list_deltacut = [250, 150, 150, 250, 200] # Delta cut threshold
+            list_deltacut = [1000, 1000, 1000, 1000, 1000] # Delta cut threshold
             # list_deltacut = [180, 180, 180, 180, 180] # Delta cut threshold
             muons = [
                 [99, 130, 145, 389, 449, 1002, 1133, 1166, 1216, 1337],
@@ -339,11 +350,12 @@ def main():
             #     continue
             basedir = f"./muons_ext{Extension}{list_types[type]}"
             threshold = list_deltacut[type]
+            print(f"threshold: {threshold}")
             if type == 1 or type == 4:
                 flag_flip = True
             else:
                 flag_flip = False
-            list_depths, list_spreads, list_spreads_deltas = data_extraction(basedir, Extension, muons[type], flag_flip, threshold)
+            list_depths, list_spreads, list_spreads_deltas = data_extraction(basedir, Extension, muons[type], flag_flip, threshold, type)
 
             for index in range(0, len(list_depths)):
                 if list_spreads[index] > 0:
@@ -358,7 +370,7 @@ def main():
     
     if flag_VUP and Extension == 1:
         # list_muons = [39, 80, 81, 96, 210, 214, 233, 261, 294, 353, 406, 414, 426, 459, 532, 653, 760, 765, 915, 1096, 1121]
-        list_muons = [80, 261, 353, 760, 765, 1096, 1121]   # Whith PDF and plot
+        list_muons = [261, 353, 760, 765, 1096, 1121]   # Whith PDF and plot
         # list_muons = [1121]
 
         # list_muons = [353,760,765, 1096]
@@ -384,7 +396,7 @@ def main():
         # list_muons = [36, 57, 61, 152, 188, 254, 262, 265, 266, 271, 315, 316, 320, 348, 444, 454, 499, 500, 505, 573, 632, 
         #               637, 686, 703, 768, 771, 815, 818, 824, 836, 857, 909, 948, 956, 963]
 
-        list_muons = [316, 499, 505, 857, 948] # With PDF and plot
+        list_muons = [316, 505, 857, 948] # With PDF and plot
         # list_muons = [499]
 
         # list_muons = [316,505,637,857,948] # With e- (more accurate)
@@ -485,7 +497,8 @@ def main():
         # Muons with CONNIE spreads or smaller: 5,50, 81, 104, 209, 241, 372, 399, 433, 565, 766, 785, 786, 846, 921, 997, 1154, 1225
         flag_option = 10
     
-    plot_array(Extension,flag_option,list_muons)
+    if flag_VUP or flag_VDOWN or flag_HRIGHT1 or flag_HRIGHT2 or flag_HLEFT:
+        plot_array(Extension,flag_option,list_muons)
 
 if __name__ == "__main__":
     main()

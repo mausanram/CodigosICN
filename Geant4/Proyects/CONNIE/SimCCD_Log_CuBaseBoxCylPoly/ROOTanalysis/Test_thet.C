@@ -4,7 +4,9 @@ TChain *tree = new TChain("B02Evts");
 // tree->Add("./root_files/muons_1M_vacuum_250x529_file_SDLog_Cu_3.root");
 // tree->Add("./root_files/muons_1M_vacuum_250x529_file_SDLog_Cu_4.root");
 // tree->Add("./root_files/muons_1M_vacuum_682x1022_file_SDLog_*.root");
-tree->Add("./root_files/muons_1M_vacuum_420x1022_SDLog_*.root");
+// tree->Add("./root_files/muons_1M_vacuum_420x1022_SDLog_*.root");
+// tree->Add("./root_files/muons_500K_SimCOMPLETE_*.root");
+tree->Add("./root_files/muons_100K*.root");
 
 
 TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_MeV.root"); // INFO ALL_CLUSTERS

@@ -38,15 +38,9 @@ class B02PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     B02PrimaryGeneratorMessenger* gunMessenger; //messenger of this class
     G4String                         rndmFlag;	   //flag for a rndm impact point
     
-    // ==== Dimensiones para caja de 10cm (ICN) ==== //
     double R = 120.0;
-    double px = 6.0;
-    double py = 6.0; 
-
-    // ==== Dimensiones para CCD de 250x529 (ICN) ==== //
-    // double R = 8.; // cm
-    // double px = 1.5; // cm
-    // double py = 1.5; // cm
+    double px = 4.0;
+    double py = 4.0; 
 
     // ==== Dimensiones para CONNIE (1022x420) ==== //
     // double R = 7.; // cm

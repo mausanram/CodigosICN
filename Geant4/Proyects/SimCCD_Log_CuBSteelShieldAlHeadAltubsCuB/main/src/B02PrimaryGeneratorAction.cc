@@ -136,7 +136,9 @@ void B02PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 		Eu = pow(10, Emin+j*dE_log);
 		Epu = (Eu+au*y0u*(1.0/cos(theta)-0.100))/ru;
 		Pmu = pow(0.100*cos(theta)*(1-(au*(y0u/cos(theta)-100)/(ru*Epu))),(Bmu/((ru*Epu+100*au)*cos(theta))));
-		ES[j] = Au*(pow(Epu,-gu))*Pmu*lpu*bu*jpu/(Epu*cos(theta)+bu*jpu);
+		double intensity = Au*(pow(Epu,-gu))*Pmu*lpu*bu*jpu/(Epu*cos(theta)+bu*jpu);
+
+		ES[j] = intensity * Eu;
 		}
 
 	int nbins = ee;

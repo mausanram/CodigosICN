@@ -162,10 +162,10 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
 
   // ========= CU CYLINDER ======== //
   G4double cyl_high = 65/2 * units;
-  G4double cyl_radius = 12.54 * units;
+  G4double cyl_radius = 10. * units;
 
   G4double cyl_vac_high = cyl_high - half_inch * units;
-  G4double cyl_vac_radius = cyl_radius - half_inch*2 * units;
+  G4double cyl_vac_radius = cyl_radius - half_inch/2 * units;
 
   G4Tubs* solid_Cyl = new G4Tubs("solid_Cyl", 0., cyl_radius, cyl_high, 0., 2*pi);
   G4LogicalVolume* solid_CylCu = new G4LogicalVolume(solid_Cyl, Cu, "solid_CylCu");
@@ -180,28 +180,35 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   // ========= END CU CYLINDER ======== //
 
   // ==== CU FANGLE ==== //
-  G4double flange_high = (cyl_high/13);
-  G4double flange_radius = cyl_radius + 6;
+  G4double flange_high = half_inch*1 * units;
+  G4double flange_radius = cyl_radius + 48;
+
+  G4double disk_high = flange_high;
+  G4double disk_radius = flange_radius;
 
   G4double flange_vac_high = flange_high;
-  G4double flange_vac_radius = 5 * units;
+  G4double flange_vac_radius = cyl_vac_radius;
 
   G4Tubs* solid_flange = new G4Tubs("solid_flange", 0., flange_radius, flange_high, 0., 2*pi);
   G4LogicalVolume* logflangeCu = new G4LogicalVolume(solid_flange, Cu, "logflangeCu");
   logflangeCu->SetVisAttributes(semiTransparentLighBrown);
+
+  G4Tubs* solid_disk = new G4Tubs("solid_disk", 0., disk_radius, disk_high, 0., 2*pi);
+  G4LogicalVolume* logsolid_disk = new G4LogicalVolume(solid_disk, Cu, "logdisk");
+  logsolid_disk->SetVisAttributes(semiTransparentLighBrown);
 
   G4Tubs* vac_flange= new G4Tubs("vac_Cyl", 0., flange_vac_radius, flange_vac_high, 0., 2*pi);
   G4LogicalVolume* logvac_flange= new G4LogicalVolume(vac_flange, Vacuum, "logvac_flange");
   logvac_flange->SetVisAttributes(semiTransparentYellow);
 
   new G4PVPlacement(0, G4ThreeVector(0, 0, cyl_high + flange_high), logflangeCu, "logflangeCu", logicWorld, false, 0, true);
-  new G4PVPlacement(0, G4ThreeVector(0, 0, cyl_high + flange_high*3), logflangeCu, "logflangeCu1", logicWorld, false, 0, true);
+  new G4PVPlacement(0, G4ThreeVector(0, 0, cyl_high + flange_high*3), logsolid_disk, "logsolid_disk", logicWorld, false, 0, true);
   new G4PVPlacement(0, G4ThreeVector(0, 0, 0), logvac_flange, "logvac_flange", logflangeCu, false, 0, true);
   // ==== END CU FANGLE ==== //
 
   //==== LEAD CYLINDER ==== //
   G4double lead_cyl_high = 15/2 * units;
-  G4double lead_cyl_radius = 8 * units;
+  G4double lead_cyl_radius = 9 * units;
 
   G4Tubs* solid_lead_cyl = new G4Tubs("solid_lead_cyl", 0., lead_cyl_radius, lead_cyl_high, 0., 2*pi);
   G4LogicalVolume* log_lead_cyl = new G4LogicalVolume(solid_lead_cyl, Pb, "log_lead_cyl");
@@ -263,7 +270,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
 
   // CCD
   G4double pixel_size = 0.0015 * cm; // 15 micras
-  G4double ccd_x = 420 * pixel_size / 2;
+  G4double ccd_x = 682 * pixel_size / 2;
   G4double ccd_y = 1022 * pixel_size / 2;
   G4double ccd_z = 0.0675 / 2 * cm;
 
@@ -324,17 +331,21 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   fSiLogic = logicCCD;
 
   // ===== POLYETHYLENE LAYER 1 ===== //
-  G4double poly_thickness = 2.5/2 * units;
+  G4double thickness_poly_layer = 30./2;
+  G4int n_poly_walls = 10;
+  G4double poly_thickness = (thickness_poly_layer/n_poly_walls) * units;
+
   G4double lateralwall_poly_x = poly_thickness;
-  G4double lateralwall_poly_y = 85.1/2 * units;
+  G4double lateralwall_poly_y = cyl_radius + (thickness_poly_layer*2)*units;
   G4double lateralwall_poly_z = 50/2 * units;
 
-  G4double lateralsmallwall_poly_x = lateralwall_poly_y - 60.1/2 * units;
+  // G4double lateralsmallwall_poly_x = lateralwall_poly_y - 60.1/2 * units;
+  G4double lateralsmallwall_poly_x = cyl_radius;
   G4double lateralsmallwall_poly_y = poly_thickness;
   G4double lateralsmallwall_poly_z = lateralwall_poly_z;
 
   G4double lower_wall_poly_x = lateralwall_poly_y;
-  G4double lower_wall_poly_y = lateralwall_poly_y;
+  G4double lower_wall_poly_y = lower_wall_poly_x;
   G4double lower_wall_poly_z = poly_thickness;
 
   G4Box* lateralwall_poly = new G4Box("lateralwall_poly", lateralwall_poly_x, lateralwall_poly_y, lateralwall_poly_z);
@@ -350,37 +361,40 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   logiclower_wall_poly->SetVisAttributes(attPoly);
 
   // Walls in X+ ---
-  for (int i = 0; i < 12; i++){
+  for (int i = 0; i < n_poly_walls; i++){
     new G4PVPlacement(0, G4ThreeVector(cyl_radius + lateralwall_poly_x + 2*lateralwall_poly_x*i,0, -(cyl_high - lateralwall_poly_z)), logiclateralwall_poly, "logiclateralwall_poly", logicWorld, false, 0, true);  
   }
   // Walls in X- ---
-  for (int i = 0; i < 12; i++){
+  for (int i = 0; i < n_poly_walls; i++){
     new G4PVPlacement(0, G4ThreeVector(-(cyl_radius + lateralwall_poly_x + 2*lateralwall_poly_x*i),0, -(cyl_high - lateralwall_poly_z)), logiclateralwall_poly, "logiclateralwall_poly", logicWorld, false, 0, true);  
   }
 
   // Walls in Y+ ---
-  for (int i = 0; i < 12; i++){
+  for (int i = 0; i < n_poly_walls; i++){
     new G4PVPlacement(0, G4ThreeVector(0, cyl_radius + lateralsmallwall_poly_y + 2*lateralsmallwall_poly_y*i, -(cyl_high - lateralsmallwall_poly_z)), logiclateralsmallwall_poly, "logiclateralsmallwall_poly", logicWorld, false, 0, true);  
   }
 
   // Walls in Y- ---
-  for (int i = 0; i < 12; i++){
+  for (int i = 0; i < n_poly_walls; i++){
     new G4PVPlacement(0, G4ThreeVector(0, -(cyl_radius + lateralsmallwall_poly_y + 2*lateralsmallwall_poly_y*i), -(cyl_high - lateralsmallwall_poly_z)), logiclateralsmallwall_poly, "logiclateralsmallwall_poly", logicWorld, false, 0, true);  
   }
 
   // Lower walls 
-  for (int i = 0; i < 12; i++){
+  for (int i = 0; i < n_poly_walls; i++){
     new G4PVPlacement(0, G4ThreeVector(0,0, -(cyl_high + lower_wall_poly_z + 2*lower_wall_poly_z*i)), logiclower_wall_poly, "logiclower_wall_poly", logicWorld, false, 0, true);  
   }
   // ===== END POLYETHYLENE LAYER 1 ===== //
   
   // ===== LEAD LAYER ===== //
-  G4double lead_thickness = 3.0/2 *units;
-  G4double lateralwall_lead_x = lead_thickness;
-  G4double lateralwall_lead_y = lateralwall_poly_y + 30/2 * units;
-  G4double lateralwall_lead_z = cyl_high + 30/2 *units;
+  G4int n_lead_brick = 3;
+  G4double thickness_lead_layer = 15./2;
+  G4double lead_thickness = (thickness_lead_layer/n_lead_brick) *units;
 
-  G4double lateralsmallwall_lead_x = lateralwall_lead_y - 30/2*units - 0.1*units;
+  G4double lateralwall_lead_x = lead_thickness;
+  G4double lateralwall_lead_y = lateralwall_poly_y + thickness_poly_layer * units;
+  G4double lateralwall_lead_z = cyl_high + thickness_poly_layer *units;
+
+  G4double lateralsmallwall_lead_x = lateralwall_lead_y - thickness_poly_layer*units;
   G4double lateralsmallwall_lead_y = lead_thickness;
   G4double lateralsmallwall_lead_z = lateralwall_lead_z;
 
@@ -388,12 +402,12 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   G4double lowerwall_lead_y = lateralwall_lead_y;
   G4double lowerwall_lead_z = lead_thickness;
 
-  G4double upper_longwall_lead_x = lateralwall_lead_y - 30.1/2*units;
-  G4double upper_longwall_lead_y = 28.1/2*units;
+  G4double upper_longwall_lead_x = lateralwall_lead_y - thickness_poly_layer*units;
+  G4double upper_longwall_lead_y = 25.2/2*units;
   G4double upper_longwall_lead_z = lead_thickness;
 
-  G4double upper_shortwall_lead_x = 28.4/2*units;
-  G4double upper_shortwall_lead_y = 28.4/2*units;
+  G4double upper_shortwall_lead_x = upper_longwall_lead_y;
+  G4double upper_shortwall_lead_y = flange_radius;
   G4double upper_shortwall_lead_z = lead_thickness;
 
   G4Box* lateralwall_lead = new G4Box("lateralwall_lead", lateralwall_lead_x, lateralwall_lead_y, lateralwall_lead_z);
@@ -416,51 +430,54 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   G4LogicalVolume* logicupper_shortwall_lead = new G4LogicalVolume(upper_shortwall_lead, Pb, "logicupper_shortwall_lead");
   logicupper_shortwall_lead->SetVisAttributes(attPb);
 
-  // Walls in X+ ---
-  for (int i = 0; i < 5; i++){
-    new G4PVPlacement(0, G4ThreeVector(cyl_radius + 30.1*units + lateralwall_lead_x + 2*lateralwall_lead_x*i,0, -30/2*units), logiclateralwall_lead, "logiclateralwall_lead", logicWorld, false, 0, true);  
+  // // Walls in X+ ---
+  for (int i = 0; i < n_lead_brick; i++){
+    new G4PVPlacement(0, G4ThreeVector(cyl_radius + (thickness_poly_layer*2)*units + lateralwall_lead_x + 2*lateralwall_lead_x*i,0, -(thickness_poly_layer)*units), logiclateralwall_lead, "logiclateralwall_lead", logicWorld, false, 0, true);  
   }
   // Walls in X- ---
-  for (int i = 0; i < 5; i++){
-    new G4PVPlacement(0, G4ThreeVector(-(cyl_radius + 30.1*units + lateralwall_lead_x + 2*lateralwall_lead_x*i),0, -30/2*units), logiclateralwall_lead, "logiclateralwall_lead", logicWorld, false, 0, true);  
+  for (int i = 0; i < n_lead_brick; i++){
+    new G4PVPlacement(0, G4ThreeVector(-(cyl_radius + (thickness_poly_layer*2)*units + lateralwall_lead_x + 2*lateralwall_lead_x*i),0, -(thickness_poly_layer)*units), logiclateralwall_lead, "logiclateralwall_lead", logicWorld, false, 0, true);  
   }
   // Walls in Y+
-  for (int i = 0; i < 5; i++){
-    new G4PVPlacement(0, G4ThreeVector(0, cyl_radius + 30.1*units + lateralsmallwall_lead_y + 2*lateralsmallwall_lead_y*i, -30/2*units), logiclateralsmallwall_lead, "logiclateralsmallwall_lead", logicWorld, false, 0, true);  
+  for (int i = 0; i < n_lead_brick; i++){
+    new G4PVPlacement(0, G4ThreeVector(0, cyl_radius + (thickness_poly_layer*2)*units + lateralsmallwall_lead_y + 2*lateralsmallwall_lead_y*i, -(thickness_poly_layer)*units), logiclateralsmallwall_lead, "logiclateralsmallwall_lead", logicWorld, false, 0, true);  
   }
   // Walls in Y-
-  for (int i = 0; i < 5; i++){
-    new G4PVPlacement(0, G4ThreeVector(0, -(cyl_radius + 30.1*units + lateralsmallwall_lead_y + 2*lateralsmallwall_lead_y*i), -30/2*units), logiclateralsmallwall_lead, "logiclateralsmallwall_lead", logicWorld, false, 0, true);  
+  for (int i = 0; i < n_lead_brick; i++){
+    new G4PVPlacement(0, G4ThreeVector(0, -(cyl_radius + (thickness_poly_layer*2)*units + lateralsmallwall_lead_y + 2*lateralsmallwall_lead_y*i), -(thickness_poly_layer)*units), logiclateralsmallwall_lead, "logiclateralsmallwall_lead", logicWorld, false, 0, true);  
   }
   // Walls in Z-
-  for (int i = 0; i < 5; i++){
-    new G4PVPlacement(0, G4ThreeVector(0, 0, -(cyl_high + 30.0*units +  lowerwall_lead_z + 2*lowerwall_lead_z*i)), logiclowerwall_lead, "logiclowerwall_lead", logicWorld, false, 0, true);  
+  for (int i = 0; i < n_lead_brick; i++){
+    new G4PVPlacement(0, G4ThreeVector(0, 0, -(cyl_high + (thickness_poly_layer*2)*units +  lowerwall_lead_z + 2*lowerwall_lead_z*i)), logiclowerwall_lead, "logiclowerwall_lead", logicWorld, false, 0, true);  
   }
   // Walls in Z+ long
-  for (int i = 0; i < 5; i++){
-    new G4PVPlacement(0, G4ThreeVector(0, flange_radius*2 + 2*units, (lateralwall_poly_z - 15/2*units + lowerwall_lead_z + 2*lowerwall_lead_z*i)), logicupper_longwall_lead, "logicupper_longwall_lead", logicWorld, false, 0, true);  
+  for (int i = 0; i < n_lead_brick; i++){
+    new G4PVPlacement(0, G4ThreeVector(0, flange_radius + upper_longwall_lead_y, (lateralwall_poly_z - thickness_lead_layer*units + lowerwall_lead_z + 2*lowerwall_lead_z*i + 0.5*units)), logicupper_longwall_lead, "logicupper_longwall_lead", logicWorld, false, 0, true);  
   }
   // Walls in Z+ long
-  for (int i = 0; i < 5; i++){
-    new G4PVPlacement(0, G4ThreeVector(0, -(flange_radius*2 + 2*units), (lateralwall_poly_z - 15/2*units + lowerwall_lead_z + 2*lowerwall_lead_z*i)), logicupper_longwall_lead, "logicupper_longwall_lead", logicWorld, false, 0, true);  
+  for (int i = 0; i < n_lead_brick; i++){
+    new G4PVPlacement(0, G4ThreeVector(0, -(flange_radius + upper_longwall_lead_y), (lateralwall_poly_z - thickness_lead_layer*units + lowerwall_lead_z + 2*lowerwall_lead_z*i + 0.5*units)), logicupper_longwall_lead, "logicupper_longwall_lead", logicWorld, false, 0, true);  
   }
   // Walls in Z+ short
-  for (int i = 0; i < 5; i++){
-    new G4PVPlacement(0, G4ThreeVector((flange_radius*2 + 2*units), 0, (lateralwall_poly_z - 15/2*units + lowerwall_lead_z + 2*lowerwall_lead_z*i)), logicupper_shortwall_lead, "logicupper_shortwall_lead", logicWorld, false, 0, true);  
+  for (int i = 0; i < n_lead_brick; i++){
+    new G4PVPlacement(0, G4ThreeVector((flange_radius + upper_shortwall_lead_x), 0, (lateralwall_poly_z - thickness_lead_layer*units + lowerwall_lead_z + 2*lowerwall_lead_z*i + 0.5*units)), logicupper_shortwall_lead, "logicupper_shortwall_lead", logicWorld, false, 0, true);  
   }
   // Walls in Z+ short
-  for (int i = 0; i < 5; i++){
-    new G4PVPlacement(0, G4ThreeVector(-(flange_radius*2 + 2*units), 0, (lateralwall_poly_z - 15/2*units + lowerwall_lead_z + 2*lowerwall_lead_z*i)), logicupper_shortwall_lead, "logicupper_shortwall_lead", logicWorld, false, 0, true);  
+  for (int i = 0; i < n_lead_brick; i++){
+    new G4PVPlacement(0, G4ThreeVector(-(flange_radius + upper_shortwall_lead_x - tolerance), 0, (lateralwall_poly_z - 15/2*units + lowerwall_lead_z + 2*lowerwall_lead_z*i)), logicupper_shortwall_lead, "logicupper_shortwall_lead", logicWorld, false, 0, true);  
   }
   // ===== END LEAD LAYER ===== //
 
   // ===== POLYETHYLENE LAYER 2 ===== //
-  poly_thickness = 2.5/2 * units;
-  lateralwall_poly_x = poly_thickness;
-  lateralwall_poly_y = cyl_radius + (30.0 + 15.0 + 30.0) * units;
-  lateralwall_poly_z = cyl_high+ (30.0 + 15.0/2)*units;
+  thickness_poly_layer = 30./2;
+  n_poly_walls = 10;
+  poly_thickness = (thickness_poly_layer/n_poly_walls) * units;
 
-  lateralsmallwall_poly_x = lateralwall_poly_y - (60.1/2) * units;
+  lateralwall_poly_x = poly_thickness;
+  lateralwall_poly_y = cyl_radius + (thickness_poly_layer*4 + thickness_lead_layer*2) * units;
+  lateralwall_poly_z = cyl_high+ (thickness_poly_layer*2 + thickness_lead_layer)*units;
+
+  lateralsmallwall_poly_x = lateralwall_poly_y - (thickness_poly_layer*2) * units;
   lateralsmallwall_poly_y = poly_thickness;
   lateralsmallwall_poly_z = lateralwall_poly_z;
 
@@ -481,28 +498,71 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   logiclower_wall_poly->SetVisAttributes(attPoly);
 
   // Walls in X+ ---
-  for (int i = 0; i < 12; i++){
-    new G4PVPlacement(0, G4ThreeVector(cyl_radius + (30.0 + 15.0 +0.1)*units +lateralwall_poly_x + 2*lateralwall_poly_x*i,0, -(cyl_high- (30.0/2 + 15.0/2 + half_inch + half_inch/2)*units)), logiclateralwall_poly, "logiclateralwall_poly", logicWorld, false, 0, true);  
+  for (int i = 0; i < n_poly_walls; i++){
+    new G4PVPlacement(0, G4ThreeVector(cyl_radius + (thickness_poly_layer*2 + thickness_lead_layer*2 +0.1)*units +lateralwall_poly_x + 2*lateralwall_poly_x*i,0, -(cyl_high- (thickness_poly_layer + thickness_lead_layer + half_inch + half_inch/2)*units)), logiclateralwall_poly, "logiclateralwall_poly", logicWorld, false, 0, true);  
   }
-  for (int i = 0; i < 12; i++){
-    new G4PVPlacement(0, G4ThreeVector(-(cyl_radius + (30.0 + 15.0 +0.1)*units +lateralwall_poly_x + 2*lateralwall_poly_x*i),0, -(cyl_high- (30.0/2 + 15.0/2 + half_inch + half_inch/2)*units)), logiclateralwall_poly, "logiclateralwall_poly", logicWorld, false, 0, true);  
+  // Walls in X- ---
+  for (int i = 0; i < n_poly_walls; i++){
+    new G4PVPlacement(0, G4ThreeVector(-(cyl_radius + (thickness_poly_layer*2 + thickness_lead_layer*2 +0.1)*units +lateralwall_poly_x + 2*lateralwall_poly_x*i),0, -(cyl_high- (thickness_poly_layer + thickness_lead_layer + half_inch + half_inch/2)*units)), logiclateralwall_poly, "logiclateralwall_poly", logicWorld, false, 0, true);  
   }
   // Walls in Y+ ---
-  for (int i = 0; i < 12; i++){
-    new G4PVPlacement(0, G4ThreeVector(0, cyl_radius + ((30.0 + 15.0 +0.1)*units) +lateralsmallwall_poly_y + 2*lateralsmallwall_poly_y*i, -(cyl_high- (30.0/2 + 15.0/2 + half_inch + half_inch/2)*units)), logiclateralsmallwall_poly, "logiclateralsmallwall_poly", logicWorld, false, 0, true);  
+  for (int i = 0; i < n_poly_walls; i++){
+    new G4PVPlacement(0, G4ThreeVector(0, cyl_radius + (thickness_poly_layer*2 + thickness_lead_layer*2 +0.1)*units +lateralsmallwall_poly_y + 2*lateralsmallwall_poly_y*i, -(cyl_high- (thickness_poly_layer + thickness_lead_layer + half_inch + half_inch/2)*units)), logiclateralsmallwall_poly, "logiclateralsmallwall_poly", logicWorld, false, 0, true);  
   }
   // Walls in Y- ---
-  for (int i = 0; i < 12; i++){
-    new G4PVPlacement(0, G4ThreeVector(0, -(cyl_radius + ((30.0 + 15.0 +0.1)*units) +lateralsmallwall_poly_y + 2*lateralsmallwall_poly_y*i), -(cyl_high- (30.0/2 + 15.0/2 + half_inch + half_inch/2)*units)), logiclateralsmallwall_poly, "logiclateralsmallwall_poly", logicWorld, false, 0, true);  
+  for (int i = 0; i < n_poly_walls; i++){
+    new G4PVPlacement(0, G4ThreeVector(0, -(cyl_radius + (thickness_poly_layer*2 + thickness_lead_layer*2 +0.1)*units +lateralsmallwall_poly_y + 2*lateralsmallwall_poly_y*i), -(cyl_high- (thickness_poly_layer + thickness_lead_layer + half_inch + half_inch/2)*units)), logiclateralsmallwall_poly, "logiclateralsmallwall_poly", logicWorld, false, 0, true);  
   }
   // Lower walls 
-  for (int i = 0; i < 12; i++){
-    new G4PVPlacement(0, G4ThreeVector(0,0, -(cyl_high + (30.0 +15.0 +0.1)*units + lower_wall_poly_z + 2*lower_wall_poly_z*i)), logiclower_wall_poly, "logiclower_wall_poly", logicWorld, false, 0, true);  
+  for (int i = 0; i < n_poly_walls; i++){
+    new G4PVPlacement(0, G4ThreeVector(0,0, -(cyl_high + (thickness_poly_layer*2 + thickness_lead_layer*2 +0.1)*units + lower_wall_poly_z + 2*lower_wall_poly_z*i)), logiclower_wall_poly, "logiclower_wall_poly", logicWorld, false, 0, true);  
   }
+
+
   // Upper walls 
-  for (int i = 0; i < 12; i++){
-    new G4PVPlacement(0, G4ThreeVector(0,0, (cyl_high + (30.0/2 +15.0 +0.1)*units + lower_wall_poly_z + 2*lower_wall_poly_z*i)), logiclower_wall_poly, "logiclower_wall_poly", logicWorld, false, 0, true);  
+  lateralwall_poly_x = poly_thickness;
+  lateralwall_poly_y = flange_radius + (thickness_poly_layer*2 + 20.5/2) * units;
+  lateralwall_poly_z = cyl_high+ (0)*units;
+
+  lateralsmallwall_poly_x = lateralwall_poly_y - (thickness_poly_layer*2) * units;
+  lateralsmallwall_poly_y = poly_thickness;
+  lateralsmallwall_poly_z = lateralwall_poly_z;
+
+  G4double upper_wall_poly_x = lateralwall_poly_y;
+  G4double upper_wall_poly_y = lateralwall_poly_y;
+  G4double upper_wall_poly_z = poly_thickness;
+
+  lateralwall_poly = new G4Box("lateralwall_lead", lateralwall_poly_x, lateralwall_poly_y, lateralwall_poly_z);
+  logiclateralwall_poly = new G4LogicalVolume(lateralwall_poly, Poly, "logiclateralwall_poly");
+  logiclateralwall_poly->SetVisAttributes(attPoly);
+
+  lateralsmallwall_poly = new G4Box("lateralsmallwall_poly", lateralsmallwall_poly_x, lateralsmallwall_poly_y, lateralsmallwall_poly_z);
+  logiclateralsmallwall_poly = new G4LogicalVolume(lateralsmallwall_poly, Poly, "logiclateralsmallwall_poly");
+  logiclateralsmallwall_poly->SetVisAttributes(attPoly);
+
+  G4Box* upperwall_poly = new G4Box("upperwall_poly", upper_wall_poly_x, upper_wall_poly_y, upper_wall_poly_z);
+  G4LogicalVolume*  logicupperwall_poly = new G4LogicalVolume(upperwall_poly, Poly, "logicupperwall_poly");
+  logicupperwall_poly->SetVisAttributes(attPoly);
+
+  // Walls in X+
+  for (int i = 0; i < n_poly_walls; i++){
+    new G4PVPlacement(0, G4ThreeVector( flange_radius + (20.5/2) * units+lateralwall_poly_x + 2*lateralwall_poly_x*i,0, (cyl_high*2+flange_high*4 + (1.)*units)), logiclateralwall_poly, "logiclateralwall_poly", logicWorld, false, 0, true);  
   }
+  // Walls in X-
+  for (int i = 0; i < n_poly_walls; i++){
+    new G4PVPlacement(0, G4ThreeVector( -(flange_radius + (20.5/2) * units+lateralwall_poly_x + 2*lateralwall_poly_x*i),0, (cyl_high*2+flange_high*4 + (1.)*units)), logiclateralwall_poly, "logiclateralwall_poly", logicWorld, false, 0, true);  
+  }
+  // Walls in Y+
+  for (int i = 0; i < n_poly_walls; i++){
+    new G4PVPlacement(0, G4ThreeVector(0, flange_radius + (20.5/2) * units +lateralsmallwall_poly_y + 2*lateralsmallwall_poly_y*i, (cyl_high*2+flange_high*4 + (1.)*units)), logiclateralsmallwall_poly, "logiclateralsmallwall_poly", logicWorld, false, 0, true);  
+  }
+  // Walls in Y- 
+  for (int i = 0; i < n_poly_walls; i++){
+    new G4PVPlacement(0, G4ThreeVector(0, -(flange_radius + (20.5/2) * units +lateralsmallwall_poly_y + 2*lateralsmallwall_poly_y*i), (cyl_high*2+flange_high*4 + (1.)*units)), logiclateralsmallwall_poly, "logiclateralsmallwall_poly", logicWorld, false, 0, true);  
+  }
+
+  new G4PVPlacement(0, G4ThreeVector(0, 0, (cyl_high*2 + flange_high*4 + lateralwall_poly_z*1 + upper_wall_poly_z*2)), logicupperwall_poly, "logicupperwall_poly", logicWorld, false, 0, true);  
+
   // ===== END POLYETHYLENE LAYER 2 ===== //
 
   // ========================================================
