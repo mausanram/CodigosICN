@@ -4,9 +4,9 @@
 ###          ARCHIVO DE FUNCIONES AUXILIARES UTILIZADAS POR EL BOT PARA             ###
 ###             MONITOREO DEL  LABORATORIO DE DETECTORES DEL ICN                    ###
 ###                                                                                 ###
-###          * ULTIMA ACTUALIZACIÓN: 08 DE SEPTIEMBRE DEL 2023                      ###  
-###                                                                                 ###                            
-####################################################################################### 
+###          * ULTIMA ACTUALIZACIÓN: 08 DE SEPTIEMBRE DEL 2023                      ###
+###                                                                                 ###
+#######################################################################################
 
 import pandas as pd
 
