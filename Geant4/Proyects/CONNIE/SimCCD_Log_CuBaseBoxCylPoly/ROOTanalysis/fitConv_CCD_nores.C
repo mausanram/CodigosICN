@@ -58,54 +58,6 @@ double KeVperbin = 6.666667; // 1000 KeV / 150 bins
 // }  // function f
 
 
-// double f(double *x, double *par) {
-//     double pi = TMath::Pi();
-
-//     // Histograma de Ed simulado (200 bins de 0 a 700 MeV) 
-//     ifstream inp;
-//     inp.open("muons.dat");
-//     double p;
-//     int    Np    = 200;
-//     double Emin  = 0;              // Minimum energy
-//     double Emax  = 1000;           // Maximum energy
-//     double dE    = (Emax-Emin)/Np; // Energy interval
-//     double Ed;                     // Deposited energy
-//     //-------------------------------------------------------
-//     double Ea  = x[0];    // Function variable (E in PE)
-//     double f   = par[0];  // resolution at E0
-//     double Nmu = par[1];  // Muon normalization
-//     double Nb1 = par[2];  // Background 1 Normalizarion
-// 	double Nb2 = par[3];  // Background 2 Normalizarion
-//     double a0  = par[4];  // MeV->PE, offset (PE)
-//     double a1  = par[5];  // MeV->PE linearity, (PE/MeV)
-//     double a2  = par[6];  // MeV->PE nonlinearity, (MeV^-1)
-//     double E0  = par[7];  // energy for which resol=f
-//     double ep1 = par[8];  // bkgd 1 decay const
-//     double ep2 = par[9];  // bkgd 2 decay const
-//     //-------------------------------------------------------
-//     // Visible energy in MeV. 
-//     // Inverse of Ea = a0 + a1*Ev/(1 + a2*Ev)
-//     double Ev = (Ea-a0)/(a1+a0*a2-a2*Ea); 
-
-//     // Convolution integral. Change units after
-// 	TGraph *fgr = new TGraph(Np);
-//     double sig;
-//     double F = 0;        
-//     for (int i=1; i<=Np; i++) {
-//        inp >> p;         //- Read input-file line
-//        Ed  = (i-0.5)*dE; //- value at middle of bin
-// 	   F = (Nmu*p + Nb1*(1./ep1)*exp(-Ed/ep1) + Nb2*(1./ep2)*exp(-Ed/ep2) );
-// 	   fgr->AddPoint(Ed, F);
-//     //    sig = f*sqrt(Ev*E0);
-//     } //for i
-// 	F = fgr->Eval(Ev);
-//     double dEadEv = a1/pow(1 + a2*Ev,2);
-//     double z      = 1.0*F/dEadEv;  //change units to PE
-
-//     inp.close();
-//     return z * rebinf * KeVperbin;
-// }  // function f
-
 double f(double *x, double *par) {
     double pi = TMath::Pi();
 
@@ -119,15 +71,17 @@ double f(double *x, double *par) {
     double dE    = (Emax-Emin)/Np; // Energy interval
     double Ed;                     // Deposited energy
     //-------------------------------------------------------
-	double Ea  = x[0];    // Function variable (E in PE)
-	double f   = par[0];  // resolution at E0
-	double Nmu = par[1];  // Muon normalization
-	double Nb1 = par[2];  // Background 1 Normalizarion
-	double a0  = par[3];  // MeV->PE, offset (PE)
-	double a1  = par[4];  // MeV->PE linearity, (PE/MeV)
-	double a2  = par[5];  // MeV->PE nonlinearity, (MeV^-1)
-	double E0  = par[6];  // energy for which resol=f
-	double ep1 = par[7];  // bkgd 1 decay const
+    double Ea  = x[0];    // Function variable (E in PE)
+    double f   = par[0];  // resolution at E0
+    double Nmu = par[1];  // Muon normalization
+    double Nb1 = par[2];  // Background 1 Normalizarion
+	double Nb2 = par[3];  // Background 2 Normalizarion
+    double a0  = par[4];  // MeV->PE, offset (PE)
+    double a1  = par[5];  // MeV->PE linearity, (PE/MeV)
+    double a2  = par[6];  // MeV->PE nonlinearity, (MeV^-1)
+    double E0  = par[7];  // energy for which resol=f
+    double ep1 = par[8];  // bkgd 1 decay const
+    double ep2 = par[9];  // bkgd 2 decay const
     //-------------------------------------------------------
     // Visible energy in MeV. 
     // Inverse of Ea = a0 + a1*Ev/(1 + a2*Ev)
@@ -140,7 +94,7 @@ double f(double *x, double *par) {
     for (int i=1; i<=Np; i++) {
        inp >> p;         //- Read input-file line
        Ed  = (i-0.5)*dE; //- value at middle of bin
-	   F = (Nmu*p + Nb1*(1./ep1)*exp(-Ed/ep1));
+	   F = (Nmu*p + Nb1*(1./ep1)*exp(-Ed/ep1) + Nb2*(1./ep2)*exp(-Ed/ep2) );
 	   fgr->AddPoint(Ed, F);
     //    sig = f*sqrt(Ev*E0);
     } //for i
@@ -151,6 +105,52 @@ double f(double *x, double *par) {
     inp.close();
     return z * rebinf * KeVperbin;
 }  // function f
+
+// double f(double *x, double *par) {
+//     double pi = TMath::Pi();
+
+//     // Histograma de Ed simulado (200 bins de 0 a 700 MeV) 
+//     ifstream inp;
+//     inp.open("muons.dat");
+//     double p;
+//     int    Np    = 150;
+//     double Emin  = 0;              // Minimum energy
+//     double Emax  = 1000;           // Maximum energy
+//     double dE    = (Emax-Emin)/Np; // Energy interval
+//     double Ed;                     // Deposited energy
+//     //-------------------------------------------------------
+// 	double Ea  = x[0];    // Function variable (E in PE)
+// 	double f   = par[0];  // resolution at E0
+// 	double Nmu = par[1];  // Muon normalization
+// 	double Nb1 = par[2];  // Background 1 Normalizarion
+// 	double a0  = par[3];  // MeV->PE, offset (PE)
+// 	double a1  = par[4];  // MeV->PE linearity, (PE/MeV)
+// 	double a2  = par[5];  // MeV->PE nonlinearity, (MeV^-1)
+// 	double E0  = par[6];  // energy for which resol=f
+// 	double ep1 = par[7];  // bkgd 1 decay const
+//     //-------------------------------------------------------
+//     // Visible energy in MeV. 
+//     // Inverse of Ea = a0 + a1*Ev/(1 + a2*Ev)
+//     double Ev = (Ea-a0)/(a1+a0*a2-a2*Ea); 
+
+//     // Convolution integral. Change units after
+// 	TGraph *fgr = new TGraph(Np);
+//     double sig;
+//     double F = 0;        
+//     for (int i=1; i<=Np; i++) {
+//        inp >> p;         //- Read input-file line
+//        Ed  = (i-0.5)*dE; //- value at middle of bin
+// 	   F = (Nmu*p + Nb1*(1./ep1)*exp(-Ed/ep1));
+// 	   fgr->AddPoint(Ed, F);
+//     //    sig = f*sqrt(Ev*E0);
+//     } //for i
+// 	F = fgr->Eval(Ev);
+//     double dEadEv = a1/pow(1 + a2*Ev,2);
+//     double z      = 1.0*F/dEadEv;  //change units to PE
+
+//     inp.close();
+//     return z * rebinf * KeVperbin;
+// }  // function f
 
 
 //-------------------------------------
@@ -262,7 +262,7 @@ void fitConv_CCD_nores() {
 
    if (doFit){
 
-	int np = 8;           // Number of parameters
+	int np = 10;           // Number of parameters
 	double xm = 70;     // xmin to fit
 	double xM = 700;    // xmax to fit
 
@@ -278,39 +278,67 @@ void fitConv_CCD_nores() {
 	// double p6 = 240;    		// E0
 	// double p7 = 106.897;    	// exponente bkgd 1
 
-	double p0 = 0.0;    // Resolution
-	double p1 = 17000.;    // Muon normalization
-	double p2 = 5000;    // Background 1
-	double p3 = 0.00000e+00;    // PE offset
-	double p4 = 0.9;    // No cambio de Unidades // por ahora
-	double p5 = 0.00000e-04;    // PE scale (quadratic)
-	double p6 = 240;    // E0
-	double p7 = 50;    // exponente bkgd 1
+	// double p0 = 0.0;    // Resolution
+	// double p1 = 17000.;    // Muon normalization
+	// double p2 = 5000;    // Background 1
+	// double p3 = 0.00000e+00;    // PE offset
+	// double p4 = 0.9;    // No cambio de Unidades // por ahora
+	// double p5 = 0.00000e-04;    // PE scale (quadratic)
+	// double p6 = 240;    // E0
+	// double p7 = 50;    // exponente bkgd 1
 
 	// ===== Parámetros para CONNIE ==== //
-	// // double p0 = 0.031;    // Resolution
+	double p0 = 0.0;    // Resolution
 	// double p0 = 0.01;    // Resolution
-	// double p1 = 20000.;    // Muon normalization
-	// double p2 = 2075.;    // Background 1
-	// double p3 = 3178.;    // Background 2
-	// double p4 = 0.00000e+00;    // PE offset
-	// double p5 = 1.0;    // No cambio de Unidades // por ahora
-	// double p6 = 0.00000e-04;    // PE scale (quadratic)
-	// double p7 = 220;    // E0
-	// double p8 = 56.113;    // exponente bkgd 1
-	// double p9 = 332.344;    // exponente bkgd 2
+	double p1 = 17000.;    // Muon normalization
+	double p2 = 5000.;    // Background 1
+	double p3 = 3178.;    // Background 2
+	double p4 = 0.00000e+00;    // PE offset
+	double p5 = 0.9;    // No cambio de Unidades // por ahora
+	double p6 = 0.00000e-04;    // PE scale (quadratic)
+	double p7 = 240;    // E0
+	double p8 = 50;    // exponente bkgd 1
+	double p9 = 332.344;    // exponente bkgd 2
 
+
+	// f1->FixParameter(0, p0);    // Resolution
+	// f1->SetParameter(1, p1);    // Normalizing constant
+	// f1->SetParameter(2, p2);    // Background 1
+	// f1->FixParameter(3, p3);    // Energy scale offset
+	// f1->SetParameter(4, p4);    // Energy scale (linear)
+	// f1->FixParameter(5, p5);    // Energy scale (non-linear)
+	// f1->FixParameter(6, p6);    // E0
+	// f1->SetParameter(7, p7);    // exponente bkgd 1
 
 	f1->FixParameter(0, p0);    // Resolution
 	f1->SetParameter(1, p1);    // Normalizing constant
 	f1->SetParameter(2, p2);    // Background 1
-	f1->FixParameter(3, p3);    // Energy scale offset
-	f1->SetParameter(4, p4);    // Energy scale (linear)
-	f1->FixParameter(5, p5);    // Energy scale (non-linear)
-	f1->FixParameter(6, p6);    // E0
-	f1->SetParameter(7, p7);    // exponente bkgd 1
+	f1->SetParameter(3, p3);    // Background 2
+	f1->FixParameter(4, p4);    // Energy scale offset
+	f1->SetParameter(5, p5);    // Energy scale (linear)
+	f1->FixParameter(6, p6);    // Energy scale (non-linear)
+	f1->FixParameter(7, p7);    // E0
+	f1->SetParameter(8, p8);    // exponente bkgd 1
+	f1->SetParameter(9, p9);    // exponente bkgd 1
 
 	hex->Fit("f1","R");   // Fitting in the specified range
+
+	// double r    = f1->GetParameter(0);
+	// double er   = f1->GetParError(0);
+	// double nmu  = f1->GetParameter(1);
+	// double enmu = f1->GetParError(1);
+	// double nb1  = f1->GetParameter(2);
+	// double enb1 = f1->GetParError(2);
+	// double a0   = f1->GetParameter(3);
+	// double ea0  = f1->GetParError(3);
+	// double a1   = f1->GetParameter(4);
+	// double ea1  = f1->GetParError(4);
+	// double a2   = f1->GetParameter(5);
+	// double ea2  = f1->GetParError(5);
+	// double e0   = f1->GetParameter(6);
+	// double ee0  = f1->GetParError(6);
+	// double ep1  = f1->GetParameter(7);
+	// double eep1 = f1->GetParError(7);
 
 	double r    = f1->GetParameter(0);
 	double er   = f1->GetParError(0);
@@ -318,16 +346,20 @@ void fitConv_CCD_nores() {
 	double enmu = f1->GetParError(1);
 	double nb1  = f1->GetParameter(2);
 	double enb1 = f1->GetParError(2);
-	double a0   = f1->GetParameter(3);
-	double ea0  = f1->GetParError(3);
-	double a1   = f1->GetParameter(4);
-	double ea1  = f1->GetParError(4);
-	double a2   = f1->GetParameter(5);
-	double ea2  = f1->GetParError(5);
-	double e0   = f1->GetParameter(6);
-	double ee0  = f1->GetParError(6);
-	double ep1  = f1->GetParameter(7);
-	double eep1 = f1->GetParError(7);
+	double nb2  = f1->GetParameter(3);
+	double enb2 = f1->GetParError(3);
+	double a0   = f1->GetParameter(4);
+	double ea0  = f1->GetParError(4);
+	double a1   = f1->GetParameter(5);
+	double ea1  = f1->GetParError(5);
+	double a2   = f1->GetParameter(6);
+	double ea2  = f1->GetParError(6);
+	double e0   = f1->GetParameter(7);
+	double ee0  = f1->GetParError(7);
+	double ep1  = f1->GetParameter(8);
+	double eep1 = f1->GetParError(8);
+	double ep2  = f1->GetParameter(9);
+	double eep2 = f1->GetParError(9);
 
 	double chi2 = f1->GetChisquare();
 	int    ndf  = f1->GetNDF();
@@ -337,18 +369,34 @@ void fitConv_CCD_nores() {
 	double I0  = I0sim*(nmu/nmusim)*(Tsim/T)*(1./eff);
 	double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
 
+	// TF1 *fm = new TF1("fm", f, xm, xM, np);
+	// fm->SetParameters(r,nmu,0*nb1,a0,a1,a2,e0,ep1);
+	// fm->SetLineColor(4);
+
+	// TF1 *fb1 = new TF1("fb1", f, xm, xM, np);
+	// fb1->SetParameters(r,0*nmu,nb1, a0,a1,a2,e0,ep1);
+	// fb1->SetLineColor(6);
+	// fb1->SetLineStyle(3);
+	// // fb1->SetLineWidth(1);
+
+	// TF1 *fb2 = new TF1("fb2", f, xm, xM, np);
+	// fb2->SetParameters(r,0*nmu,0*nb1, a0,a1,a2,e0,ep1);
+	// fb2->SetLineColor(7);
+	// fb2->SetLineStyle(3);
+	// // fb2->SetLineWidth(1);
+
 	TF1 *fm = new TF1("fm", f, xm, xM, np);
-	fm->SetParameters(r,nmu,0*nb1,a0,a1,a2,e0,ep1);
+	fm->SetParameters(r,nmu,0*nb1, 0*nb2, a0,a1,a2,e0,ep1, ep2);
 	fm->SetLineColor(4);
 
 	TF1 *fb1 = new TF1("fb1", f, xm, xM, np);
-	fb1->SetParameters(r,0*nmu,nb1, a0,a1,a2,e0,ep1);
+	fb1->SetParameters(r,0*nmu,nb1, 0*nb2, a0,a1,a2,e0,ep1,ep2);
 	fb1->SetLineColor(6);
 	fb1->SetLineStyle(3);
 	// fb1->SetLineWidth(1);
 
 	TF1 *fb2 = new TF1("fb2", f, xm, xM, np);
-	fb2->SetParameters(r,0*nmu,0*nb1, a0,a1,a2,e0,ep1);
+	fb2->SetParameters(r,0*nmu,0*nb1, nb2, a0,a1,a2,e0,ep1, ep2);
 	fb2->SetLineColor(7);
 	fb2->SetLineStyle(3);
 	// fb2->SetLineWidth(1);
@@ -358,10 +406,10 @@ void fitConv_CCD_nores() {
 	// hex->SetLineColor(3);
 	// f1->GetXaxis()->SetRangeUser(0,1000);
 	// h->Draw("hist");
-	hex->Draw("hist");
-	f1->Draw("same");
-	fb1->Draw("same");
-	fm->Draw("same");
+	// hex->Draw("hist");
+	f1->Draw();
+	// fb1->Draw("same");
+	// fm->Draw("same");
 	// fb2->Draw("same");
 
 	lat->SetTextFont(42);
@@ -371,6 +419,8 @@ void fitConv_CCD_nores() {
 	// lat->DrawLatex(0.15,0.76,Form("Resolution f = (%5.3f #pm %5.3f)",r,er));
 	lat->DrawLatex(0.55,0.80,Form("N_{b1} = (%6.0f #pm %4.0f)",nb1,enb1));
 	lat->DrawLatex(0.55,0.76,Form("#epsilon_1 = (%5.3f #pm %5.3f)",ep1,eep1));
+	lat->DrawLatex(0.15,0.64,Form("N_{b2} = (%6.0f #pm %4.0f)",nb2,enb2));
+	lat->DrawLatex(0.15,0.60,Form("#epsilon_2 = (%5.3f #pm %5.3f)",ep2,eep2));
 	lat->DrawLatex(0.55,0.72,Form("a_{0} = (%5.3f #pm %5.3f) PE",a0,ea0));
 	lat->DrawLatex(0.55,0.68,Form("a_{1} = (%5.3f #pm %5.3f) PE/MeV",a1,ea1));
 	lat->DrawLatex(0.55,0.64,Form("a_{2} = (%6.5f #pm %6.5f) MeV^{-1}",a2,ea2));
@@ -398,53 +448,27 @@ void fitConv_CCD_nores() {
 // Plot convolution function
 //-------------------------------------
   if (doPlot) {
+	// // ==========  ============== //
+	// double p0 = 0.0;    // Resolution
+	// double p1 = 17000.;    // Muon normalization
+	// double p2 = 5000;    // Background 1
+	// double p3 = 0.00000e+00;    // PE offset
+	// double p4 = 0.9;    // No cambio de Unidades // por ahora
+	// double p5 = 0.00000e-04;    // PE scale (quadratic)
+	// double p6 = 240;    // E0
+	// double p7 = 50;    // exponente bkgd 1
 
-	
-    //     // prebeam no muon selection
-	// double p0 = 0.029;    // Resolution
-	// double p1 = 7998.;    // Muon normalization
-	// double p2 = 15036.;    // Background 1
-	// double p3 = 12287.;    // Background 2
-	// double p4 = 0.00000e+00;    // PE offset
-	// double p5 = 1.0;    // No cambio de Unidades // por ahora
-	// double p6 = 0.00000e-04;    // PE scale (quadratic)
-	// double p7 = 220;    // E0
-	// double p8 = 58.533;    // exponente bkgd 1
-	// double p9 = 452.959;    // exponente bkgd 2
-
-	// ========== CCD size: 529x300 ============== //
-	// double p0 = 0.031;    // Resolution
-	// double p1 = 5710.;    // Muon normalization
-	// double p2 = 10177.;    // Background 1
-	// double p3 = 7823.;    // Background 2
-	// double p4 = 0.00000e+00;    // PE offset
-	// double p5 = 1.0;    // No cambio de Unidades // por ahora
-	// double p6 = 0.00000e-04;    // PE scale (quadratic)
-	// double p7 = 220;    // E0
-	// double p8 = 61.118;    // exponente bkgd 1
-	// double p9 = 390.377;    // exponente bkgd 2
-
-	// // ========== CCD size: 529x250 ============== //
 	double p0 = 0.0;    // Resolution
+	// double p0 = 0.01;    // Resolution
 	double p1 = 17000.;    // Muon normalization
-	double p2 = 5000;    // Background 1
-	double p3 = 0.00000e+00;    // PE offset
-	double p4 = 0.9;    // No cambio de Unidades // por ahora
-	double p5 = 0.00000e-04;    // PE scale (quadratic)
-	double p6 = 240;    // E0
-	double p7 = 50;    // exponente bkgd 1
-
-	// ========== CONNIE size: 420x1022 ============== //
-	// double p0 = 0.031;    // Resolution
-	// double p1 = 15500.;    // Muon normalization
-	// double p2 = 2075.;    // Background 1
-	// double p3 = 3178.;    // Background 2
-	// double p4 = 0.00000e+00;    // PE offset
-	// double p5 = 1.0;    // No cambio de Unidades // por ahora
-	// double p6 = 0.00000e-04;    // PE scale (quadratic)
-	// double p7 = 220;    // E0
-	// double p8 = 56.113;    // exponente bkgd 1
-	// double p9 = 332.344;    // exponente bkgd 2
+	double p2 = 5000.;    // Background 1
+	double p3 = 3178.;    // Background 2
+	double p4 = 0.00000e+00;    // PE offset
+	double p5 = 0.9;    // No cambio de Unidades // por ahora
+	double p6 = 0.00000e-04;    // PE scale (quadratic)
+	double p7 = 240;    // E0
+	double p8 = 50;    // exponente bkgd 1
+	double p9 = 332.344;    // exponente bkgd 2
 
 
 
@@ -453,8 +477,25 @@ void fitConv_CCD_nores() {
 	double xM = 700;
 
 	f1 = new TF1("f1", f, xm, xM, np);
-	f1->SetParameters(p0, p1, p2, p3, p4, p5, p6, p7);
+	f1->SetParameters(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9);
 	f1->SetLineColor(2);
+
+	// double r    = f1->GetParameter(0);
+	// double er   = f1->GetParError(0);
+	// double nmu  = f1->GetParameter(1);
+	// double enmu = f1->GetParError(1);
+	// double nb1  = f1->GetParameter(2);
+	// double enb1 = f1->GetParError(2);
+	// double a0   = f1->GetParameter(3);
+	// double ea0  = f1->GetParError(3);
+	// double a1   = f1->GetParameter(4);
+	// double ea1  = f1->GetParError(4);
+	// double a2   = f1->GetParameter(5);
+	// double ea2  = f1->GetParError(5);
+	// double e0   = f1->GetParameter(6);
+	// double ee0  = f1->GetParError(6);
+	// double ep1  = f1->GetParameter(7);
+	// double eep1 = f1->GetParError(7);
 
 	double r    = f1->GetParameter(0);
 	double er   = f1->GetParError(0);
@@ -462,16 +503,20 @@ void fitConv_CCD_nores() {
 	double enmu = f1->GetParError(1);
 	double nb1  = f1->GetParameter(2);
 	double enb1 = f1->GetParError(2);
-	double a0   = f1->GetParameter(3);
-	double ea0  = f1->GetParError(3);
-	double a1   = f1->GetParameter(4);
-	double ea1  = f1->GetParError(4);
-	double a2   = f1->GetParameter(5);
-	double ea2  = f1->GetParError(5);
-	double e0   = f1->GetParameter(6);
-	double ee0  = f1->GetParError(6);
-	double ep1  = f1->GetParameter(7);
-	double eep1 = f1->GetParError(7);
+	double nb2  = f1->GetParameter(3);
+	double enb2 = f1->GetParError(3);
+	double a0   = f1->GetParameter(4);
+	double ea0  = f1->GetParError(4);
+	double a1   = f1->GetParameter(5);
+	double ea1  = f1->GetParError(5);
+	double a2   = f1->GetParameter(6);
+	double ea2  = f1->GetParError(6);
+	double e0   = f1->GetParameter(7);
+	double ee0  = f1->GetParError(7);
+	double ep1  = f1->GetParameter(8);
+	double eep1 = f1->GetParError(8);
+	double ep2  = f1->GetParameter(9);
+	double eep2 = f1->GetParError(9);
 
 	double chi2 = f1->GetChisquare();
 	int    ndf  = f1->GetNDF();
@@ -482,17 +527,31 @@ void fitConv_CCD_nores() {
 	double eI0 = I0sim*(enmu/nmusim)*(Tsim/T)*(1./eff);
 
 
+	// TF1 *fm = new TF1("fm", f, xm, xM, np);
+	// fm->SetParameters(p0, p1, 0*p2, 0*p3, p4, p5, p6, p7);
+	// fm->SetLineColor(4);
+
+	// TF1 *fb1 = new TF1("fb1", f, xm, xM, np);
+	// fb1->SetParameters(p0, 0*p1, p2, 0*p3, p4, p5, p6, p7);
+	// fb1->SetLineColor(6);
+	// fb1->SetLineStyle(2);
+
+	// TF1 *fb2 = new TF1("fb2", f, xm, xM, np);
+	// fb2->SetParameters(p0, 0*p1, 0*p2, p3, p4, p5, p6, p7);
+	// fb2->SetLineColor(7);
+	// fb2->SetLineStyle(2);
+
 	TF1 *fm = new TF1("fm", f, xm, xM, np);
-	fm->SetParameters(p0, p1, 0*p2, 0*p3, p4, p5, p6, p7);
+	fm->SetParameters(p0, p1, 0*p2, 0*p3, p4, p5, p6, p7, p8, p9);
 	fm->SetLineColor(4);
 
 	TF1 *fb1 = new TF1("fb1", f, xm, xM, np);
-	fb1->SetParameters(p0, 0*p1, p2, 0*p3, p4, p5, p6, p7);
+	fb1->SetParameters(p0, 0*p1, p2, 0*p3, p4, p5, p6, p7, p8, p9);
 	fb1->SetLineColor(6);
 	fb1->SetLineStyle(2);
 
 	TF1 *fb2 = new TF1("fb2", f, xm, xM, np);
-	fb2->SetParameters(p0, 0*p1, 0*p2, p3, p4, p5, p6, p7);
+	fb2->SetParameters(p0, 0*p1, 0*p2, p3, p4, p5, p6, p7, p8, p9);
 	fb2->SetLineColor(7);
 	fb2->SetLineStyle(2);
 

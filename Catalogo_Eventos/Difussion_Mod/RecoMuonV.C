@@ -34,7 +34,9 @@ const int kMaxNPixels   = 50000;
 typedef struct {
     double mux;
     double charge;
+    double chargeErr;
     double sigmad;
+    double sigmadErr;
     double maxEventPDF;
 } event1D_param; //Event parameters from ML algorithm.
 
@@ -177,6 +179,8 @@ double fitSpread1D(double qInit, double muxInit, double sdInit)
     TMinuit minuit(npar);
     minuit.SetFCN(fcn); //Function to be minimized
     // minuit.SetPrintLevel(2); // Enable to see the fit status
+
+    minuit.SetErrorDef(0.5);
     minuit.SetPrintLevel(-1);
 
     double step[4] = {0.01,0.01,1.0};
@@ -198,14 +202,25 @@ double fitSpread1D(double qInit, double muxInit, double sdInit)
     minuit.mnexcm("SEEK",arglist,1,ierflg); //execute minimization.
 
     if(ierflg==0) {
+        minuit.mnexcm("HESSE", arglist, 0, ierflg);
+
         minuit.mnstat(fmin,fedm,errdef,nparv,nparx,fstat); //read current status of the minimization.
         parameters.maxEventPDF = fmin/npix_event;
+
+        // Extract mean  (par 0)
         minuit.mnpout(0,pname,pvalue,perror,plbound,pubound,pvari);
         parameters.mux = pvalue;
+
+        // Extract Sigma and SigError
         minuit.mnpout(1,pname,pvalue,perror,plbound,pubound,pvari);
         parameters.sigmad = pvalue;
+        parameters.sigmadErr = perror;
+
+        // Extract QT
         minuit.mnpout(2,pname,pvalue,perror,plbound,pubound,pvari);
         parameters.charge = pvalue;
+        parameters.chargeErr = perror;
+
     } else {
         double errorCode = 4000000;
         parameters.mux = errorCode;
@@ -314,8 +329,11 @@ void RecoMuonV(const char *muonfile, const char *ofilename)
     //Lateral spread of each muon slice
     double fitSigma;
     vector<double> recSigma;
+    vector<double> recSigmaErr;
     vector<double> SigmaBS; // Vector with the sigma estimate from basic statistics.
-    vector<double> sliceQ; // This array will contain the charge of each slice.
+    vector<double> sliceBQt;
+    vector<double> sliceQt; // This array will contain the charge of each slice.
+    vector<double> sliceQtErr;
     vector<double> sliceY;
     for(Int_t i=min_value_y; i<max_value_y+1; i++) { //loop over the slices
         //Get One Slice
@@ -340,16 +358,22 @@ void RecoMuonV(const char *muonfile, const char *ofilename)
         // std::cout<< "I'm ampnoisevar: "<< ampnoiseVar<< endl;
         // std::cout<<bsSigma << " " <<fitSigma<<endl;
         recSigma.push_back(fitSigma); // We use this value for the depth-spread plot
-        sliceQ.push_back(bsTotq); // Total charge of the line
+        recSigmaErr.push_back(parameters.sigmadErr);
+
+        sliceBQt.push_back(bsTotq); // Total charge of the line
+        sliceQt.push_back(parameters.charge);
+        sliceQtErr.push_back(parameters.chargeErr);
+
         sliceY.push_back(i); // N-Line, NOT depth
         // sliceY.push_back((i - min_value_y)*dl_depth); // Depth DON'T WORK WELL!!!
     }
 
     // Muon data for fit
     ofstream ofile(ofilename);
-    for(uint i=0; i<sliceQ.size(); i++) {
+    for(uint i=0; i<sliceQt.size(); i++) {
         // ofile << sliceQ[i] << " " << recSigma[i] << " " << SigmaBS[i]<< " " << sliceY[i] << endl;
-        ofile << recSigma[i] << " " << sliceY[i] << endl;
+        // ofile << recSigma[i] << " " << sliceY[i] << endl;
+        ofile << recSigma[i] << " " << recSigmaErr[i] << " " << sliceQt[i] << " " << sliceQtErr[i] << " " << sliceBQt[i] << " " <<sliceY[i] << endl;
     }
     ofile.close();
 }

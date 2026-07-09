@@ -2,15 +2,7 @@ void histo_muons(){
 
 // TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_400x525_file.root");
 TChain *f_geant_tree = new TChain("B02Evts");
-// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old.root");
-
-f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
-// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_0.root");
-// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_1.root");
-// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_2.root");
-// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_3.root");
-// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_4.root");
-
+f_geant_tree->Add("./root_files/muons*");
 
 // TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
 // TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_300x529_file.root");
@@ -32,8 +24,8 @@ int NB = 150;
 double tlow = 0.;
 double thi = 1000.;
 
-TH1F *edep_icn = new TH1F("edep_icn", "Energy Spectrum (Sim. PP - All Clusters (ICN))", NB, tlow, thi);
-edep_icn->GetXaxis()->SetTitle("Energy (MeV)");
+TH1F *edep_icn = new TH1F("edep_icn", "Espectro de Energ#acute{i}a Depositada", NB, tlow, thi);
+edep_icn->GetXaxis()->SetTitle("Energ#acute{i}a (keV)");
 edep_icn->SetLineStyle(1);
 edep_icn->SetLineColor(1);
 edep_icn->SetStats(0);
@@ -55,14 +47,14 @@ edep_geant_scale->SetLineColor(1);
 
 // === Template for fit ==
 int NBmu = 150;
-double maxEd = 1500.;
+double maxEd = 1000.;
 double muonsbw = maxEd/NBmu;
 
 TH1F *muons = new TH1F("muons","",NBmu,0,maxEd);
 muons->GetXaxis()->SetTitle("Energy (KeV)");
 muons->GetYaxis()->SetTitle("events");
 
-f_geant_tree->Draw("EevtBar*1000>>muons", "EevtBar>0");
+f_geant_tree->Draw("EevtBar*1.0*1000>>muons", "EevtBar>0");
 
 
 // ============= GEANT4 histograms =========== //
@@ -71,8 +63,8 @@ f_geant_tree->Draw("EevtBar*0.92*1000>>edep_geant_scale", "EevtBar>0"); // GEANT
 
 
 // ============= EXPERIMENTAL histograms =========== //
-tree_icn->Draw("edep*1000.>>edep_icn", "edep>0"); // EXPERIMENTAL INFO in KeV
-edep_icn->SetMaximum(400);
+tree_icn->Draw("edep*1000>>edep_icn", "edep>0"); // EXPERIMENTAL INFO in KeV
+edep_icn->SetMaximum(300);
 // tree0->Draw("edep>>edep0", "edep>0"); // EXPERIMENTAL INFO
 tree_conn->Draw("edep>>edep_conn", "edep>0"); // EXPERIMENTAL INFO CONNIE
 
@@ -84,16 +76,28 @@ double cont_muons = muons->Integral();
 
 cout << "Integral muons: " << cont_muons <<endl;
 
+
+float Land_val = 231;
+TLine *line1 = new TLine(Land_val,0,Land_val,250);
+line1->SetLineStyle(2);
+line1->SetLineWidth(2);
+
 // ============ Create Canvas ============== //
 TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
-canv->Divide(1,1);
-canv->cd(1);
+// canv->Divide(2,1);
+// canv->cd(1);
+canv->SetGrid();
 // edep_g4->Draw("hist"); 	// edepG4 no Birks
-muons->Draw("hist");
+// muons->Draw("hist");
 // edep_pp->Draw("hist same"); 	// edepPP
 // // edep_conn->Draw("he0 same"); 	// CONNIE data
-// edep_icn->Draw("hist"); 	// ICN data 
+edep_icn->Draw("hist"); 	// ICN data 
+// line1->Draw("same");
 // edep_geant_scale->Draw("hist same");
+
+// canv->cd(2);
+// muons->Draw("hist");
+
 
 // TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
 // // leg->AddEntry(edep, "SimG4-Birks: 0.09 cm/MeV", "lep");
@@ -103,8 +107,6 @@ muons->Draw("hist");
 // leg->AddEntry(edep_pp, "Sim-PP", "LEP");
 // leg->AddEntry(edep_geant_scale, "Sim-GEANT4 (0.92)", "LEP");
 // leg->Draw();
-
-
 
 TFile *fout = new TFile("ccdhisto.root", "recreate");
 edep_icn->Write();
@@ -125,12 +127,12 @@ fout->Close();
   cout << "Integral muons (+ovflw): " << muons->Integral(0,NBmu+1) << " entries." << endl;
 
   //- Find muon peak
-  int peakBin = 50;
-  for (int i=50;i<NBmu;i++){
+  int peakBin = 1;
+  for (int i=0;i<NBmu;i++){
    if (muons->GetBinContent(i+1) > muons->GetBinContent(peakBin))
      peakBin = i+1;
   } //for i
-  printf("Peak: %d  \n", peakBin);
+  printf("Bin of the Peak: %d  \n", peakBin);
   printf("Peak: %3.3f MeV \n", peakBin*maxEd/NBmu);
   double Epeak = peakBin*maxEd/NBmu;
 

@@ -1484,6 +1484,10 @@ def event_DataFrame(dataCal, label_img, nlabels_img, prop, header, extension, un
     # data = hdu_list[extension-1].data
     Runid = str(int(header['RUNID']))
 
+    if nlabels_img == 0:
+        print("No clusters detected.")
+        return 0
+
     fondo_mask = np.invert(label_img==0)
     fondo = ma.masked_array(dataCal,fondo_mask)
     # print(fondo)
@@ -1717,6 +1721,147 @@ def linear_fit(data_mask):
         ### ================================== ###
 
     return ordenada, pendiente, Chi_2/Qs, flag_rot, data_mask
+
+def muon_filter_v1(CCD_thick, dataCal, label_img, nlabels_img, prop, Solidit, Elipticity):
+    CCD_depth = CCD_thick ## micras
+    px_to_micras = 15 ## micras
+    px_to_cm = 0.0015 ## cm/px
+    micra_to_cm = 1 / 10000 ## micras/cm
+
+    list_Muon_labels = []
+    list_DeltaEL = []
+    list_DeltaL = []
+    list_charge = []
+    list_theta = []
+    list_phi = []
+    list_elip = []
+    list_sold = []
+    list_datamasked = []
+
+    list_charge_all_events = []
+    list_elip_all_events = []
+    list_sol_all_events = []
+
+    for event in range(1, nlabels_img):
+        mask = np.invert(label_img == event)
+        loc = ndimage.find_objects(label_img == event)[0]
+        
+        data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
+                                            mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
+
+        coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
+        coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
+
+        coordY_centerCharge, coordX_centerCharge = int(prop[event-1].centroid_local[0]), int(prop[event-1].centroid_local[1])
+        # print(type(coordY_centerCharge))
+        # MaxValue_Event = data_maskEvent.max()
+        MinValue_Event = data_maskEvent.min()
+        MeanValue_Event = data_maskEvent.mean()
+        # MeanValue_Event = (MaxValue_Event - MinValue_Event)/2
+        Barycentercharge = data_maskEvent[coordY_centerCharge, coordX_centerCharge]
+        
+        try:
+            differval = abs(Barycentercharge - MinValue_Event) 
+        except:
+            differval = 0 
+
+        ## Aquí se obtiene los radios de la elipse del cluster
+        rM = prop[event-1].axis_major_length / 2
+        rm = prop[event-1].axis_minor_length / 2
+
+        ## Tensor de inercia ##
+        # inercia_tensor = prop[event-1].inertia_tensor
+        # non_diag_inercia_tensor = inercia_tensor[0][1]
+
+        ## Aquí se calcula la elipcidad del cluster ##
+        try:
+            elip = (rM - rm) / rM
+        except:
+            elip = 0
+
+
+        ## Aquí se obtiene el solidity del cluster
+        Solidity = prop[event-1].solidity
+
+
+        ## Aquí se obtiene las medidas de la matriz que contiene al cluster
+        miny, minx, maxy, maxx = prop[event-1].bbox
+        Longitud_y, Longitud_x = maxy - miny , maxx - minx # px
+
+
+        ## Aquí se calcula la diagonal en el plano XY
+        Diagonal_lenght= np.sqrt(Longitud_x**2 + Longitud_y**2) - np.sqrt(2) # px
+
+
+        ## Aquí se calcula el Delta L del muon
+        Delta_L = np.sqrt( (Diagonal_lenght * px_to_micras)**2 + (CCD_depth)**2) * micra_to_cm # cm
+
+
+        ## Aquí se calcula la carga total del cluster
+        charge = data_maskEvent.sum()
+
+        ## Aquí comienza el filtro de muones 
+        if rM == 0 or rm == 0:
+            list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
+            continue 
+
+        elif maxx - minx <= 3:
+            list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
+            continue
+
+        elif maxy - miny <= 3:
+            list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
+            continue
+
+        elif not Barycentercharge:
+            list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
+            continue
+
+        elif differval < MeanValue_Event: 
+            continue
+
+        elif  Solidity < Solidit:
+            list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
+            continue 
+
+        elif elip < Elipticity:
+            list_charge_all_events.append(charge)
+            list_sol_all_events.append(Solidity)
+            list_elip_all_events.append(elip)
+            continue
+        
+        elif  elip >= Elipticity :
+            # charge = data_maskEvent.sum()
+
+            # if charge > 100:
+            Delta_EL = (charge)/ (Delta_L) 
+
+            
+            list_DeltaL.append(Delta_L)
+            list_DeltaEL.append(Delta_EL)
+            list_charge.append(charge)
+            list_elip.append(elip)
+            list_sold.append(Solidity)
+            list_datamasked.append(data_maskEvent)
+
+            list_Muon_labels.append(event)
+
+    dict_lists = {"muons" : {"l": list_DeltaL, "dedl" : list_DeltaEL, "charge_muons" : list_charge, 
+                             "elip": list_elip, "sol": list_sold, "image" : list_datamasked, "label" : list_Muon_labels}, 
+
+                 "non_muons" : {"charge": list_charge_all_events, "elip": list_elip_all_events, "sol": list_sol_all_events}}
+    
+    return dict_lists
 
 def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, dedl_min):
     CCD_depth = 725 ## micras

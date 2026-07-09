@@ -4,8 +4,7 @@ void Test_thet(){
 
 TChain *tree = new TChain("B02Evts");
 // tree->Add("./root_files/muons_1M_vacuum_250x529_file_SDLog_Cu_0.root");
-tree->Add("./root_files/muons_1M_vacuum_250x529_file_SDLog_Cu_1.root");
-tree->Add("./root_files/muons_1M_vacuum_250x529_file_SDLog_Cu_2.root");
+tree->Add("./root_files/muons_100k_250x529_3x3planes_COMPLETE_*");
 
 // TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
 // TFile *file = new TFile("./treesROOT_Barra/Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_0.root");
@@ -31,7 +30,7 @@ double thi = TMath::Pi()/2.0;
 TH1F *theta_all = new TH1F("theta_all", "Distribuci#acute{o}n angular #theta de todos los muones simulados", NB, tlow, thi);
 theta_all->GetXaxis()->SetTitle("#theta (rad)");
 theta_all->SetLineColor(2);
-theta_all->SetStats(0);
+// theta_all->SetStats(0);
 
 TH1F *theta_in = new TH1F("theta_in", "Distribuci#acute{o}n angular #theta de los muones que impactaron la CCD", NB, tlow, thi);
 theta_in->GetXaxis()->SetTitle("#theta(rad)");
@@ -60,9 +59,9 @@ theta_pp_in->SetLineColor(4);
 tree->Draw("thetaPri>>theta_all");
 
 // tree0->Draw("thet>>theta_in", "l>0 ");
-tree->Draw("thetaPri>>theta_in", "nHitBar>0");
+// tree->Draw("thetaPri>>theta_in", "nHitBar>0");
 // tree->Draw("thetaPri>>theta_in", "LengthMuLAr>0");
-// tree->Draw("thetaPri>>theta_in", "nHitBar>0 && LengthMuLAr>0");
+tree->Draw("thetaPri>>theta_in", "nHitBar>0 && LengthMuLAr>0");
 
 
 tree->Draw("thetaPri>>theta_cut", "nHitBar>0 && thetaPri > 20*TMath::Pi()/180");

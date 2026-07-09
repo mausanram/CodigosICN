@@ -1,7 +1,7 @@
 void Test_edep_Chain(){
 
     TChain *chain = new TChain("B02Evts");
-    chain->Add("./root_files/muons_1M_vacuum_250x529_file_SDLog_Cu_*.root");
+    chain->Add("./root_files/muons_100k_250x529_3x3planes_COMPLETE_*");
 
 
     // Sección de Energía depositada //

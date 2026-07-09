@@ -102,28 +102,28 @@ edep_icn->Write();
 fout->Close();
 
 
-//----------------------------
-//-- muons template data file 
-//----------------------------
-  
-  ofstream myfile;
-  myfile.open ("muons.dat");
-  for (int i=0;i<NBmu; i++) 
-  myfile << muons->GetBinContent(i+1)/(muons->Integral(1,NBmu)*muonsbw) << "\n";
-  myfile.close();
+  //----------------------------
+  //-- muons template data file 
+  //----------------------------
+    
+    ofstream myfile;
+    myfile.open ("muons.dat");
+    for (int i=0;i<NBmu; i++) 
+    myfile << muons->GetBinContent(i+1)/(muons->Integral(1,NBmu)*muonsbw) << "\n";
+    myfile.close();
 
-  cout << "Integral muons: " << muons->Integral() << " entries." << endl;
-  cout << "Integral muons (+ovflw): " << muons->Integral(0,NBmu+1) << " entries." << endl;
+    cout << "Integral muons: " << muons->Integral() << " entries." << endl;
+    cout << "Integral muons (+ovflw): " << muons->Integral(0,NBmu+1) << " entries." << endl;
 
-  //- Find muon peak
-  int peakBin = 50;
-  for (int i=50;i<NBmu;i++){
-   if (muons->GetBinContent(i+1) > muons->GetBinContent(peakBin))
-     peakBin = i+1;
-  } //for i
-  printf("Peak: %d  \n", peakBin);
-  printf("Peak: %3.3f MeV \n", peakBin*maxEd/NBmu);
-  double Epeak = peakBin*maxEd/NBmu;
+    //- Find muon peak
+    int peakBin = 50;
+    for (int i=50;i<NBmu;i++){
+    if (muons->GetBinContent(i+1) > muons->GetBinContent(peakBin))
+      peakBin = i+1;
+    } //for i
+    printf("Peak: %d  \n", peakBin);
+    printf("Peak: %3.3f MeV \n", peakBin*maxEd/NBmu);
+    double Epeak = peakBin*maxEd/NBmu;
 
 
 

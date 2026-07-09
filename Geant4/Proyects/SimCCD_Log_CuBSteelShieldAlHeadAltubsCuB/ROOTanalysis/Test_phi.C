@@ -1,6 +1,6 @@
 void Test_phi(){
 TChain *tree = new TChain("B02Evts");
-tree->Add("./root_files/muons_1M_vacuum_250x529_file_SDLog_Cu_*.root");
+tree->Add("./root_files/muons_100k_250x529_3x3planes_COMPLETE_*");
 
 TFile *file_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_1.0_C_0.root");
 TTree *tree_pp = (TTree*) file_pp->Get("tree");
@@ -16,12 +16,12 @@ double tlow = 0;
 double thi = 2 * TMath::Pi() + 0.1;
 TH1F *phi_all = new TH1F("phi_all", "Distribuci#acute{o}n angular #phi de todos los muones simulados", NB, tlow, thi);
 phi_all->GetXaxis()->SetTitle("#phi (rad)");
-phi_all->SetStats(0);
+// phi_all->SetStats(0);
 phi_all->SetLineColor(2);
 
 
 TH1F *phi_in = new TH1F("phi_in", "Distribuci#acute{o}n angular #phi de los muones que impactaron la CCD", NB, tlow, thi);
-phi_in->SetStats(0);
+// phi_in->SetStats(0);
 phi_in->GetXaxis()->SetTitle("#phi (rad)");
 phi_in->SetLineColor(2);
 

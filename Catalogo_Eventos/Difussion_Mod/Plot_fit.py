@@ -34,6 +34,7 @@ plt.rcParams.update({
 })
 
 
+delta_cut = 1600 # e-   
 
 def diffution_curve(x, alpha, beta):
     return np.sqrt((alpha * np.log(1 - (beta * x))))/15
@@ -54,11 +55,11 @@ def data_extraction(path, extension, list_muons, flag_flip, delta_cut, muon_type
 
         if muon_type == 0 or muon_type == 1:
             row_charge = df.groupby('y')['charge'].sum().reset_index() # For Vertical muons
-            true_list_linecharge = list(row_charge['y'])
+            true_list_linecharge = list(row_charge['charge'])
         # print(row_charge.head())
         else:
             row_charge = df.groupby('x')['charge'].sum().reset_index() # For Horizontal muons
-            true_list_linecharge = list(row_charge['x'])
+            true_list_linecharge = list(row_charge['charge'])
 
 
         with open(path+ f"/muon{list_muons[index]}_spreads.txt", "r") as file:
@@ -67,13 +68,13 @@ def data_extraction(path, extension, list_muons, flag_flip, delta_cut, muon_type
         list_spreads = []
         for line in list_lines:
             true_line = line.split(" ")
-            line_charge = float(true_list_linecharge[list_lines.index(line)])
+            line_charge = true_list_linecharge[list_lines.index(line)]
             # print(f"line charge: {line_charge}")
 
             spread = true_line[0]
-            # depth = true_line[1].split("\n")[0]
-
-            # list_spreads_without_deltas.append(spread)
+            err_spread = true_line[1]
+            totalq = float(true_line[2])
+            err_totaq = true_line[3]
 
             if line_charge > delta_cut:
                 # print(f"line charge: {line_charge}")
@@ -105,22 +106,25 @@ def data_visualization(list_depth_all, list_spread_all, extension):
     fig, axs = plt.subplots(figsize = [10,10])
     axs.scatter(list_depth_all, list_spread_all, color="b", marker=".", s=9)
 
-    popt_DM, _ = curve_fit(diffution_curve, list_depth_all, list_spread_all, maxfev=100000, p0= [-200, 0.001])
-    dict_diffution_model = {'Alpha' : popt_DM[0], 'Beta' : popt_DM[1]}
-    print('Alpha: ', dict_diffution_model['Alpha'], ' Beta: ', dict_diffution_model['Beta'])
+    popt_DM, pcov = curve_fit(diffution_curve, list_depth_all, list_spread_all, maxfev=100000, p0= [-200, 0.001])
+    perr = np.sqrt(np.diag(pcov))
 
-    axs.plot(list_thk, diffution_curve(list_thk, -211.9, 0.00102), "--k", linewidth=2,
-            label = r"CONNIE's paper: ($\alpha$=-211.9 $m^{2}$, $\beta$=0.00102$\mu m^{-1}$)")
+    dict_diffution_model = {'Alpha' : popt_DM[0], 'Err_Alpha': perr[0], 'Beta' : popt_DM[1], 'Err_Beta': perr[1]}
+    print('Alpha: ', np.around(dict_diffution_model['Alpha'],1), '+- ', np.around(dict_diffution_model["Err_Alpha"],1))
+    print('Beta: ', np.around(dict_diffution_model['Beta'],5), '+- ', np.around(dict_diffution_model["Err_Beta"],6))
+
+    # axs.plot(list_thk, diffution_curve(list_thk, -211.9, 0.00102), "--k", linewidth=2,
+    #         label = r"CONNIE's paper: ($\alpha$=-211.9 $m^{2}$, $\beta$=0.00102$\mu m^{-1}$)")
     
     axs.plot(list_thk, diffution_curve(list_thk, dict_diffution_model["Alpha"], dict_diffution_model["Beta"]), "--r", linewidth=2,
             label = r"$\sqrt{\alpha \ln(1 - \beta z)}$ fit: ($\alpha$= "+ str(round(dict_diffution_model["Alpha"],1))+ 
-                    r" $m^{2}$, $\beta$= " + str(round(dict_diffution_model["Beta"],5)) + r" $\mu m^{-1}$)")
+                    r" $\mu m^{2}$, $\beta$= " + str(round(dict_diffution_model["Beta"],5)) + r" $\mu m^{-1}$)")
 
     # axs.set_ylim(0,1.25)
     # axs.set_xlim(-1, 680)
 
-    axs.set_ylabel("Spread (px)")
-    axs.set_xlabel(r"Depth ($\mu$m)")
+    axs.set_ylabel("Spread [px]")
+    axs.set_xlabel(r"Depth [$\mu$m]")
     axs.set_title(f"Size-to-Depth Relation (ICN data) Extension {extension}")
 
     axs.legend()
@@ -304,7 +308,7 @@ def main():
     Extension = 2 # Choose the extension
     flag_wholeExt = True # Active this to analyze all the types of muons at same time
 
-    flag_VUP = True # Active just one type of muons
+    flag_VUP = False # Active just one type of muons
     flag_VDOWN = False
     flag_HRIGHT1 = False
     flag_HRIGHT2 = False
@@ -315,7 +319,7 @@ def main():
         list_spreads_all = []
         list_types = ["VUP", "VDOWN", "HRIGHT1", "HRIGHT2", "HLEFT"]
         if Extension == 1:
-            list_deltacut = [1000, 1000, 1000, 1000, 1000] # Delta cut threshold
+            # list_deltacut = [1000, 1000, 1000, 1000, 1000] # Delta cut threshold
             # list_deltacut = [194, 194, 194, 194, 194] # Mean Delta cut threshold
             # list_deltacut = [180, 180, 180, 180, 180]
             muons = [
@@ -333,7 +337,7 @@ def main():
             #     [330, 371, 773, 914, 1002, 1023]
             # ]
         else: 
-            list_deltacut = [1000, 1000, 1000, 1000, 1000] # Delta cut threshold
+            # list_deltacut = [1000, 1000, 1000, 1000, 1000] # Delta cut threshold
             # list_deltacut = [180, 180, 180, 180, 180] # Delta cut threshold
             muons = [
                 [99, 130, 145, 389, 449, 1002, 1133, 1166, 1216, 1337],
@@ -349,7 +353,7 @@ def main():
             #     print(list_types[type])
             #     continue
             basedir = f"./muons_ext{Extension}{list_types[type]}"
-            threshold = list_deltacut[type]
+            threshold = delta_cut
             print(f"threshold: {threshold}")
             if type == 1 or type == 4:
                 flag_flip = True

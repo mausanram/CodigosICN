@@ -52,13 +52,18 @@ B02PrimaryGeneratorAction::~B02PrimaryGeneratorAction()
 void B02PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
 
-     if (doSmith) {
+    if (doSmith) {
 	
 	//double R = 550.0;
 
 	//double px = 480.0;
 	//double py = 480.0;
 
+	//		double q = sin(theta)*(0.0545+pow(cos(theta), 2.5))/1.0545;   // Electrons
+	//		double q = sin(theta)*(0.0266+pow(cos(theta), 2.6))/1.0266;   // Positrons
+	//		double q = sin(theta)*(0.0402+pow(cos(theta), 3.0))/1.0402;   // Photons
+	//		double q = sin(theta)*(0.276+pow(cos(theta), 2.4))/1.276;     // Neutrons
+	// new R
 	double theta;
 	
 	double h = 61.5;
@@ -68,20 +73,13 @@ void B02PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 		double p = G4RandFlat::shoot(0.0, 1.0);
 		theta = G4RandFlat::shoot(0.0, 3.1416/2);
 		double q = pow(cos(theta), 2)*sin(theta);   // Muons
-//		double q = sin(theta)*(0.0545+pow(cos(theta), 2.5))/1.0545;   // Electrons
-//		double q = sin(theta)*(0.0266+pow(cos(theta), 2.6))/1.0266;   // Positrons
-//		double q = sin(theta)*(0.0402+pow(cos(theta), 3.0))/1.0402;   // Photons
-//		double q = sin(theta)*(0.276+pow(cos(theta), 2.4))/1.276;     // Neutrons
 		if (p<=q) a = false;
-		}
-
+	}
 	double phi = G4RandFlat::shoot(0.0, 2*3.1416);
-	// new R
 	
 	double X = R*sin(theta)*cos(phi);
 	double Y = R*sin(theta)*sin(phi);
 	double Z = R*cos(theta);
-	// down the hemisphere
 	double Z1 = R*cos(theta)-h;
 	
 	double u = G4RandFlat::shoot(-px/2, px/2);
@@ -91,8 +89,8 @@ void B02PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 	double z0 = Z-u*sin(theta);
 	//double z0 = Z;
 	
-        particleGun->SetParticlePosition(G4ThreeVector(x0*cm,y0*cm,z0*cm));
-        particleGun->SetParticleMomentumDirection(G4ThreeVector(-sin(theta)*cos(phi),-sin(theta)*sin(phi),-cos(theta)));
+	particleGun->SetParticlePosition(G4ThreeVector(x0*cm,y0*cm,z0*cm));
+	particleGun->SetParticleMomentumDirection(G4ThreeVector(-sin(theta)*cos(phi),-sin(theta)*sin(phi),-cos(theta)));
 
 
 // *****   Muons   *****
@@ -136,7 +134,6 @@ void B02PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 		Epu = (Eu+au*y0u*(1.0/cos(theta)-0.100))/ru;
 		Pmu = pow(0.100*cos(theta)*(1-(au*(y0u/cos(theta)-100)/(ru*Epu))),(Bmu/((ru*Epu+100*au)*cos(theta))));
 		double intensity = Au*(pow(Epu,-gu))*Pmu*lpu*bu*jpu/(Epu*cos(theta)+bu*jpu);
-
 		ES[j] = intensity * Eu;
 		}
 

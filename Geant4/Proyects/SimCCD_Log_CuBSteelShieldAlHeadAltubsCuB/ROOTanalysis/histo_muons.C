@@ -4,19 +4,8 @@ void histo_muons(){
 TChain *f_geant_tree = new TChain("B02Evts");
 // f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old.root");
 
-f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
-// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_0.root");
-// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_1.root");
-// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_2.root");
-// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_3.root");
-// f_geant_tree->Add("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_4.root");
+f_geant_tree->Add("./root_files/muons_100k_250x529_3x3planes_COMPLETE_*");
 
-
-// TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
-// TFile *f_geant = new TFile("./root_files/muons_1M_vacuum_300x529_file.root");
-// TFile *file = new TFile("./root_files/muons_1M_vacuum_file.root");
-// TTree *tree_geant = (TTree*) f_geant->Get("B02Evts");
-//TTree *tree = (TTree*) file->Get("B02Hits");
 
 // TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_400x700_MeV.root"); // INFO ALL_CLUSTERS
 // TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_300x529_EXPOSURE_4504_MeV.root"); // INFO ALL_CLUSTERS

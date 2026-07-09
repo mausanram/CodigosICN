@@ -66,7 +66,7 @@ double f(double *x, double *par) {
     double p;
     int    Np    = 150;
     double Emin  = 0;              // Minimum energy
-    double Emax  = 1500;           // Maximum energy
+    double Emax  = 1000;           // Maximum energy
     double dE    = (Emax-Emin)/Np; // Energy interval
     double Ed;                     // Deposited energy
     //-------------------------------------------------------
@@ -84,7 +84,8 @@ double f(double *x, double *par) {
     //-------------------------------------------------------
     // Visible energy in MeV. 
     // Inverse of Ea = a0 + a1*Ev/(1 + a2*Ev)
-    double Ev = (Ea-a0)/(a1+a0*a2-a2*Ea); 
+    // double Ev = (Ea-a0)/(a1+a0*a2-a2*Ea);
+	double Ev = (Ea-a0)/(a1); 
 
     // Convolution integral. Change units after
 	TGraph *fgr = new TGraph(Np);
@@ -98,7 +99,7 @@ double f(double *x, double *par) {
     //    sig = f*sqrt(Ev*E0);
     } //for i
 	F = fgr->Eval(Ev);
-    double dEadEv = a1/pow(1 + a2*Ev,2);
+    double dEadEv = a1;
     double z      = 1.0*F/dEadEv;  //change units to PE
 
     inp.close();
@@ -122,7 +123,7 @@ void fitConv_CCD_nores() {
    inpf.open("muons.dat");
    double pv;
    int    nbins = 150;
-   double Emax  = 1500;
+   double Emax  = 1000;
    double  dE   = Emax/nbins;
 
 
@@ -162,9 +163,9 @@ void fitConv_CCD_nores() {
 //    hex->SetMaximum((rebinf/10)*8*hex->GetMaximum());
 //    hex->SetMaximum(20000);
    hex->SetTitle("Energy histogram");
-   hex->SetXTitle("Energy (KeV)");
+   hex->SetXTitle("Energ#acute{i}a (keV)");
    hex->GetYaxis()->SetTitleOffset(1.1);
-   hex->SetYTitle("# Muons");
+//    hex->SetYTitle("# Muons");
    hex->SetLineColor(3);
    hex->SetLineWidth(2);
 
@@ -183,7 +184,7 @@ void fitConv_CCD_nores() {
 //    double T      = 984670.02; //sec 766 * 1285.47 s
 //    double eff = 1.0;
 
-	// // Data and Sim times 250x529 px)
+	// Data and Sim times 250x529 px)
  	// double I0sim  = 101.2;
    	// double nmusim = 424665; //4000000 simulados en total;
    	// double Tsim   = 8.38761e+07; //sec 4M /  0.0476894 s^-1
@@ -191,26 +192,16 @@ void fitConv_CCD_nores() {
    	// double eff = 1.0;
 
 	double I0sim  = 101.2;
-   	double nmusim = 105247; //1000000 simulados en total;
-   	double Tsim   = 20969020; //sec 4M /  0.0476894 s^-1
-   	double T      = 825914; // Tiempo experimental s
+
+   	// double nmusim = 105247; //1000000 simulados en total;
+	double nmusim = 249504; //2.2 M simulados en total;
+
+   	// double Tsim   = 20969020; //s 4M /  0.0476894 s^-1
+	double Tsim   = 46132231.75*1.0; //s 2.2 M /  0.0476894 s^-1
+
+   	// double T      = 825914; // Tiempo experimental s
+	double T      = 600914; // Tiempo experimental s
    	double eff = 1.0;
-
-	// // Data and Sim CONNIE 420x1022 px)
-	// double I0sim  = 101.2;
-	// double nmusim = 268880; //1000000 simulados en total;
-	// double Tsim   = 16325369.93; //sec 1M /  0.061254354 s^-1
-	// double T      = 2434014 * 1; //s
-	// double eff = 1.0;
-
-	// Data and Sim CONNIE 420x700 px)
-	// double I0sim  = 101.2;
-	// double nmusim = 185579; //4000000 simulados en total;
-	// double Tsim   = 16325357.9; //sec 1M /  0.061254354 s^-1
-	// double T      = 1654349.759; //s
-	// // double T      = 1067132; //s
-	// double eff = 1.0;
-
 
 
    if (doFit){
@@ -319,26 +310,40 @@ void fitConv_CCD_nores() {
 
 	lat->SetTextFont(42);
 	lat->SetTextSize(0.034);
-	lat->DrawLatex(0.15,0.85,Form("I^{CCM}_{0} = (%3.1f #pm %3.1f) m^{-2} s^{-1} sr^{-1}",I0,eI0));
-	lat->DrawLatex(0.15,0.80,Form("N_{#mu} = (%6.0f #pm %4.0f)",nmu,enmu));
-	lat->DrawLatex(0.15,0.76,Form("Resolution f = (%5.3f #pm %5.3f)",r,er));
-	lat->DrawLatex(0.15,0.72,Form("N_{b1} = (%6.0f #pm %4.0f)",nb1,enb1));
-	lat->DrawLatex(0.15,0.68,Form("#epsilon_1 = (%5.3f #pm %5.3f)",ep1,eep1));
-	lat->DrawLatex(0.15,0.64,Form("N_{b2} = (%6.0f #pm %4.0f)",nb2,enb2));
-	lat->DrawLatex(0.15,0.60,Form("#epsilon_2 = (%5.3f #pm %5.3f)",ep2,eep2));
-	lat->DrawLatex(0.15,0.56,Form("a_{0} = (%5.3f #pm %5.3f) PE",a0,ea0));
-	lat->DrawLatex(0.15,0.52,Form("a_{1} = (%5.3f #pm %5.3f) PE/MeV",a1,ea1));
-	lat->DrawLatex(0.15,0.48,Form("a_{2} = (%6.5f #pm %6.5f) MeV^{-1}",a2,ea2));
-
-	lat->DrawLatex(0.15,0.42,Form("#chi^{2}/ndf = %4.2f/%d",chi2,ndf));
-	lat->DrawLatex(0.15,0.38,Form("Prob(#chi^{2}) = %6.4f",prob));
+	float pos_x = 0.17;
+	float sep = 0.85;
+	lat->DrawLatex(pos_x,sep,Form("I^{CCM}_{0} = (%3.1f #pm %3.1f) m^{-2} s^{-1} sr^{-1}",I0,eI0));
+	sep=sep-0.04;
+	lat->DrawLatex(pos_x,sep,Form("N_{#mu} = (%6.0f #pm %4.0f)",nmu,enmu));
+	sep=sep-0.04;
+	// lat->DrawLatex(pos_x,sep,Form("Resolution f = (%5.3f #pm %5.3f)",r,er));
+	// sep=sep-0.04;
+	lat->DrawLatex(pos_x,sep,Form("N_{b1} = (%6.0f #pm %4.0f)",nb1,enb1));
+	sep=sep-0.04;
+	lat->DrawLatex(pos_x,sep,Form("#epsilon_1 = (%5.3f #pm %5.3f)",ep1,eep1));
+	sep=sep-0.04;
+	lat->DrawLatex(pos_x,sep,Form("N_{b2} = (%6.0f #pm %4.0f)",nb2,enb2));
+	sep=sep-0.04;
+	lat->DrawLatex(pos_x,sep,Form("#epsilon_2 = (%5.3f #pm %5.3f)",ep2,eep2));
+	sep=sep-0.04;
+	// lat->DrawLatex(pos_x,sep,Form("a_{0} = (%5.3f #pm %5.3f) PE",a0,ea0));
+	// sep=sep-0.04;
+	// lat->DrawLatex(pos_x,sep,Form("a_{1} = (%5.3f #pm %5.3f) PE/MeV",a1,ea1));
+	// sep=sep-0.04;
+	// lat->DrawLatex(pos_x,sep,Form("a_{2} = (%6.5f #pm %6.5f) MeV^{-1}",a2,ea2));
+	// sep=sep-0.04;
+	lat->DrawLatex(pos_x,sep,Form("#chi^{2}/ndf = %4.2f/%d",chi2,ndf));
+	sep=sep-0.04;
+	lat->DrawLatex(pos_x,sep,Form("Prob(#chi^{2}) = %6.4f",prob));
 
 	TLegend *l = new TLegend(0.6, 0.6, 0.9, 0.75);
 	l->SetTextSize(0.03);
-	l->AddEntry(hex, "Data", "lp");
-	l->AddEntry(f1, "Convolution Fit", "lp");
+	l->AddEntry(hex, "Datos", "lp");
+	l->AddEntry(f1, "Ajuste", "lp");
 	l->Draw();
 
+	double x_peak = f1->GetMaximumX(160,300);
+	printf("Pico de muones: %f.3 \n", x_peak);
 	// c1->Print("ConvNonlinear_CONNIE_420x1022.pdf");
 	c1->Print("ConvNonlinear_NORES_Log_ICN.pdf");
 	// c1->Print("ConvNonlinear_NORES_Lin_ICN.pdf");

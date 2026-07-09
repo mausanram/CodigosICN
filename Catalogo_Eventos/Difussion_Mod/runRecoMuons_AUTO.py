@@ -47,11 +47,11 @@ def main():
 
     Extension = 2 # Choose the extension
 
-    flag_VUP = False # Active just one type of muons
+    flag_VUP = True # Active just one type of muons
     flag_VDOWN = False
     flag_HRIGHT1 = False
     flag_HRIGHT2 = False
-    flag_HLEFT = True
+    flag_HLEFT = False
 
     if flag_VUP and Extension == 1:
         list_muons = [39, 80, 81, 96, 210, 214, 233, 261, 294, 353, 406, 414, 426, 459, 532, 653, 760, 765, 915, 1096, 1121]

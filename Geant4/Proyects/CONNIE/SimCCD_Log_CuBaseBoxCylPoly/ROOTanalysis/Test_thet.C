@@ -130,7 +130,7 @@ leg = new TLegend(0.7, 0.8, 0.9, 0.9);
 // leg->AddEntry((TObject*)0, "+ #left(#frac{A_c + A_l}{#pi}#right)sin^{2}#theta cos^{2}#theta]", " ");
 // leg->AddEntry((TObject*)0, "", "");
 leg->AddEntry(theta_all, "Simulaci#acute{o}n de Geant4", "f");
-leg->AddEntry(theta_icn, "Datos ICN", "f");
+// leg->AddEntry(theta_icn, "Datos ICN", "f");
 // leg->AddEntry(theta_pp_in, "Sim-PP", "f");
 leg->Draw();
 

@@ -111,7 +111,10 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   AlN->AddElement(elAl, 1);
   AlN->AddElement(elN, 1);
   // ====================== // end materials
-    
+  
+
+  G4double tolerance = 0.0001 * cm;
+
   // ============== WORLD ============== //
   fWorldLength = 200*cm;
   G4double HalfWorldLength = 1.*fWorldLength;
@@ -122,8 +125,8 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   // =========================================== //
   
   // ============= Colors ================ //
-  G4VisAttributes* attSteel = new G4VisAttributes(G4Colour::Blue());
-  // attSteel->SetForceAuxEdgeVisible(true);
+  G4VisAttributes* attSteel = new G4VisAttributes(G4Colour::White());
+  attSteel->SetForceAuxEdgeVisible(true);
 
   G4VisAttributes* attCu = new G4VisAttributes(G4Colour::Brown());
   // attCu->SetForceAuxEdgeVisible(true);
@@ -142,14 +145,15 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
 
 
 
-  G4double fact_transparent = 0.9;
+  G4double fact_transparent = 0.0;
   G4VisAttributes* semiTransparentYellow = new G4VisAttributes(G4Colour(1.0, 1.0, 0.0, fact_transparent));
-  semiTransparentYellow->SetForceSolid(true);
+  // semiTransparentYellow->SetForceSolid(true);
 
+  fact_transparent = 0.3;
   G4VisAttributes* semiTransparentLighBlue = new G4VisAttributes(G4Colour(173., 216., 230., fact_transparent));
   // ================================= //
 
-  G4double half_inch = 2.54/2; // cm
+  G4double half_inch = 2.54/2 * cm; // cm
   G4double tube_depth_in_box = 5.0 * cm; // Change this as needed
   G4double Radio_tubs = 3.03/2 * cm;
   G4double thick_tubs = 0.6/2 * cm;
@@ -221,9 +225,9 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   /// + Xcyl
   G4UnionSolid* vac_Step3 = new G4UnionSolid("Vac_Step3", vac_Step2, solid_VacCyl, rotY, G4ThreeVector(0,0,0));
 
-  G4SubtractionSolid* vac_Step4 = new G4SubtractionSolid("Vac_Step4", vac_Step3, solid_TubeHole, 0, G4ThreeVector(Radio_tubs, 0, z_tubes_pos));
+  G4SubtractionSolid* vac_Step4 = new G4SubtractionSolid("Vac_Step4", vac_Step3, solid_TubeHole, 0, G4ThreeVector(0,Radio_tubs, z_tubes_pos));
 
-  G4SubtractionSolid* solid_FinalVacuum = new G4SubtractionSolid("Vacuum_Final", vac_Step4, solid_TubeHole, 0, G4ThreeVector(-Radio_tubs, 0, z_tubes_pos));
+  G4SubtractionSolid* solid_FinalVacuum = new G4SubtractionSolid("Vacuum_Final", vac_Step4, solid_TubeHole, 0, G4ThreeVector(0,-Radio_tubs, z_tubes_pos));
   // --- END Fill Construction
 
   G4LogicalVolume* logicVacuumInterior = new G4LogicalVolume(solid_FinalVacuum, Vacuum, "Logic_VacuumInterior");
@@ -249,7 +253,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   new G4PVPlacement(rotY, G4ThreeVector(dist_flap, 0, 0), logicFlap, "Phys_Flap_PosX", logicWorld, false, 0, true);
   
   // Flap -X
-  new G4PVPlacement(rotY, G4ThreeVector(-dist_flap, 0, 0), logicFlap, "Phys_Flap_NegX", logicWorld, false, 1, true);
+  // new G4PVPlacement(rotY, G4ThreeVector(-dist_flap, 0, 0), logicFlap, "Phys_Flap_NegX", logicWorld, false, 1, true);
 
   // Flap +Y
   new G4PVPlacement(rotX, G4ThreeVector(0, dist_flap, 0), logicFlap, "Phys_Flap_PosY", logicWorld, false, 0, true);
@@ -266,6 +270,9 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   // ============== END STEEL FLAPS ================== //
 
   // ================== COLD HEAD ==================== //
+  // G4RotationMatrix* rotZ = new G4RotationMatrix();
+  // rotFlip->rotateZ(90.*deg);
+
   G4double RadioCyl_Tower = halfsize_box; 
   G4double z_current_pos = halfsize_box;
 
@@ -276,27 +283,29 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   G4Tubs* solid_AlTubeVac = new G4Tubs("AlTubeVac", 0., Radio_tubs - thick_tubs, halfhigh_tubs - 0.001*mm, 0., 2*pi);
   G4LogicalVolume* logicAlTubeVac = new G4LogicalVolume(solid_AlTubeVac, Vacuum, "Logic_AlTubeVac");
   logicAlTubeVac->SetVisAttributes(semiTransparentYellow);
-  // logicAlTubeVac->SetVisAttributes(G4Colour(1.0, 1.0, 0.0, 0.9));
   new G4PVPlacement(0, G4ThreeVector(0,0,0),logicAlTubeVac,"Phys_AlTubeVac", logicAlTube,false, 0, true);
 
   // CRYO SHIELD ----------------
   z_current_pos += half_h_shield;
 
   G4Tubs* solid_Shield_St = new G4Tubs("Shield_St", RadioCyl_Tower - half_inch, RadioCyl_Tower, half_h_shield, 0, 2*pi);
-  G4LogicalVolume* logicShieldSt = new G4LogicalVolume(solid_Shield_St, Vacuum, "Logic_Shield_St");
+  G4LogicalVolume* logicShieldSt = new G4LogicalVolume(solid_Shield_St, Steel, "Logic_Shield_St");
   new G4PVPlacement(0, G4ThreeVector(0,0, z_current_pos), logicShieldSt, "Phys_Shield_St", logicWorld, false, 0, true);
+
+  new G4PVPlacement(rotY, G4ThreeVector(-half_h_shield-halfsize_box,0, 0), logicShieldSt, "Phys_Shield_St", logicWorld, false, 0, true);
+  new G4PVPlacement(rotY, G4ThreeVector(-half_h_shield*2-halfsize_box-flap_thickness, 0, 0), logicFlap, "Phys_Flap_NegX", logicWorld, false, 1, true);
+  logicShieldSt->SetVisAttributes(attSteel);
 
   G4Tubs* solid_Shield_Vac_Raw = new G4Tubs("Shield_Vac_Raw", 0., RadioCyl_Tower - half_inch, half_h_shield, 0, 2*pi);
   
   // Restamos los agujeros para los tubos (ubicados en +/- Radio_tubs en X)
   // Importante: El agujero es largo, así que centrado en Z corta todo el cilindro
   G4double local_z_shield = z_tubes_pos - z_current_pos;
-  G4SubtractionSolid* vac_Sh_Step1 = new G4SubtractionSolid("Vac_Sh_S1", solid_Shield_Vac_Raw, solid_TubeHole, 0, G4ThreeVector(Radio_tubs, 0, local_z_shield));
-  G4SubtractionSolid* solid_Shield_Vac = new G4SubtractionSolid("Vac_Sh_Fin", vac_Sh_Step1, solid_TubeHole, 0, G4ThreeVector(-Radio_tubs, 0, local_z_shield));
+  G4SubtractionSolid* vac_Sh_Step1 = new G4SubtractionSolid("Vac_Sh_S1", solid_Shield_Vac_Raw, solid_TubeHole, 0, G4ThreeVector(0,Radio_tubs, local_z_shield));
+  G4SubtractionSolid* solid_Shield_Vac = new G4SubtractionSolid("Vac_Sh_Fin", vac_Sh_Step1, solid_TubeHole, 0, G4ThreeVector(0,-Radio_tubs, local_z_shield));
   
   G4LogicalVolume* logicShieldVac = new G4LogicalVolume(solid_Shield_Vac, Vacuum, "Logic_Shield_Vac");
   new G4PVPlacement(0, G4ThreeVector(0,0, z_current_pos), logicShieldVac, "Phys_Shield_Vac", logicWorld, false, 0, true);
-  logicShieldSt->SetVisAttributes(attSteel);
   logicShieldVac->SetVisAttributes(semiTransparentYellow); // Amarillo transp.
 
   z_current_pos += half_h_shield; // Movemos cursor al final del Shield
@@ -310,8 +319,8 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   new G4PVPlacement(0, G4ThreeVector(0,0, z_current_pos), logicFlangeSt, "Phys_Flange_St", logicWorld, false, 0, true);
 
   G4Tubs* solid_Flange_Vac_Raw = new G4Tubs("Flange_Vac_Raw", 0., RadioCyl_Tower - inRadio_flange, half_h_flange, 0, 2*pi);  
-  G4SubtractionSolid* vac_Fl_Step1 = new G4SubtractionSolid("Vac_Fl_S1", solid_Flange_Vac_Raw, solid_TubeHole, 0, G4ThreeVector(Radio_tubs, 0, 0));
-  G4SubtractionSolid* solid_Flange_Vac = new G4SubtractionSolid("Vac_Fl_Fin", vac_Fl_Step1, solid_TubeHole, 0, G4ThreeVector(-Radio_tubs, 0, 0));
+  G4SubtractionSolid* vac_Fl_Step1 = new G4SubtractionSolid("Vac_Fl_S1", solid_Flange_Vac_Raw, solid_TubeHole, 0, G4ThreeVector(0,Radio_tubs, 0));
+  G4SubtractionSolid* solid_Flange_Vac = new G4SubtractionSolid("Vac_Fl_Fin", vac_Fl_Step1, solid_TubeHole, 0, G4ThreeVector(0,-Radio_tubs, 0));
 
   G4LogicalVolume* logicFlangeVac = new G4LogicalVolume(solid_Flange_Vac, Vacuum, "Logic_Flange_Vac");
   // G4LogicalVolume* logicFlangeVac = new G4LogicalVolume(solid_Flange_Vac_Raw, Vacuum, "Logic_Flange_Vac");
@@ -335,8 +344,8 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   new G4PVPlacement(0, G4ThreeVector(0,0, z_current_pos), logicInterSt, "Phys_Inter_St", logicWorld, false, 0, true);
 
   G4Tubs* solid_Inter_Vac_Raw = new G4Tubs("Inter_Vac_Raw", 0., Radio_interface - halfinterface_size, half_h_inter, 0, 2*pi);  
-  G4SubtractionSolid* vac_In_Step1 = new G4SubtractionSolid("Vac_In_S1", solid_Inter_Vac_Raw, solid_TubeHole, 0, G4ThreeVector(Radio_tubs, 0, 0));
-  G4SubtractionSolid* solid_Inter_Vac = new G4SubtractionSolid("Vac_In_Fin", vac_In_Step1, solid_TubeHole, 0, G4ThreeVector(-Radio_tubs, 0, 0));
+  G4SubtractionSolid* vac_In_Step1 = new G4SubtractionSolid("Vac_In_S1", solid_Inter_Vac_Raw, solid_TubeHole, 0, G4ThreeVector(0,Radio_tubs, 0));
+  G4SubtractionSolid* solid_Inter_Vac = new G4SubtractionSolid("Vac_In_Fin", vac_In_Step1, solid_TubeHole, 0, G4ThreeVector(0,-Radio_tubs, 0));
 
   G4LogicalVolume* logicInterVac = new G4LogicalVolume(solid_Inter_Vac, Vacuum, "Logic_Inter_Vac");
   // G4LogicalVolume* logicInterVac = new G4LogicalVolume(solid_Inter_Vac_Raw, Vacuum, "Logic_Inter_Vac");
@@ -350,9 +359,9 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   // G4double z_tubes_pos = 22.77 * cm;
 
   // -- Tubo 1 (+X)
-  new G4PVPlacement(0, G4ThreeVector(Radio_tubs, 0, z_tubes_pos), logicAlTube, "Phys_Tube1", logicWorld, false, 0, true);
+  new G4PVPlacement(0, G4ThreeVector(0,Radio_tubs, z_tubes_pos), logicAlTube, "Phys_Tube1", logicWorld, false, 0, true);
   // -- Tubo 2 (-X)
-  new G4PVPlacement(0, G4ThreeVector(-Radio_tubs, 0, z_tubes_pos), logicAlTube, "Phys_Tube2", logicWorld, false, 1, true);
+  new G4PVPlacement(0, G4ThreeVector(0,-Radio_tubs, z_tubes_pos), logicAlTube, "Phys_Tube2", logicWorld, false, 1, true);
   // END Aluminum tubs ---
 
 
@@ -380,15 +389,16 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   logicHeadVac->SetVisAttributes(semiTransparentYellow);
   // ================== END COLD HEAD ==================== //
 
-  // =================== CU BASE  + CCD =====================
-
+  // ==============================
+  // CU BASE 
+  // ==============================
   G4double Radio_cold_tubs = 3.208/2 * cm;
-  G4double halfhigh_cold_tubs = 5.0/2 * cm;
+  G4double halfhigh_cold_tubs = 1.0/2 * cm;
   G4double distancia_centros = 2 * Radio_tubs; // 3.03 cm
 
   G4Tubs* solid_ColdExt_Raw = new G4Tubs("ColdExtension", 0., Radio_cold_tubs, halfhigh_cold_tubs, 0., 2*pi);
 
-  G4UnionSolid* solid_ColdExt = new G4UnionSolid("ColdExt_Joined", solid_ColdExt_Raw, solid_ColdExt_Raw, 0, G4ThreeVector(-distancia_centros, 0, 0));
+  G4UnionSolid* solid_ColdExt = new G4UnionSolid("ColdExt_Joined", solid_ColdExt_Raw, solid_ColdExt_Raw, 0, G4ThreeVector(0,-distancia_centros, 0));
 
   G4LogicalVolume* logicColdExt = new G4LogicalVolume(solid_ColdExt, Cu, "Logic_ColdExt");
   logicColdExt->SetVisAttributes(attCu);
@@ -397,7 +407,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   G4double z_pos_cold = z_bottom_al_tubes - halfhigh_cold_tubs;
   G4double posX_tubes = Radio_tubs;
 
-  new G4PVPlacement(0, G4ThreeVector(Radio_tubs, 0, z_pos_cold), logicColdExt, "Phys_ColdExt", vacuum_stLV, false, 0, true);
+  new G4PVPlacement(0, G4ThreeVector(0,Radio_tubs, z_pos_cold), logicColdExt, "Phys_ColdExt", vacuum_stLV, false, 0, true);
 
   // Cu cryo base
   G4double Radio_basecold = 7.06/2 * cm;
@@ -407,9 +417,48 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   G4LogicalVolume* logicBaseDisk = new G4LogicalVolume(solid_BaseDisk, Cu, "Logic_BaseDisk");
   logicBaseDisk->SetVisAttributes(attCu);
 
-  // El disco va justo debajo de las extensiones (Cálculo original, está perfecto)
-  G4double z_pos_disk = z_pos_cold - halfhigh_cold_tubs - halfhigh_basecold;
+  // El disco va justo debajo de las extensiones 
+  G4double z_pos_disk = z_pos_cold - halfhigh_cold_tubs - halfhigh_basecold*1;
   new G4PVPlacement(0, G4ThreeVector(0, 0, z_pos_disk), logicBaseDisk, "Phys_BaseDisk", vacuum_stLV, false, 0, true);
+
+  // ========================================================
+  // CU BOX
+  // ========================================================
+  G4double units = 1 * cm; 
+  G4double lateral_wall_x = 11.9/2 * units; // Units: cm
+  G4double lateral_wall_y = 0.8/2 * units;
+  G4double lateral_wall_z = 12.215/2 * units;
+
+  G4double upper_wall_x = 11.9/2 * units;
+  G4double upper_wall_y = 10.31/2 * units;
+  G4double upper_wall_z = 0.9525/2 *units;
+
+  G4double upper_base_x = 6.35/2 * units;
+  G4double upper_base_y = 6.35/2 * units;
+  G4double upper_base_z = 0.953/2 * units;
+
+  G4Box* lateral_wall = new G4Box("lateral_wall", lateral_wall_x, lateral_wall_y, lateral_wall_z);
+  G4LogicalVolume* lateral_wallCu = new G4LogicalVolume(lateral_wall, Cu, "lateral_wallCu");
+  lateral_wallCu->SetVisAttributes(attCu);
+
+
+  G4Box* upper_wall = new G4Box("upper_wall", upper_wall_x, upper_wall_y, upper_wall_z);
+  G4LogicalVolume* upper_wallCu = new G4LogicalVolume(upper_wall, Cu, "upper_wallCu");
+  upper_wallCu->SetVisAttributes(attCu);
+
+  G4Box* upper_base = new G4Box("upper_base", upper_base_x, upper_base_y, upper_base_z);
+  G4LogicalVolume* upper_baseCu = new G4LogicalVolume(upper_base, Cu, "upper_baseCu");
+  upper_baseCu->SetVisAttributes(attCu);
+
+  G4double lateral_wall_zpos = z_pos_disk - halfhigh_basecold - upper_base_z*0 - lateral_wall_z;
+  new G4PVPlacement(0, G4ThreeVector(0, -(upper_wall_y + lateral_wall_y + tolerance), lateral_wall_zpos), lateral_wallCu, "lateral_wallCu1", vacuum_stLV, false, 0, true);
+  new G4PVPlacement(0, G4ThreeVector(0, (upper_wall_y + lateral_wall_y + tolerance), lateral_wall_zpos), lateral_wallCu, "lateral_wallCu2", vacuum_stLV, false, 0, true);
+  new G4PVPlacement(0, G4ThreeVector(0, 0, z_pos_disk - halfhigh_basecold - upper_base_z), upper_wallCu, "upper_wallCu", vacuum_stLV, false, 0, true);
+  new G4PVPlacement(0, G4ThreeVector(0, 0, (lateral_wall_zpos*1 - lateral_wall_z + upper_base_z)), upper_wallCu, "upper_wallCu1", vacuum_stLV, false, 0, true);
+  // new G4PVPlacement(0, G4ThreeVector(0, 0, lateral_wall_z + upper_base_z + tolerance), upper_baseCu, "upper_baseCu", vacuum_stLV, false, 0, true);
+  // ========================================================
+  // END CU BOX
+  // ========================================================
 
   G4double z_offset = 0. * cm; 
 
@@ -497,7 +546,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
 
   G4double x_pos_conn1 = base_y + halfx_conn1*2.77 + 0.001*cm; 
   G4double z_pos_conn1 = z_center_base - (-0.037*cm); 
-  new G4PVPlacement(rotFlip, G4ThreeVector(x_pos_conn1, 0, z_pos_conn1), logicConn1, "Phys_Conn1", vacuum_stLV, false, 0, true);
+  // new G4PVPlacement(rotFlip, G4ThreeVector(x_pos_conn1, 0, z_pos_conn1), logicConn1, "Phys_Conn1", vacuum_stLV, false, 0, true);
 
 
   // CONECTOR 2 ---
@@ -523,7 +572,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   G4double x_pos_conn2 = base_y + halfx_conn1 + 0.136*cm; 
   G4double z_pos_conn2 = (z_pos_conn1 - halfz_conn1) - halfz_conn2 - gap_safety;
 
-  new G4PVPlacement(rotFlip, G4ThreeVector(x_pos_conn2, 0, z_pos_conn2), logicConn2, "Phys_Conn2", vacuum_stLV, false, 0, true);
+  // new G4PVPlacement(rotFlip, G4ThreeVector(x_pos_conn2, 0, z_pos_conn2), logicConn2, "Phys_Conn2", vacuum_stLV, false, 0, true);
 
 
   // LID ---

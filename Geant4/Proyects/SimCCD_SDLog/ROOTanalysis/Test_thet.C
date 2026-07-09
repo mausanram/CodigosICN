@@ -1,13 +1,6 @@
 void Test_thet(){
-TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_nHG_1.root");
-
-// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
-// TFile *file = new TFile("./treesROOT_Barra/Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_0.root");
-
-
-// TTree *tree0 = (TTree*) file0->Get("tree");
-TTree *tree = (TTree*) file->Get("B02Evts");
-// tree->Print();
+TChain *tree = new TChain("B02Evts");
+tree->Add("./root_files/muons*");
 
 
 TFile *f_icn = new TFile("../../../../Simulacion_ab_initio/Edep_NSAMP324_MeV.root"); // INFO ALL_CLUSTERS

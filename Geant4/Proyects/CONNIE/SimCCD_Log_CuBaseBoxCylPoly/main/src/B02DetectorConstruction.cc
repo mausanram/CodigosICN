@@ -247,8 +247,9 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
 
 
   new G4PVPlacement(0, G4ThreeVector(0, -(upper_wall_y + lateral_wall_y + tolerance), 0), lateral_wallCu, "lateral_wallCu1", vac_CylLog, false, 0, true);
-  new G4PVPlacement(0, G4ThreeVector(0, upper_wall_y+ lateral_wall_y+tolerance, 0), lateral_wallCu, "lateral_wallCu2", vac_CylLog, false, 0, true);
+  new G4PVPlacement(0, G4ThreeVector(0, (upper_wall_y + lateral_wall_y + tolerance), 0), lateral_wallCu, "lateral_wallCu2", vac_CylLog, false, 0, true);
   new G4PVPlacement(0, G4ThreeVector(0, 0, lateral_wall_z - upper_wall_z + tolerance), upper_wallCu, "upper_wallCu", vac_CylLog, false, 0, true);
+  new G4PVPlacement(0, G4ThreeVector(0, 0, -(lateral_wall_z - upper_wall_z + tolerance)), upper_wallCu, "upper_wallCu1", vac_CylLog, false, 0, true);
   new G4PVPlacement(0, G4ThreeVector(0, 0, lateral_wall_z + upper_base_z + tolerance), upper_baseCu, "upper_baseCu", vac_CylLog, false, 0, true);
   // ========================================================
   // END CU BOX

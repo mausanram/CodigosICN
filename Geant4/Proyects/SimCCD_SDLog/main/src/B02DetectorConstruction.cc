@@ -108,8 +108,8 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
     //     << G4GeometryTolerance::GetInstance()->GetSurfaceTolerance()/mm
     //     << " mm" << G4endl;
   solidWorld= new G4Box("World",HalfWorldLength,HalfWorldLength,HalfWorldLength);
-  //logicWorld= new G4LogicalVolume( solidWorld, Vacuum, "World", 0, 0, 0);
-  logicWorld= new G4LogicalVolume( solidWorld, Vacuum, "World");
+  logicWorld= new G4LogicalVolume( solidWorld, Vacuum, "World", 0, 0, 0);
+  // logicWorld= new G4LogicalVolume( solidWorld, Vacuum, "World");
   physiWorld = new G4PVPlacement(0,G4ThreeVector(0., 0., 0.), logicWorld, "World", 0, false, 0, true);   
   // =========================================== //
   
@@ -150,14 +150,6 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
 
   G4double pixel_size = 0.0015; // cm
 
-  // G4double XLength = 1.917; // cm
-  // G4double YLength = 1.587; // cm
-  // G4double ZLength = 0.0725; // cm
-  
-  // G4double XLength = 0.6; // cm
-  // G4double YLength = 0.7875; // cm
-  // G4double ZLength = 0.0725*1.; // cm
-
   // ========= Para el ICN ======================= //
   // G4double XLength = 300 * pixel_size; // cm
   // G4double YLength = 529 * pixel_size; // cm (Debe ser la dimensión con mayor tamaño)
@@ -168,18 +160,7 @@ G4VPhysicalVolume* B02DetectorConstruction::Construct()
   G4double ZLength = 0.0725; // cm
   // ============================================================================ //
 
-  // ================= Para CONNIE ================== //
-  // G4double XLength = 420 * pixel_size; // cm
-  // G4double YLength = 1022 * pixel_size; // cm (Debe ser la dimensión con mayor tamaño)
-  // G4double ZLength = 0.068; // cm
 
-  // G4double XLength = 420 * pixel_size; // cm
-  // G4double YLength = 700 * pixel_size; // cm (Debe ser la dimensión con mayor tamaño)
-  // G4double ZLength = 0.068; // cm
-
-  // G4double XLength = 420 * pixel_size; // cm
-  // G4double YLength = 600 * pixel_size; // cm (Debe ser la dimensión con mayor tamaño)
-  // G4double ZLength = 0.068; // cm
 
   
   //Sibox = new G4Box("ccd", HalfWorldLength, HalfWorldLength, HalfWorldLength);

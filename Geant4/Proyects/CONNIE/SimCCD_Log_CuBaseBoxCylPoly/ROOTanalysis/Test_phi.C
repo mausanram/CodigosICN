@@ -2,7 +2,7 @@ void Test_phi(){
 TChain *tree = new TChain("B02Evts");
 // tree->Add("./root_files/muons_1M_vacuum_250x529_file_SDLog_Cu_3.root");
 // tree->Add("./root_files/muons_1M_vacuum_250x529_file_SDLog_Cu_4.root");
-tree->Add("./root_files/muons_1M_vacuum_682x1022_file_SDLog_*.root");
+tree->Add("./root_files/muons_100K*.root");
 
 TFile *file_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_1.0_C_0.root");
 TTree *tree_pp = (TTree*) file_pp->Get("tree");
@@ -100,10 +100,10 @@ canv->cd(1);
 phi_all->Draw();
 func1->Draw("same");
 
-TLegend *leg = new TLegend(0.5, 0.8, 0.9, 0.9);
+TLegend *leg = new TLegend(0.5, 0.7, 0.1, 0.6);
 // leg->SetTextAlign(11);
 leg->AddEntry(func1, "A_{2}", "l");
-leg->AddEntry(phi_all, "Datos Simulados", "f");
+// leg->AddEntry(phi_all, "Datos Simulados", "f");
 leg->Draw();
 
 const double line_hight = 1500;

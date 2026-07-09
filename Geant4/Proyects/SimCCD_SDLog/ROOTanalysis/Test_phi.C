@@ -1,15 +1,6 @@
 void Test_phi(){
-//TFile *file = new TFile("Sim_ab_initio_NMUONS_300000.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_400000.root");
-// TFile *file = new TFile("Sim_ab_initio_NMUONS_10000_PLANES_3.0x3.0_RADIO_12_.root");
-TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog.root");
-
-// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_200000_PLANES_150x150_RADIO_100.root");
-// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_500000_PLANES_150x150_RADIO_100(1).root");
-// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_100000_PLANES_150x150_RADIO_450_0.root");
-// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_1.root");
-// TFile *file = new TFile("Sim_ab_initio_Barra_NMUONS_300000_PLANES_150x150_RADIO_450_0.root");
-TTree *tree = (TTree*) file->Get("B02Evts");
+TChain *tree = new TChain("B02Evts");
+tree->Add("./root_files/muons*");
 
 TFile *file_pp = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_1.0_C_0.root");
 TTree *tree_pp = (TTree*) file_pp->Get("tree");

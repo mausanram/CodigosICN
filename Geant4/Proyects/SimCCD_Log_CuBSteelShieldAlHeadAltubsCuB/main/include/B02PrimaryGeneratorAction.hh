@@ -39,8 +39,8 @@ class B02PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     G4String                         rndmFlag;	   //flag for a rndm impact point
     
     double R = 120.0;
-    double px = 4.0;
-    double py = 4.0; 
+    double px = 3.0;
+    double py = 3.0; 
 
     // ==== Dimensiones para CONNIE (1022x420) ==== //
     // double R = 7.; // cm
