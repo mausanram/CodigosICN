@@ -25,7 +25,8 @@ double tlow = 0.;
 double thi = 1000.;
 
 TH1F *edep_icn = new TH1F("edep_icn", "Espectro de Energ#acute{i}a Depositada", NB, tlow, thi);
-edep_icn->GetXaxis()->SetTitle("Energ#acute{i}a (keV)");
+edep_icn->GetXaxis()->SetTitle("Energ#acute{i}a [keV]");
+edep_icn->GetYaxis()->SetTitle("Eventos");
 edep_icn->SetLineStyle(1);
 edep_icn->SetLineColor(1);
 edep_icn->SetStats(0);

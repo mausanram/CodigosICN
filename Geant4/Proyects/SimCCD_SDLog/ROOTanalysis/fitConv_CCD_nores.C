@@ -163,7 +163,7 @@ void fitConv_CCD_nores() {
 //    hex->SetMaximum((rebinf/10)*8*hex->GetMaximum());
 //    hex->SetMaximum(20000);
    hex->SetTitle("Energy histogram");
-   hex->SetXTitle("Energ#acute{i}a (keV)");
+   hex->SetXTitle("Energ#acute{i}a [keV]");
    hex->GetYaxis()->SetTitleOffset(1.1);
 //    hex->SetYTitle("# Muons");
    hex->SetLineColor(3);

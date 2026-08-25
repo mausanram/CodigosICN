@@ -1,8 +1,6 @@
 void Test_LvsThet0(){
-// TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
-// TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_2.root");
-TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_nHG_1.root");
-TTree *tree = (TTree*) file->Get("B02Evts");
+TChain *tree = new TChain("B02Evts");
+tree->Add("./root_files/muons*");
 
 
 TFile *file0 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_1.0_C_0.root");
@@ -18,17 +16,17 @@ double thi = TMath::Pi()/2.0;
 // TH1F *L = new TH1F("L", "Distance Distribution (CCD size: 0.9x0.6x0.0725 cm)", NB, tlow, thi);
 // L->GetXaxis()->SetTitle("Distance (cm)");
 TH2F *histLT = new TH2F("histLT", "Lvs#theta (Geant4)", NBL, llo, lhi, NBT, tlo, thi);
-histLT->GetXaxis()->SetTitle(" Distance (cm)");
-histLT->GetYaxis()->SetTitle("#theta (rad)");
+histLT->GetXaxis()->SetTitle(" Distancia [cm]");
+histLT->GetYaxis()->SetTitle("#theta [rad]");
 histLT->SetStats(0);
 
 TH2F *histLTpp = new TH2F("histLTpp", "Lvs#theta (SimPP)", NBL, llo, lhi, NBT, tlo, thi);
-histLTpp->GetXaxis()->SetTitle(" Distance (cm)");
-histLTpp->GetYaxis()->SetTitle("#theta (rad)");
+histLTpp->GetXaxis()->SetTitle(" Distancia [cm]");
+histLTpp->GetYaxis()->SetTitle("#theta [rad]");
 histLTpp->SetStats(0);
 
 
-tree->Draw("thetaPri:LengthMuLAr>>histLT", "nHitBar >0");
+tree->Draw("thetaPri:LengthMuLAr>>histLT", "nHitBar >0 && LengthMuLAr>0");
 
 tree0->Draw("thet:l>>histLTpp", "l>0");
 // Fil histograms

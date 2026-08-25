@@ -17,12 +17,12 @@ double thi = TMath::Pi()/2.0;
 TH1F *theta_all = new TH1F("theta_all", "Distribuci#acute{o}n angular #theta de todos los muones simulados", NB, tlow, thi);
 theta_all->GetXaxis()->SetTitle("#theta (rad)");
 theta_all->SetLineColor(2);
-theta_all->SetStats(0);
+// theta_all->SetStats(0);
 
 TH1F *theta_in = new TH1F("theta_in", "Distribuci#acute{o}n angular #theta de los muones que impactaron la CCD", NB, tlow, thi);
 theta_in->GetXaxis()->SetTitle("#theta(rad)");
 theta_in->SetLineColor(2);
-theta_in->SetStats(0);
+// theta_in->SetStats(0);
 
 TH1F *theta_icn = new TH1F("theta_icn", "Distribuci#acute{o}n angular #theta", NB, tlow, thi);
 theta_icn->GetXaxis()->SetTitle("#theta(rad)");

@@ -34,7 +34,7 @@ plt.rcParams.update({
 })
 
 
-delta_cut = 1600 # e-   
+delta_cut = 1900 # e-   
 
 def diffution_curve(x, alpha, beta):
     return np.sqrt((alpha * np.log(1 - (beta * x))))/15
@@ -89,7 +89,7 @@ def data_extraction(path, extension, list_muons, flag_flip, delta_cut, muon_type
         thk=725.    # (um) CCD thickness.
         pixwd=15.   # (um) pixel size.
         ms = np.arange(0,len(list_spreads))+1
-        muonl=ms[-4]*pixwd  # (um) Muon length
+        muonl=ms[-5]*pixwd  # (um) Muon length
         tgang=thk/muonl # Tangent of muon angle.
         z=((ms-0.5)*pixwd)*tgang
 
@@ -102,6 +102,8 @@ def data_extraction(path, extension, list_muons, flag_flip, delta_cut, muon_type
 def data_visualization(list_depth_all, list_spread_all, extension):
     thk = 725
     list_thk = np.arange(0, thk)
+
+    print(len(list_depth_all))
 
     fig, axs = plt.subplots(figsize = [10,10])
     axs.scatter(list_depth_all, list_spread_all, color="b", marker=".", s=9)
@@ -123,9 +125,13 @@ def data_visualization(list_depth_all, list_spread_all, extension):
     # axs.set_ylim(0,1.25)
     # axs.set_xlim(-1, 680)
 
-    axs.set_ylabel("Spread [px]")
-    axs.set_xlabel(r"Depth [$\mu$m]")
-    axs.set_title(f"Size-to-Depth Relation (ICN data) Extension {extension}")
+    # axs.set_ylabel("Spread [px]")
+    # axs.set_xlabel(r"Depth [$\mu$m]")
+    # axs.set_title(f"Size-to-Depth Relation Extension {extension}")
+
+    axs.set_ylabel("Anchura [px]")
+    axs.set_xlabel(r"Profundidad [$\mu$m]")
+    axs.set_title(f"Relación Anchura-Profundidad (Extension {extension})")
 
     axs.legend()
     axs.grid()
@@ -354,7 +360,8 @@ def main():
             #     continue
             basedir = f"./muons_ext{Extension}{list_types[type]}"
             threshold = delta_cut
-            print(f"threshold: {threshold}")
+            # print(f"threshold: {threshold}")
+            print(f"basedir: {basedir}")
             if type == 1 or type == 4:
                 flag_flip = True
             else:

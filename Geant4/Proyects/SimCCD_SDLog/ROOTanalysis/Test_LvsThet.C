@@ -1,8 +1,6 @@
 void Test_LvsThet(){
-// TFile *file = new TFile("./root_files/muons_2M_vacuum_file.root");
-// TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_2.root");
-TFile *file = new TFile("./root_files/muons_1M_vacuum_250x529_file_m_old_SDLog_nHG_0.root");
-TTree *tree = (TTree*) file->Get("B02Evts");
+TChain *tree = new TChain("B02Evts");
+tree->Add("./root_files/muons*");
 
 
 TFile *file0 = new TFile("../../../../Simulacion_ab_initio/Sim_ab_initio_NMUONS_1000000_PLANES_1.5_RADIO_8_CCDSIZE_250X529_SIGMA_1.0_C_0.root");
