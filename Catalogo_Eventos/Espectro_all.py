@@ -105,11 +105,9 @@ def main(argObj):
                         nerr_ext = nerr_ext + 1
                         print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
 
-
             except:
                 print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
                 continue
-            
             
             dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, extension=extension, gain=Gain, 
                                                    ratio_keV=ratio_keV, unidades= units, offset=Offset, sigma_ADUs = sig_ADUs)
@@ -118,7 +116,6 @@ def main(argObj):
             
             del oScan
             
-
             label_img, n_events = sk.measure.label(dataCal > fondo_value, connectivity=2, return_num=True)
             prop = sk.measure.regionprops(label_img, dataCal)
             
