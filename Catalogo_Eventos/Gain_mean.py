@@ -271,10 +271,9 @@ def main(argObj):
     print('The main gain of extension 4 is: ', dict_gains['extension_4']['Gain'], ' +- ', dict_gains['extension_4']['Err_gain'], ' & Sigma: ', dict_gains['extension_4']['Sigma'], ' +- ', dict_gains['extension_4']['Err_sig'], ' ADU/e-')
 
 
-
-    file_object_histogram = open(file_name, 'wb')
-    pkl.dump(dict_gains, file_object_histogram) ## Save the dictionary with all info 
-    file_object_histogram.close()
+    file_object = open(file_name, 'wb')
+    pkl.dump(dict_gains, file_object) ## Save the dictionary with all info 
+    file_object.close()
         
 
 if __name__ == "__main__":
