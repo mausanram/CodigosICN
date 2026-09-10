@@ -1,6 +1,5 @@
 from astropy.io import fits
 import numpy as np
-import matplotlib.pyplot as plt
 import numpy.ma as ma
 import sys
 import skimage as sk
@@ -10,130 +9,61 @@ import os
 
 from functions_MuonsNSAMP1 import *
 
-# from ROOT import *
-
 ## CONSTANTES ## 
 current_path = os.getcwd()
-
-## Datos de la CCd
-CCD_depth = 725 #micras
-px_to_cm = 0.0015
-px_to_micras = 15
-micra_to_cm = 1 / 10000
 
 ## Datos del filtro de muones GENERAL
 Solidit = 0.65
 Elip = 0.65
 dedl_value_min = 1400
 
-## Datos del filtro POR EXTENSIÓN
-list_Elip = [0.65, 0.65, 0, 0.65]
-list_Solidit = [0.65, 0.65, 0, 0.65]
-
-ratio_keV = 0.00367
+ratio_keVtoe = 0.00367
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
-units = 1
+units = 2
 n_sigmas = 13
 numero_bins = 600
 
-def Gaussian2(x,m,s,g,a1,a2): #data, mean, sigma, gain, height1, heigth2
-    return a1*np.exp(-1/2*((x-m)/s)**2)+a2*np.exp(-1/2*((x-m-g)/s)**2)
-
-def gaussian(x, a, mean, sigma):
-    return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))
+## === Active Area range
+x_min, x_max  = 10, 529
+y_min, y_max  = 10, 250
 
 def main(argObj):
-    list_totalEvents = []
-
-    ### ===== List og all events === ##
-    list_charge_of_all_extension_1 = []
-    list_charge_of_all_extension_2 = []
-    list_charge_of_all_extension_4 = []
-
-    list_elip_of_all_extension_1 = []
-    list_elip_of_all_extension_2 = []
-    list_elip_of_all_extension_4 = []
-
-    list_sol_of_all_extension_1 = []
-    list_sol_of_all_extension_2 = []
-    list_sol_of_all_extension_4 = []
-
-    ### ============================ ###
-
-
-    ### ===== List for muons ===== ###
-    list_EventCharge_extension_2 =[]
-    list_EventCharge_extension_1 = []
-    list_EventCharge_extension_4 = []
-
-    list_DeltaEL_extension_2 = []
-    list_DeltaEL_extension_1 = []
-    list_DeltaEL_extension_4 = []
-
-    list_DeltaL_extension_2 = []
-    list_DeltaL_extension_1 = []
-    list_DeltaL_extension_4 = []
-
-    list_theta_extension_2 = []
-    list_theta_extension_1 = []
-    list_theta_extension_4 = []
-
-    list_phi_extension_2 = []
-    list_phi_extension_1 = []
-    list_phi_extension_4 = []
-
-    list_elip_extension_2 =[]
-    list_elip_extension_1 = []
-    list_elip_extension_4 = []
-
-    list_sol_extension_2 =[]
-    list_sol_extension_1 = []
-    list_sol_extension_4 = []
-
-    list_fit_gain_2 = []
-    list_fit_gain_1 = []
-    list_fit_gain_4 = []
-
-    list_datamasked_extension_2 =[]
-    list_datamasked_extension_1 = []
-    list_datamasked_extension_4 = []
-
-    list_run_extension_2 =[]
-    list_run_extension_1 = []
-    list_run_extension_4 = []
-
-    ### ========================= ###
-
-    nerr_img = 0
-    nerr_ext = 0
-
-    nerr_ext1 = 0
-    nerr_ext2 = 0
-    nerr_ext4 = 0
-
-
     total_images = len(argObj)
     image_in_bucle = 0
 
-    Inicio = datetime.datetime.now()
-    num_images =  'Imágenes Analizadas: ' +  str(total_images)
+    start = datetime.datetime.now()
     
-    print('Hora de inicio del cálculo: ', Inicio)
+    print(f'=== START TIME: {start} === ')
 
-    path= './dict_mean_gains_NSAMP324.pkl'
+    # path= './dict_mean_gains_Muons_NSAMP324.pkl'
+    path_gains= './dict_mean_gains_NSAMP324.pkl'
 
     try:
-        dict_gain = open(path, 'rb')
+        dict_gain = open(path_gains, 'rb')
         data_dict_gain = pkl.load(dict_gain)
         dict_gain.close()
 
-        ext1 = data_dict_gain['extension_1']
-        ext2 = data_dict_gain['extension_2']
-        ext4 = data_dict_gain['extension_4']
+        print(f"Gains file LOADED: {path_gains}. Analizing images...")
 
+        dict_to_save_pkl = dict()
+        list_CCD_array = []
+        for element in list(data_dict_gain.keys()):
+            list_CCD_array.append(int(element.split("_")[1]))
+            dict_to_save_pkl[f"extension_{int(element.split('_')[1])}"] = {"tot_images": total_images, 
+                                                                           "elip_used": Elip, 
+                                                                           "sol_used" : Solidit,
+                                                                           "units" : units,
+                                                                           "nsigmas" : n_sigmas,
+                                                                           "muons" : {"tot_events": 0, "charge": [], "deltaL": [], 
+                                                                                      "deltaEL": [], "theta" : [], "phi": [], 
+                                                                                      "elip": [], "sol": [], "gain": [], 
+                                                                                      "datamasked": [], "run": []},
+                                                                           "all_events" : {"tot_events": 0,"charge": [], "elip": [],
+                                                                                           "sol": []}
+                                                                        }
     except:
-        print(f"Gain file wasn't found in {path}")
+        print(f"Gain file wasn't found in {path}. Aborting ... ")
         exit()
 
     for img in argObj:
@@ -150,67 +80,35 @@ def main(argObj):
             print('Loading error in image ' + str(img) + ' in open the image.')
             continue
         
-        for extension in (0,1,3):
-
-            # extension = 3
-            # extension = 1
-            Elip = list_Elip[extension]
-            Solidit = list_Solidit[extension]
+        for extension in list_CCD_array:
+            extension -= 1
+            # Elip = list_Elip[extension]
+            # Solidit = list_Solidit[extension]
 
             try :
-                # print('Voy a obtener el OsCan y el active area')
-                data = hdu_list[extension].data[:250,10:539]
-                oScan = hdu_list[extension].data[:250,539:]
+                data = hdu_list[extension].data[y_min:y_max, x_min:x_max]
+                oScan = hdu_list[extension].data[y_min:y_max, x_max:]
+                oscan_shape = oScan.shape
 
-                oscan_x = oScan.shape[1]
-                oscan_y = oScan.shape[0]
-
-                header = hdu_list[extension].header
-                # nsamp = float(header['NSAMP'])
-
-                # print('Voy a obtener la mediana de los píxeles')
-                mean_rows_value = []
-                for element in np.arange(0, oscan_y):
-                    row = oScan[element: element +1, 0: oscan_x]
-                    num_row = element + 1
-                    mean_value = np.median(row)
-                    mean_rows_value.append([mean_value])
-
-                true_active_area = data - mean_rows_value
-
+                true_active_area = cleaning_actArea(activeArea=data, OvScan=oScan, x_range=[0, oscan_shape[1]], y_range=[0, oscan_shape[0]])
             except:
                 print('Loading error in extension ' + str(extension) + ' of image ' + str(img) + 'in load the data.')
                 continue
 
-            if extension == 0:
-                Gain = ext1['Gain'] # ADU/e-
-                sig_ADUs = ext1['Sigma'] # ADUs
-            if extension == 1:
-                Gain = ext2['Gain'] # ADU/e-
-                sig_ADUs = ext2['Sigma'] # ADUs
-            if extension == 3:
-                Gain = ext4['Gain'] # ADU/e-
-                sig_ADUs = ext4['Sigma'] # ADUs
+            Gain = data_dict_gain[f"extension_{extension+1}"]["Gain"] # ADU/e-
+            sig_ADUs = data_dict_gain[f"extension_{extension+1}"]["Sigma"] # ADUs  ### CHANGE THE KEY FOR "Sig"
             
-            dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, gain=Gain, ratio_keV=ratio_keV, 
-                                                   unidades= units, sigma_ADUs = sig_ADUs)
-            
+            dataCal, sigma = data_calibrated(active_area=true_active_area, gain=Gain, 
+                                             ratio_keVtoe=ratio_keVtoe, units= units, sigma_ADU=sig_ADUs)
+
             threshold = n_sigmas * sigma
             del oScan
-            
 
             label_img, n_events = sk.measure.label(dataCal > threshold, connectivity=2, return_num=True)
             prop = sk.measure.regionprops(label_img, dataCal)
-            
-            list_totalEvents.append(n_events)
-            # print(nlabels_img)
-            # list_labels.append(label_img)
-            # list_EventsNumber.append(n_events)
-            
+           
             ## Obteniendo el valor promedio del fondo
             fondo_mask = np.invert(label_img == 0)
-            fondo = ma.masked_array(dataCal,fondo_mask)
-            valor_promedio_fondo = fondo.data.mean()
 
             dict_lists = muon_filter(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, 
                                      prop=prop, Solidit=Solidit, Elipticity=Elip, dedl_min= dedl_value_min)
@@ -228,136 +126,63 @@ def main(argObj):
             list_elip_all = dict_lists["non_muons"]["elip"]
             list_sol_all = dict_lists["non_muons"]["sol"]
 
-            if extension == 0: 
-                for index in np.arange(0, len(DeltaEL)):
-                    ### ===== Muons ===== ###
-                    list_DeltaEL_extension_1.append(DeltaEL[index])
-                    list_EventCharge_extension_1.append(list_charge[index])
-                    list_DeltaL_extension_1.append(DeltaL[index])
-                    list_theta_extension_1.append(list_theta[index])
-                    list_phi_extension_1.append(list_phi[index])
-                    list_elip_extension_1.append(list_elip[index])
-                    list_sol_extension_1.append(list_sol[index])
-                    list_fit_gain_1.append(Gain)
-                    list_datamasked_extension_1.append(list_datamasked[index])
-                    list_run_extension_1.append(run)
+            for index in np.arange(0, len(DeltaEL)):
+                ### ===== Muons ===== ###
+                dict_to_save_pkl[f"extension_{extension+1}"]["muons"]["deltaEL"].append(DeltaEL[index])
+                dict_to_save_pkl[f"extension_{extension+1}"]["muons"]["charge"].append(list_charge[index])
+                dict_to_save_pkl[f"extension_{extension+1}"]["muons"]["deltaL"].append(DeltaL[index])
+                dict_to_save_pkl[f"extension_{extension+1}"]["muons"]["theta"].append(list_theta[index])
+                dict_to_save_pkl[f"extension_{extension+1}"]["muons"]["phi"].append(list_phi[index])
+                dict_to_save_pkl[f"extension_{extension+1}"]["muons"]["elip"].append(list_elip[index])
+                dict_to_save_pkl[f"extension_{extension+1}"]["muons"]["sol"].append(list_sol[index])
+                dict_to_save_pkl[f"extension_{extension+1}"]["muons"]["gain"].append(Gain)
+                dict_to_save_pkl[f"extension_{extension+1}"]["muons"]["datamasked"].append(list_datamasked[index])
+                dict_to_save_pkl[f"extension_{extension+1}"]["muons"]["run"].append(run[index])
 
-                for index in np.arange(0, len(list_charge_all_events)):
-                    ### ==== All events ==== ###
-                    list_charge_of_all_extension_1.append(list_charge_all_events[index])
-                    list_elip_of_all_extension_1.append(list_elip_all[index])
-                    list_sol_of_all_extension_1.append(list_sol_all[index])
-                    ### ==================== ###
+            for index in np.arange(0, len(list_charge_all_events)):
+                ### ==== All events ==== ###
+                dict_to_save_pkl[f"extension_{extension+1}"]["all_events"]["charge"].append(list_charge_all_events[index])
+                dict_to_save_pkl[f"extension_{extension+1}"]["all_events"]["elip"].append(list_elip_all[index])
+                dict_to_save_pkl[f"extension_{extension+1}"]["all_events"]["sol"].append(list_sol_all[index])
                     
-            if extension == 1: 
-                for index in np.arange(0, len(DeltaEL)):
-                    list_DeltaEL_extension_2.append(DeltaEL[index])
-                    list_EventCharge_extension_2.append(list_charge[index])
-                    list_DeltaL_extension_2.append(DeltaL[index])
-                    list_theta_extension_2.append(list_theta[index])
-                    list_phi_extension_2.append(list_phi[index])
-                    list_elip_extension_2.append(list_elip[index])
-                    list_sol_extension_2.append(list_sol[index])
-                    list_fit_gain_2.append(Gain)
-                    list_datamasked_extension_2.append(list_datamasked[index])
-                    list_run_extension_2.append(run)
-
-                for index in np.arange(0, len(list_charge_all_events)):
-                    list_charge_of_all_extension_2.append(list_charge_all_events[index])
-                    list_elip_of_all_extension_2.append(list_elip_all[index])
-                    list_sol_of_all_extension_2.append(list_sol_all[index])
-            
-            if extension == 3: 
-                for index in np.arange(0, len(DeltaEL)):
-                    list_DeltaEL_extension_4.append(DeltaEL[index])
-                    list_EventCharge_extension_4.append(list_charge[index])
-                    list_DeltaL_extension_4.append(DeltaL[index])
-                    list_theta_extension_4.append(list_theta[index])
-                    list_phi_extension_4.append(list_phi[index])
-                    list_elip_extension_4.append(list_elip[index])
-                    list_sol_extension_4.append(list_sol[index])
-                    list_fit_gain_4.append(Gain)
-                    list_datamasked_extension_4.append(list_datamasked[index])
-                    list_run_extension_4.append(run)
-
-                for index in np.arange(0, len(list_charge_all_events)):
-                    list_charge_of_all_extension_4.append(list_charge_all_events[index])
-                    list_elip_of_all_extension_4.append(list_elip_all[index])
-                    list_sol_of_all_extension_4.append(list_sol_all[index])
-
-        print('Imagen ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
+        print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
         del hdu_list              
 
-    num_muons = len(list_EventCharge_extension_1) + len(list_EventCharge_extension_2) + len(list_EventCharge_extension_4)
+    total_events_allext = 0
+    muons_detected = 0
+    for extension in list_CCD_array:
+        dict_to_save_pkl[f"extension_{extension}"]["muons"]["tot_events"] = len(dict_to_save_pkl[f"extension_{extension}"]["muons"]["deltaEL"])
+        dict_to_save_pkl[f"extension_{extension}"]["all_events"]["tot_events"] = len(dict_to_save_pkl[f"extension_{extension}"]["all_events"]["charge"]) 
 
-    dict_to_save_pkl = {'Num_Images' : total_images , 'All_Muons_Detected' : num_muons, 'Energy_Units' : units, 
-                        'Elipticity' : list_Elip, 'Solidity' : list_Solidit, 'Fit_errors' : (nerr_ext1, nerr_ext2, nerr_ext4),
+        total_events_allext += dict_to_save_pkl[f"extension_{extension}"]["muons"]["tot_events"]
+        total_events_allext += dict_to_save_pkl[f"extension_{extension}"]["all_events"]["tot_events"]
 
-                        'extension_1' : {'charge' : list_EventCharge_extension_1, 'deltaEL' : list_DeltaEL_extension_1,
-                                         'deltaL' : list_DeltaL_extension_1, 'all_events' : list_charge_of_all_extension_1,
-                                         'theta': list_theta_extension_1, 'phi': list_phi_extension_1, 'gain' : list_fit_gain_1,
-                                         'elip' : list_elip_extension_1, 'sol' : list_sol_extension_1,
-                                         'all_events_elip' : list_elip_of_all_extension_1, 'all_events_sol' : list_sol_of_all_extension_1,
-                                         'datamasked' : list_datamasked_extension_1, 'run' : list_run_extension_1},
+        muons_detected += dict_to_save_pkl[f"extension_{extension}"]["muons"]["tot_events"]
 
-                        'extension_2' : {'charge' : list_EventCharge_extension_2, 'deltaEL' : list_DeltaEL_extension_2, 
-                                        'deltaL' : list_DeltaL_extension_2, 'all_events' : list_charge_of_all_extension_2,
-                                        'theta': list_theta_extension_2, 'phi': list_phi_extension_2,'gain' : list_fit_gain_2, 
-                                        'elip' : list_elip_extension_2, 'sol' : list_sol_extension_2,
-                                        'all_events_elip' : list_elip_of_all_extension_2, 'all_events_sol' : list_sol_of_all_extension_2,
-                                        'datamasked' : list_datamasked_extension_2, 'run' : list_run_extension_2},
+    End = datetime.datetime.now()
 
-                        'extension_4' : {'charge' : list_EventCharge_extension_4, 'deltaEL' : list_DeltaEL_extension_4, 
-                                         'deltaL' : list_DeltaL_extension_4, 'all_events' : list_charge_of_all_extension_4,
-                                         'theta': list_theta_extension_4, 'phi': list_phi_extension_4, 'gain' : list_fit_gain_4, 
-                                         'elip' : list_elip_extension_4, 'sol' : list_sol_extension_4, 
-                                         'all_events_elip' : list_elip_of_all_extension_4, 'all_events_sol' : list_sol_of_all_extension_4,
-                                         'datamasked' : list_datamasked_extension_4, 'run' : list_run_extension_4}
-                                         }
+    print(f'=== End time: {End}')
+    print(f'=== Ellapsed time: {End - start} === \n' )
+    print(f'Analized Images: {total_images}')
 
-    total_events = sum(list_totalEvents)
-    Final = datetime.datetime.now()
+    print(f"Total events detected: {total_events_allext}")
+    print(f"Muons detected: {muons_detected}")
 
-    print('Hora del final de cálculo: ', Final)
-    print('Tiempo de cálculo: ', Final-Inicio)
-    print(num_images)
-    Eventos_Totales = 'Eventos Detectados en Total: ' +  str(total_events)
-    eventos_rectos = 'Muones Detectados: ' + str(num_muons)
-    img_err = 'Imágenes con error al cargar: ' + str(nerr_img)
-    ext_err = 'Error en fit de extensiones: ' + str(nerr_ext)
-    # relacion = total_events / num_muons
+    init_path = 'dict_muons_NSAMP324_Extensions_1_2_4_NIMGS_' + str(len(argObj)) + \
+                '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + \
+                '_DEDL_' + str(dedl_value_min)+'_SIZE_' + str(x_max) + 'x' + str(y_max)
     
-    # eventos_circulares = 'Muones Circulares Detectados: ' + str(len(list_EventosCirc))
-    # print('Número de elementos de la lista "list_EventCharge_AllExtensions": ', len(list_EventCharge_AllExtensions))
-    # print('elementos de la lista "list_EventCharge_AllExtensions":', list_EventCharge_AllExtensions)
-    print(img_err)
-    print(ext_err)
-    print(Eventos_Totales)
-    print(eventos_rectos)
-    print('Error in extension 1, 2, 4 fits: ', nerr_ext1, nerr_ext2, nerr_ext4)
-    
+    if units == 0: end_path = '_ADU.pkl'
+    elif units == 1: end_path = '_electron.pkl'
+    elif units == 2: end_path = '_keV.pkl'
 
-    if units == 0:
-        file_name = 'dict_muons_NSAMP324_Extensions_1_to_4_Imgs_' + str(len(argObj)) + \
-            '_Sol_' + str(Solidit) + '_Elip_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + '_ADUs.pkl'
-    
-    elif units == 1:
-        file_name = 'dict_muons_NSAMP324_Extensions_1_2_4_NIMGS_' + str(len(argObj)) + \
-            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + \
-            '_SIZE_250x539_electrons.pkl'
-    
-    elif units == 2:
-        file_name = 'dict_muons_NSAMP324_Extensions_1_2_4_NIMGS_' + str(len(argObj)) + \
-            '_SOL_' + str(Solidit) + '_ELIP_'+str(Elip) + '_NSIGMAS_' + str(n_sigmas) + \
-            '_DEDL_' + str(dedl_value_min) + '_SIZE_250x539_KeV_n.pkl'
+    file_name = init_path + end_path
 
     file_object_histogram = open(file_name, 'wb')
     pkl.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
 
     print('Dictionary saved in', current_path + '/' + file_name, ' as a binary file. To open use library "pickle". ')
-
-    # plt.show() 
 
 
 if __name__ == "__main__":

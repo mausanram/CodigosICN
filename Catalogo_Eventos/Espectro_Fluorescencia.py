@@ -1,13 +1,13 @@
-from functions_py import *
+from functions_MuonsNSAMP1 import *
+from astropy.io import fits
 import matplotlib.pyplot as plt
-import matplotlib as mpl
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy.ma as ma
 import pandas as pd 
-# import cv2
 import skimage as sk
-from sympy import Ellipse, Point
 import pickle
+import datetime
+import math
+import sys
 
 ratio_keV = 0.0037
 CCD_depth = 725 #micras
@@ -105,14 +105,14 @@ def main(argObj):
             for event in range(1,n_events):
                 # print('Estoy en los eventos')
                 mask = np.invert(label_img == event)
-                loc = ndimage.find_objects(label_img == event)[0]
+                loc = nd.find_objects(label_img == event)[0]
                 data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
                                          mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
                 
                 # del dataCal
 
-                coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
-                coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
+                coordX_centerCharge = round(nd.center_of_mass(data_maskEvent)[1])
+                coordY_centerCharge = round(nd.center_of_mass(data_maskEvent)[0])
 
                 MeanValue_Event = data_maskEvent.mean()
                 MinValue_Event = data_maskEvent.min()

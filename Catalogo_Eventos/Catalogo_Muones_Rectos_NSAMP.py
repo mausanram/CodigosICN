@@ -1,8 +1,5 @@
-import math
 from functions_MuonsNSAMP1 import *
 from astropy.io import fits
-import scipy.ndimage as ndimage
-from scipy.optimize import curve_fit
 import numpy as np
 import matplotlib.pyplot as plt
 import numpy.ma as ma
@@ -11,8 +8,6 @@ import skimage as sk
 import datetime
 import pickle
 import os
-
-# from ROOT import *
 
 ## CONSTANTES ## 
 current_path = os.getcwd()

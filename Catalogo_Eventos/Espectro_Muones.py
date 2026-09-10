@@ -1,12 +1,8 @@
 # from functions_py import math
 from functions_MuonsNSAMP1 import *
-
-import math
 from astropy.io import fits
 import scipy.ndimage as ndimage
-from scipy.optimize import curve_fit
 import numpy as np
-import matplotlib.pyplot as plt
 import numpy.ma as ma
 import sys
 import skimage as sk

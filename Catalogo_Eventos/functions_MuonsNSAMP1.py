@@ -1,17 +1,17 @@
-from functions_py import *
-import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
+import numpy.ma as ma
 import pandas as pd 
 import skimage as sk
 import scipy.ndimage as nd
-import array
+import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+from astropy.io import fits
 
+from ROOT import TMath, TF1, TH1F, TH2F, TCanvas, gStyle, TProfile, TGraphErrors, TLegend
 
-from ROOT import TMath, TF1, TH1F, TH2F, TCanvas, gStyle, TProfile, TGraphErrors
 
 ### Distribución Gaussiana ###
-def gaussian(x, a, mean, sigma): 
+def gaussian(x, mean, a, sigma): 
     return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))
 
 ### Distribución de Doble Gaussiana ###
@@ -19,6 +19,33 @@ def Gaussian2(x,m,s,g,a1,a2): #data, mean, sigma, gain, height1, heigth2
     return a1*np.exp(-1/2*((x-m)/s)**2)+a2*np.exp(-1/2*((x-m-g)/s)**2)
 
 ### ============================== Funciones de calibración de imágenes ============================== ###
+def cleaning_oScan(overscan, range_perncetiles=[1, 99]):
+    lower_bound = np.percentile(overscan, range_perncetiles[0])   # Cuts off bottom 1%
+    upper_bound = np.percentile(overscan, range_perncetiles[1])  # Cuts off top 1%
+
+    filtered_oScan = overscan[(overscan >= lower_bound) & (overscan <= upper_bound)]
+    hist, bins_edges = np.histogram(filtered_oScan, bins='auto')
+    max_bin_idx = np.argmax(hist)
+
+    lower_boundary = bins_edges[max_bin_idx]
+    upper_boundary = bins_edges[max_bin_idx + 1]
+
+    tallest_bin_data = filtered_oScan[(filtered_oScan >= lower_boundary) & (filtered_oScan <= upper_boundary)]
+    offset = tallest_bin_data.max()
+    cleaned_overscan = overscan - offset
+
+    return cleaned_overscan, offset
+
+def cleaning_actArea(activeArea, OvScan, x_range, y_range):
+    medi_rows_value = []
+    for element in range(y_range[0], y_range[1]):
+        row = OvScan[element: element +1, x_range[0]: x_range[1]]
+        # num_row = element + 1
+        medi_value = np.median(row)
+        medi_rows_value.append([medi_value])
+    cleaned_actArea = activeArea - medi_rows_value 
+    return cleaned_actArea
+
 def oScan_fit_NSAMP1(extensión, active_area, oScan, Bins, make_figure_flag = False) -> dict:
     Maxfev = 10000000
     P0=[10, 2000, 900]
@@ -111,200 +138,189 @@ def oScan_fit_NSAMP1(extensión, active_area, oScan, Bins, make_figure_flag = Fa
     
     return dict_popt
 
-def oScan_fit_NSAMP324(extensión, active_area, oScan, Bins, make_figure_flag = False) -> dict:
-    Maxfev = 100000
-    P0=[10, 2000, 900]
-    Range_x_label = [-200, 400]
+def oScan_fit_NSAMP324(oScan, Bins, range_fit_1, range_fit_2, list_p0 = [0, 1000, 80],  make_figure_flag = False) -> dict:
+    Maxfev = 10000
 
     if make_figure_flag:
-        fig_all, axs_all = plt.subplots(1, 1, figsize=(10, 10))
-        hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins,)
-        offset = bins_edges[np.argmax(hist)]
-        print('Offset Value: ', offset, ' ADUs')
+        fig_all, axs_all = plt.subplots(2, 1, figsize=(10, 10))
 
-        Overscan_plane = oScan - offset
-        median_oScan = np.median(Overscan_plane.flatten())
-        max_oScan = np.max(Overscan_plane.flatten())
-        min_oScan = np.min(Overscan_plane.flatten())
+        Overscan_plane, offset = cleaning_oScan(oScan)
+        print('Offset value: ', offset, ' ADU')
 
-        diff = (max_oScan - abs(median_oScan)) / 2
-        # print(median_oScan, diff, min_oScan)
-
-        # Range = (min_oScan, max_oScan)
-        if 40 * abs(median_oScan) <  diff:
-            Range = (min_oScan, diff)
-            print(Range)
-
-        else:
-            Range = (min_oScan, diff * 2)
-            print(Range)
-
-        bin_heights, bin_borders, _ = axs_all.hist(Overscan_plane.flatten(), bins = Bins,range = Range_x_label, label="Pixeles del Overscan")
-
+        ## Gaussian Fit 1
+        bin_heights, bin_borders, _ = axs_all[0].hist(Overscan_plane.flatten(), bins = Bins,range = range_fit_1, label="Data")
         bin_centers = np.zeros(len(bin_heights), dtype=float)
         offset_fit = bin_borders[np.argmax(bin_heights)]
 
         for p in range(len(bin_heights)):
             bin_centers[p]=(bin_borders[p+1]+bin_borders[p])/2
 
-        # xmin_fit, xmax_fit = offset_fit-(10*expgain[extension-1])/math.sqrt(nsamp), offset_fit+(10*expgain[extension-1])/math.sqrt(nsamp)			# Define fit range
         xmin_fit, xmax_fit = bin_centers[0], bin_centers[-1]
-        # print(xmin_fit, xmax_fit)
-
         bin_heights = bin_heights[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
         bin_centers = bin_centers[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
- 
-        popt, pcov = curve_fit(Gaussian2, bin_centers, bin_heights, maxfev=Maxfev, p0 = [3, 200, 200, 900, 100], bounds = ((-10, 10), (150, 200), (150, 210)))		# Fit histogram with gaussian
-        axs_all.plot(bin_centers, Gaussian2(bin_centers, *popt), 'k', label = 'Ajuste Gaussiano')	
 
-        dict_popt = {'Mean' : popt[0], 'sigma' : abs(popt[1]), 'Gain' : popt[2], 'Offset' : offset}
+        popt1, pcov1 = curve_fit(gaussian, bin_centers, bin_heights, maxfev=Maxfev, p0 = list_p0)		# Fit histogram with gaussian
+        axs_all.plot(bin_centers, gaussian(bin_centers, *popt1), 'k', label = 'Gaussian fit')	
+        print('Gaussian fit 1 ||| Mean ', popt1[0], ' Sigma: ', popt1[2], 'Offset: ', offset) 
 
-        print('Centroide: ',dict_popt['Mean'], ' Sigma: ', dict_popt['sigma'], 'Offset: ', dict_popt['Offset'], 'Gain: ', dict_popt['Gain']) 
+        ## Gaussian Fit 2
+        bin_heights, bin_borders, _ = axs_all[0].hist(Overscan_plane.flatten(), bins = Bins,range = range_fit_2, label="Data")
+        bin_centers = np.zeros(len(bin_heights), dtype=float)
+        offset_fit = bin_borders[np.argmax(bin_heights)]
 
-        axs_all.set_title("Distribución de pixeles del Overscan")
-        # axs_all.set_xlim(xmin_fit, xmax_fit)
+        for p in range(len(bin_heights)):
+            bin_centers[p]=(bin_borders[p+1]+bin_borders[p])/2
+
+        xmin_fit, xmax_fit = bin_centers[0], bin_centers[-1]
+        bin_heights = bin_heights[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
+        bin_centers = bin_centers[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
+
+        list_p0_2 = [popt1[0]+200, popt1[1]/5, popt1[2]]
+
+        popt2, pcov2 = curve_fit(gaussian, bin_centers, bin_heights, maxfev=Maxfev, p0 = list_p0_2)		# Fit histogram with gaussian
+        axs_all.plot(bin_centers, gaussian(bin_centers, *popt2), 'k', label = 'Gaussian fit')	
+        print('Gaussian fit 2 ||| Mean ', popt1[0], ' Sigma: ', popt1[2], 'Offset: ', offset)  
+
+        # Estimated gain and error
+        gain = popt2[0] - popt1[0] # Distance between means of each gaussian fit
+        err_gain = np.sqrt(np.diag(pcov1))[0] + np.sqrt(np.diag(pcov2))[0]
+        sigma = popt1[0]
+        err_sigma = np.sqrt(np.diag(pcov1))[2]
+        
+        dict_popt = {'Gain' : gain, "Err_gain": err_gain, "Sig":sigma, "Err_sig": err_sigma}
+        print(f'Estimated Gain: {dict_popt["Gain"]} +- {dict_popt["Err_gain"]} ADU/e-')
+
+        axs_all.set_title("Pixel Charge Distribution of Overscan")
         axs_all.legend()
         plt.show()
         
     else:
-        hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins)
-        offset = bins_edges[np.argmax(hist)]
+        lower_bound = np.percentile(oScan, 1)   # Cuts off bottom 1%
+        upper_bound = np.percentile(oScan, 99)  # Cuts off top 1%
 
+        filtered_oScan = oScan[(oScan >= lower_bound) & (oScan <= upper_bound)]
+        hist, bins_edges = np.histogram(filtered_oScan, bins='auto')
+        max_bin_idx = np.argmax(hist)
+
+        lower_boundary = bins_edges[max_bin_idx]
+        upper_boundary = bins_edges[max_bin_idx + 1]
+
+        tallest_bin_data = filtered_oScan[(filtered_oScan >= lower_boundary) & (filtered_oScan <= upper_boundary)]
+        offset = tallest_bin_data.max()
         Overscan_plane = oScan - offset
-        median_oScan = np.median(Overscan_plane.flatten())
-        max_oScan = np.max(Overscan_plane.flatten())
-        min_oScan = np.min(Overscan_plane.flatten())
 
-        diff = (max_oScan - abs(median_oScan)) / 2
-        # print(median_oScan, diff, min_oScan)
-
-
-        if 30 * abs(median_oScan) <  diff:
-            Range = (min_oScan, diff)
-            # print(Range)
-
-        else:
-            Range = (min_oScan, diff * 2)
-            print(Range)
-
-
-        bin_heights, bin_borders = np.histogram(Overscan_plane.flatten(), bins= Bins, range = Range) #'auto'
+        ### Gaussian Fit 1
+        bin_heights, bin_borders = np.histogram(Overscan_plane.flatten(), bins= Bins, range = range_fit_1)
         bin_centers = np.zeros(len(bin_heights), dtype=float)
-        offset_fit = bin_borders[np.argmax(bin_heights)]
 
         for p in range(len(bin_heights)):
             bin_centers[p]=(bin_borders[p+1]+bin_borders[p])/2
 
-        # xmin_fit, xmax_fit = offset_fit-(10*expgain[extension-1])/math.sqrt(nsamp), offset_fit+(10*expgain[extension-1])/math.sqrt(nsamp)			# Define fit range
         xmin_fit, xmax_fit = bin_centers[0], bin_centers[-1]
         bin_heights = bin_heights[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
         bin_centers = bin_centers[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
 
-        popt, pcov = curve_fit(Gaussian2, bin_centers, bin_heights, maxfev = Maxfev, p0 = [0,100,200, 900, 100])		# Fit histogram with gaussiano')
-        dict_popt = {'Mean' : popt[0], 'sigma' : abs(popt[1]), 'Gain' : popt[2], 'Offset' : offset}
+        popt1, pcov1 = curve_fit(gaussian, bin_centers, bin_heights, maxfev = Maxfev, p0=list_p0)
+
+
+        ### Gaussian Fit 2
+        bin_heights, bin_borders = np.histogram(Overscan_plane.flatten(), bins= Bins, range = range_fit_2)
+        bin_centers = np.zeros(len(bin_heights), dtype=float)
+
+        for p in range(len(bin_heights)):
+            bin_centers[p]=(bin_borders[p+1]+bin_borders[p])/2
+
+        xmin_fit, xmax_fit = bin_centers[0], bin_centers[-1]
+        bin_heights = bin_heights[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
+        bin_centers = bin_centers[(bin_centers>xmin_fit) & (bin_centers<xmax_fit)]
+
+        list_p0_2 = [popt1[0]+200, popt1[1]/5, popt1[2]]
+        popt2, pcov2 = curve_fit(gaussian, bin_centers, bin_heights, maxfev=Maxfev, p0=list_p0_2)
+
+        # Estimated gain and error
+        gain = popt2[0] - popt1[0] # Distance between means of each gaussian fit
+        err_gain = np.sqrt(np.diag(pcov1))[0] + np.sqrt(np.diag(pcov2))[0]
+        sigma = popt1[0] # The sigma of the first gaussian fit is used. 
+        err_sigma = np.sqrt(np.diag(pcov1))[2]
+        
+        dict_popt = {'Gain' : gain, "Err_gain": err_gain, "Sig":sigma, "Err_sig": err_sigma}
     
     return dict_popt
 
-def oScan_fit_NSAMP324_ROOT(extensión, active_area, oScan, Bins, Bins_fit, make_figure_flag, range_fit):
-    Range_x_label = range_fit
+def oScan_fit_NSAMP324_ROOT(oScan, Bins_fit, range_fit_1, range_fit_2, list_p0 = [1000, 2, 70], make_figure_flag = False):
+    Overscan_plane = oScan
+    
+    # fgaus2 = TF1("fgauss2","[3]*exp(-0.5*((x-[0])/[1])^2)+[4]*exp(-0.5*((x-[0]-[2])/[1])^2)", range_fit[0], range_fit[1],5)
+    fgaus_fir = TF1("gaus1","gaus", range_fit_1[0], range_fit_1[1],3)
+    fgaus_sec = TF1("gaus2","gaus", range_fit_2[0], range_fit_2[1],3)
 
-    min_oScan = np.min(oScan)
+    h3=TH1F("histogram", r"Overscan Pixel Charge Distribution", Bins_fit, range_fit_1[0]-50, range_fit_2[1]+50)
+    for pixel_value in Overscan_plane.flatten():
+        h3.Fill(pixel_value)
 
-    if make_figure_flag == True:
-        hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins,  range=(min_oScan, 18000))
-        offset = bins_edges[np.argmax(hist)]
-        # print('Offset Value: ', offset, ' ADUs')
+    # fgaus2.SetParameters(0,40,210, 400, 50)
+    fgaus_fir.SetParameters(list_p0[0], list_p0[2], list_p0[2]) 
+    fgaus_sec.SetParameters(list_p0[0]/3, list_p0[2]+200, list_p0[2])
 
-        Overscan_plane = oScan - offset 
+    h3.Fit(fgaus_fir, "RNQ")
+    h3.Fit(fgaus_sec, "RNQ")
 
-        fgaus2 = TF1("fgauss2","[3]*exp(-0.5*((x-[0])/[1])^2)+[4]*exp(-0.5*((x-[0]-[2])/[1])^2)",-300,600,5) # TF1("nombre", "funcion escrita como en root", min, max, #parametros)
+    gain = fgaus_sec.GetParameters()[1] - fgaus_fir.GetParameters()[1]
+    err_gain = fgaus_sec.GetParError(1) + fgaus_fir.GetParError(1)
+    sig = fgaus_fir.GetParameters()[2]
+    err_sig = fgaus_fir.GetParError(2)
 
-        h3=TH1F("histogram", "Distribution of OsCan", Bins_fit, Range_x_label[0], Range_x_label[1])
-        for pixel_value in Overscan_plane.flatten():
-            # if not np.ma.is_masked(pixel_value):
-            h3.Fill(pixel_value)
-            #print(pixel_value)
-
-        fgaus2.SetParameters(0,10,100, 100, 100) # Establecer parametros iniciales del fit, de manera visual es posible determinarlos como una primera aproximacion
-        h3.Fit(fgaus2, "R")
-
+    dict_popt = {'Gain' : gain, "Err_gain": err_gain, 'Sig' : sig, "Err_sig": err_sig}
+    
+    if make_figure_flag == True: 
         canv=TCanvas()
         canv.SetLogy()
         h3.SetStats(0)
+        h3.GetXaxis().SetTitle("Charge [ADU]")
         h3.Draw()
-        fgaus2.Draw("same")
+
+        fgaus_fir.Draw("same")
+        fgaus_sec.Draw("same")
+
+        leg = TLegend(0.5, 0.7, 0.9, 0.9)
+        leg.AddEntry(h3, "Data", "L")
+        leg.AddEntry(fgaus_fir, "Gaussian Fits", "L")
+        leg.Draw()
         canv.Draw()
+        # gStyle.SetOptFit(1100)
 
-        gStyle.SetOptFit(1100)
-        gStyle.SetPadGridX (True)
-        # fgaus2.Draw('Quiet')
+        print('Parameters of the 1st Gaussian Fit')
+        print('Mean: ', fgaus_fir.GetParameters()[1],  ' +- ', fgaus_fir.GetParError(1))
+        print('Sigma: ', fgaus_fir.GetParameters()[2],  ' +- ', fgaus_fir.GetParError(2))
+        print("chiSquare: " + str(fgaus_fir.GetChisquare()))
+        print("NDegrees of Freedom: " + str(fgaus_fir.GetNDF()))
+        # # print("chiSquare / NDF :", fgaus2.GetChisquare() / fgaus2.GetNDF())
+        print("Prob:", fgaus_fir.GetProb(), '\n')
 
+        print('Parameters of the 2nd Gaussian Fit')
+        print('Mean: ', fgaus_sec.GetParameters()[1],  ' +- ', fgaus_sec.GetParError(1))
+        print('Sigma: ', fgaus_sec.GetParameters()[2],  ' +- ', fgaus_sec.GetParError(2))
+        print("chiSquare: " + str(fgaus_sec.GetChisquare()))
+        print("NDegrees of Freedom: " + str(fgaus_sec.GetNDF()))
+        # # print("chiSquare / NDF :", fgaus2.GetChisquare() / fgaus2.GetNDF())
+        print("Prob:", fgaus_sec.GetProb(), '\n')
 
-        print('Parameters of the Doble-Gaussian Fit')
-        print('Mean: ', fgaus2.GetParameters()[0],  ' +- ', fgaus2.GetParError(0))
-        print('Sigma: ', fgaus2.GetParameters()[1],  ' +- ', fgaus2.GetParError(1))
-        print('Gain: ', fgaus2.GetParameters()[2],  ' +- ', fgaus2.GetParError(2), '\n')
-
-        print("chiSquare: " + str(fgaus2.GetChisquare()))
-        print("NDegrees of Freedom: " + str(fgaus2.GetNDF()))
-        print("chiSquare / NDF :", fgaus2.GetChisquare() / fgaus2.GetNDF())
-        print("Prob:", fgaus2.GetProb(), '\n')
-
-        dict_popt = {'Mean' :fgaus2.GetParameters()[0], 'sigma' : abs(fgaus2.GetParameters()[1]), 'Gain' : abs(fgaus2.GetParameters()[2]), 
-                     'Offset' : offset, 'Prob' :  fgaus2.GetProb()}
-        
-    elif make_figure_flag == False:
-        hist , bins_edges = np.histogram(oScan.flatten(), bins = Bins,  range=(min_oScan, 18000))
-        offset = bins_edges[np.argmax(hist)]
-        # print('Offset Value: ', offset, ' ADUs')
-
-        Overscan_plane = oScan - offset
-
-        fgaus2 = TF1("fgauss2","[3]*exp(-0.5*((x-[0])/[1])^2)+[4]*exp(-0.5*((x-[0]-[2])/[1])^2)", range_fit[0], range_fit[1],5) # TF1("nombre", "funcion escrita como en root", min, max, #parametros)
-        
-        # h3=TH1F("histogram", "Distribution of OsCan",Bins_fit, range_fit[0], range_fit[1])
-        h3=TH1F("histogram", "Distribution of OsCan",Bins_fit, -300, 400)
-        for pixel_value in Overscan_plane.flatten():
-            # if not np.ma.is_masked(pixel_value):
-            h3.Fill(pixel_value)
-            #print(pixel_value)
-        fgaus2.SetParameters(0,40,210, 400, 50) # Establecer parametros iniciales del fit, de manera visual es posible determinarlos como una primera aproximacion
-        h3.Fit(fgaus2, "RQN")
-
-        dict_popt = {'Mean' :fgaus2.GetParameters()[0], 'sigma' : abs(fgaus2.GetParameters()[1]), 'Gain' : abs(fgaus2.GetParameters()[2]), 
-                     'Offset' : offset, 'Prob' :  fgaus2.GetProb()}
-    
     return dict_popt
 
-def data_calibrated(active_area, extension, list_gain, ratio_keV, unidades):
-    dataP = active_area
+def data_calibrated(active_area, gain, ratio_keVtoe, units, sigma_ADU):
+    dataP = active_area # We shouldn't substract the offset because we already substract the median of each oScan row
 
-    if unidades == 0:
-        data = dataP
+    if units == 0:
+        data = dataP # ADU
+        sigma = sigma_ADU
 
-    elif unidades == 1:
-        data = dataP / list_gain[extension - 1]
+    elif units == 1:
+        data = dataP / gain # e-
+        sigma = abs(sigma_ADU / gain)
 
-    elif unidades == 2:
-        data = (ratio_keV * dataP) / list_gain[extension - 1]
-
-    return data
-
-def data_calibrated_NSAMP(active_area, gain, ratio_keV, unidades, sigma_ADUs):
-    ## NO se aplica el offset porque ya se le aplicó la mediana del OsCan##
-    dataP = active_area ## En ADUs
-
-    if unidades == 0:
-        data = dataP ## En ADUs
-        sigma = sigma_ADUs
-
-    elif unidades == 1:
-        data = dataP / gain ## En electrones
-        sigma = abs(sigma_ADUs / gain)
-
-    elif unidades == 2:
-        data = ratio_keV * (dataP / gain) ## En keV
-        sigma = abs( ratio_keV *  (sigma_ADUs/ gain))
+    elif units == 2:
+        data = ratio_keVtoe * (dataP / gain) # keV
+        sigma = abs(ratio_keVtoe *  (sigma_ADU/ gain))
 
     return data, sigma
 ### =================================================================================================== ###
@@ -1498,7 +1514,7 @@ def event_DataFrame(dataCal, label_img, nlabels_img, prop, header, extension, un
 
     for event in range(1, nlabels_img + 1):
         mask = np.invert(label_img == event)
-        loc = ndimage.find_objects(label_img == event)[0]
+        loc = nd.find_objects(label_img == event)[0]
         
         data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
                                             mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
@@ -1681,7 +1697,7 @@ def linear_fit(data_mask):
                     data_mask_zeros[x_bin][long_y - y_bin] = data_mask[y_bin][x_bin]
 
         label_img, nlabels_img = sk.measure.label(data_mask_zeros > 0, connectivity=2, return_num=True)
-        # loc_rot = ndimage.find_objects(label_img == 1)[0]
+        # loc_rot = nd.find_objects(label_img == 1)[0]
         mask_rot = np.invert(label_img==1)
         data_mask_rot = ma.masked_array(data_mask_zeros, mask_rot)
 
@@ -1744,13 +1760,13 @@ def muon_filter_v1(CCD_thick, dataCal, label_img, nlabels_img, prop, Solidit, El
 
     for event in range(1, nlabels_img):
         mask = np.invert(label_img == event)
-        loc = ndimage.find_objects(label_img == event)[0]
+        loc = nd.find_objects(label_img == event)[0]
         
         data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
                                             mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
 
-        coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
-        coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
+        coordX_centerCharge = round(nd.center_of_mass(data_maskEvent)[1])
+        coordY_centerCharge = round(nd.center_of_mass(data_maskEvent)[0])
 
         coordY_centerCharge, coordX_centerCharge = int(prop[event-1].centroid_local[0]), int(prop[event-1].centroid_local[1])
         # print(type(coordY_centerCharge))
@@ -1885,13 +1901,13 @@ def muon_filter(dataCal, label_img, nlabels_img, prop, Solidit, Elipticity, dedl
 
     for event in range(1, nlabels_img):
         mask = np.invert(label_img == event)
-        loc = ndimage.find_objects(label_img == event)[0]
+        loc = nd.find_objects(label_img == event)[0]
         
         data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
                                             mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
 
-        coordX_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[1])
-        coordY_centerCharge = round(ndimage.center_of_mass(data_maskEvent)[0])
+        coordX_centerCharge = round(nd.center_of_mass(data_maskEvent)[1])
+        coordY_centerCharge = round(nd.center_of_mass(data_maskEvent)[0])
 
         coordY_centerCharge, coordX_centerCharge = int(prop[event-1].centroid_local[0]), int(prop[event-1].centroid_local[1])
         # print(type(coordY_centerCharge))
@@ -2154,12 +2170,12 @@ def check_flip_vertical_muon(dict, label_muon, Delta_in, Delta_fin, extension):
 
     event =  dict['extension_' + str(extension)]['Vertical_Events'][label_muon]
 
-    label_verticalMuon, nlabels_verticalMuon = ndimage.label(event,structure=[[0,0,0],[1,1,1],[0,0,0]])
+    label_verticalMuon, nlabels_verticalMuon = nd.label(event,structure=[[0,0,0],[1,1,1],[0,0,0]])
 
     ### Parte de abajo de la imagen ##
     line = label_verticalMuon == Delta_inicial
     # print(Delta_inicial)
-    loc = ndimage.find_objects(label_verticalMuon == Delta_inicial)[0]
+    loc = nd.find_objects(label_verticalMuon == Delta_inicial)[0]
     mask_35 = np.invert(label_verticalMuon == Delta_inicial)
     data_mask = ma.masked_array(event[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop], mask_35[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
 
@@ -2206,7 +2222,7 @@ def check_flip_vertical_muon(dict, label_muon, Delta_in, Delta_fin, extension):
     ### Parte de arriba de la imagen ###
     line = label_verticalMuon ==  nlabels_verticalMuon - Delta_final
     # print( nlabels_verticalMuon - Delta_final)
-    loc = ndimage.find_objects(label_verticalMuon == nlabels_verticalMuon - Delta_final)[0]
+    loc = nd.find_objects(label_verticalMuon == nlabels_verticalMuon - Delta_final)[0]
     mask_35 = np.invert(label_verticalMuon == nlabels_verticalMuon - Delta_final)
     data_mask = ma.masked_array(event[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop], mask_35[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
     # print(data_mask[0])
@@ -2274,12 +2290,12 @@ def check_flip_horizontal_muon(dict, label_muon, Delta_in, Delta_fin, extension)
 
     event =  dict['extension_' + str(extension)]['Horizontal_Events'][label_muon]
 
-    label_verticalMuon, nlabels_verticalMuon = ndimage.label(event,structure=[[0,1,0],[0,1,0],[0,1,0]])
+    label_verticalMuon, nlabels_verticalMuon = nd.label(event,structure=[[0,1,0],[0,1,0],[0,1,0]])
 
     ### Parte de abajo de la imagen ##
     line = label_verticalMuon == Delta_inicial
     # print(Delta_inicial)
-    loc = ndimage.find_objects(label_verticalMuon == Delta_inicial)[0]
+    loc = nd.find_objects(label_verticalMuon == Delta_inicial)[0]
     mask_35 = np.invert(label_verticalMuon == Delta_inicial)
     data_mask = ma.masked_array(event[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop], mask_35[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
 
@@ -2326,7 +2342,7 @@ def check_flip_horizontal_muon(dict, label_muon, Delta_in, Delta_fin, extension)
     ### Parte de arriba de la imagen ###
     line = label_verticalMuon ==  nlabels_verticalMuon - Delta_final
     # print( nlabels_verticalMuon - Delta_final)
-    loc = ndimage.find_objects(label_verticalMuon == nlabels_verticalMuon - Delta_final)[0]
+    loc = nd.find_objects(label_verticalMuon == nlabels_verticalMuon - Delta_final)[0]
     mask_35 = np.invert(label_verticalMuon == nlabels_verticalMuon - Delta_final)
     data_mask = ma.masked_array(event[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop], mask_35[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
     # print(data_mask[0])
@@ -2402,7 +2418,7 @@ def diffution_vertical_muon(dict, list_vertical_labels, Delta_in, Delta_fin, ext
         event, _ = check_flip_vertical_muon(dict  = dict, label_muon = label_muon, Delta_in= Delta_inicial, Delta_fin=Delta_final, extension=extension)
         
 
-        label_verticalMuon, nlabels_verticalMuon = ndimage.label(event,structure=[[0,0,0],[1,1,1],[0,0,0]])
+        label_verticalMuon, nlabels_verticalMuon = nd.label(event,structure=[[0,0,0],[1,1,1],[0,0,0]])
 
         size_x = event.shape[1]
         size_y = event.shape[0]
@@ -2415,7 +2431,7 @@ def diffution_vertical_muon(dict, list_vertical_labels, Delta_in, Delta_fin, ext
         for lable_line in np.arange(Delta_inicial, nlabels_verticalMuon - Delta_final):
             ## Enmascara la linea en turno
             line = label_verticalMuon == lable_line
-            loc = ndimage.find_objects(label_verticalMuon == lable_line)[0]
+            loc = nd.find_objects(label_verticalMuon == lable_line)[0]
             mask_35 = np.invert(label_verticalMuon == lable_line)
             data_mask = ma.masked_array(event[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop], mask_35[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
 
@@ -2520,7 +2536,7 @@ def diffution_vertical_muon_ROOT(dict, list_vertical_labels, Delta_in, Delta_fin
         event, flag = check_flip_vertical_muon(dict  = dict, label_muon = label_muon, Delta_in= Delta_inicial, Delta_fin=Delta_final, extension=extension)
         # print('Turn flag: ', flag)
 
-        label_verticalMuon, nlabels_verticalMuon = ndimage.label(event,structure=[[0,0,0],[1,1,1],[0,0,0]])
+        label_verticalMuon, nlabels_verticalMuon = nd.label(event,structure=[[0,0,0],[1,1,1],[0,0,0]])
 
         size_x = event.shape[1]
         size_y = event.shape[0]
@@ -2533,7 +2549,7 @@ def diffution_vertical_muon_ROOT(dict, list_vertical_labels, Delta_in, Delta_fin
         for lable_line in np.arange(Delta_inicial, nlabels_verticalMuon - Delta_final):
             ## Enmascara la linea en turno
             line = label_verticalMuon == lable_line
-            loc = ndimage.find_objects(label_verticalMuon == lable_line)[0]
+            loc = nd.find_objects(label_verticalMuon == lable_line)[0]
             mask_35 = np.invert(label_verticalMuon == lable_line)
             data_mask = ma.masked_array(event[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop], mask_35[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
 
@@ -2641,7 +2657,7 @@ def diffution_horizontal_muon(dict, list_horizontal_labels, Delta_in, Delta_fin,
         event, _ = check_flip_horizontal_muon(dict  = dict, label_muon = label_muon, Delta_in= Delta_inicial, Delta_fin=Delta_final, extension=extension)
         
 
-        label_verticalMuon, nlabels_verticalMuon = ndimage.label(event,structure=[[0,1,0],[0,1,0],[0,1,0]])
+        label_verticalMuon, nlabels_verticalMuon = nd.label(event,structure=[[0,1,0],[0,1,0],[0,1,0]])
 
         size_x = event.shape[1]
         size_y = event.shape[0]
@@ -2654,7 +2670,7 @@ def diffution_horizontal_muon(dict, list_horizontal_labels, Delta_in, Delta_fin,
         for lable_line in np.arange(Delta_inicial, nlabels_verticalMuon - Delta_final):
             ## Enmascara la linea en turno
             line = label_verticalMuon == lable_line
-            loc = ndimage.find_objects(label_verticalMuon == lable_line)[0]
+            loc = nd.find_objects(label_verticalMuon == lable_line)[0]
             mask_35 = np.invert(label_verticalMuon == lable_line)
             data_mask = ma.masked_array(event[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop], mask_35[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
 
@@ -2783,26 +2799,15 @@ def deconvolucion_cti(image_obs, cti_est, n_transfers, iterations=5):
     img_corr[img_corr < 0] = 0
     return img_corr
 
-def all_cluster(dataCal, label_img, nlabels_img, prop):
+def all_cluster(dataCal, label_img, nlabels_img):
     list_charge = []
 
     for event in np.arange(1, nlabels_img):
         mask = np.invert(label_img == event)
-        loc = ndimage.find_objects(label_img == event)[0]
+        loc = nd.find_objects(label_img == event)[0]
         
-        # 2. Extraer el recorte (slice) de los datos originales
         cluster_data = dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop].copy()
         cluster_mask = mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop]
-
-        # 3. Aplicar Deconvolución si se solicita
-        # if correct_cti:
-        # Estimamos n_transfers como la fila donde está el cluster
-        # (A mayor índice de fila, más transferencias ha sufrido)
-        n_transfers = loc[0].start 
-        
-        # Limpiamos el cluster antes de aplicar la máscara
-        cti_val=1e-6
-        cluster_data = deconvolucion_cti(cluster_data, cti_val, n_transfers)
 
         # data_maskEvent = ma.masked_array(dataCal[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop],
         #                                     mask[loc[0].start:loc[0].stop, loc[1].start:loc[1].stop])
@@ -2810,8 +2815,8 @@ def all_cluster(dataCal, label_img, nlabels_img, prop):
 
         y_shape, x_shape = data_maskEvent.shape
         # if y_shape != 3 and x_shape != 3:
-        if y_shape > 3 and x_shape > 3:
-            continue
+        # if y_shape > 3 and x_shape > 3:
+        #     continue
 
         charge = data_maskEvent.sum()
         list_charge.append(charge)

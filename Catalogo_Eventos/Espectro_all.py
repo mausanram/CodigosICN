@@ -4,51 +4,52 @@ import numpy.ma as ma
 import sys
 import skimage as sk
 import datetime
-import pickle
+import pickle as pkl
 import os
 
-from functions_MuonsNSAMP1 import *
+from functions_MuonsNSAMP1 import cleaning_actArea, cleaning_oScan, oScan_fit_NSAMP324_ROOT, data_calibrated, all_cluster
+import matplotlib.pyplot as plt
 
-## CONSTANTES ## 
+## CONSTANTS ## 
 current_path = os.getcwd()
-
-ratio_keV = 0.0036
+ratio_keVtoe = 0.00367
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 units = 2
-n_sigmas = 5
-numero_bins = 1000
+n_sigmas = 15
+nbins = 200
 
-def Gaussian2(x,m,s,g,a1,a2): #data, mean, sigma, gain, height1, heigth2
-    return a1*np.exp(-1/2*((x-m)/s)**2)+a2*np.exp(-1/2*((x-m-g)/s)**2)
+## === Active Area range
+x_min, x_max  = 10, 529
+y_min, y_max  = 10, 250
 
-def gaussian(x, a, mean, sigma):
-    return a * np.exp(-((x - mean)**2 / (2 * sigma**2)))
+## ===== WRITE WORKED EXTENSIONS ARRAY ====== ##
+list_CCD_array = [1,2,4] # Use the real extension number
+
+Nsamp = 324
+## === CHECK THE FILE NAME AT THE END OF main() function
 
 def main(argObj):
-    list_totalEvents = []
+    start = datetime.datetime.now()
+    dict_to_save_pkl = {'Energy_Units': units}
 
-
-    list_EventCharge_extension_2 =[]
-    list_EventCharge_extension_1 = []
-    list_EventCharge_extension_4 = []
-
-    nerr_img = 0
-    nerr_ext = 0
+    Bins = nbins
+    Bins_fit = Bins
 
     total_images = len(argObj)
     image_in_bucle = 0
-
-    n_extension_1 = 0
-    n_extension_2 = 0
-    n_extension_4 = 0
-    n_total_img = 0
-    n_total_ext = 0
-
-    Inicio = datetime.datetime.now()
-    num_images =  'Imágenes Analizadas: ' +  str(total_images)
     
-    print('Hora de inicio del cálculo: ', Inicio)
+    print(f'=== START TIME: {start} === ')
+
+    for extension in list_CCD_array:
+        try:
+            element = int(extension)
+        except:
+            print("You must write numbers in the CCD_array. Finishing program...")
+            exit()
+        
+        dict_to_save_pkl[f"extension_{element}"] = {"all_events" : {"tot_events": 0, "charge": []}}
+    
     for img in argObj:
         try:
             hdu_list = fits.open(img)
@@ -59,134 +60,84 @@ def main(argObj):
             print('Loading error in image ' + str(img) + 'in open the image.')
             continue
         
-        for extension in (0,1,3):
-            
+        for extension in list_CCD_array:                 
+            extension -= 1
             try :
-                # print('Voy a obtener el OsCan y el active area')
-                data = hdu_list[extension].data[:250,10:539]
-                oScan = hdu_list[extension].data[:250,539:]
+                actArea = hdu_list[extension].data[y_min:y_max, x_min:x_max]
+                oScan = hdu_list[extension].data[y_min:y_max, x_max:]
+                oscan_shape = oScan.shape
 
-                oscan_x = oScan.shape[1]
-                oscan_y = oScan.shape[0]
+                true_active_area = cleaning_actArea(activeArea=actArea, OvScan=oScan, x_range=[0, oscan_shape[1]], y_range=[0, oscan_shape[0]]) 
+                Overscan_plane, offset = cleaning_oScan(overscan=oScan)
 
-
-                # print('Voy a obtener el valor medio de los píxeles')
-                mean_rows_value = []
-                for element in np.arange(0, oscan_y):
-                    row = oScan[element: element +1, 0: oscan_x]
-                    mean_value = np.median(row)
-                    mean_rows_value.append([mean_value])
-
-                true_active_area = data - mean_rows_value
+                # plt.hist(true_active_area.flatten())
+                # plt.hist(oScan.flatten(), range=[-300, 300], bins=nbins)
+                # plt.show()
 
             except:
-                print('Loading error in extension ' + str(extension) + ' of image ' + str(img) + 'in load the data.')
+                print('Loading error in extension ' + str(extension + 1) + ' of image ' + str(img) + 'in load the data.')
                 continue
-            
-            try:
-                dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=numero_bins, 
-                                                    Bins_fit=numero_bins,make_figure_flag=False, range_fit=[-50, 350])
 
-                sig_ADUs = dict_popt['sigma']
-                Offset = dict_popt['Offset']
-                Gain = dict_popt['Gain']
-                Prob = dict_popt['Prob']
-                
-                if Prob < 0.05:
-                    del_Bin = 600
-                    dict_popt = oScan_fit_NSAMP324_ROOT(extensión=extension, active_area=true_active_area, oScan=oScan, Bins=del_Bin, 
-                                                        Bins_fit=del_Bin, make_figure_flag=False, range_fit=[-30, 400])
-                    sig_ADUs = dict_popt['sigma']
-                    Offset = dict_popt['Offset']
-                    Gain = dict_popt['Gain']
-                    Prob = dict_popt['Prob']
+            ## For Fe-55
+            if extension == 0:
+                Range_fit_1 = [-100, 60]
+                Range_fit_2 = [120, 300]
 
-                    if  Prob < 0.05:
-                        nerr_ext = nerr_ext + 1
-                        print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
+            elif extension == 1:
+                Range_fit_1 = [-120, 45]
+                Range_fit_2 = [90, 250]
 
-            except:
-                print('Fit error in extension ' + str(extension) + ' of image ' + str(img))
-                continue
-            
-            dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, extension=extension, gain=Gain, 
-                                                   ratio_keV=ratio_keV, unidades= units, offset=Offset, sigma_ADUs = sig_ADUs)
-            
-            fondo_value = n_sigmas * sigma
-            
+            dict_popt = oScan_fit_NSAMP324_ROOT(Overscan_plane.flatten(), Bins_fit, Range_fit_1, Range_fit_2)
+            sig_ADUs = dict_popt['Sig']
+            Gain = dict_popt['Gain']
+            # print(f'Gain: {Gain}, sigma: {sig_ADUs}')
+
+            dataCal, sigma = data_calibrated(active_area=true_active_area, gain=Gain, ratio_keVtoe=ratio_keVtoe, units=units, sigma_ADU = sig_ADUs)
+            threshold = n_sigmas * sigma
+            # print(f'Threshold: {threshold}')
+
             del oScan
-            
-            label_img, n_events = sk.measure.label(dataCal > fondo_value, connectivity=2, return_num=True)
-            prop = sk.measure.regionprops(label_img, dataCal)
-            
-            list_totalEvents.append(n_events)
-            
-            ## Obteniendo el valor promedio del fondo
-            fondo_mask = np.invert(label_img == 0)
-            fondo = ma.masked_array(dataCal,fondo_mask)
 
-            list_charge = all_cluster(dataCal=dataCal, label_img=label_img, nlabels_img=n_events, prop=prop)
+            ### ====  CLUSTERING PROCESS ===== ###
+            label_img, n_events = sk.measure.label(dataCal > threshold, connectivity=2, return_num=True)
+            # print('Events detected:', n_events)
+            list_charge = all_cluster(dataCal=dataCal, label_img=label_img, nlabels_img=n_events)
+            # print(len(list_charge))
 
-            if extension == 0: 
-                n_extension_1 = n_extension_1 + 1
-                for index in np.arange(0, len(list_charge)):
-                    list_EventCharge_extension_1.append(list_charge[index])
+            for index in np.arange(0, len(list_charge)):
+                dict_to_save_pkl[f"extension_{extension+1}"]["all_events"]["charge"].append(list_charge[index])
 
-            if extension == 1: 
-                n_extension_2 = n_extension_2 + 1
-                for index in np.arange(0, len(list_charge)):
-                    list_EventCharge_extension_2.append(list_charge[index])
+            # n_total_ext = n_total_ext + 1
 
-            if extension == 3: 
-                n_extension_4 = n_extension_4 + 1
-                for index in np.arange(0, len(list_charge)):
-                    list_EventCharge_extension_4.append(list_charge[index])
-
-            n_total_ext = n_total_ext + 1
-
-        n_total_img = n_total_img + 1
+        # n_total_img = n_total_img + 1
         print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
-        del hdu_list              
+        del hdu_list      
 
-    num_clusters = len(list_EventCharge_extension_1) + len(list_EventCharge_extension_2) + len(list_EventCharge_extension_4)
+    total_events_allext = 0
+    for extension in list_CCD_array:
+        dict_to_save_pkl[f"extension_{extension}"]["all_events"]["tot_events"] = len(dict_to_save_pkl[f"extension_{extension}"]["all_events"]["charge"])
+        total_events_allext += dict_to_save_pkl[f"extension_{extension}"]["all_events"]["tot_events"]
 
-    dict_to_save_pkl = {'Num_Images' : total_images , 'All_clusters_detected' : num_clusters, 'Energy_Units' : units,
-                        'extension_1' : {'charge' : list_EventCharge_extension_1}, 
-                        'extension_2' : {'charge' : list_EventCharge_extension_2},
-                        'extension_4' : {'charge' : list_EventCharge_extension_4}}
+    End = datetime.datetime.now()
+    print(f'=== End time: {End}')
+    print(f'=== Ellapsed time: {End - start} === \n' )
+    print(f'Analized Images: {total_images}')
+    print(f"Total events detected: {total_events_allext}")
 
-    total_events = sum(list_totalEvents)
-    Final = datetime.datetime.now()
+    init_path = 'dict_energy_allclusters_NSAMP' + str(Nsamp) + '_Extensions_1_2_4_NIMGS_' + str(len(argObj)) + \
+                '_NSIGMAS_' + str(n_sigmas) + '_SIZE_' + str(x_max) + 'x' + str(y_max)
+    
+    if units == 0: end_path = '_ADU.pkl'
+    elif units == 1: end_path = '_electron.pkl'
+    elif units == 2: end_path = '_keV.pkl'
 
-    print('Hora del final de cálculo: ', Final)
-    print('Tiempo de cálculo: ', Final-Inicio)
-
-    if units == 0:
-        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_ADUs.pkl'
-    elif units == 1:
-        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_electrons.pkl'
-    elif units == 2:
-        file_name = 'dict_energy_allclusters_NSAMP324_Extensions_1_to_4_Imgs_' + str(total_images) + '_SIZE_250x529_' + '_NSIGMAS_' + str(n_sigmas)  + '_KeV.pkl'
+    file_name = init_path + end_path # FILE NAME
 
     file_object_histogram = open(file_name, 'wb')
-    pickle.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
+    pkl.dump(dict_to_save_pkl, file_object_histogram) ## Save the dictionary with all info 
     file_object_histogram.close()
 
     print('Dictionary saved in', current_path + '/' + file_name, ' as a binary file. To open use library "pickle". ')
-    
-    print('Eventos Detectados en Total: ' +  str(total_events))
-    print('Imágenes con error al cargar: ' + str(nerr_img))
-    print('Error en fit de extension: ' + str(nerr_ext))
-    
-
-    print('Number of ext1: ', n_extension_1)
-    print('Number of ext2: ', n_extension_2)
-    print('Number of ext4: ', n_extension_4)
-    print('Number of total img: ', n_total_img)
-    print('Number of total ext 1+2: ', n_extension_1 + n_extension_2)
-    print('Number of total ext: ', n_total_ext)
-
-
 
 if __name__ == "__main__":
     argObj = sys.argv[1:]

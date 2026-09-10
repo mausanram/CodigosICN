@@ -1,7 +1,7 @@
-from functions_py import *
+from functions_MuonsNSAMP1 import *
+import math
+from astropy.io import fits
 import matplotlib.pyplot as plt
-import matplotlib as mpl
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy.ma as ma
 import pandas as pd 
 import sys

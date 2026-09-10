@@ -463,7 +463,6 @@ def exposureFactor(path):
     print('HEF='+str(HEF[0]), 'VEF='+str(VEF[0]))
     return HEF, VEF
 
-
 def voltageDictfromFile(vFile='/home/oem/datosFits/MicrochipTest_Marzo/datos/05MAY23/vFiles/voltage_skp_lta_v60_microchip.sh'):
     File=vFile.split('/')[-1]
     voltageDict={}

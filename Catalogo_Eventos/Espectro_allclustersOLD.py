@@ -1,10 +1,5 @@
-    # from functions_py import math
-import math
 from astropy.io import fits
-import scipy.ndimage as ndimage
-from scipy.optimize import curve_fit
 import numpy as np
-import matplotlib.pyplot as plt
 import numpy.ma as ma
 import sys
 import skimage as sk
@@ -126,7 +121,7 @@ def main(argObj):
                 Gain = ext4['Gain'] # ADU/e-
                 sig_ADUs = ext4['Sigma'] # ADUs
             
-            dataCal, sigma = data_calibrated_NSAMP(active_area=true_active_area, gain=Gain, ratio_keV=ratio_keV, unidades= units, sigma_ADUs = sig_ADUs)
+            dataCal, sigma = data_calibrated(active_area=true_active_area, gain=Gain, ratio_keV=ratio_keV, unidades= units, sigma_ADUs = sig_ADUs)
             fondo_value = n_sigmas * sigma
             
             del oScan

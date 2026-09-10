@@ -1,5 +1,3 @@
-# from functions_py import math
-import math
 import os
 from astropy.io import fits
 import scipy.ndimage as ndimage

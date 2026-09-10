@@ -1,15 +1,12 @@
-from functions_py import *
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy.ma as ma
-import pandas as pd 
-import skimage as sk
 import scipy.ndimage as nd
-from array import array
-from functions_MuonsNSAMP1 import *
 import pickle as pkl
-import time
+import os
+import sys
+from astropy.io import fits
+import datetime
+
+from functions_MuonsNSAMP1 import *
 
 ## CONSTANTES ## 
 current_path = os.getcwd()
