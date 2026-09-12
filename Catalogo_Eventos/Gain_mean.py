@@ -41,7 +41,6 @@ if int_type_exp not in dict_type_experiment.keys():
 else:
     string_typeE = dict_type_experiment[int_type_exp]
 
-file_name =f"dict_mean_gains_{string_typeE}_NSAMP{Nsamp}.pkl"
 
 def main(argObj):
 
@@ -61,6 +60,8 @@ def main(argObj):
 
     total_images = len(argObj)
     image_in_bucle = 0
+
+    file_name =f"dict_mean_gains_{string_typeE}_NSAMP{Nsamp}_NIMG_{total_images}.pkl"
 
     set_blacklist = set()
 
