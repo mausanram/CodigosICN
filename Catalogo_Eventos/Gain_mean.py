@@ -154,7 +154,7 @@ def main(argObj):
             # exit()
 
             # if 180 < true_gain < 215:
-            if Prob_1 > 0.05 or Prob_2 > 0.05:
+            if Prob_1 > 0.05 and Prob_2 > 0.05:
                 dict_auxiliar[f"extension_{extension+1}"]["images_used"] = dict_auxiliar[f"extension_{extension+1}"]["images_used"] + 1
                 dict_auxiliar[f"extension_{extension+1}"]["gain"].append(true_gain)
                 dict_auxiliar[f"extension_{extension+1}"]["gain_err"].append(err_true_gain)
