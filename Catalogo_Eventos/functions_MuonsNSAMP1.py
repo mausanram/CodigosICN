@@ -256,7 +256,8 @@ def oScan_fit_NSAMP324_ROOT(oScan, Bins_fit, range_fit_1, range_fit_2, list_p0 =
 
     h3=TH1F("histogram", r"Overscan Pixel Charge Distribution", Bins_fit, range_fit_1[0]-50, range_fit_2[1]+50)
     for pixel_value in Overscan_plane.flatten():
-        h3.Fill(pixel_value)
+        if pixel_value:
+            h3.Fill(pixel_value)
 
     # fgaus2.SetParameters(0,40,210, 400, 50)
     fgaus_fir.SetParameters(list_p0[0], list_p0[2], list_p0[2]) 

@@ -239,6 +239,8 @@ def main(argObj):
     file_object = open(file_name, 'wb')
     pkl.dump(dict_gains, file_object) ## Save the dictionary with all info 
     file_object.close()
+
+    print('Dictionary saved in', current_path + '/' + file_name, ' as a binary file. To open use library "pickle". ')
         
 
 if __name__ == "__main__":
