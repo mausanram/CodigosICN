@@ -18,7 +18,7 @@ def gaussian(x, mean, a, sigma):
 def Gaussian2(x,m,s,g,a1,a2): #data, mean, sigma, gain, height1, heigth2
     return a1*np.exp(-1/2*((x-m)/s)**2)+a2*np.exp(-1/2*((x-m-g)/s)**2)
 
-### ============================== Funciones de calibración de imágenes ============================== ###
+### ============================== IMAGE CALIBRATION FUNCTIONS ============================== ###
 def cleaning_oScan(overscan, range_perncetiles=[1, 99]):
     lower_bound = np.percentile(overscan, range_perncetiles[0])   # Cuts off bottom 1%
     upper_bound = np.percentile(overscan, range_perncetiles[1])  # Cuts off top 1%
@@ -1475,7 +1475,7 @@ def pixel_rot(x_bin, x0, y_bin, y0, theta):
 
 ### =================================================================== ###
 
-### ================================ Filtro de Muones General ============================================ ###
+### ================================ GENERAL MUON FILTER ============================================ ###
 def event_DataFrame(dataCal, label_img, nlabels_img, prop, header, extension, unidades) -> pd.DataFrame:
     list_Runid = []
     list_ext = []
@@ -2163,7 +2163,7 @@ def muon_straight_filter(dataCal, label_img, n_events, Solidit, Elipticity, Prop
     return list_vertical_events, list_horizontal_events
 ### ======================================================================================================= ###
 
-### ================ Funciones para el Modelo de Difusión ========================= ###
+### ================ DIFFUSION MODEL FUNCTIONS ========================= ###
 def check_flip_vertical_muon(dict, label_muon, Delta_in, Delta_fin, extension):
 
     Delta_inicial = Delta_in    # px
@@ -2763,7 +2763,7 @@ def diffution_horizontal_muon(dict, list_horizontal_labels, Delta_in, Delta_fin,
     return list_all_sigmas, list_deep
 ### =============================================================================== ###
 
-#### =================== FUNCIONES DE CLUSTERIZACIÓN Y CREACCIÓN DE PDFs ================== ###
+#### =================== GENERAL CLUSTERING FUNCTIONS ================== ###
 def simular_paso_cti(image, cti_val):
     """
     Simula el daño por transferencia (estela). 
@@ -2816,8 +2816,8 @@ def all_cluster(dataCal, label_img, nlabels_img):
 
         y_shape, x_shape = data_maskEvent.shape
         # if y_shape != 3 and x_shape != 3:
-        # if y_shape > 3 and x_shape > 3:
-        #     continue
+        if y_shape > 3 and x_shape > 3:
+            continue
 
         charge = data_maskEvent.sum()
         list_charge.append(charge)

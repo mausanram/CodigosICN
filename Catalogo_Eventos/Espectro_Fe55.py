@@ -15,7 +15,7 @@ ratio_keVtoe = 0.00367
 
 ## Unidades, número de sigmas y número de bins (en las unidades 0 = ADUs, 1 = e-, 2 = KeV)
 units = 2
-n_sigmas = 35
+n_sigmas = 10
 nbins = 200
 
 ## === Active Area range

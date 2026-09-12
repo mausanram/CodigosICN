@@ -19,7 +19,7 @@ list_CCD_array = [1,2,4] # Use the real extension number
 
 ##  ============= SELECT IMAGES' TYPE ============ ##
 ##  ==(Muons == 0, Fe55 == 1, Fe55+Cs137 == 2,) == ##
-type_experiment = 0
+type_experiment = 1
 
 ## ======= WRITE NSAMP & NBINS ======= ##
 Nsamp = 300
@@ -104,7 +104,7 @@ def main(argObj):
             # plt.hist(Overscan_plane, range = (-500, 400), bins=100)
             # plt.show()
 
-            ## FOr Fe-55
+            ## For Fe-55
             if extension == 0:
                 Range_fit_1 = [-100, 60]
                 Range_fit_2 = [120, 300]
@@ -152,7 +152,8 @@ def main(argObj):
             # print(f"Gain: {true_gain}, +- {err_true_gain}")
             # exit()
 
-            if 180 < true_gain < 215:
+            # if 180 < true_gain < 215:
+            if Prob_1 > 0.05 or Prob_2 > 0.05:
                 dict_auxiliar[f"extension_{extension+1}"]["images_used"] = dict_auxiliar[f"extension_{extension+1}"]["images_used"] + 1
                 dict_auxiliar[f"extension_{extension+1}"]["gain"].append(true_gain)
                 dict_auxiliar[f"extension_{extension+1}"]["gain_err"].append(err_true_gain)
@@ -160,12 +161,10 @@ def main(argObj):
                 dict_auxiliar[f"extension_{extension+1}"]["sig_err"].append(err_sigma)
                 print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
             else:
-                if extension == 0:
-                    set_blacklist.add(img)
-                    print('Error individual gaussians fit in ext ' + str(extension+1) + ' of image ' + str(img))
-                    # print('Gain:', true_gain)
-                    print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
-                    continue
+                set_blacklist.add(img)
+                print('Error individual gaussians fit in ext ' + str(extension+1) + ' of image ' + str(img))
+                # print('Gain:', true_gain)
+                print('Image ' + str(image_in_bucle) + '/' + str(total_images), end='\r')
                 continue
 
     for extension in list_CCD_array:
