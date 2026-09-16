@@ -206,7 +206,8 @@ def main(argObj):
 
             dict_gains[f"extension_{extension}"] = {'NImages': nimages,
                                                     'Gain' : mean_gain, 'Err_gain' : true_gain_error, 
-                                                    'Sigma' : mean_sig, 'Err_sig' : true_sig_error}
+                                                    'Sigma' : mean_sig, 'Err_sig' : true_sig_error,
+                                                    'list_gain': list_gain, 'list_sig' : list_sig}
 
     with open("black_list.txt", "w") as f:
         for item in set_blacklist:
