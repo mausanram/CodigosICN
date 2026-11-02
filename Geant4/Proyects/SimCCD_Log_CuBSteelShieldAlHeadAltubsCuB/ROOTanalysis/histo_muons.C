@@ -21,8 +21,8 @@ int NB = 150;
 double tlow = 0.;
 double thi = 1000.;
 
-TH1F *edep_icn = new TH1F("edep_icn", "Energy Spectrum (Sim. PP - All Clusters (ICN))", NB, tlow, thi);
-edep_icn->GetXaxis()->SetTitle("Energy (MeV)");
+TH1F *edep_icn = new TH1F("edep_icn", "", NB, tlow, thi);
+edep_icn->GetXaxis()->SetTitle("Energy [KeV]");
 edep_icn->SetLineStyle(1);
 edep_icn->SetLineColor(1);
 edep_icn->SetStats(0);
@@ -61,7 +61,7 @@ f_geant_tree->Draw("EevtBar*0.92*1000>>edep_geant_scale", "EevtBar>0"); // GEANT
 
 // ============= EXPERIMENTAL histograms =========== //
 tree_icn->Draw("edep*1000.>>edep_icn", "edep>0"); // EXPERIMENTAL INFO in KeV
-edep_icn->SetMaximum(400);
+edep_icn->SetMaximum(1000);
 // tree0->Draw("edep>>edep0", "edep>0"); // EXPERIMENTAL INFO
 tree_conn->Draw("edep>>edep_conn", "edep>0"); // EXPERIMENTAL INFO CONNIE
 
@@ -75,13 +75,13 @@ cout << "Integral muons: " << cont_muons <<endl;
 
 // ============ Create Canvas ============== //
 TCanvas *canv = new TCanvas("canv","Edep", 2*800, 600);
-canv->Divide(1,1);
+canv->Divide(2,1);
 canv->cd(1);
 // edep_g4->Draw("hist"); 	// edepG4 no Birks
-muons->Draw("hist");
+// muons->Draw("hist");
 // edep_pp->Draw("hist same"); 	// edepPP
 // // edep_conn->Draw("he0 same"); 	// CONNIE data
-// edep_icn->Draw("hist"); 	// ICN data 
+edep_icn->Draw("hist"); 	// ICN data 
 // edep_geant_scale->Draw("hist same");
 
 // TLegend *leg = new TLegend(0.5, 0.7, 0.9, 0.9);
